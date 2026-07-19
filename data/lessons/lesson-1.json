@@ -1,0 +1,891 @@
+{
+  "id": "lesson-1",
+  "number": 1,
+  "title": "Jobs and studies",
+  "subtitle": "Speakout · Unit 1 · Lesson 1A: vocabulary and Present Simple",
+  "status": "available",
+  "page": "lesson.html?id=lesson-1",
+  "vocabularyId": "vocab-lesson-1-jobs-studies",
+  "grammarIds": [
+    "grammar-lesson-1-present-simple"
+  ],
+  "publishedAt": "2026-07-20",
+  "totalPoints": 62,
+  "notification": {
+    "enabled": true,
+    "version": 1
+  },
+  "blocks": [
+    {
+      "type": "section",
+      "eyebrow": "Lesson 1A",
+      "title": "Vocabulary · Jobs and studies",
+      "text": "Выполни задания 1A–2B. Все ответы сохранятся как черновик до финальной отправки."
+    },
+    {
+      "type": "exercise",
+      "id": "l1-ex1a",
+      "title": "1A. Complete the job phrases",
+      "instructions": "Выбери слово из Word bank. Каждое слово используется один раз.",
+      "wordBank": [
+        "art",
+        "basketball",
+        "bus",
+        "business",
+        "farm",
+        "hotel",
+        "office",
+        "tennis",
+        "train",
+        "university"
+      ],
+      "items": [
+        {
+          "id": "1a",
+          "number": "1a",
+          "prompt": "___ player",
+          "input": "select",
+          "options": [
+            "art",
+            "basketball",
+            "bus",
+            "business",
+            "farm",
+            "hotel",
+            "office",
+            "tennis",
+            "train",
+            "university"
+          ],
+          "answer": 1,
+          "explanation": "basketball player"
+        },
+        {
+          "id": "1b",
+          "number": "1b",
+          "prompt": "___ player",
+          "input": "select",
+          "options": [
+            "art",
+            "basketball",
+            "bus",
+            "business",
+            "farm",
+            "hotel",
+            "office",
+            "tennis",
+            "train",
+            "university"
+          ],
+          "answer": 7,
+          "explanation": "tennis player"
+        },
+        {
+          "id": "2a",
+          "number": "2a",
+          "prompt": "___ worker",
+          "input": "select",
+          "options": [
+            "art",
+            "basketball",
+            "bus",
+            "business",
+            "farm",
+            "hotel",
+            "office",
+            "tennis",
+            "train",
+            "university"
+          ],
+          "answer": 4,
+          "explanation": "farm worker"
+        },
+        {
+          "id": "2b",
+          "number": "2b",
+          "prompt": "___ worker",
+          "input": "select",
+          "options": [
+            "art",
+            "basketball",
+            "bus",
+            "business",
+            "farm",
+            "hotel",
+            "office",
+            "tennis",
+            "train",
+            "university"
+          ],
+          "answer": 6,
+          "explanation": "office worker"
+        },
+        {
+          "id": "3a",
+          "number": "3a",
+          "prompt": "___ driver",
+          "input": "select",
+          "options": [
+            "art",
+            "basketball",
+            "bus",
+            "business",
+            "farm",
+            "hotel",
+            "office",
+            "tennis",
+            "train",
+            "university"
+          ],
+          "answer": 2,
+          "explanation": "bus driver"
+        },
+        {
+          "id": "3b",
+          "number": "3b",
+          "prompt": "___ driver",
+          "input": "select",
+          "options": [
+            "art",
+            "basketball",
+            "bus",
+            "business",
+            "farm",
+            "hotel",
+            "office",
+            "tennis",
+            "train",
+            "university"
+          ],
+          "answer": 8,
+          "explanation": "train driver"
+        },
+        {
+          "id": "4a",
+          "number": "4a",
+          "prompt": "___ student",
+          "input": "select",
+          "options": [
+            "art",
+            "basketball",
+            "bus",
+            "business",
+            "farm",
+            "hotel",
+            "office",
+            "tennis",
+            "train",
+            "university"
+          ],
+          "answer": 0,
+          "explanation": "art student"
+        },
+        {
+          "id": "4b",
+          "number": "4b",
+          "prompt": "___ student",
+          "input": "select",
+          "options": [
+            "art",
+            "basketball",
+            "bus",
+            "business",
+            "farm",
+            "hotel",
+            "office",
+            "tennis",
+            "train",
+            "university"
+          ],
+          "answer": 9,
+          "explanation": "university student"
+        },
+        {
+          "id": "5a",
+          "number": "5a",
+          "prompt": "___ manager",
+          "input": "select",
+          "options": [
+            "art",
+            "basketball",
+            "bus",
+            "business",
+            "farm",
+            "hotel",
+            "office",
+            "tennis",
+            "train",
+            "university"
+          ],
+          "answer": 3,
+          "explanation": "business manager"
+        },
+        {
+          "id": "5b",
+          "number": "5b",
+          "prompt": "___ manager",
+          "input": "select",
+          "options": [
+            "art",
+            "basketball",
+            "bus",
+            "business",
+            "farm",
+            "hotel",
+            "office",
+            "tennis",
+            "train",
+            "university"
+          ],
+          "answer": 5,
+          "explanation": "hotel manager"
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l1-ex1b",
+      "title": "1B. Choose the correct word",
+      "instructions": "Выбери правильное слово, чтобы закончить предложение.",
+      "items": [
+        {
+          "id": "1",
+          "prompt": "I’m a taxi ___ and I work at night.",
+          "input": "single",
+          "options": [
+            "worker",
+            "driver",
+            "player"
+          ],
+          "answer": 1,
+          "explanation": "I’m a taxi driver."
+        },
+        {
+          "id": "2",
+          "prompt": "Are you a university ___?",
+          "input": "single",
+          "options": [
+            "driver",
+            "player",
+            "student"
+          ],
+          "answer": 2,
+          "explanation": "Are you a university student?"
+        },
+        {
+          "id": "3",
+          "prompt": "I’d like to be a business ___.",
+          "input": "single",
+          "options": [
+            "manager",
+            "player",
+            "driver"
+          ],
+          "answer": 0,
+          "explanation": "a business manager"
+        },
+        {
+          "id": "4",
+          "prompt": "I’m an office ___. I work from 9 to 5.",
+          "input": "single",
+          "options": [
+            "driver",
+            "student",
+            "worker"
+          ],
+          "answer": 2,
+          "explanation": "an office worker"
+        },
+        {
+          "id": "5",
+          "prompt": "Would you like to be a train ___?",
+          "input": "single",
+          "options": [
+            "driver",
+            "player",
+            "student"
+          ],
+          "answer": 0,
+          "explanation": "a train driver"
+        },
+        {
+          "id": "6",
+          "prompt": "My favourite tennis ___ is Ashleigh Barty.",
+          "input": "single",
+          "options": [
+            "worker",
+            "player",
+            "driver"
+          ],
+          "answer": 1,
+          "explanation": "tennis player"
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l1-ex2a",
+      "title": "2A. Complete the job words",
+      "instructions": "Напиши полное слово или выражение.",
+      "items": [
+        {
+          "id": "1",
+          "prompt": "a _ t _ r",
+          "input": "text",
+          "answer": "actor"
+        },
+        {
+          "id": "2",
+          "prompt": "s _ _ p  a _ s _ s _ a _ t",
+          "input": "text",
+          "acceptedAnswers": [
+            "shop assistant"
+          ]
+        },
+        {
+          "id": "3",
+          "prompt": "p _ l _ t",
+          "input": "text",
+          "answer": "pilot"
+        },
+        {
+          "id": "4",
+          "prompt": "e _ g _ n _ _ r",
+          "input": "text",
+          "answer": "engineer"
+        },
+        {
+          "id": "5",
+          "prompt": "p _ l _ c e  o _ f _ c e r",
+          "input": "text",
+          "acceptedAnswers": [
+            "police officer"
+          ]
+        },
+        {
+          "id": "6",
+          "prompt": "w r _ t _ r",
+          "input": "text",
+          "answer": "writer"
+        },
+        {
+          "id": "7",
+          "prompt": "l _ w _ e r",
+          "input": "text",
+          "answer": "lawyer"
+        },
+        {
+          "id": "8",
+          "prompt": "n _ r s _",
+          "input": "text",
+          "answer": "nurse"
+        },
+        {
+          "id": "9",
+          "prompt": "r e _ i _ _ d",
+          "input": "text",
+          "answer": "retired"
+        },
+        {
+          "id": "10",
+          "prompt": "u n _ _ p l o _ _ d",
+          "input": "text",
+          "answer": "unemployed"
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l1-ex2b",
+      "title": "2B. Match the jobs with the sentences",
+      "instructions": "Выбери подходящую профессию.",
+      "wordBank": [
+        "digital designer",
+        "doctor",
+        "pilot",
+        "politician",
+        "scientist",
+        "singer"
+      ],
+      "items": [
+        {
+          "id": "1",
+          "prompt": "I help people who are ill.",
+          "input": "select",
+          "options": [
+            "digital designer",
+            "doctor",
+            "pilot",
+            "politician",
+            "scientist",
+            "singer"
+          ],
+          "answer": 1,
+          "explanation": "doctor"
+        },
+        {
+          "id": "2",
+          "prompt": "I make music.",
+          "input": "select",
+          "options": [
+            "digital designer",
+            "doctor",
+            "pilot",
+            "politician",
+            "scientist",
+            "singer"
+          ],
+          "answer": 5,
+          "explanation": "singer"
+        },
+        {
+          "id": "3",
+          "prompt": "I work in the government.",
+          "input": "select",
+          "options": [
+            "digital designer",
+            "doctor",
+            "pilot",
+            "politician",
+            "scientist",
+            "singer"
+          ],
+          "answer": 3,
+          "explanation": "politician"
+        },
+        {
+          "id": "4",
+          "prompt": "I study new medicines.",
+          "input": "select",
+          "options": [
+            "digital designer",
+            "doctor",
+            "pilot",
+            "politician",
+            "scientist",
+            "singer"
+          ],
+          "answer": 4,
+          "explanation": "scientist"
+        },
+        {
+          "id": "5",
+          "prompt": "I make websites for different companies.",
+          "input": "select",
+          "options": [
+            "digital designer",
+            "doctor",
+            "pilot",
+            "politician",
+            "scientist",
+            "singer"
+          ],
+          "answer": 0,
+          "explanation": "digital designer"
+        },
+        {
+          "id": "6",
+          "prompt": "I fly planes.",
+          "input": "select",
+          "options": [
+            "digital designer",
+            "doctor",
+            "pilot",
+            "politician",
+            "scientist",
+            "singer"
+          ],
+          "answer": 2,
+          "explanation": "pilot"
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "eyebrow": "Grammar",
+      "title": "Present Simple: I, you, we, they",
+      "text": "Выполни задания 3A–3D. Обрати внимание на do / don’t и are / aren’t."
+    },
+    {
+      "type": "info",
+      "title": "Remember",
+      "text": "С I / you / we / they используем глагол без окончания -s: I work. They live in France.\nОтрицание: I / you / we / they don’t work.\nВопрос: Do I / you / we / they work?\nС глаголом be: I am, you / we / they are; отрицание — aren’t."
+    },
+    {
+      "type": "exercise",
+      "id": "l1-ex3a",
+      "title": "3A. Choose the correct word",
+      "instructions": "Выбери правильный вариант.",
+      "items": [
+        {
+          "id": "1",
+          "prompt": "They ___ scientists.",
+          "input": "single",
+          "options": [
+            "don’t",
+            "are",
+            "do"
+          ],
+          "answer": 1,
+          "explanation": "They are scientists."
+        },
+        {
+          "id": "2",
+          "prompt": "We ___ speak Japanese. We speak Korean.",
+          "input": "single",
+          "options": [
+            "don’t",
+            "aren’t",
+            "do"
+          ],
+          "answer": 0,
+          "explanation": "We don’t speak Japanese."
+        },
+        {
+          "id": "3",
+          "prompt": "A: Do you like sport? B: Yes, I ___.",
+          "input": "single",
+          "options": [
+            "like",
+            "am",
+            "do"
+          ],
+          "answer": 2,
+          "explanation": "Yes, I do."
+        },
+        {
+          "id": "4",
+          "prompt": "My parents ___ from Berlin.",
+          "input": "single",
+          "options": [
+            "do",
+            "are",
+            "don’t"
+          ],
+          "answer": 1,
+          "explanation": "My parents are from Berlin."
+        },
+        {
+          "id": "5",
+          "prompt": "A: Are Ricky and Sam brothers? B: No, they ___.",
+          "input": "single",
+          "options": [
+            "aren’t",
+            "don’t",
+            "are"
+          ],
+          "answer": 0,
+          "explanation": "No, they aren’t."
+        },
+        {
+          "id": "6",
+          "prompt": "They ___ Spanish. They’re Portuguese.",
+          "input": "single",
+          "options": [
+            "are",
+            "don’t",
+            "aren’t"
+          ],
+          "answer": 2,
+          "explanation": "They aren’t Spanish."
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l1-ex3b",
+      "title": "3B. Complete the text",
+      "instructions": "Впиши по одному слову в каждый пропуск.",
+      "items": [
+        {
+          "id": "1",
+          "prompt": "My wife and I ___ Polish.",
+          "input": "text",
+          "answer": "are"
+        },
+        {
+          "id": "2",
+          "prompt": "… but we ___ live in Poland.",
+          "input": "text",
+          "acceptedAnswers": [
+            "don't",
+            "don’t"
+          ]
+        },
+        {
+          "id": "3",
+          "prompt": "We ___ in Scotland.",
+          "input": "text",
+          "answer": "live"
+        },
+        {
+          "id": "4",
+          "prompt": "Our children ___ Scottish.",
+          "input": "text",
+          "answer": "are"
+        },
+        {
+          "id": "5",
+          "prompt": "They both ___ English.",
+          "input": "text",
+          "answer": "speak"
+        },
+        {
+          "id": "6",
+          "prompt": "___ my parents live in Poland?",
+          "input": "text",
+          "answer": "Do"
+        },
+        {
+          "id": "7",
+          "prompt": "No, they ___.",
+          "input": "text",
+          "acceptedAnswers": [
+            "don't",
+            "don’t"
+          ]
+        },
+        {
+          "id": "8",
+          "prompt": "They ___ in France.",
+          "input": "text",
+          "answer": "live"
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l1-ex3c",
+      "title": "3C. Put the words in the correct order",
+      "instructions": "Составь правильные вопросы. Знак вопроса можно не ставить.",
+      "items": [
+        {
+          "id": "1",
+          "prompt": "you / speak / Do / Spanish ?",
+          "input": "text",
+          "acceptedAnswers": [
+            "Do you speak Spanish?",
+            "Do you speak Spanish"
+          ]
+        },
+        {
+          "id": "2",
+          "prompt": "from / are / Where / they ?",
+          "input": "text",
+          "acceptedAnswers": [
+            "Where are they from?",
+            "Where are they from"
+          ]
+        },
+        {
+          "id": "3",
+          "prompt": "Chiara / Do / know / you ?",
+          "input": "text",
+          "acceptedAnswers": [
+            "Do you know Chiara?",
+            "Do you know Chiara"
+          ]
+        },
+        {
+          "id": "4",
+          "prompt": "come / do / from / you / Where ?",
+          "input": "text",
+          "acceptedAnswers": [
+            "Where do you come from?",
+            "Where do you come from"
+          ]
+        },
+        {
+          "id": "5",
+          "prompt": "your children / Do / go / near here / school / to ?",
+          "input": "text",
+          "acceptedAnswers": [
+            "Do your children go to school near here?",
+            "Do your children go to school near here"
+          ]
+        },
+        {
+          "id": "6",
+          "prompt": "have / we / tonight / Do / homework ?",
+          "input": "text",
+          "acceptedAnswers": [
+            "Do we have homework tonight?",
+            "Do we have homework tonight"
+          ]
+        },
+        {
+          "id": "7",
+          "prompt": "pizza / like / your parents / Do ?",
+          "input": "text",
+          "acceptedAnswers": [
+            "Do your parents like pizza?",
+            "Do your parents like pizza"
+          ]
+        },
+        {
+          "id": "8",
+          "prompt": "do / How / you / know / Tim ?",
+          "input": "text",
+          "acceptedAnswers": [
+            "How do you know Tim?",
+            "How do you know Tim"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l1-ex3d",
+      "title": "3D. Match the answers with the questions",
+      "instructions": "Для каждого вопроса выбери подходящий ответ a–h.",
+      "wordBank": [
+        "a. I’m from Turkey.",
+        "b. We work together.",
+        "c. Yes, they do. They love it!",
+        "d. No, I don’t. I speak Greek.",
+        "e. Yes, I do. She’s nice.",
+        "f. Yes, we do. It’s Exercise 8.",
+        "g. They’re from Egypt.",
+        "h. No, they don’t."
+      ],
+      "items": [
+        {
+          "id": "1",
+          "prompt": "Do you speak Spanish?",
+          "input": "select",
+          "options": [
+            "a. I’m from Turkey.",
+            "b. We work together.",
+            "c. Yes, they do. They love it!",
+            "d. No, I don’t. I speak Greek.",
+            "e. Yes, I do. She’s nice.",
+            "f. Yes, we do. It’s Exercise 8.",
+            "g. They’re from Egypt.",
+            "h. No, they don’t."
+          ],
+          "answer": 3,
+          "explanation": "d. No, I don’t. I speak Greek."
+        },
+        {
+          "id": "2",
+          "prompt": "Where are they from?",
+          "input": "select",
+          "options": [
+            "a. I’m from Turkey.",
+            "b. We work together.",
+            "c. Yes, they do. They love it!",
+            "d. No, I don’t. I speak Greek.",
+            "e. Yes, I do. She’s nice.",
+            "f. Yes, we do. It’s Exercise 8.",
+            "g. They’re from Egypt.",
+            "h. No, they don’t."
+          ],
+          "answer": 6,
+          "explanation": "g. They’re from Egypt."
+        },
+        {
+          "id": "3",
+          "prompt": "Do you know Chiara?",
+          "input": "select",
+          "options": [
+            "a. I’m from Turkey.",
+            "b. We work together.",
+            "c. Yes, they do. They love it!",
+            "d. No, I don’t. I speak Greek.",
+            "e. Yes, I do. She’s nice.",
+            "f. Yes, we do. It’s Exercise 8.",
+            "g. They’re from Egypt.",
+            "h. No, they don’t."
+          ],
+          "answer": 4,
+          "explanation": "e. Yes, I do. She’s nice."
+        },
+        {
+          "id": "4",
+          "prompt": "Where do you come from?",
+          "input": "select",
+          "options": [
+            "a. I’m from Turkey.",
+            "b. We work together.",
+            "c. Yes, they do. They love it!",
+            "d. No, I don’t. I speak Greek.",
+            "e. Yes, I do. She’s nice.",
+            "f. Yes, we do. It’s Exercise 8.",
+            "g. They’re from Egypt.",
+            "h. No, they don’t."
+          ],
+          "answer": 0,
+          "explanation": "a. I’m from Turkey."
+        },
+        {
+          "id": "5",
+          "prompt": "Do your children go to school near here?",
+          "input": "select",
+          "options": [
+            "a. I’m from Turkey.",
+            "b. We work together.",
+            "c. Yes, they do. They love it!",
+            "d. No, I don’t. I speak Greek.",
+            "e. Yes, I do. She’s nice.",
+            "f. Yes, we do. It’s Exercise 8.",
+            "g. They’re from Egypt.",
+            "h. No, they don’t."
+          ],
+          "answer": 7,
+          "explanation": "h. No, they don’t."
+        },
+        {
+          "id": "6",
+          "prompt": "Do we have homework tonight?",
+          "input": "select",
+          "options": [
+            "a. I’m from Turkey.",
+            "b. We work together.",
+            "c. Yes, they do. They love it!",
+            "d. No, I don’t. I speak Greek.",
+            "e. Yes, I do. She’s nice.",
+            "f. Yes, we do. It’s Exercise 8.",
+            "g. They’re from Egypt.",
+            "h. No, they don’t."
+          ],
+          "answer": 5,
+          "explanation": "f. Yes, we do. It’s Exercise 8."
+        },
+        {
+          "id": "7",
+          "prompt": "Do your parents like pizza?",
+          "input": "select",
+          "options": [
+            "a. I’m from Turkey.",
+            "b. We work together.",
+            "c. Yes, they do. They love it!",
+            "d. No, I don’t. I speak Greek.",
+            "e. Yes, I do. She’s nice.",
+            "f. Yes, we do. It’s Exercise 8.",
+            "g. They’re from Egypt.",
+            "h. No, they don’t."
+          ],
+          "answer": 2,
+          "explanation": "c. Yes, they do. They love it!"
+        },
+        {
+          "id": "8",
+          "prompt": "How do you know Tim?",
+          "input": "select",
+          "options": [
+            "a. I’m from Turkey.",
+            "b. We work together.",
+            "c. Yes, they do. They love it!",
+            "d. No, I don’t. I speak Greek.",
+            "e. Yes, I do. She’s nice.",
+            "f. Yes, we do. It’s Exercise 8.",
+            "g. They’re from Egypt.",
+            "h. No, they don’t."
+          ],
+          "answer": 1,
+          "explanation": "b. We work together."
+        }
+      ]
+    }
+  ]
+}
