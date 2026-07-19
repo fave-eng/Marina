@@ -667,6 +667,7 @@
           const local = grammar.topics[row.topic_id] || {};
           grammar.topics[row.topic_id] = {
             passed: Boolean(local.passed || row.passed),
+            passedAt: local.passedAt || row.passed_at || null,
             attempts: Math.max(Number(local.attempts || 0), Number(row.attempts || 0)),
             bestScore: Math.max(Number(local.bestScore || 0), Number(row.best_score || 0)),
             updatedAt: dateMs(row.updated_at) >= dateMs(local.updatedAt) ? row.updated_at : local.updatedAt
@@ -759,7 +760,8 @@
           topic_id: topicId,
           passed: Boolean(state.passed),
           attempts: Number(state.attempts || 0),
-          best_score: Number(state.bestScore || 0)
+          best_score: Number(state.bestScore || 0),
+          passed_at: state.passed ? (state.passedAt || state.updatedAt || new Date().toISOString()) : null
         }));
         if (rows.length) {
           const { error } = await client.from(tables.grammar).upsert(rows, { onConflict: 'student_id,topic_id' });
@@ -998,6 +1000,7 @@
       </${tag}>`;
     }).join('');
   }
+
   function renderVocabularyHub() {
     const progress = window.ProgressService.loadVocabularyProgress();
     const totalWords = VOCABULARY_CATALOG.allWords.length;
@@ -1491,56 +1494,308 @@
     return `<div class="table-wrap"><table><thead><tr>${table.headers.map((header) => `<th>${escapeHtml(header)}</th>`).join('')}</tr></thead><tbody>${table.rows.map((row) => `<tr>${row.map((cell) => `<td>${escapeHtml(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
   }
 
+  function grammarProgressState(topic) {
+    const progress = window.ProgressService.loadGrammarProgress();
+    return {
+      progress,
+      state: progress.topics[topic.id] || {}
+    };
+  }
+
+  function grammarStatusMarkup(topic, state) {
+    const passed = Boolean(state.passed || topic.passed);
+    const attempts = Math.max(0, Number(state.attempts || 0));
+    const bestScore = Math.max(0, Number(state.bestScore || 0));
+
+    return `<div class="grammar-status-card ${passed ? 'is-passed' : ''}" id="grammar-topic-status">
+      <div class="grammar-status-icon" aria-hidden="true">${passed ? '✓' : '◎'}</div>
+      <div class="grammar-status-copy">
+        <strong>${passed ? 'Тема пройдена' : 'Тема ещё не пройдена'}</strong>
+        <span>${passed
+          ? `Лучший результат: ${bestScore}% · попыток: ${attempts}`
+          : attempts
+            ? `Лучший результат: ${bestScore}% · попыток: ${attempts}`
+            : 'Изучи схему и сдай мини-тест из 4 заданий.'}</span>
+      </div>
+      <span class="grammar-status-badge">${passed ? 'Засчитано' : 'Нужно 4 / 4'}</span>
+    </div>`;
+  }
+
   function renderGrammarTopic() {
     const id = queryParam('id');
     const topic = GRAMMAR_DATA.find((item) => item.id === id && item.status !== 'draft');
     const root = byId('grammar-topic-root');
+
     if (!topic || topic.status === 'locked') {
       root.innerHTML = emptyState('📐', 'Грамматическая тема ещё не опубликована', 'Материал появится после публикации преподавателем.');
       return;
     }
+
     byId('grammar-hero-title').textContent = safeText(topic.title, 'Грамматика');
-    byId('grammar-hero-subtitle').textContent = `${safeText(topic.level, student.level)} Level · теория и практика`;
-    const examples = Array.isArray(topic.examples) ? topic.examples : [];
+    byId('grammar-hero-subtitle').textContent = `${safeText(topic.level, student.level)} Level · понятная схема и мини-тест`;
+
+    const overview = topic.overview || {};
+    const uses = Array.isArray(topic.uses) ? topic.uses : [];
+    const forms = Array.isArray(topic.forms) ? topic.forms : [];
     const mistakes = Array.isArray(topic.commonMistakes) ? topic.commonMistakes : [];
     const quiz = Array.isArray(topic.quiz) ? topic.quiz : [];
-    root.innerHTML = `
-      <article class="card"><span class="eyebrow">Объяснение</span><h2>${escapeHtml(topic.title)}</h2><p class="muted">${escapeHtml(topic.explanation || '')}</p></article>
-      ${topic.formula ? `<article class="card lesson-block tip-card"><h3>Формула</h3><p>${escapeHtml(topic.formula)}</p></article>` : ''}
-      ${topic.affirmative ? `<article class="card lesson-block"><h3>Утвердительная форма</h3><p>${escapeHtml(topic.affirmative)}</p></article>` : ''}
-      ${topic.negative ? `<article class="card lesson-block"><h3>Отрицательная форма</h3><p>${escapeHtml(topic.negative)}</p></article>` : ''}
-      ${topic.question ? `<article class="card lesson-block"><h3>Вопросительная форма</h3><p>${escapeHtml(topic.question)}</p></article>` : ''}
-      ${topic.table ? `<article class="card lesson-block"><h3>Таблица</h3>${grammarTable(topic.table)}</article>` : ''}
-      ${examples.length ? `<article class="card lesson-block"><h3>Примеры</h3><div class="list">${examples.map((example) => `<p>• ${escapeHtml(example)}</p>`).join('')}</div></article>` : ''}
-      ${mistakes.length ? `<article class="card lesson-block info-card"><h3>Частые ошибки русскоговорящих</h3><div class="list">${mistakes.map((mistake) => `<p>• ${escapeHtml(mistake)}</p>`).join('')}</div></article>` : ''}
-      <section class="section" aria-labelledby="mini-test-title"><div class="section-heading"><div><span class="eyebrow">Практика</span><h2 id="mini-test-title">Мини-тест</h2></div></div><div id="grammar-quiz"></div></section>`;
+    const contrast = topic.contrast || {};
+    const builder = topic.questionBuilder || {};
+    const memoryRule = topic.memoryRule || {};
+    const { state } = grammarProgressState(topic);
+
+    const subjects = Array.isArray(overview.subjects) ? overview.subjects : [];
+    const pattern = Array.isArray(builder.pattern) ? builder.pattern : [];
+    const memorySteps = Array.isArray(memoryRule.steps) ? memoryRule.steps : [];
+
+    root.innerHTML = `<div class="grammar-topic-shell">
+      ${grammarStatusMarkup(topic, state)}
+
+      <article class="card grammar-lead-card">
+        <div class="grammar-lead-head">
+          <div>
+            <span class="eyebrow">Главная идея</span>
+            <h2>${escapeHtml(topic.title)}</h2>
+          </div>
+          <span class="grammar-level-badge">${escapeHtml(topic.level || student.level)}</span>
+        </div>
+        <p class="grammar-lead-text">${escapeHtml(overview.lead || '')}</p>
+        <div class="grammar-core-rule">
+          <div class="grammar-core-rule-icon" aria-hidden="true">!</div>
+          <div>
+            <strong>${escapeHtml(overview.keyRule || '')}</strong>
+            ${overview.example ? `<span>${escapeHtml(overview.example)}</span>` : ''}
+          </div>
+        </div>
+        ${subjects.length ? `<div class="grammar-subject-row" aria-label="Подлежащие">${subjects.map((subject) => `<span>${escapeHtml(subject)}</span>`).join('')}</div>` : ''}
+      </article>
+
+      ${uses.length ? `<section class="grammar-content-section" aria-labelledby="grammar-use-title">
+        <div class="grammar-section-heading">
+          <span class="grammar-section-number">1</span>
+          <div><h2 id="grammar-use-title">Когда используем</h2><p>Три основных случая для уровня A2.2</p></div>
+        </div>
+        <div class="grammar-use-grid">${uses.map((item) => `<article class="grammar-use-card">
+          <span class="grammar-use-icon" aria-hidden="true">${escapeHtml(item.icon || '•')}</span>
+          <h3>${escapeHtml(item.title || '')}</h3>
+          <p>${escapeHtml(item.text || '')}</p>
+          <code>${escapeHtml(item.example || '')}</code>
+        </article>`).join('')}</div>
+      </section>` : ''}
+
+      ${forms.length ? `<section class="grammar-content-section" aria-labelledby="grammar-forms-title">
+        <div class="grammar-section-heading">
+          <span class="grammar-section-number">2</span>
+          <div><h2 id="grammar-forms-title">Четыре формы</h2><p>Сначала запомни структуру, затем смотри на пример</p></div>
+        </div>
+        <div class="grammar-form-grid">${forms.map((form) => `<article class="grammar-form-card grammar-form-${escapeHtml(form.id || 'default')}">
+          <div class="grammar-form-head">
+            <span class="grammar-form-icon" aria-hidden="true">${escapeHtml(form.icon || '•')}</span>
+            <h3>${escapeHtml(form.title || '')}</h3>
+          </div>
+          <div class="grammar-formula">${escapeHtml(form.formula || '')}</div>
+          <div class="grammar-example">
+            <strong>${escapeHtml(form.example || '')}</strong>
+            <span>${escapeHtml(form.translation || '')}</span>
+          </div>
+          <p>${escapeHtml(form.note || '')}</p>
+        </article>`).join('')}</div>
+      </section>` : ''}
+
+      ${contrast.ordinary && contrast.be ? `<section class="grammar-content-section" aria-labelledby="grammar-contrast-title">
+        <div class="grammar-section-heading">
+          <span class="grammar-section-number">3</span>
+          <div><h2 id="grammar-contrast-title">${escapeHtml(contrast.title || 'Обычный глагол или be?')}</h2><p>${escapeHtml(contrast.intro || '')}</p></div>
+        </div>
+        <div class="grammar-contrast-grid">
+          <article class="grammar-contrast-card ordinary">
+            <span class="grammar-contrast-label">A</span>
+            <h3>${escapeHtml(contrast.ordinary.label || '')}</h3>
+            <p class="grammar-verb-list">${escapeHtml(contrast.ordinary.verbs || '')}</p>
+            <div class="grammar-pattern-list">
+              <span><b>+</b> ${escapeHtml(contrast.ordinary.affirmative || '')}</span>
+              <span><b>−</b> ${escapeHtml(contrast.ordinary.negative || '')}</span>
+              <span><b>?</b> ${escapeHtml(contrast.ordinary.question || '')}</span>
+            </div>
+            <p class="grammar-contrast-rule">${escapeHtml(contrast.ordinary.rule || '')}</p>
+          </article>
+          <article class="grammar-contrast-card be">
+            <span class="grammar-contrast-label">B</span>
+            <h3>${escapeHtml(contrast.be.label || '')}</h3>
+            <p class="grammar-verb-list">${escapeHtml(contrast.be.verbs || '')}</p>
+            <div class="grammar-pattern-list">
+              <span><b>+</b> ${escapeHtml(contrast.be.affirmative || '')}</span>
+              <span><b>−</b> ${escapeHtml(contrast.be.negative || '')}</span>
+              <span><b>?</b> ${escapeHtml(contrast.be.question || '')}</span>
+            </div>
+            <p class="grammar-contrast-rule">${escapeHtml(contrast.be.rule || '')}</p>
+          </article>
+        </div>
+      </section>` : ''}
+
+      ${pattern.length ? `<section class="grammar-content-section" aria-labelledby="grammar-question-title">
+        <div class="grammar-section-heading">
+          <span class="grammar-section-number">4</span>
+          <div><h2 id="grammar-question-title">${escapeHtml(builder.title || 'Порядок слов')}</h2><p>${escapeHtml(builder.note || '')}</p></div>
+        </div>
+        <article class="card grammar-builder-card">
+          <div class="grammar-token-row">${pattern.map((token, index) => `<span class="grammar-token grammar-token-${index + 1}">${escapeHtml(token)}</span>${index < pattern.length - 1 ? '<span class="grammar-token-arrow" aria-hidden="true">→</span>' : ''}`).join('')}</div>
+          <div class="grammar-builder-example">
+            <strong>${escapeHtml(builder.example || '')}</strong>
+            <span>${escapeHtml(builder.translation || '')}</span>
+          </div>
+        </article>
+      </section>` : ''}
+
+      ${memorySteps.length ? `<article class="card grammar-memory-card">
+        <div class="grammar-memory-icon" aria-hidden="true">⚡</div>
+        <div>
+          <span class="eyebrow">Алгоритм</span>
+          <h2>${escapeHtml(memoryRule.title || 'Быстрая проверка')}</h2>
+          <ol>${memorySteps.map((step) => `<li>${escapeHtml(step)}</li>`).join('')}</ol>
+        </div>
+      </article>` : ''}
+
+      ${mistakes.length ? `<section class="grammar-content-section" aria-labelledby="grammar-mistakes-title">
+        <div class="grammar-section-heading">
+          <span class="grammar-section-number">5</span>
+          <div><h2 id="grammar-mistakes-title">Частые ошибки</h2><p>Сравни неправильный и правильный вариант</p></div>
+        </div>
+        <div class="grammar-mistake-list">${mistakes.map((mistake) => `<article class="grammar-mistake-row">
+          <div class="grammar-mistake-wrong"><span>✕</span><s>${escapeHtml(mistake.wrong || '')}</s></div>
+          <div class="grammar-mistake-right"><span>✓</span><strong>${escapeHtml(mistake.right || '')}</strong></div>
+          <p>${escapeHtml(mistake.reason || '')}</p>
+        </article>`).join('')}</div>
+      </section>` : ''}
+
+      <section class="grammar-content-section grammar-test-section" aria-labelledby="mini-test-title">
+        <div class="grammar-test-intro">
+          <div>
+            <span class="eyebrow">Мини-тест</span>
+            <h2 id="mini-test-title">4 задания: от лёгкого к сложному</h2>
+            <p>Ответь на все вопросы. Для зачёта нужно 4 из 4. Тест можно переделывать.</p>
+          </div>
+          <span class="grammar-test-goal">4 / 4</span>
+        </div>
+        <div id="grammar-quiz"></div>
+      </section>
+    </div>`;
+
     const quizRoot = byId('grammar-quiz');
+
     if (!quiz.length) {
       quizRoot.innerHTML = emptyState('🧩', 'Мини-тест ещё не добавлен', 'Вопросы появятся вместе с материалом преподавателя.');
       return;
     }
+
     const renderQuiz = () => {
-      quizRoot.innerHTML = `${quiz.map((question, index) => `<article class="card lesson-block" data-grammar-question="${index}"><h3>${index + 1}. ${escapeHtml(question.prompt)}</h3><div class="option-list">${(question.options || []).map((option, optionIndex) => `<label class="option"><input type="radio" name="grammar-${index}" value="${optionIndex}"><span>${escapeHtml(option)}</span></label>`).join('')}</div><div class="feedback"></div></article>`).join('')}<div class="card section"><div id="grammar-result"></div><div class="button-row"><button class="btn btn-primary" type="button" id="check-grammar">Проверить</button><button class="btn btn-secondary" type="button" id="retry-grammar">Повторить</button></div></div>`;
-      byId('check-grammar').addEventListener('click', () => {
+      const { state: currentState } = grammarProgressState(topic);
+
+      quizRoot.innerHTML = `${quiz.map((question, index) => `<article class="card grammar-question-card" data-grammar-question="${index}">
+        <div class="grammar-question-meta">
+          <span class="grammar-difficulty">${escapeHtml(question.difficulty || `${index + 1}`)}</span>
+          <span>${escapeHtml(question.skill || '')}</span>
+        </div>
+        <h3>${index + 1}. ${escapeHtml(question.prompt)}</h3>
+        <div class="option-list">${(question.options || []).map((option, optionIndex) => `<label class="option grammar-option">
+          <input type="radio" name="grammar-${index}" value="${optionIndex}">
+          <span>${escapeHtml(option)}</span>
+        </label>`).join('')}</div>
+        <div class="feedback"></div>
+      </article>`).join('')}
+      <article class="card grammar-test-actions">
+        <div id="grammar-result" aria-live="polite">
+          <strong>${currentState.passed ? 'Тема уже засчитана.' : 'Выбери ответы во всех четырёх заданиях.'}</strong>
+          <span>${currentState.passed ? `Лучший результат: ${Number(currentState.bestScore || 0)}%` : 'Кнопка проверки станет активной после заполнения теста.'}</span>
+        </div>
+        <div class="button-row">
+          <button class="btn btn-primary" type="button" id="check-grammar" disabled>Проверить тест</button>
+          <button class="btn btn-secondary" type="button" id="retry-grammar">Начать заново</button>
+        </div>
+      </article>`;
+
+      const checkButton = byId('check-grammar');
+      const retryButton = byId('retry-grammar');
+
+      const updateCheckState = () => {
+        const answered = quiz.filter((_, index) =>
+          quizRoot.querySelector(`[data-grammar-question="${index}"] input:checked`)
+        ).length;
+        checkButton.disabled = answered !== quiz.length;
+        checkButton.textContent = answered === quiz.length
+          ? 'Проверить тест'
+          : `Ответы: ${answered} / ${quiz.length}`;
+      };
+
+      quizRoot.querySelectorAll('input[type="radio"]').forEach((input) => {
+        input.addEventListener('change', updateCheckState);
+      });
+      updateCheckState();
+
+      checkButton.addEventListener('click', () => {
         let correct = 0;
+
         quiz.forEach((question, index) => {
           const node = quizRoot.querySelector(`[data-grammar-question="${index}"]`);
           const selected = node.querySelector('input:checked');
           const isCorrect = selected && Number(selected.value) === Number(question.answer);
           if (isCorrect) correct += 1;
+
+          node.classList.toggle('is-correct', Boolean(isCorrect));
+          node.classList.toggle('is-wrong', !isCorrect);
+
+          node.querySelectorAll('input').forEach((input) => {
+            input.disabled = true;
+          });
+
           const feedback = node.querySelector('.feedback');
           feedback.className = `feedback show ${isCorrect ? 'good' : 'bad'}`;
-          feedback.textContent = isCorrect ? 'Верно!' : safeText(question.explanation, 'Проверь правило и попробуй ещё раз.');
+          feedback.textContent = isCorrect
+            ? 'Верно.'
+            : safeText(question.explanation, 'Проверь правило и попробуй ещё раз.');
         });
+
         const percent = safePercent(correct, quiz.length);
-        byId('grammar-result').innerHTML = `<h3>Результат: ${correct} из ${quiz.length}</h3><p class="muted">${percent}% правильных ответов</p>`;
+        const passScore = Number(topic.passScore || 100);
+        const passedNow = percent >= passScore;
         const progress = window.ProgressService.loadGrammarProgress();
         const previous = progress.topics[topic.id] || {};
-        progress.topics[topic.id] = { passed: percent === 100, attempts: Number(previous.attempts || 0) + 1, bestScore: Math.max(Number(previous.bestScore || 0), percent), updatedAt: new Date().toISOString() };
+        const passed = Boolean(previous.passed || passedNow);
+        const passedAt = previous.passedAt || (passedNow ? new Date().toISOString() : null);
+
+        progress.topics[topic.id] = {
+          passed,
+          passedAt,
+          attempts: Number(previous.attempts || 0) + 1,
+          bestScore: Math.max(Number(previous.bestScore || 0), percent),
+          updatedAt: new Date().toISOString()
+        };
         window.ProgressService.saveGrammarProgress(progress);
+
+        const result = byId('grammar-result');
+        result.className = `grammar-result-box ${passedNow ? 'is-passed' : 'is-retry'}`;
+        result.innerHTML = passedNow
+          ? `<strong>Тема засчитана ✓</strong><span>${correct} из ${quiz.length} · ${percent}%. Отличная работа!</span>`
+          : `<strong>${correct} из ${quiz.length} · ${percent}%</strong><span>Для зачёта нужно 4 из 4. Посмотри объяснения и попробуй ещё раз.</span>`;
+
+        checkButton.disabled = true;
+        checkButton.textContent = passedNow ? 'Тест сдан' : 'Проверено';
+        retryButton.textContent = passedNow ? 'Пройти ещё раз' : 'Исправить ответы';
+
+        const statusNode = byId('grammar-topic-status');
+        if (statusNode) {
+          statusNode.outerHTML = grammarStatusMarkup(topic, progress.topics[topic.id]);
+        }
+
+        showToast(passedNow ? 'Тема засчитана.' : 'Попробуй ещё раз: результат сохранён.');
       });
-      byId('retry-grammar').addEventListener('click', renderQuiz);
+
+      retryButton.addEventListener('click', () => {
+        renderQuiz();
+        byId('mini-test-title')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
     };
+
     renderQuiz();
   }
 
