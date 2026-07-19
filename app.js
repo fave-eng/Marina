@@ -1831,6 +1831,7 @@
     let mode = 'cards';
     let cardQueue = [];
     let testState = null;
+    let activeWordGroupIndex = 0;
     const exactKnown = exactKnownCountForTopic(progress, topic);
     const legacyKnown = Math.min(topic.words.length, Math.max(0, Number(topicProgress.legacyLearnedCount || 0)));
     const legacyNotice = legacyKnown > exactKnown
@@ -1954,43 +1955,173 @@
     };
 
     const drawAllWords = () => {
-      const configuredGroups = Array.isArray(topic.groups) ? topic.groups : [];
-      const groupedWordKeys = new Set();
+      const configuredGroups = (Array.isArray(topic.groups) ? topic.groups : [])
+        .map((group) => ({
+          ...group,
+          words: topic.words.filter((word) => word.group === group.id)
+        }))
+        .filter((group) => group.words.length);
 
-      const groupSections = configuredGroups.map((group) => {
-        const words = topic.words.filter((word) => word.group === group.id);
-        words.forEach((word) => groupedWordKeys.add(word.__wordKey));
-        if (!words.length) return '';
-
-        return `<section class="vocab-word-group" data-word-group="${escapeHtml(group.id)}">
-          <div class="vocab-word-group-heading">
-            <div class="vocab-word-group-icon" aria-hidden="true">${escapeHtml(group.icon || '📚')}</div>
-            <div>
-              <h3>${escapeHtml(group.title || group.id)}</h3>
-              ${group.subtitle ? `<p>${escapeHtml(group.subtitle)}</p>` : ''}
-            </div>
-            <span class="vocab-word-group-count">${words.length}</span>
-          </div>
-          <div class="words-grid">${words.map(renderWordCard).join('')}</div>
-        </section>`;
-      }).join('');
-
-      const ungroupedWords = topic.words.filter(
-        (word) => !groupedWordKeys.has(word.__wordKey)
+      const groupedKeys = new Set(
+        configuredGroups.flatMap((group) =>
+          group.words.map((word) => word.__wordKey)
+        )
       );
 
-      const ungroupedSection = ungroupedWords.length
-        ? `<section class="vocab-word-group">
-            <div class="vocab-word-group-heading">
-              <div class="vocab-word-group-icon" aria-hidden="true">📚</div>
-              <div><h3>Other words</h3><p>Другие слова</p></div>
-              <span class="vocab-word-group-count">${ungroupedWords.length}</span>
-            </div>
-            <div class="words-grid">${ungroupedWords.map(renderWordCard).join('')}</div>
-          </section>`
-        : '';
+      const ungroupedWords = topic.words.filter(
+        (word) => !groupedKeys.has(word.__wordKey)
+      );
 
-      modeRoot.innerHTML = `<div class="vocab-word-groups">${groupSections}${ungroupedSection}</div>`;
+      const sections = [
+        ...configuredGroups,
+        ...(ungroupedWords.length
+          ? [{
+              id: 'other',
+              title: 'Other words',
+              subtitle: 'Другие слова',
+              icon: '📚',
+              words: ungroupedWords
+            }]
+          : [])
+      ];
+
+      if (!sections.length) {
+        modeRoot.innerHTML = emptyState(
+          '📚',
+          'Слова ещё не распределены по разделам',
+          'Преподаватель добавит категории к этой теме.'
+        );
+        return;
+      }
+
+      activeWordGroupIndex = Math.min(
+        Math.max(0, activeWordGroupIndex),
+        sections.length - 1
+      );
+      const activeGroup = sections[activeWordGroupIndex];
+      const knownInGroup = activeGroup.words.filter(
+        (word) => progress.words[word.__wordKey]?.status === 'known'
+      ).length;
+
+      modeRoot.innerHTML = `<div class="vocab-section-browser">
+        <div class="vocab-section-tabs" role="tablist" aria-label="Разделы словаря">
+          ${sections.map((group, index) => `
+            <button
+              class="vocab-section-tab ${index === activeWordGroupIndex ? 'active' : ''}"
+              type="button"
+              role="tab"
+              aria-selected="${index === activeWordGroupIndex ? 'true' : 'false'}"
+              aria-controls="vocab-section-panel"
+              tabindex="${index === activeWordGroupIndex ? '0' : '-1'}"
+              data-vocab-group-index="${index}"
+            >
+              <span class="vocab-section-tab-icon" aria-hidden="true">${escapeHtml(group.icon || '📚')}</span>
+              <span class="vocab-section-tab-copy">
+                <strong>${escapeHtml(group.title || group.id)}</strong>
+                <small>${escapeHtml(group.subtitle || '')}</small>
+              </span>
+              <span class="vocab-section-tab-count">${group.words.length}</span>
+            </button>
+          `).join('')}
+        </div>
+
+        <section
+          class="vocab-section-panel"
+          id="vocab-section-panel"
+          role="tabpanel"
+          tabindex="0"
+          aria-label="${escapeHtml(activeGroup.title || activeGroup.id)}"
+        >
+          <header class="vocab-section-panel-heading">
+            <div class="vocab-section-panel-title">
+              <span class="vocab-section-panel-icon" aria-hidden="true">${escapeHtml(activeGroup.icon || '📚')}</span>
+              <div>
+                <span class="eyebrow">Раздел ${activeWordGroupIndex + 1} из ${sections.length}</span>
+                <h3>${escapeHtml(activeGroup.title || activeGroup.id)}</h3>
+                ${activeGroup.subtitle ? `<p>${escapeHtml(activeGroup.subtitle)}</p>` : ''}
+              </div>
+            </div>
+            <div class="vocab-section-progress" aria-label="Прогресс раздела">
+              <strong>${knownInGroup} / ${activeGroup.words.length}</strong>
+              <span>изучено</span>
+            </div>
+          </header>
+
+          <div class="words-grid">${activeGroup.words.map(renderWordCard).join('')}</div>
+
+          <footer class="vocab-section-navigation" aria-label="Переход между разделами">
+            <button
+              class="btn btn-secondary"
+              type="button"
+              data-vocab-group-prev
+              ${activeWordGroupIndex === 0 ? 'disabled' : ''}
+            >
+              ← Предыдущий
+            </button>
+            <span>${activeWordGroupIndex + 1} / ${sections.length}</span>
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-vocab-group-next
+              ${activeWordGroupIndex === sections.length - 1 ? 'disabled' : ''}
+            >
+              Следующий →
+            </button>
+          </footer>
+        </section>
+      </div>`;
+
+      const selectGroup = (index, focusPanel = true) => {
+        activeWordGroupIndex = Math.min(
+          Math.max(0, Number(index) || 0),
+          sections.length - 1
+        );
+        drawAllWords();
+        if (focusPanel) {
+          byId('vocab-section-panel')?.focus({ preventScroll: true });
+        }
+      };
+
+      const tabs = [...modeRoot.querySelectorAll('[data-vocab-group-index]')];
+
+      tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => selectGroup(index));
+
+        tab.addEventListener('keydown', (event) => {
+          if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
+            return;
+          }
+
+          event.preventDefault();
+
+          let nextIndex = index;
+          if (event.key === 'ArrowRight') {
+            nextIndex = (index + 1) % sections.length;
+          } else if (event.key === 'ArrowLeft') {
+            nextIndex = (index - 1 + sections.length) % sections.length;
+          } else if (event.key === 'Home') {
+            nextIndex = 0;
+          } else if (event.key === 'End') {
+            nextIndex = sections.length - 1;
+          }
+
+          activeWordGroupIndex = nextIndex;
+          drawAllWords();
+          modeRoot
+            .querySelector(`[data-vocab-group-index="${nextIndex}"]`)
+            ?.focus();
+        });
+      });
+
+      modeRoot.querySelector('[data-vocab-group-prev]')?.addEventListener(
+        'click',
+        () => selectGroup(activeWordGroupIndex - 1)
+      );
+
+      modeRoot.querySelector('[data-vocab-group-next]')?.addEventListener(
+        'click',
+        () => selectGroup(activeWordGroupIndex + 1)
+      );
     };
 
     const drawMode = () => {
