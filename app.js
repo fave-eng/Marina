@@ -998,7 +998,6 @@
       </${tag}>`;
     }).join('');
   }
-
   function renderVocabularyHub() {
     const progress = window.ProgressService.loadVocabularyProgress();
     const totalWords = VOCABULARY_CATALOG.allWords.length;
@@ -1690,11 +1689,53 @@
       byId('next-vocab-question').addEventListener('click', () => { testState.index += 1; drawQuestion(); });
     };
 
+    const renderWordCard = (word) => {
+      const status = progress.words[word.__wordKey]?.status;
+      return `<article class="card word-card ${status === 'known' ? 'known' : ''} ${status === 'difficult' ? 'difficult' : ''}">
+        <strong>${escapeHtml(word.en)}</strong>
+        <span>${escapeHtml(word.ru)}</span>
+        ${word.transcription ? `<span>${escapeHtml(word.transcription)}</span>` : ''}
+      </article>`;
+    };
+
     const drawAllWords = () => {
-      modeRoot.innerHTML = `<div class="words-grid">${topic.words.map((word) => {
-        const status = progress.words[word.__wordKey]?.status;
-        return `<article class="card word-card ${status === 'known' ? 'known' : ''} ${status === 'difficult' ? 'difficult' : ''}"><strong>${escapeHtml(word.en)}</strong><span>${escapeHtml(word.ru)}</span>${word.transcription ? `<span>${escapeHtml(word.transcription)}</span>` : ''}</article>`;
-      }).join('')}</div>`;
+      const configuredGroups = Array.isArray(topic.groups) ? topic.groups : [];
+      const groupedWordKeys = new Set();
+
+      const groupSections = configuredGroups.map((group) => {
+        const words = topic.words.filter((word) => word.group === group.id);
+        words.forEach((word) => groupedWordKeys.add(word.__wordKey));
+        if (!words.length) return '';
+
+        return `<section class="vocab-word-group" data-word-group="${escapeHtml(group.id)}">
+          <div class="vocab-word-group-heading">
+            <div class="vocab-word-group-icon" aria-hidden="true">${escapeHtml(group.icon || '📚')}</div>
+            <div>
+              <h3>${escapeHtml(group.title || group.id)}</h3>
+              ${group.subtitle ? `<p>${escapeHtml(group.subtitle)}</p>` : ''}
+            </div>
+            <span class="vocab-word-group-count">${words.length}</span>
+          </div>
+          <div class="words-grid">${words.map(renderWordCard).join('')}</div>
+        </section>`;
+      }).join('');
+
+      const ungroupedWords = topic.words.filter(
+        (word) => !groupedWordKeys.has(word.__wordKey)
+      );
+
+      const ungroupedSection = ungroupedWords.length
+        ? `<section class="vocab-word-group">
+            <div class="vocab-word-group-heading">
+              <div class="vocab-word-group-icon" aria-hidden="true">📚</div>
+              <div><h3>Other words</h3><p>Другие слова</p></div>
+              <span class="vocab-word-group-count">${ungroupedWords.length}</span>
+            </div>
+            <div class="words-grid">${ungroupedWords.map(renderWordCard).join('')}</div>
+          </section>`
+        : '';
+
+      modeRoot.innerHTML = `<div class="vocab-word-groups">${groupSections}${ungroupedSection}</div>`;
     };
 
     const drawMode = () => {
