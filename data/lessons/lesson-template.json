@@ -1,0 +1,16 @@
+{
+  "id": "lesson-N",
+  "number": 0,
+  "title": "Название урока",
+  "subtitle": "Краткое описание задания",
+  "status": "draft",
+  "vocabularyId": "vocab-lesson-N",
+  "grammarIds": [],
+  "publishedAt": "YYYY-MM-DD",
+  "totalPoints": 0,
+  "notification": {
+    "enabled": false,
+    "version": 1
+  },
+  "blocks": []
+}
