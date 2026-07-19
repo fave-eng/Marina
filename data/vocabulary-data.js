@@ -17,7 +17,8 @@ window.VOCABULARY_DATA = [
         "ru": "баскетболист / баскетболистка",
         "transcription": "/ˈbɑːskɪtbɔːl ˌpleɪə/",
         "exampleEn": "She is a professional basketball player.",
-        "exampleRu": "Она профессиональная баскетболистка."
+        "exampleRu": "Она профессиональная баскетболистка.",
+        "group": "jobs"
       },
       {
         "id": "l1-02",
@@ -26,7 +27,8 @@ window.VOCABULARY_DATA = [
         "ru": "теннисист / теннисистка",
         "transcription": "/ˈtenɪs ˌpleɪə/",
         "exampleEn": "My favourite tennis player is from Australia.",
-        "exampleRu": "Мой любимый теннисист из Австралии."
+        "exampleRu": "Мой любимый теннисист из Австралии.",
+        "group": "jobs"
       },
       {
         "id": "l1-03",
@@ -35,7 +37,8 @@ window.VOCABULARY_DATA = [
         "ru": "работник / работница фермы",
         "transcription": "/ˈfɑːm ˌwɜːkə/",
         "exampleEn": "A farm worker starts early in the morning.",
-        "exampleRu": "Работник фермы начинает рано утром."
+        "exampleRu": "Работник фермы начинает рано утром.",
+        "group": "jobs"
       },
       {
         "id": "l1-04",
@@ -44,7 +47,8 @@ window.VOCABULARY_DATA = [
         "ru": "офисный работник / офисная работница",
         "transcription": "/ˈɒfɪs ˌwɜːkə/",
         "exampleEn": "He is an office worker and works from nine to five.",
-        "exampleRu": "Он офисный работник и работает с девяти до пяти."
+        "exampleRu": "Он офисный работник и работает с девяти до пяти.",
+        "group": "jobs"
       },
       {
         "id": "l1-05",
@@ -53,7 +57,8 @@ window.VOCABULARY_DATA = [
         "ru": "водитель автобуса",
         "transcription": "/ˈbʌs ˌdraɪvə/",
         "exampleEn": "The bus driver knows every street in the city.",
-        "exampleRu": "Водитель автобуса знает каждую улицу города."
+        "exampleRu": "Водитель автобуса знает каждую улицу города.",
+        "group": "jobs"
       },
       {
         "id": "l1-06",
@@ -62,7 +67,8 @@ window.VOCABULARY_DATA = [
         "ru": "машинист / машинистка поезда",
         "transcription": "/ˈtreɪn ˌdraɪvə/",
         "exampleEn": "She would like to be a train driver.",
-        "exampleRu": "Она хотела бы стать машинистом поезда."
+        "exampleRu": "Она хотела бы стать машинистом поезда.",
+        "group": "jobs"
       },
       {
         "id": "l1-07",
@@ -71,7 +77,8 @@ window.VOCABULARY_DATA = [
         "ru": "студент / студентка художественного направления",
         "transcription": "/ˈɑːt ˌstjuːdənt/",
         "exampleEn": "I’m an art student at college.",
-        "exampleRu": "Я учусь на художественном направлении в колледже."
+        "exampleRu": "Я учусь на художественном направлении в колледже.",
+        "group": "studies-status"
       },
       {
         "id": "l1-08",
@@ -80,7 +87,8 @@ window.VOCABULARY_DATA = [
         "ru": "студент / студентка университета",
         "transcription": "/ˌjuːnɪˈvɜːsəti ˌstjuːdənt/",
         "exampleEn": "Are you a university student?",
-        "exampleRu": "Ты студент университета?"
+        "exampleRu": "Ты студент университета?",
+        "group": "studies-status"
       },
       {
         "id": "l1-09",
@@ -89,7 +97,8 @@ window.VOCABULARY_DATA = [
         "ru": "бизнес-менеджер / управляющий",
         "transcription": "/ˈbɪznəs ˌmænɪdʒə/",
         "exampleEn": "He wants to be a business manager.",
-        "exampleRu": "Он хочет стать бизнес-менеджером."
+        "exampleRu": "Он хочет стать бизнес-менеджером.",
+        "group": "jobs"
       },
       {
         "id": "l1-10",
@@ -98,7 +107,8 @@ window.VOCABULARY_DATA = [
         "ru": "управляющий / управляющая отелем",
         "transcription": "/həʊˈtel ˌmænɪdʒə/",
         "exampleEn": "The hotel manager speaks three languages.",
-        "exampleRu": "Управляющий отелем говорит на трёх языках."
+        "exampleRu": "Управляющий отелем говорит на трёх языках.",
+        "group": "jobs"
       },
       {
         "id": "l1-11",
@@ -107,7 +117,8 @@ window.VOCABULARY_DATA = [
         "ru": "водитель такси",
         "transcription": "/ˈtæksi ˌdraɪvə/",
         "exampleEn": "I’m a taxi driver and I work at night.",
-        "exampleRu": "Я водитель такси и работаю ночью."
+        "exampleRu": "Я водитель такси и работаю ночью.",
+        "group": "jobs"
       },
       {
         "id": "l1-12",
@@ -116,7 +127,8 @@ window.VOCABULARY_DATA = [
         "ru": "актёр / актриса",
         "transcription": "/ˈæktə/",
         "exampleEn": "The actor works in films and theatre.",
-        "exampleRu": "Актёр работает в кино и театре."
+        "exampleRu": "Актёр работает в кино и театре.",
+        "group": "jobs"
       },
       {
         "id": "l1-13",
@@ -125,7 +137,8 @@ window.VOCABULARY_DATA = [
         "ru": "продавец-консультант",
         "transcription": "/ˈʃɒp əˌsɪstənt/",
         "exampleEn": "The shop assistant helps customers.",
-        "exampleRu": "Продавец-консультант помогает покупателям."
+        "exampleRu": "Продавец-консультант помогает покупателям.",
+        "group": "jobs"
       },
       {
         "id": "l1-14",
@@ -134,7 +147,8 @@ window.VOCABULARY_DATA = [
         "ru": "пилот",
         "transcription": "/ˈpaɪlət/",
         "exampleEn": "A pilot flies planes.",
-        "exampleRu": "Пилот управляет самолётами."
+        "exampleRu": "Пилот управляет самолётами.",
+        "group": "jobs"
       },
       {
         "id": "l1-15",
@@ -143,7 +157,8 @@ window.VOCABULARY_DATA = [
         "ru": "инженер",
         "transcription": "/ˌendʒɪˈnɪə/",
         "exampleEn": "My sister is an engineer.",
-        "exampleRu": "Моя сестра — инженер."
+        "exampleRu": "Моя сестра — инженер.",
+        "group": "jobs"
       },
       {
         "id": "l1-16",
@@ -152,7 +167,8 @@ window.VOCABULARY_DATA = [
         "ru": "полицейский",
         "transcription": "/pəˈliːs ˌɒfɪsə/",
         "exampleEn": "A police officer helps keep people safe.",
-        "exampleRu": "Полицейский помогает обеспечивать безопасность."
+        "exampleRu": "Полицейский помогает обеспечивать безопасность.",
+        "group": "jobs"
       },
       {
         "id": "l1-17",
@@ -161,7 +177,8 @@ window.VOCABULARY_DATA = [
         "ru": "писатель / писательница",
         "transcription": "/ˈraɪtə/",
         "exampleEn": "The writer works on a new book.",
-        "exampleRu": "Писатель работает над новой книгой."
+        "exampleRu": "Писатель работает над новой книгой.",
+        "group": "jobs"
       },
       {
         "id": "l1-18",
@@ -170,7 +187,8 @@ window.VOCABULARY_DATA = [
         "ru": "юрист / адвокат",
         "transcription": "/ˈlɔɪə/",
         "exampleEn": "She works as a lawyer.",
-        "exampleRu": "Она работает юристом."
+        "exampleRu": "Она работает юристом.",
+        "group": "jobs"
       },
       {
         "id": "l1-19",
@@ -179,7 +197,8 @@ window.VOCABULARY_DATA = [
         "ru": "медсестра / медбрат",
         "transcription": "/nɜːs/",
         "exampleEn": "A nurse looks after patients.",
-        "exampleRu": "Медсестра ухаживает за пациентами."
+        "exampleRu": "Медсестра ухаживает за пациентами.",
+        "group": "jobs"
       },
       {
         "id": "l1-20",
@@ -188,7 +207,8 @@ window.VOCABULARY_DATA = [
         "ru": "на пенсии",
         "transcription": "/rɪˈtaɪəd/",
         "exampleEn": "My grandparents are retired.",
-        "exampleRu": "Мои бабушка и дедушка на пенсии."
+        "exampleRu": "Мои бабушка и дедушка на пенсии.",
+        "group": "studies-status"
       },
       {
         "id": "l1-21",
@@ -197,7 +217,8 @@ window.VOCABULARY_DATA = [
         "ru": "безработный / безработная",
         "transcription": "/ˌʌnɪmˈplɔɪd/",
         "exampleEn": "He is unemployed at the moment.",
-        "exampleRu": "В данный момент он безработный."
+        "exampleRu": "В данный момент он безработный.",
+        "group": "studies-status"
       },
       {
         "id": "l1-22",
@@ -206,7 +227,8 @@ window.VOCABULARY_DATA = [
         "ru": "врач",
         "transcription": "/ˈdɒktə/",
         "exampleEn": "A doctor helps people who are ill.",
-        "exampleRu": "Врач помогает больным людям."
+        "exampleRu": "Врач помогает больным людям.",
+        "group": "jobs"
       },
       {
         "id": "l1-23",
@@ -215,7 +237,8 @@ window.VOCABULARY_DATA = [
         "ru": "певец / певица",
         "transcription": "/ˈsɪŋə/",
         "exampleEn": "A singer makes music.",
-        "exampleRu": "Певец исполняет музыку."
+        "exampleRu": "Певец исполняет музыку.",
+        "group": "jobs"
       },
       {
         "id": "l1-24",
@@ -224,7 +247,8 @@ window.VOCABULARY_DATA = [
         "ru": "политик",
         "transcription": "/ˌpɒləˈtɪʃən/",
         "exampleEn": "A politician works in government.",
-        "exampleRu": "Политик работает в органах власти."
+        "exampleRu": "Политик работает в органах власти.",
+        "group": "jobs"
       },
       {
         "id": "l1-25",
@@ -233,7 +257,8 @@ window.VOCABULARY_DATA = [
         "ru": "учёный",
         "transcription": "/ˈsaɪəntɪst/",
         "exampleEn": "A scientist studies new medicines.",
-        "exampleRu": "Учёный изучает новые лекарства."
+        "exampleRu": "Учёный изучает новые лекарства.",
+        "group": "jobs"
       },
       {
         "id": "l1-26",
@@ -242,7 +267,8 @@ window.VOCABULARY_DATA = [
         "ru": "цифровой дизайнер",
         "transcription": "/ˈdɪdʒɪtəl dɪˈzaɪnə/",
         "exampleEn": "A digital designer makes websites for different companies.",
-        "exampleRu": "Цифровой дизайнер создаёт сайты для разных компаний."
+        "exampleRu": "Цифровой дизайнер создаёт сайты для разных компаний.",
+        "group": "jobs"
       },
       {
         "id": "l1-29",
@@ -251,7 +277,8 @@ window.VOCABULARY_DATA = [
         "ru": "быть родом из",
         "transcription": "/ˈkʌm frəm/",
         "exampleEn": "Where do you come from?",
-        "exampleRu": "Откуда ты родом?"
+        "exampleRu": "Откуда ты родом?",
+        "group": "phrases"
       },
       {
         "id": "l1-30",
@@ -260,7 +287,8 @@ window.VOCABULARY_DATA = [
         "ru": "работать вместе",
         "transcription": "/ˌwɜːk təˈɡeðə/",
         "exampleEn": "How do you know Tim? We work together.",
-        "exampleRu": "Откуда ты знаешь Тима? Мы работаем вместе."
+        "exampleRu": "Откуда ты знаешь Тима? Мы работаем вместе.",
+        "group": "phrases"
       },
       {
         "id": "l1-27",
@@ -269,7 +297,8 @@ window.VOCABULARY_DATA = [
         "ru": "хотеть стать / хотел(а) бы быть",
         "transcription": "/wʊd ˌlaɪk tə ˈbiː/",
         "exampleEn": "Would you like to be a train driver?",
-        "exampleRu": "Ты хотел(а) бы стать машинистом поезда?"
+        "exampleRu": "Ты хотел(а) бы стать машинистом поезда?",
+        "group": "phrases"
       },
       {
         "id": "l1-28",
@@ -278,7 +307,28 @@ window.VOCABULARY_DATA = [
         "ru": "работать в государственных органах",
         "transcription": "/ˌwɜːk ɪn ðə ˈɡʌvənmənt/",
         "exampleEn": "A politician works in the government.",
-        "exampleRu": "Политик работает в государственных органах."
+        "exampleRu": "Политик работает в государственных органах.",
+        "group": "phrases"
+      }
+    ],
+    "groups": [
+      {
+        "id": "jobs",
+        "title": "Jobs",
+        "subtitle": "Профессии",
+        "icon": "💼"
+      },
+      {
+        "id": "studies-status",
+        "title": "Studies & status",
+        "subtitle": "Учёба и статус",
+        "icon": "🎓"
+      },
+      {
+        "id": "phrases",
+        "title": "Useful phrases",
+        "subtitle": "Полезные фразы",
+        "icon": "💬"
       }
     ]
   }
