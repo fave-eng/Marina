@@ -66,12 +66,29 @@ revoke all on table public.material_publications from anon, authenticated;
 grant all on table public.telegram_recipients to service_role;
 grant all on table public.material_publications to service_role;
 
--- Existing Marina Telegram group from the old site.
--- message_thread_id is NULL, so the message goes to the default/general topic.
-insert into public.telegram_recipients (student_id, chat_id, message_thread_id, enabled)
-values ('marina', -1003908460669, null, true)
-on conflict (student_id) do update
-set chat_id = excluded.chat_id,
-    message_thread_id = excluded.message_thread_id,
-    enabled = true,
-    updated_at = now();
+-- Recipient setup is optional.
+-- The default recipient is supplied by GitHub Actions Secret TEACHER_CHAT_ID
+-- and synchronized to the Edge Function by 1-setup-telegram.yml.
+--
+-- Add a database row only when you need a per-student override or a forum topic.
+-- Never commit a real chat ID to this repository.
+--
+-- Example to run manually in Supabase SQL Editor (replace placeholders locally):
+--
+-- insert into public.telegram_recipients (
+--   student_id,
+--   chat_id,
+--   message_thread_id,
+--   enabled
+-- )
+-- values (
+--   'marina',
+--   YOUR_REAL_CHAT_ID,
+--   null,
+--   true
+-- )
+-- on conflict (student_id) do update
+-- set chat_id = excluded.chat_id,
+--     message_thread_id = excluded.message_thread_id,
+--     enabled = true,
+--     updated_at = now();

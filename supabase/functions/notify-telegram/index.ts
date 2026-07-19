@@ -24,6 +24,14 @@ function isHttpUrl(value: unknown): value is string {
   }
 }
 
+function parseTelegramId(value: string | undefined | null): number | null {
+  const normalized = String(value ?? '').trim()
+  if (!/^-?\d+$/.test(normalized)) return null
+
+  const parsed = Number(normalized)
+  return Number.isSafeInteger(parsed) ? parsed : null
+}
+
 function buildMessage(hasVocabulary: boolean): string {
   if (hasVocabulary) {
     return [
@@ -135,12 +143,34 @@ export default {
     if (recipientError) {
       return Response.json({ ok: false, error: recipientError.message }, { status: 500 })
     }
-    if (!recipient || !recipient.enabled) {
+
+    if (recipient && !recipient.enabled) {
       return Response.json(
-        { ok: false, error: 'Telegram recipient is not connected or is disabled' },
-        { status: 404 },
+        { ok: false, error: 'Telegram recipient is explicitly disabled' },
+        { status: 409 },
       )
     }
+
+    const githubChatId = parseTelegramId(Deno.env.get('TEACHER_CHAT_ID'))
+    const recipientChatId = recipient
+      ? Number(recipient.chat_id)
+      : githubChatId
+
+    const recipientThreadId = recipient
+      ? parseTelegramId(recipient.message_thread_id)
+      : null
+
+    if (!Number.isSafeInteger(recipientChatId)) {
+      return Response.json(
+        {
+          ok: false,
+          error: 'Telegram recipient is missing: add TEACHER_CHAT_ID to GitHub Actions Secrets and rerun setup workflow',
+        },
+        { status: 500 },
+      )
+    }
+
+    const recipientSource = recipient ? 'database' : 'github_actions_secret'
 
     const { data: existing, error: existingError } = await ctx.supabaseAdmin
       .from('material_publications')
@@ -208,14 +238,10 @@ export default {
     })
 
     try {
-      const threadId = recipient.message_thread_id == null
-        ? null
-        : Number(recipient.message_thread_id)
-
       const telegramMessage = await sendTelegramMessage(
         botToken,
-        Number(recipient.chat_id),
-        threadId,
+        recipientChatId,
+        recipientThreadId,
         buildMessage(Boolean(vocabulary)),
         keyboard,
       )
@@ -237,6 +263,7 @@ export default {
       return Response.json({
         ok: true,
         skipped: false,
+        recipientSource,
         telegramMessageId: telegramMessage.message_id,
       })
     } catch (error) {
