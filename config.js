@@ -9,8 +9,8 @@ window.APP_CONFIG = {
   },
 
   supabase: {
-    url: "https://congkctcoywheykqzkby.supabase.co",
-    anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNvbmdrY3Rjb3l3aGV5a3F6a2J5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ0Nzg2OTcsImV4cCI6MjEwMDA1NDY5N30.NVne78XTX781gRlLj1WaFwEcuIAydG9iXa9O2HBvrr8",
+    url: "https://zqzgarvmpqqqaobeicpc.supabase.co",
+    anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpxemdhcnZtcHFxcWFvYmVpY3BjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2ODQwNTIsImV4cCI6MjA5NzI2MDA1Mn0.gARetYwVZfInx3QKS0RvB2I5cOwegPMY5q3nJPX4ZP8",
     authMode: "none",
     tables: {
       homework: "homework_progress",
