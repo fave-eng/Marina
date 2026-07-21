@@ -1838,7 +1838,7 @@
       ? `<div class="card info-card legacy-progress-note"><strong>Старый прогресс сохранён: ${legacyKnown} из ${topic.words.length}.</strong><p class="muted">В старой базе хранилось только количество выученных слов, без списка конкретных карточек. Поэтому общий результат сохранён, а отдельные слова будут уточняться по мере повторения.</p></div>`
       : '';
 
-    root.innerHTML = `${legacyNotice}<div class="mode-tabs" id="vocab-modes" aria-label="Режим тренировки">
+    root.innerHTML = `${legacyNotice}<div class="card info-card vocab-test-rule"><strong>Как слово становится выученным</strong><p class="muted">Карточки помогают познакомиться со словами. Статус «выучено» слово получает только после завершённого теста и правильного ответа.</p></div><div class="mode-tabs" id="vocab-modes" aria-label="Режим тренировки">
       <button class="mode-btn active" type="button" data-mode="cards">Новые слова</button>
       <button class="mode-btn" type="button" data-mode="test">Тест</button>
       <button class="mode-btn" type="button" data-mode="all">Все слова</button>
@@ -1860,7 +1860,7 @@
         modeRoot.innerHTML = emptyState(
           isDifficult ? '🌟' : '🎉',
           isDifficult ? 'Сложных слов пока нет' : 'Новые слова в этой теме закончились',
-          isDifficult ? 'Отметьте слово кнопкой «Трудно», и оно появится здесь.' : 'Выученные слова остаются в разделе «Все слова» и не повторяются в режиме новых слов.'
+          isDifficult ? 'Отметьте слово кнопкой «Трудно», и оно появится здесь.' : 'Карточки просмотрены. Теперь пройди тест: только после завершённого теста правильные слова получат статус «выучено».'
         );
         return;
       }
@@ -1869,15 +1869,13 @@
       modeRoot.innerHTML = `<div class="flash-counter">Осталось: ${remaining}</div><div class="flashcard-stage"><div class="flashcard" id="flashcard" tabindex="0" role="button" aria-label="Перевернуть карточку">
         <div class="flash-face flash-front"><div class="flash-word">${escapeHtml(word.en)}</div>${word.transcription ? `<div class="flash-transcription">${escapeHtml(word.transcription)}</div>` : ''}<p class="muted">Нажми, чтобы увидеть перевод</p></div>
         <div class="flash-face flash-back"><div class="flash-word">${escapeHtml(word.ru)}</div>${word.exampleEn ? `<p class="flash-example">${escapeHtml(word.exampleEn)}${word.exampleRu ? `<br>${escapeHtml(word.exampleRu)}` : ''}</p>` : ''}${word.audio ? `<audio class="audio-player" controls preload="none" src="${escapeHtml(word.audio)}"></audio>` : ''}</div>
-      </div></div><div class="trainer-actions"><button class="btn btn-danger" id="word-difficult" type="button">Трудно</button><button class="btn btn-success" id="word-known" type="button">Знаю</button></div>`;
+      </div></div><div class="trainer-actions"><button class="btn btn-danger" id="word-difficult" type="button">Трудно</button><button class="btn btn-success" id="word-known" type="button">Понятно — к тесту</button></div>`;
       const flashcard = byId('flashcard');
       const flip = () => flashcard.classList.toggle('flipped');
       flashcard.addEventListener('click', flip);
       flashcard.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); flip(); } });
       byId('word-known').addEventListener('click', () => {
-        setWordStatus(progress, word, topic.id, 'known');
         cardQueue.shift();
-        save();
         drawCard();
       });
       byId('word-difficult').addEventListener('click', () => {
@@ -1898,16 +1896,21 @@
     };
 
     const finishTest = () => {
+      const completedAt = new Date().toISOString();
+      testState.words.forEach((word) => {
+        const answer = testState.firstAnswers[word.__wordKey];
+        setWordStatus(progress, word, topic.id, answer?.correct ? 'known' : 'difficult');
+      });
       const result = {
         score: testState.firstTryCorrect,
         total: testState.words.length,
         percent: safePercent(testState.firstTryCorrect, testState.words.length),
         answers: testState.firstAnswers,
-        completedAt: new Date().toISOString()
+        completedAt
       };
       topicProgress.tests.push(result);
       save();
-      modeRoot.innerHTML = `<div class="card empty-state"><div class="empty-state-icon">🏁</div><h3>Тест завершён</h3><p>С первого раза: ${result.score} из ${result.total}</p><div class="button-row" style="justify-content:center"><button class="btn btn-primary" id="restart-vocab-test" type="button">Пройти ещё раз</button></div></div>`;
+      modeRoot.innerHTML = `<div class="card empty-state"><div class="empty-state-icon">🏁</div><h3>Тест завершён</h3><p>Выучено после теста: ${result.score} из ${result.total}. Слова с ошибками добавлены в сложные.</p><div class="button-row" style="justify-content:center"><button class="btn btn-primary" id="restart-vocab-test" type="button">Пройти ещё раз</button></div></div>`;
       byId('restart-vocab-test').addEventListener('click', startTest);
     };
 
@@ -1924,12 +1927,7 @@
           testState.answered = true;
           const correct = button.dataset.answerKey === word.__wordKey;
           testState.firstAnswers[word.__wordKey] = { correct, selected: button.dataset.answerKey };
-          if (correct) {
-            testState.firstTryCorrect += 1;
-            setWordStatus(progress, word, topic.id, 'known');
-          } else {
-            setWordStatus(progress, word, topic.id, 'difficult');
-          }
+          if (correct) testState.firstTryCorrect += 1;
           save();
           modeRoot.querySelectorAll('[data-answer-key]').forEach((optionButton) => {
             optionButton.disabled = true;

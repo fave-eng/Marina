@@ -331,5 +331,283 @@ window.VOCABULARY_DATA = [
         "icon": "💬"
       }
     ]
+  },
+  {
+    "id": "vocab-lesson-2-best-friends",
+    "title": "Best friends but different!",
+    "label": "Lesson 1B · 24 key words and phrases",
+    "icon": "👫",
+    "type": "lesson",
+    "linkedLessonId": "lesson-2",
+    "page": "vocabulary.html?id=vocab-lesson-2-best-friends",
+    "description": "Ключевые слова и выражения из текста о Rowan и Annie. Они помогут понять распорядок дня, отношения и свободное время.",
+    "words": [
+      {
+        "id": "l2-01",
+        "uniqueKey": "best friend",
+        "en": "best friend",
+        "ru": "лучший друг / лучшая подруга",
+        "transcription": "/ˌbest ˈfrend/",
+        "exampleEn": "Annie is Rowan’s best friend.",
+        "exampleRu": "Энни — лучшая подруга Роуэна.",
+        "group": "people"
+      },
+      {
+        "id": "l2-02",
+        "uniqueKey": "different",
+        "en": "different",
+        "ru": "разный; отличающийся",
+        "transcription": "/ˈdɪfrənt/",
+        "exampleEn": "They have very different lives.",
+        "exampleRu": "У них очень разная жизнь.",
+        "group": "people"
+      },
+      {
+        "id": "l2-03",
+        "uniqueKey": "boyfriend",
+        "en": "boyfriend",
+        "ru": "парень; молодой человек",
+        "transcription": "/ˈbɔɪfrend/",
+        "exampleEn": "Her boyfriend is from Argentina.",
+        "exampleRu": "Её молодой человек из Аргентины.",
+        "group": "people"
+      },
+      {
+        "id": "l2-04",
+        "uniqueKey": "same town",
+        "en": "the same town",
+        "ru": "тот же город; один и тот же город",
+        "transcription": "/ðə ˌseɪm ˈtaʊn/",
+        "exampleEn": "They live in the same town.",
+        "exampleRu": "Они живут в одном городе.",
+        "group": "people"
+      },
+      {
+        "id": "l2-05",
+        "uniqueKey": "different interests",
+        "en": "different interests",
+        "ru": "разные интересы",
+        "transcription": "/ˌdɪfrənt ˈɪntrəsts/",
+        "exampleEn": "Rowan and Annie have different interests.",
+        "exampleRu": "У Роуэна и Энни разные интересы.",
+        "group": "people"
+      },
+      {
+        "id": "l2-06",
+        "uniqueKey": "have breakfast",
+        "en": "have breakfast",
+        "ru": "завтракать",
+        "transcription": "/ˌhæv ˈbrekfəst/",
+        "exampleEn": "She has breakfast at seven thirty.",
+        "exampleRu": "Она завтракает в семь тридцать.",
+        "group": "routine"
+      },
+      {
+        "id": "l2-07",
+        "uniqueKey": "go to work",
+        "en": "go to work",
+        "ru": "идти / ехать на работу",
+        "transcription": "/ˌɡəʊ tə ˈwɜːk/",
+        "exampleEn": "She has breakfast and goes to work.",
+        "exampleRu": "Она завтракает и идёт на работу.",
+        "group": "routine"
+      },
+      {
+        "id": "l2-08",
+        "uniqueKey": "work late",
+        "en": "work late",
+        "ru": "работать допоздна",
+        "transcription": "/ˌwɜːk ˈleɪt/",
+        "exampleEn": "Annie often works late.",
+        "exampleRu": "Энни часто работает допоздна.",
+        "group": "routine"
+      },
+      {
+        "id": "l2-09",
+        "uniqueKey": "until",
+        "en": "until",
+        "ru": "до (определённого времени)",
+        "transcription": "/ənˈtɪl/",
+        "exampleEn": "She sometimes works until nine p.m.",
+        "exampleRu": "Иногда она работает до девяти вечера.",
+        "group": "routine"
+      },
+      {
+        "id": "l2-10",
+        "uniqueKey": "get up late",
+        "en": "get up late",
+        "ru": "вставать поздно",
+        "transcription": "/ˌɡet ʌp ˈleɪt/",
+        "exampleEn": "Rowan usually gets up late.",
+        "exampleRu": "Роуэн обычно встаёт поздно.",
+        "group": "routine"
+      },
+      {
+        "id": "l2-11",
+        "uniqueKey": "by bus",
+        "en": "by bus",
+        "ru": "на автобусе",
+        "transcription": "/baɪ ˈbʌs/",
+        "exampleEn": "He goes to work by bus.",
+        "exampleRu": "Он ездит на работу на автобусе.",
+        "group": "routine"
+      },
+      {
+        "id": "l2-12",
+        "uniqueKey": "work hard",
+        "en": "work hard",
+        "ru": "много / усердно работать",
+        "transcription": "/ˌwɜːk ˈhɑːd/",
+        "exampleEn": "He works hard all day.",
+        "exampleRu": "Он усердно работает весь день.",
+        "group": "routine"
+      },
+      {
+        "id": "l2-13",
+        "uniqueKey": "come home",
+        "en": "come home",
+        "ru": "приходить домой",
+        "transcription": "/ˌkʌm ˈhəʊm/",
+        "exampleEn": "He comes home at eight p.m.",
+        "exampleRu": "Он приходит домой в восемь вечера.",
+        "group": "routine"
+      },
+      {
+        "id": "l2-14",
+        "uniqueKey": "cook dinner",
+        "en": "cook dinner",
+        "ru": "готовить ужин",
+        "transcription": "/ˌkʊk ˈdɪnə/",
+        "exampleEn": "Rowan comes home and cooks dinner.",
+        "exampleRu": "Роуэн приходит домой и готовит ужин.",
+        "group": "routine"
+      },
+      {
+        "id": "l2-15",
+        "uniqueKey": "make time",
+        "en": "make time",
+        "ru": "находить время",
+        "transcription": "/ˌmeɪk ˈtaɪm/",
+        "exampleEn": "They make time to see each other.",
+        "exampleRu": "Они находят время, чтобы увидеться.",
+        "group": "relationships"
+      },
+      {
+        "id": "l2-16",
+        "uniqueKey": "see each other",
+        "en": "see each other",
+        "ru": "видеться друг с другом",
+        "transcription": "/ˌsiː iːtʃ ˈʌðə/",
+        "exampleEn": "They see each other at weekends.",
+        "exampleRu": "Они видятся по выходным.",
+        "group": "relationships"
+      },
+      {
+        "id": "l2-17",
+        "uniqueKey": "at weekends",
+        "en": "at weekends",
+        "ru": "по выходным",
+        "transcription": "/ət ˌwiːkˈendz/",
+        "exampleEn": "We always meet at weekends.",
+        "exampleRu": "Мы всегда встречаемся по выходным.",
+        "group": "relationships"
+      },
+      {
+        "id": "l2-18",
+        "uniqueKey": "spend time together",
+        "en": "spend time together",
+        "ru": "проводить время вместе",
+        "transcription": "/ˌspend taɪm təˈɡeðə/",
+        "exampleEn": "It is interesting to spend time together.",
+        "exampleRu": "Вместе проводить время интересно.",
+        "group": "relationships"
+      },
+      {
+        "id": "l2-19",
+        "uniqueKey": "play sports",
+        "en": "play sports",
+        "ru": "заниматься спортом; играть в спортивные игры",
+        "transcription": "/ˌpleɪ ˈspɔːts/",
+        "exampleEn": "Rowan plays a lot of sports.",
+        "exampleRu": "Роуэн много занимается спортом.",
+        "group": "free-time"
+      },
+      {
+        "id": "l2-20",
+        "uniqueKey": "go for a walk",
+        "en": "go for a walk",
+        "ru": "ходить на прогулку",
+        "transcription": "/ˌɡəʊ fər ə ˈwɔːk/",
+        "exampleEn": "Annie likes going for walks.",
+        "exampleRu": "Энни любит ходить на прогулки.",
+        "group": "free-time"
+      },
+      {
+        "id": "l2-21",
+        "uniqueKey": "go to the cinema",
+        "en": "go to the cinema",
+        "ru": "ходить в кино",
+        "transcription": "/ˌɡəʊ tə ðə ˈsɪnəmə/",
+        "exampleEn": "She likes going to the cinema.",
+        "exampleRu": "Она любит ходить в кино.",
+        "group": "free-time"
+      },
+      {
+        "id": "l2-22",
+        "uniqueKey": "free time",
+        "en": "free time",
+        "ru": "свободное время",
+        "transcription": "/ˌfriː ˈtaɪm/",
+        "exampleEn": "What do you do in your free time?",
+        "exampleRu": "Что ты делаешь в свободное время?",
+        "group": "free-time"
+      },
+      {
+        "id": "l2-23",
+        "uniqueKey": "watch a film",
+        "en": "watch a film",
+        "ru": "смотреть фильм",
+        "transcription": "/ˌwɒtʃ ə ˈfɪlm/",
+        "exampleEn": "Annie wants to watch a film this weekend.",
+        "exampleRu": "Энни хочет посмотреть фильм в эти выходные.",
+        "group": "free-time"
+      },
+      {
+        "id": "l2-24",
+        "uniqueKey": "alone",
+        "en": "alone",
+        "ru": "один; в одиночестве",
+        "transcription": "/əˈləʊn/",
+        "exampleEn": "They do things together that they do not usually do alone.",
+        "exampleRu": "Они вместе делают то, что обычно не делают поодиночке.",
+        "group": "relationships"
+      }
+    ],
+    "groups": [
+      {
+        "id": "people",
+        "title": "People & differences",
+        "subtitle": "Люди и различия",
+        "icon": "👫"
+      },
+      {
+        "id": "routine",
+        "title": "Daily routine",
+        "subtitle": "Распорядок дня",
+        "icon": "⏰"
+      },
+      {
+        "id": "relationships",
+        "title": "Relationships",
+        "subtitle": "Общение и отношения",
+        "icon": "🤝"
+      },
+      {
+        "id": "free-time",
+        "title": "Free time",
+        "subtitle": "Свободное время",
+        "icon": "🎬"
+      }
+    ]
   }
 ];

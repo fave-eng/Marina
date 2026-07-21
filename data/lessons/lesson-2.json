@@ -1,0 +1,389 @@
+{
+  "id": "lesson-2",
+  "number": 2,
+  "title": "Best friends but different!",
+  "subtitle": "Speakout · Unit 1 · Lesson 1B: third person -s and reading",
+  "status": "available",
+  "page": "lesson.html?id=lesson-2",
+  "vocabularyId": "vocab-lesson-2-best-friends",
+  "grammarIds": [],
+  "publishedAt": "2026-07-21",
+  "totalPoints": 25,
+  "notification": {
+    "enabled": true,
+    "version": 1
+  },
+  "blocks": [
+    {
+      "type": "section",
+      "eyebrow": "Pronunciation",
+      "title": "Third person -s",
+      "text": "Определи, как произносится окончание -s: /s/, /z/ или /ɪz/."
+    },
+    {
+      "type": "tip",
+      "title": "Перед заданием",
+      "text": "Смотри не на написание, а на последний звук основы глагола. После глухого звука обычно слышим /s/, после звонкого — /z/, после шипящих — /ɪz/."
+    },
+    {
+      "type": "audio",
+      "id": "l2-audio-1-03",
+      "title": "1.03. Listen and choose",
+      "text": "Прослушай запись. Затем для каждого глагола выбери правильный звук окончания -s: /s/, /z/ или /ɪz/.",
+      "audio": "audio/SO3_A2_WB_1B_Audio_1_03.mp3",
+      "response": false
+    },
+    {
+      "type": "exercise",
+      "id": "l2-ex3a",
+      "title": "3A. Choose the correct -s sound",
+      "instructions": "Для каждого глагола выбери звук окончания -s: /s/, /z/ или /ɪz/.",
+      "items": [
+        {
+          "id": "1",
+          "prompt": "studies",
+          "input": "single",
+          "options": [
+            "/s/",
+            "/z/",
+            "/ɪz/"
+          ],
+          "answer": 1,
+          "explanation": "studies — /z/"
+        },
+        {
+          "id": "2",
+          "prompt": "sits",
+          "input": "single",
+          "options": [
+            "/s/",
+            "/z/",
+            "/ɪz/"
+          ],
+          "answer": 0,
+          "explanation": "sits — /s/"
+        },
+        {
+          "id": "3",
+          "prompt": "works",
+          "input": "single",
+          "options": [
+            "/s/",
+            "/z/",
+            "/ɪz/"
+          ],
+          "answer": 0,
+          "explanation": "works — /s/"
+        },
+        {
+          "id": "4",
+          "prompt": "stays",
+          "input": "single",
+          "options": [
+            "/s/",
+            "/z/",
+            "/ɪz/"
+          ],
+          "answer": 1,
+          "explanation": "stays — /z/"
+        },
+        {
+          "id": "5",
+          "prompt": "does",
+          "input": "single",
+          "options": [
+            "/s/",
+            "/z/",
+            "/ɪz/"
+          ],
+          "answer": 1,
+          "explanation": "does — /z/"
+        },
+        {
+          "id": "6",
+          "prompt": "finishes",
+          "input": "single",
+          "options": [
+            "/s/",
+            "/z/",
+            "/ɪz/"
+          ],
+          "answer": 2,
+          "explanation": "finishes — /ɪz/"
+        },
+        {
+          "id": "7",
+          "prompt": "goes",
+          "input": "single",
+          "options": [
+            "/s/",
+            "/z/",
+            "/ɪz/"
+          ],
+          "answer": 1,
+          "explanation": "goes — /z/"
+        },
+        {
+          "id": "8",
+          "prompt": "stops",
+          "input": "single",
+          "options": [
+            "/s/",
+            "/z/",
+            "/ɪz/"
+          ],
+          "answer": 0,
+          "explanation": "stops — /s/"
+        },
+        {
+          "id": "9",
+          "prompt": "watches",
+          "input": "single",
+          "options": [
+            "/s/",
+            "/z/",
+            "/ɪz/"
+          ],
+          "answer": 2,
+          "explanation": "watches — /ɪz/"
+        },
+        {
+          "id": "10",
+          "prompt": "lives",
+          "input": "single",
+          "options": [
+            "/s/",
+            "/z/",
+            "/ɪz/"
+          ],
+          "answer": 1,
+          "explanation": "lives — /z/"
+        }
+      ]
+    },
+    {
+      "type": "tip",
+      "id": "l2-pronunciation-repeat",
+      "title": "3B. Listen again and repeat",
+      "text": "После проверки включи запись ещё раз и повтори все десять глаголов вслух."
+    },
+    {
+      "type": "section",
+      "eyebrow": "Reading",
+      "title": "Best friends but different!",
+      "text": "Сначала выполни короткое задание, затем прочитай рассказ Rowan и Annie."
+    },
+    {
+      "type": "exercise",
+      "id": "l2-ex4",
+      "title": "4. Choose the correct word",
+      "instructions": "Выбери слово, которое правильно завершает предложение.",
+      "items": [
+        {
+          "id": "1",
+          "prompt": "Rowan is a shop assistant. He ___ in a supermarket. He starts at 12 p.m. and he finishes at 8 p.m.",
+          "input": "single",
+          "options": [
+            "lives",
+            "works",
+            "meets"
+          ],
+          "answer": 1,
+          "explanation": "He works in a supermarket."
+        }
+      ]
+    },
+    {
+      "type": "reading",
+      "title": "Best friends but different!",
+      "sections": [
+        {
+          "number": "Rowan",
+          "heading": "My best friend is Annie",
+          "text": "My best friend is Annie. She’s great. We have very different lives though. She’s a lawyer. She gets up at 7 a.m. every day. She has breakfast and then goes to work. She often works late (sometimes until 9 p.m.!), but not on Thursdays. She has a Spanish class on Thursday evenings. She studies Spanish because her boyfriend is from Argentina. I don’t study. I’m a shop assistant and I work in a supermarket in the centre of town. I don’t start work until 12, so I usually get up late — around 10.30 a.m. I go to work by bus and work hard all day. I finish work at 8 p.m., then come home and cook dinner. Annie and I have very different lives, but we still make time to see each other."
+        },
+        {
+          "number": "Annie",
+          "heading": "I know Rowan from school",
+          "text": "I know my good friend Rowan from school. We live in the same town and we always see each other at weekends. We have different interests, so it’s usually interesting to spend time together! Rowan plays a lot of sports, like football and tennis, but I like going for walks or to the cinema. So, how do we decide what to do in our free time? It’s easy. One weekend I choose what to do, and the next weekend Rowan chooses. This weekend I want to watch a film, and next weekend Rowan wants to cook dinner. He loves cooking, but I hate it, so he cooks and I eat. It’s perfect. I think we’re good friends because we do things together that we don’t usually do alone."
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l2-ex5a",
+      "title": "5A. True or False?",
+      "instructions": "Прочитай текст и выбери True или False.",
+      "items": [
+        {
+          "id": "1",
+          "prompt": "Annie is Rowan’s wife.",
+          "input": "single",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": 1,
+          "explanation": "False. Annie is Rowan’s best friend, not his wife."
+        },
+        {
+          "id": "2",
+          "prompt": "Annie’s boyfriend is Spanish.",
+          "input": "single",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": 1,
+          "explanation": "False. Her boyfriend is from Argentina."
+        },
+        {
+          "id": "3",
+          "prompt": "Rowan works for eight hours every day.",
+          "input": "single",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": 0,
+          "explanation": "True. He works from 12 p.m. until 8 p.m."
+        },
+        {
+          "id": "4",
+          "prompt": "Annie always sees Rowan at the weekend.",
+          "input": "single",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": 0,
+          "explanation": "True. They always see each other at weekends."
+        },
+        {
+          "id": "5",
+          "prompt": "Annie and Rowan go to the same school.",
+          "input": "single",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": 1,
+          "explanation": "False. They know each other from school, but now they have different jobs."
+        },
+        {
+          "id": "6",
+          "prompt": "They like doing the same things.",
+          "input": "single",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": 1,
+          "explanation": "False. They have different interests."
+        },
+        {
+          "id": "7",
+          "prompt": "Rowan likes sport.",
+          "input": "single",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": 0,
+          "explanation": "True. Rowan plays football and tennis."
+        },
+        {
+          "id": "8",
+          "prompt": "Annie likes cooking.",
+          "input": "single",
+          "options": [
+            "True",
+            "False"
+          ],
+          "answer": 1,
+          "explanation": "False. Annie says she hates cooking."
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l2-ex5b",
+      "title": "5B. Choose one option",
+      "instructions": "Прочитай текст ещё раз и выбери правильный ответ a, b или c.",
+      "items": [
+        {
+          "id": "1",
+          "prompt": "What’s Annie’s job?",
+          "input": "single",
+          "options": [
+            "a. a teacher",
+            "b. a shop assistant",
+            "c. a lawyer"
+          ],
+          "answer": 2,
+          "explanation": "Annie is a lawyer."
+        },
+        {
+          "id": "2",
+          "prompt": "What does she do in the morning?",
+          "input": "single",
+          "options": [
+            "a. She has breakfast and goes to work.",
+            "b. She reads books or studies.",
+            "c. She goes to Spanish classes."
+          ],
+          "answer": 0,
+          "explanation": "She has breakfast and then goes to work."
+        },
+        {
+          "id": "3",
+          "prompt": "What does she do on Thursdays?",
+          "input": "single",
+          "options": [
+            "a. She studies.",
+            "b. She cooks dinner.",
+            "c. She watches TV or reads books."
+          ],
+          "answer": 0,
+          "explanation": "She has a Spanish class on Thursday evenings."
+        },
+        {
+          "id": "4",
+          "prompt": "How does Rowan know Annie?",
+          "input": "single",
+          "options": [
+            "a. from work",
+            "b. from his Spanish class",
+            "c. from school"
+          ],
+          "answer": 2,
+          "explanation": "They know each other from school."
+        },
+        {
+          "id": "5",
+          "prompt": "What does Annie hate?",
+          "input": "single",
+          "options": [
+            "a. watching films",
+            "b. cooking food",
+            "c. going to the cinema"
+          ],
+          "answer": 1,
+          "explanation": "Rowan loves cooking, but Annie hates it."
+        },
+        {
+          "id": "6",
+          "prompt": "What does Annie say about being different to Rowan?",
+          "input": "single",
+          "options": [
+            "a. She doesn’t like it.",
+            "b. She likes it.",
+            "c. It’s OK."
+          ],
+          "answer": 1,
+          "explanation": "She enjoys spending time together because they do different things."
+        }
+      ]
+    }
+  ]
+}
