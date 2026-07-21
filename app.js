@@ -61,6 +61,7 @@
 
     const promise = (async () => {
       const url = new URL(`${lessonsPath}/${cleanId}.json`, document.baseURI);
+      url.searchParams.set('_', Date.now().toString());
       const response = await fetch(url, { cache: 'no-store' });
       if (response.status === 404) return null;
       if (!response.ok) throw new Error(`Не удалось загрузить ${cleanId}.json: ${response.status}`);
@@ -71,7 +72,10 @@
 
     lessonCache.set(cleanId, promise);
     try {
-      return await promise;
+      const lesson = await promise;
+      // Не запоминаем отсутствующий файл навсегда: он может быть опубликован позже.
+      if (!lesson) lessonCache.delete(cleanId);
+      return lesson;
     } catch (error) {
       lessonCache.delete(cleanId);
       throw error;
@@ -79,34 +83,45 @@
   }
 
   async function discoverHomeworkData() {
+    const lessonsById = new Map();
+    let highestKnownLessonNumber = 0;
+
     try {
       const indexUrl = new URL(`${lessonsPath}/index.json`, document.baseURI);
+      indexUrl.searchParams.set('_', Date.now().toString());
       const response = await fetch(indexUrl, { cache: 'no-store' });
       if (response.ok) {
         const payload = await response.json();
         const ids = Array.isArray(payload) ? payload : payload.lessons;
         if (Array.isArray(ids)) {
-          const lessons = (await Promise.all(ids.map((id) => fetchLessonFile(id)))).filter(Boolean);
-          return lessons.sort((a, b) => Number(a.number || 0) - Number(b.number || 0));
+          const indexedLessons = (await Promise.all(ids.map((id) => fetchLessonFile(id)))).filter(Boolean);
+          indexedLessons.forEach((lesson) => {
+            lessonsById.set(lesson.id, lesson);
+            highestKnownLessonNumber = Math.max(highestKnownLessonNumber, Number(lesson.number || 0));
+          });
         }
       }
     } catch (error) {
-      console.warn('Не удалось загрузить индекс уроков, используется резервный поиск:', error);
+      console.warn('Не удалось загрузить индекс уроков, используется автоматический поиск:', error);
     }
 
-    const lessons = [];
+    // Даже если index.json устарел, автоматически ищем lesson-1.json, lesson-2.json и далее.
+    // Поиск заканчивается после трёх отсутствующих файлов подряд за последним найденным уроком.
     let consecutiveMissing = 0;
     for (let number = 1; number <= maxLessonNumber; number += 1) {
       const lesson = await fetchLessonFile(`lesson-${number}`);
       if (lesson) {
-        lessons.push(lesson);
+        lessonsById.set(lesson.id, lesson);
+        highestKnownLessonNumber = Math.max(highestKnownLessonNumber, Number(lesson.number || number));
         consecutiveMissing = 0;
       } else {
         consecutiveMissing += 1;
-        if (consecutiveMissing >= maxConsecutiveMissingLessons) break;
+        if (number > highestKnownLessonNumber && consecutiveMissing >= maxConsecutiveMissingLessons) break;
       }
     }
-    return lessons.sort((a, b) => Number(a.number || 0) - Number(b.number || 0));
+
+    return [...lessonsById.values()]
+      .sort((a, b) => Number(a.number || 0) - Number(b.number || 0));
   }
 
   async function loadHomeworkData() {
@@ -2159,6 +2174,47 @@
     }
   }
 
+  function homeworkCatalogSignature(items = HOMEWORK_DATA) {
+    return JSON.stringify((Array.isArray(items) ? items : []).map((item) => ({
+      id: item.id,
+      number: item.number,
+      title: item.title,
+      subtitle: item.subtitle,
+      status: item.status,
+      publishedAt: item.publishedAt,
+      notificationVersion: item.notification?.version || 0
+    })));
+  }
+
+  async function refreshHomeworkCatalogIfChanged() {
+    const view = document.body?.dataset?.view || '';
+    if (!['home', 'homework'].includes(view)) return;
+
+    const before = homeworkCatalogSignature();
+    lessonCache.clear();
+
+    try {
+      await loadHomeworkData();
+      const after = homeworkCatalogSignature();
+      if (after !== before) {
+        await refreshCurrentView();
+        showToast('Список домашних заданий обновлён.');
+      }
+    } catch (error) {
+      console.warn('Не удалось автоматически обновить список домашних заданий:', error);
+    }
+  }
+
+  function startHomeworkAutoRefresh() {
+    const view = document.body?.dataset?.view || '';
+    if (!['home', 'homework'].includes(view)) return;
+
+    window.setInterval(refreshHomeworkCatalogIfChanged, 60_000);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) refreshHomeworkCatalogIfChanged();
+    });
+  }
+
   async function init() {
     migrateLegacyMarinaProgress();
     fillConfig();
@@ -2171,6 +2227,7 @@
       window.HOMEWORK_DATA = HOMEWORK_DATA;
     }
     await refreshCurrentView();
+    startHomeworkAutoRefresh();
     if (!CloudService.isConfigured()) return;
     try {
       await CloudService.init();
