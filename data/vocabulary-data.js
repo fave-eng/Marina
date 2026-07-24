@@ -609,5 +609,349 @@ window.VOCABULARY_DATA = [
         "icon": "🎬"
       }
     ]
+  },
+  {
+    "id": "vocab-lesson-3-feelings-suggestions",
+    "title": "Feelings and suggestions",
+    "label": "Lesson 1C · 30 essential words and phrases",
+    "icon": "💬",
+    "type": "lesson",
+    "linkedLessonId": "lesson-3",
+    "page": "vocabulary.html?id=vocab-lesson-3-feelings-suggestions",
+    "description": "30 новых слов и выражений, необходимых для самостоятельного выполнения Lesson 1C: чувства, время и предложения встретиться. Уникальная фраза из исключённого упражнения 4 не добавлена.",
+    "words": [
+      {
+        "id": "l3-01",
+        "uniqueKey": "all right",
+        "en": "all right",
+        "ru": "нормально; в порядке",
+        "transcription": "/ˌɔːl ˈraɪt/",
+        "exampleEn": "I feel all right today.",
+        "exampleRu": "Сегодня я чувствую себя нормально.",
+        "group": "feelings"
+      },
+      {
+        "id": "l3-02",
+        "uniqueKey": "angry",
+        "en": "angry",
+        "ru": "злой; сердитый",
+        "transcription": "/ˈæŋɡri/",
+        "exampleEn": "Please don’t be angry!",
+        "exampleRu": "Пожалуйста, не сердись!",
+        "group": "feelings"
+      },
+      {
+        "id": "l3-03",
+        "uniqueKey": "bored",
+        "en": "bored",
+        "ru": "скучающий; которому скучно",
+        "transcription": "/bɔːd/",
+        "exampleEn": "I’m bored. Let’s do something interesting.",
+        "exampleRu": "Мне скучно. Давай сделаем что-нибудь интересное.",
+        "group": "feelings"
+      },
+      {
+        "id": "l3-04",
+        "uniqueKey": "hungry",
+        "en": "hungry",
+        "ru": "голодный",
+        "transcription": "/ˈhʌŋɡri/",
+        "exampleEn": "What time is dinner? I’m hungry.",
+        "exampleRu": "Во сколько ужин? Я голодна.",
+        "group": "feelings"
+      },
+      {
+        "id": "l3-05",
+        "uniqueKey": "ill",
+        "en": "ill",
+        "ru": "больной; плохо себя чувствующий",
+        "transcription": "/ɪl/",
+        "exampleEn": "Greg is at the doctor’s because he’s ill.",
+        "exampleRu": "Грег у врача, потому что он болен.",
+        "group": "feelings"
+      },
+      {
+        "id": "l3-06",
+        "uniqueKey": "relaxed",
+        "en": "relaxed",
+        "ru": "расслабленный",
+        "transcription": "/rɪˈlækst/",
+        "exampleEn": "I feel relaxed after a hot bath.",
+        "exampleRu": "После горячей ванны я чувствую себя расслабленно.",
+        "group": "feelings"
+      },
+      {
+        "id": "l3-07",
+        "uniqueKey": "thirsty",
+        "en": "thirsty",
+        "ru": "испытывающий жажду",
+        "transcription": "/ˈθɜːsti/",
+        "exampleEn": "Can I have some water? I’m thirsty.",
+        "exampleRu": "Можно мне воды? Я хочу пить.",
+        "group": "feelings"
+      },
+      {
+        "id": "l3-08",
+        "uniqueKey": "tired",
+        "en": "tired",
+        "ru": "уставший",
+        "transcription": "/ˈtaɪəd/",
+        "exampleEn": "I want to go to bed. I’m tired.",
+        "exampleRu": "Я хочу лечь спать. Я устала.",
+        "group": "feelings"
+      },
+      {
+        "id": "l3-09",
+        "uniqueKey": "feel",
+        "en": "feel",
+        "ru": "чувствовать себя",
+        "transcription": "/fiːl/",
+        "exampleEn": "How do you feel today?",
+        "exampleRu": "Как ты себя сегодня чувствуешь?",
+        "group": "useful-actions"
+      },
+      {
+        "id": "l3-10",
+        "uniqueKey": "be late",
+        "en": "be late",
+        "ru": "опаздывать",
+        "transcription": "/biː ˈleɪt/",
+        "exampleEn": "I’m sorry I’m late.",
+        "exampleRu": "Извини, что я опоздала.",
+        "group": "useful-actions"
+      },
+      {
+        "id": "l3-11",
+        "uniqueKey": "do something",
+        "en": "do something",
+        "ru": "сделать что-нибудь",
+        "transcription": "/ˌduː ˈsʌmθɪŋ/",
+        "exampleEn": "Can we do something this evening?",
+        "exampleRu": "Мы можем что-нибудь сделать сегодня вечером?",
+        "group": "useful-actions"
+      },
+      {
+        "id": "l3-12",
+        "uniqueKey": "go to bed",
+        "en": "go to bed",
+        "ru": "ложиться спать",
+        "transcription": "/ˌɡəʊ tə ˈbed/",
+        "exampleEn": "I usually go to bed at eleven.",
+        "exampleRu": "Обычно я ложусь спать в одиннадцать.",
+        "group": "useful-actions"
+      },
+      {
+        "id": "l3-13",
+        "uniqueKey": "have a class",
+        "en": "have a class",
+        "ru": "иметь занятие; быть на занятии",
+        "transcription": "/ˌhæv ə ˈklɑːs/",
+        "exampleEn": "I have a class at twelve.",
+        "exampleRu": "У меня занятие в двенадцать.",
+        "group": "useful-actions"
+      },
+      {
+        "id": "l3-14",
+        "uniqueKey": "meet",
+        "en": "meet",
+        "ru": "встречаться; встретиться",
+        "transcription": "/miːt/",
+        "exampleEn": "Can we meet at the café?",
+        "exampleRu": "Мы можем встретиться в кафе?",
+        "group": "useful-actions"
+      },
+      {
+        "id": "l3-15",
+        "uniqueKey": "at noon",
+        "en": "at noon",
+        "ru": "в полдень",
+        "transcription": "/ət ˈnuːn/",
+        "exampleEn": "The class starts at noon.",
+        "exampleRu": "Занятие начинается в полдень.",
+        "group": "time"
+      },
+      {
+        "id": "l3-16",
+        "uniqueKey": "tonight",
+        "en": "tonight",
+        "ru": "сегодня вечером; сегодня ночью",
+        "transcription": "/təˈnaɪt/",
+        "exampleEn": "I need to study tonight.",
+        "exampleRu": "Мне нужно заниматься сегодня вечером.",
+        "group": "time"
+      },
+      {
+        "id": "l3-17",
+        "uniqueKey": "this evening",
+        "en": "this evening",
+        "ru": "сегодня вечером",
+        "transcription": "/ðɪs ˈiːvnɪŋ/",
+        "exampleEn": "What shall we do this evening?",
+        "exampleRu": "Что будем делать сегодня вечером?",
+        "group": "time"
+      },
+      {
+        "id": "l3-18",
+        "uniqueKey": "this weekend",
+        "en": "this weekend",
+        "ru": "в эти выходные",
+        "transcription": "/ðɪs ˌwiːkˈend/",
+        "exampleEn": "Do you want to do something this weekend?",
+        "exampleRu": "Хочешь что-нибудь сделать в эти выходные?",
+        "group": "time"
+      },
+      {
+        "id": "l3-19",
+        "uniqueKey": "at the weekend",
+        "en": "at the weekend",
+        "ru": "на выходных",
+        "transcription": "/ət ðə ˌwiːkˈend/",
+        "exampleEn": "See you at the weekend!",
+        "exampleRu": "Увидимся на выходных!",
+        "group": "time"
+      },
+      {
+        "id": "l3-20",
+        "uniqueKey": "make a suggestion",
+        "en": "make a suggestion",
+        "ru": "сделать предложение; предложить идею",
+        "transcription": "/ˌmeɪk ə səˈdʒestʃən/",
+        "exampleEn": "Can I make a suggestion?",
+        "exampleRu": "Можно я кое-что предложу?",
+        "group": "suggestions"
+      },
+      {
+        "id": "l3-21",
+        "uniqueKey": "can we",
+        "en": "Can we …?",
+        "ru": "Мы можем…?; Давай…?",
+        "transcription": "/kən wiː/",
+        "exampleEn": "Can we meet at two?",
+        "exampleRu": "Мы можем встретиться в два?",
+        "group": "suggestions"
+      },
+      {
+        "id": "l3-22",
+        "uniqueKey": "what would you like to do",
+        "en": "What would you like to do?",
+        "ru": "Что бы ты хотел(а) сделать?",
+        "transcription": "/wɒt wʊd juː laɪk tə ˈduː/",
+        "exampleEn": "What would you like to do this evening?",
+        "exampleRu": "Что бы ты хотела сделать сегодня вечером?",
+        "group": "suggestions"
+      },
+      {
+        "id": "l3-23",
+        "uniqueKey": "let's",
+        "en": "Let’s …",
+        "ru": "Давай…",
+        "transcription": "/lets/",
+        "exampleEn": "Let’s meet at the cinema.",
+        "exampleRu": "Давай встретимся у кинотеатра.",
+        "group": "suggestions"
+      },
+      {
+        "id": "l3-24",
+        "uniqueKey": "how about",
+        "en": "How about …?",
+        "ru": "Как насчёт…?",
+        "transcription": "/haʊ əˈbaʊt/",
+        "exampleEn": "How about meeting at five?",
+        "exampleRu": "Как насчёт встречи в пять?",
+        "group": "suggestions"
+      },
+      {
+        "id": "l3-25",
+        "uniqueKey": "what about",
+        "en": "What about …?",
+        "ru": "А как насчёт…?",
+        "transcription": "/wɒt əˈbaʊt/",
+        "exampleEn": "What about 6.30?",
+        "exampleRu": "А как насчёт половины седьмого?",
+        "group": "suggestions"
+      },
+      {
+        "id": "l3-26",
+        "uniqueKey": "would you like to",
+        "en": "Would you like to …?",
+        "ru": "Ты хотел(а) бы…?",
+        "transcription": "/wʊd juː laɪk tə/",
+        "exampleEn": "Would you like to have dinner?",
+        "exampleRu": "Ты хотела бы поужинать?",
+        "group": "suggestions"
+      },
+      {
+        "id": "l3-27",
+        "uniqueKey": "how are things",
+        "en": "How are things?",
+        "ru": "Как дела?",
+        "transcription": "/haʊ ə ˈθɪŋz/",
+        "exampleEn": "Hello! How are things?",
+        "exampleRu": "Привет! Как дела?",
+        "group": "social-phrases"
+      },
+      {
+        "id": "l3-28",
+        "uniqueKey": "good idea",
+        "en": "Good idea.",
+        "ru": "Хорошая идея.",
+        "transcription": "/ˌɡʊd aɪˈdɪə/",
+        "exampleEn": "Good idea. How about meeting at five?",
+        "exampleRu": "Хорошая идея. Как насчёт встречи в пять?",
+        "group": "social-phrases"
+      },
+      {
+        "id": "l3-29",
+        "uniqueKey": "sorry i can't",
+        "en": "Sorry, I can’t.",
+        "ru": "Извини, я не могу.",
+        "transcription": "/ˈsɒri aɪ ˈkɑːnt/",
+        "exampleEn": "Sorry, I can’t. What about 6.30?",
+        "exampleRu": "Извини, я не могу. А как насчёт половины седьмого?",
+        "group": "social-phrases"
+      },
+      {
+        "id": "l3-30",
+        "uniqueKey": "see you then",
+        "en": "See you then.",
+        "ru": "Тогда увидимся.",
+        "transcription": "/ˌsiː juː ˈðen/",
+        "exampleEn": "Perfect! See you then.",
+        "exampleRu": "Отлично! Тогда увидимся.",
+        "group": "social-phrases"
+      }
+    ],
+    "groups": [
+      {
+        "id": "feelings",
+        "title": "Feelings",
+        "subtitle": "Чувства и состояния",
+        "icon": "🙂"
+      },
+      {
+        "id": "useful-actions",
+        "title": "Useful actions",
+        "subtitle": "Полезные действия",
+        "icon": "✨"
+      },
+      {
+        "id": "time",
+        "title": "Time phrases",
+        "subtitle": "Выражения времени",
+        "icon": "🕒"
+      },
+      {
+        "id": "suggestions",
+        "title": "Making suggestions",
+        "subtitle": "Как предложить идею",
+        "icon": "💡"
+      },
+      {
+        "id": "social-phrases",
+        "title": "Conversation phrases",
+        "subtitle": "Фразы для разговора",
+        "icon": "💬"
+      }
+    ]
   }
 ];
