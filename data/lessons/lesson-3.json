@@ -1,0 +1,366 @@
+{
+  "id": "lesson-3",
+  "number": 3,
+  "title": "Feelings and suggestions",
+  "subtitle": "Speakout · Unit 1 · Lesson 1C: adjectives for feelings, time phrases and making suggestions",
+  "status": "available",
+  "page": "lesson.html?id=lesson-3",
+  "grammarIds": [],
+  "publishedAt": "2026-07-24",
+  "totalPoints": 35,
+  "notification": {
+    "enabled": true,
+    "version": 1
+  },
+  "blocks": [
+    {
+      "type": "section",
+      "eyebrow": "Lesson 1C · Vocabulary",
+      "title": "Adjectives for feelings",
+      "text": "Выполни задания 1, 2A и 2B. В задании 2B поставь дефис (-), если слово не нужно."
+    },
+    {
+      "type": "exercise",
+      "id": "l3-ex1",
+      "title": "1. Complete the sentences with the adjectives from the box",
+      "instructions": "Выбери подходящее прилагательное. Каждое слово используется один раз.",
+      "wordBank": [
+        "all right",
+        "angry",
+        "bored",
+        "hungry",
+        "ill",
+        "relaxed",
+        "thirsty",
+        "tired"
+      ],
+      "items": [
+        {
+          "id": "1",
+          "prompt": "Can I have some water? I’m really ___.",
+          "input": "select",
+          "options": ["all right", "angry", "bored", "hungry", "ill", "relaxed", "thirsty", "tired"],
+          "answer": 6,
+          "explanation": "I’m really thirsty."
+        },
+        {
+          "id": "2",
+          "prompt": "Greg isn’t at work today. He’s at the doctor’s because he’s ___.",
+          "input": "select",
+          "options": ["all right", "angry", "bored", "hungry", "ill", "relaxed", "thirsty", "tired"],
+          "answer": 4,
+          "explanation": "He’s ill."
+        },
+        {
+          "id": "3",
+          "prompt": "I’m sorry I’m late. Please don’t be ___!",
+          "input": "select",
+          "options": ["all right", "angry", "bored", "hungry", "ill", "relaxed", "thirsty", "tired"],
+          "answer": 1,
+          "explanation": "Please don’t be angry!"
+        },
+        {
+          "id": "4",
+          "prompt": "I’m ___. Let’s do something interesting.",
+          "input": "select",
+          "options": ["all right", "angry", "bored", "hungry", "ill", "relaxed", "thirsty", "tired"],
+          "answer": 2,
+          "explanation": "I’m bored."
+        },
+        {
+          "id": "5",
+          "prompt": "I feel ___ — not happy, not sad. Just normal.",
+          "input": "select",
+          "options": ["all right", "angry", "bored", "hungry", "ill", "relaxed", "thirsty", "tired"],
+          "answer": 0,
+          "explanation": "I feel all right."
+        },
+        {
+          "id": "6",
+          "prompt": "I want to go to bed. I’m very ___.",
+          "input": "select",
+          "options": ["all right", "angry", "bored", "hungry", "ill", "relaxed", "thirsty", "tired"],
+          "answer": 7,
+          "explanation": "I’m very tired."
+        },
+        {
+          "id": "7",
+          "prompt": "What time is dinner? I’m really ___.",
+          "input": "select",
+          "options": ["all right", "angry", "bored", "hungry", "ill", "relaxed", "thirsty", "tired"],
+          "answer": 3,
+          "explanation": "I’m really hungry."
+        },
+        {
+          "id": "8",
+          "prompt": "I always feel ___ after a hot bath.",
+          "input": "select",
+          "options": ["all right", "angry", "bored", "hungry", "ill", "relaxed", "thirsty", "tired"],
+          "answer": 5,
+          "explanation": "I always feel relaxed."
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l3-ex2a",
+      "title": "2A. Choose the correct answer",
+      "instructions": "Выбери правильный вариант, чтобы закончить предложение.",
+      "items": [
+        {
+          "id": "1",
+          "prompt": "I get up ___ 5 a.m. every day.",
+          "input": "single",
+          "options": ["—", "on", "at"],
+          "answer": 2,
+          "explanation": "at 5 a.m."
+        },
+        {
+          "id": "2",
+          "prompt": "Do we have a class ___ week?",
+          "input": "single",
+          "options": ["next", "at", "on"],
+          "answer": 0,
+          "explanation": "next week"
+        },
+        {
+          "id": "3",
+          "prompt": "Let’s play tennis ___ tomorrow.",
+          "input": "single",
+          "options": ["on", "—", "next"],
+          "answer": 1,
+          "explanation": "No preposition before tomorrow."
+        },
+        {
+          "id": "4",
+          "prompt": "I teach German ___ Tuesdays.",
+          "input": "single",
+          "options": ["at", "on", "this"],
+          "answer": 1,
+          "explanation": "on Tuesdays"
+        },
+        {
+          "id": "5",
+          "prompt": "I have an English class ___ Thursday morning.",
+          "input": "single",
+          "options": ["at", "—", "on"],
+          "answer": 2,
+          "explanation": "on Thursday morning"
+        },
+        {
+          "id": "6",
+          "prompt": "What shall we do ___ evening?",
+          "input": "single",
+          "options": ["this", "next", "at"],
+          "answer": 0,
+          "explanation": "this evening"
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l3-ex2b",
+      "title": "2B. Complete the messages",
+      "instructions": "Впиши одно слово. Если слово не нужно, напиши дефис (-).",
+      "items": [
+        {
+          "id": "1",
+          "prompt": "Aiko: Do we have a class ___ today?",
+          "input": "text",
+          "acceptedAnswers": ["-", "—"],
+          "explanation": "No word is needed before today."
+        },
+        {
+          "id": "2",
+          "prompt": "Victor: Yes, it’s ___ noon.",
+          "input": "text",
+          "answer": "at",
+          "explanation": "at noon"
+        },
+        {
+          "id": "3",
+          "prompt": "Gloria: I can’t come. I need to study for a French test ___ tonight.",
+          "input": "text",
+          "acceptedAnswers": ["-", "—"],
+          "explanation": "No word is needed before tonight."
+        },
+        {
+          "id": "4",
+          "prompt": "Aiko: Gloria and Victor, do you want to do something ___ weekend?",
+          "input": "text",
+          "answer": "this",
+          "explanation": "this weekend"
+        },
+        {
+          "id": "5",
+          "prompt": "Gloria: Sure! Can we meet for a coffee ___ Saturday?",
+          "input": "text",
+          "acceptedAnswers": ["on", "this"],
+          "explanation": "on Saturday / this Saturday"
+        },
+        {
+          "id": "6",
+          "prompt": "Victor: I can’t do Saturday. Can we meet ___ Sunday afternoon, at 1 o’clock?",
+          "input": "text",
+          "acceptedAnswers": ["on", "this"],
+          "explanation": "on Sunday afternoon / this Sunday afternoon"
+        },
+        {
+          "id": "7",
+          "prompt": "Victor: Can we meet on Sunday afternoon, ___ 1 o’clock?",
+          "input": "text",
+          "answer": "at",
+          "explanation": "at 1 o’clock"
+        },
+        {
+          "id": "8",
+          "prompt": "Gloria: Great! See you ___ the weekend!",
+          "input": "text",
+          "answer": "at",
+          "explanation": "at the weekend"
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "eyebrow": "How to …",
+      "title": "Make suggestions",
+      "text": "Прослушай разговоры и выполни задания 3A и 3B."
+    },
+    {
+      "type": "exercise",
+      "id": "l3-ex3a",
+      "title": "3A. Listen and answer with Mike (M) or Fran (F)",
+      "instructions": "Прослушай аудио 1.04 и выбери M или F.",
+      "audio": "audio/SO3_A2_WB_1C_Audio_1_04.mp3",
+      "items": [
+        {
+          "id": "1",
+          "prompt": "Who feels hungry?",
+          "input": "single",
+          "options": ["M", "F"],
+          "answer": 0,
+          "explanation": "Mike: “I’m hungry.”"
+        },
+        {
+          "id": "2",
+          "prompt": "Who has a class at twelve?",
+          "input": "single",
+          "options": ["M", "F"],
+          "answer": 1,
+          "explanation": "Fran: “I have a class at twelve.”"
+        },
+        {
+          "id": "3",
+          "prompt": "Who asks to meet at the café on East Street?",
+          "input": "single",
+          "options": ["M", "F"],
+          "answer": 1,
+          "explanation": "Fran: “Can we meet at the café on East Street?”"
+        },
+        {
+          "id": "4",
+          "prompt": "Who loves the café?",
+          "input": "single",
+          "options": ["M", "F"],
+          "answer": 0,
+          "explanation": "Mike: “I love that place.”"
+        },
+        {
+          "id": "5",
+          "prompt": "Who asks to meet at two?",
+          "input": "single",
+          "options": ["M", "F"],
+          "answer": 0,
+          "explanation": "Mike: “Can we meet at two?”"
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l3-ex3b",
+      "title": "3B. Listen and write what you hear",
+      "instructions": "Прослушай аудио 1.05. Каждое предложение прозвучит только один раз. Напиши полное предложение.",
+      "audio": "audio/SO3_A2_WB_1C_Audio_1_05.mp3",
+      "items": [
+        {
+          "id": "1",
+          "prompt": "Sentence 1",
+          "input": "text",
+          "answer": "Can we do something this evening?",
+          "explanation": "Can we do something this evening?"
+        },
+        {
+          "id": "2",
+          "prompt": "Sentence 2",
+          "input": "text",
+          "answer": "What would you like to do?",
+          "explanation": "What would you like to do?"
+        },
+        {
+          "id": "3",
+          "prompt": "Sentence 3",
+          "input": "text",
+          "acceptedAnswers": ["Let’s meet at the cinema.", "Let's meet at the cinema."],
+          "explanation": "Let’s meet at the cinema."
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "eyebrow": "Speaking",
+      "title": "Complete the conversation",
+      "text": "Выполни только задание 5A. Задания 4, 5B и 5C в эту домашнюю работу не входят."
+    },
+    {
+      "type": "exercise",
+      "id": "l3-ex5a",
+      "title": "5A. Complete the conversation with the words in the box",
+      "instructions": "Выбери подходящее слово. Затем прослушай аудио 1.08 и проверь ответы.",
+      "audio": "audio/SO3_A2_WB_1C_Audio_1_08.mp3",
+      "wordBank": ["bye", "can’t", "OK", "things", "would"],
+      "items": [
+        {
+          "id": "1",
+          "prompt": "B: Hello, how are ___?",
+          "input": "select",
+          "options": ["bye", "can’t", "OK", "things", "would"],
+          "answer": 3,
+          "explanation": "How are things?"
+        },
+        {
+          "id": "2",
+          "prompt": "B: I’m all right. ___ you like to have dinner?",
+          "input": "select",
+          "options": ["bye", "can’t", "OK", "things", "would"],
+          "answer": 4,
+          "explanation": "Would you like to have dinner?"
+        },
+        {
+          "id": "3",
+          "prompt": "B: Sorry, I ___. What about 6.30?",
+          "input": "select",
+          "options": ["bye", "can’t", "OK", "things", "would"],
+          "answer": 1,
+          "explanation": "Sorry, I can’t."
+        },
+        {
+          "id": "4",
+          "prompt": "B: ___. A: Perfect! See you then.",
+          "input": "select",
+          "options": ["bye", "can’t", "OK", "things", "would"],
+          "answer": 2,
+          "explanation": "OK."
+        },
+        {
+          "id": "5",
+          "prompt": "B: See you then. ___.",
+          "input": "select",
+          "options": ["bye", "can’t", "OK", "things", "would"],
+          "answer": 0,
+          "explanation": "Bye."
+        }
+      ]
+    }
+  ]
+}
