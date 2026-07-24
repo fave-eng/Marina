@@ -341,7 +341,7 @@
       "id": "l3-ex3a",
       "title": "3A. Listen and answer with Mike (M) or Fran (F)",
       "instructions": "Прослушай аудио 1.04 и выбери M или F.",
-      "audio": "audio/013_SO3_A2_SB_1A_Audio_1_04.mp3",
+      "audio": "audio/SO3_A2_SB_1A_Audio_1_04.mp3",
       "items": [
         {
           "id": "1",
@@ -405,7 +405,7 @@
       "id": "l3-ex3b",
       "title": "3B. Listen and write what you hear",
       "instructions": "Прослушай аудио 1.05. Каждое предложение прозвучит только один раз. Напиши полное предложение.",
-      "audio": "audio/015_SO3_A2_SB_1B_Audio_1_05.mp3",
+      "audio": "audio/SO3_A2_SB_1B_Audio_1_05.mp3",
       "items": [
         {
           "id": "1",
@@ -444,7 +444,7 @@
       "id": "l3-ex5a",
       "title": "5A. Complete the conversation with the words in the box",
       "instructions": "Выбери подходящее слово. Затем прослушай аудио 1.08 и проверь ответы.",
-      "audio": "audio/018_SO3_A2_SB_1C_Audio_1_08.mp3",
+      "audio": "audio/SO3_A2_SB_1C_Audio_1_08.mp3",
       "wordBank": [
         "bye",
         "can’t",
