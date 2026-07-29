@@ -10,6 +10,8 @@
   const lessonsPath = 'data/lessons';
   const maxLessonNumber = 200;
   const maxConsecutiveMissingLessons = 3;
+  const MANUAL_LESSON_TYPES = ['family-tree', 'guided-writing', 'word-groups', 'mini-interview'];
+  const LESSON_TASK_TYPES = ['text', 'textarea', 'single', 'multiple', 'select', 'match', 'reorder', 'translate', 'audio', 'exercise', ...MANUAL_LESSON_TYPES];
 
   const safeText = (value, fallback = '') => value === undefined || value === null ? fallback : String(value);
   const escapeHtml = (value) => safeText(value)
@@ -1112,6 +1114,242 @@
     </div>`;
   }
 
+
+  function clientGeneratedId(prefix = 'item') {
+    if (window.crypto?.randomUUID) return `${prefix}-${window.crypto.randomUUID()}`;
+    return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  }
+
+  const FAMILY_RELATIONS = {
+    extended: ['grandmother', 'grandfather', 'grandparent', 'aunt', 'uncle', 'cousin', 'nephew', 'niece', 'grandson', 'granddaughter', 'relative'],
+    parents: ['mother', 'father', 'parent', 'stepmother', 'stepfather', 'guardian'],
+    siblings: ['me', 'brother', 'sister', 'sibling', 'son', 'daughter', 'child', 'partner', 'husband', 'wife']
+  };
+
+  function familyRelationOptions(group, selected = '') {
+    const values = [...(FAMILY_RELATIONS[group] || FAMILY_RELATIONS.extended)];
+    if (selected && !values.includes(selected)) values.push(selected);
+    return values.map((value) => `<option value="${escapeHtml(value)}" ${value === selected ? 'selected' : ''}>${escapeHtml(value)}</option>`).join('');
+  }
+
+  function renderFamilyMemberCard(member = {}, group = 'extended') {
+    const memberId = safeText(member.id, clientGeneratedId('family'));
+    const removable = member.removable !== false;
+    const showDetails = group !== 'extended' || member.showDetails === true;
+    const compactClass = showDetails ? '' : ' is-compact';
+    return `<article class="family-member-card${compactClass}" data-family-member data-member-id="${escapeHtml(memberId)}" data-family-group="${escapeHtml(group)}" data-member-fixed="${removable ? 'false' : 'true'}">
+      <div class="family-member-topline">
+        <label class="family-relation-field"><span>Relationship</span><select data-family-field="relation">${familyRelationOptions(group, safeText(member.relation, group === 'parents' ? 'parent' : group === 'siblings' ? 'sibling' : 'relative'))}</select></label>
+        ${removable ? '<button class="family-icon-button" type="button" data-family-remove aria-label="Удалить карточку" title="Удалить карточку">×</button>' : '<span class="family-fixed-badge">You</span>'}
+      </div>
+      <label class="family-field"><span>Name</span><input type="text" data-family-field="name" value="${escapeHtml(member.name || '')}" placeholder="Name or initials" autocomplete="off"></label>
+      <div class="family-extra-fields">
+        <label class="family-field"><span>Age <small>optional</small></span><input type="text" inputmode="numeric" data-family-field="age" value="${escapeHtml(member.age || '')}" placeholder="Age" autocomplete="off"></label>
+        <label class="family-field"><span>City <small>optional</small></span><input type="text" data-family-field="city" value="${escapeHtml(member.city || '')}" placeholder="City" autocomplete="off"></label>
+        <label class="family-field family-field-wide"><span>Work or study <small>optional</small></span><input type="text" data-family-field="occupation" value="${escapeHtml(member.occupation || '')}" placeholder="She works ... / He studies ..." autocomplete="off"></label>
+        <label class="family-field family-field-wide"><span>Hobby <small>optional</small></span><input type="text" data-family-field="hobby" value="${escapeHtml(member.hobby || '')}" placeholder="She likes ... / He likes ..." autocomplete="off"></label>
+      </div>
+      ${group === 'extended' ? `<button class="family-details-toggle" type="button" data-family-details aria-expanded="${showDetails ? 'true' : 'false'}">${showDetails ? 'Скрыть подробности' : 'Добавить подробности'}</button>` : ''}
+    </article>`;
+  }
+
+  function renderFamilyTier(group, title, subtitle, members) {
+    return `<section class="family-tree-tier" data-family-tier="${escapeHtml(group)}">
+      <div class="family-tier-heading"><div><strong>${escapeHtml(title)}</strong><span>${escapeHtml(subtitle)}</span></div></div>
+      <div class="family-tier-cards" data-family-cards="${escapeHtml(group)}">${members.map((member) => renderFamilyMemberCard(member, group)).join('')}</div>
+    </section>`;
+  }
+
+  function renderFamilyTreeBlock(block, id, title) {
+    const members = Array.isArray(block.initialMembers) ? block.initialMembers : [];
+    const byGroup = (group) => members.filter((member) => safeText(member.group) === group);
+    return `<article class="card lesson-block family-tree-card" data-task="${escapeHtml(id)}" data-type="family-tree">
+      <div class="manual-task-heading"><span class="eyebrow">Personal project</span><h3>${title}</h3>${block.instructions ? `<p class="muted">${escapeHtml(block.instructions)}</p>` : ''}</div>
+      <div class="family-tree-editor" data-family-tree>
+        ${renderFamilyTier('extended', 'Grandparents and other relatives', 'Имя и родственная связь обязательны только по желанию', byGroup('extended'))}
+        <div class="family-tree-connector" aria-hidden="true"></div>
+        ${renderFamilyTier('parents', 'Parents or guardians', 'Здесь можно указать больше подробностей', byGroup('parents'))}
+        <div class="family-tree-connector" aria-hidden="true"></div>
+        ${renderFamilyTier('siblings', 'You, brothers and sisters', 'Карточку You удалить нельзя, остальные можно менять', byGroup('siblings'))}
+        <div class="family-tree-add-row" aria-label="Добавить карточку">
+          <button class="btn btn-secondary btn-small" type="button" data-family-add="parents">+ Parent</button>
+          <button class="btn btn-secondary btn-small" type="button" data-family-add="siblings">+ Brother / sister</button>
+          <button class="btn btn-secondary btn-small" type="button" data-family-add="extended">+ Other relative</button>
+        </div>
+        <p class="family-tree-privacy">🔒 Необязательно указывать фамилии, точный возраст или место жительства. Инициалы и вымышленные данные тоже подходят.</p>
+      </div>
+      <div class="feedback" aria-live="polite"></div>
+    </article>`;
+  }
+
+  function renderGuidedWritingBlock(block, id, title) {
+    const starters = Array.isArray(block.starters) ? block.starters : [];
+    return `<article class="card lesson-block guided-writing-card" data-task="${escapeHtml(id)}" data-type="guided-writing" data-min-sentences="${Number(block.minSentences || 0)}" data-max-sentences="${Number(block.maxSentences || 0)}">
+      <div class="manual-task-heading"><span class="eyebrow">Writing</span><h3>${title}</h3>${block.instructions ? `<p class="muted">${escapeHtml(block.instructions)}</p>` : ''}</div>
+      ${starters.length ? `<div class="sentence-starters" aria-label="Начала предложений"><span>Нажми, чтобы добавить:</span>${starters.map((starter) => `<button type="button" data-writing-starter="${escapeHtml(starter)}">${escapeHtml(starter)}</button>`).join('')}</div>` : ''}
+      <textarea data-guided-writing placeholder="${escapeHtml(block.placeholder || '')}"></textarea>
+      <div class="writing-counter"><span data-sentence-counter>0 предложений</span><span>Рекомендуемый объём: ${Number(block.minSentences || 6)}–${Number(block.maxSentences || 8)}</span></div>
+      <div class="feedback" aria-live="polite"></div>
+    </article>`;
+  }
+
+  function renderWordGroupsBlock(block, id, title) {
+    return `<article class="card lesson-block optional-task-card" data-task="${escapeHtml(id)}" data-type="word-groups">
+      <details>
+        <summary><span><strong>${title}</strong><small>Optional · необязательное задание</small></span><span class="optional-chevron" aria-hidden="true">⌄</span></summary>
+        <div class="optional-task-body">
+          ${block.instructions ? `<p class="muted">${escapeHtml(block.instructions)}</p>` : ''}
+          <div class="family-word-groups">
+            <label><span>Female</span><textarea data-word-group="female" placeholder="mother, sister, ..."></textarea></label>
+            <label><span>Male</span><textarea data-word-group="male" placeholder="father, brother, ..."></textarea></label>
+            <label><span>Both</span><textarea data-word-group="both" placeholder="parent, cousin, ..."></textarea></label>
+          </div>
+        </div>
+      </details>
+      <div class="feedback" aria-live="polite"></div>
+    </article>`;
+  }
+
+  function renderMiniInterviewBlock(block, id, title) {
+    const questions = Array.isArray(block.questions) ? block.questions : [];
+    return `<article class="card lesson-block optional-task-card" data-task="${escapeHtml(id)}" data-type="mini-interview">
+      <details>
+        <summary><span><strong>${title}</strong><small>Optional · можно провести настоящее или вымышленное интервью</small></span><span class="optional-chevron" aria-hidden="true">⌄</span></summary>
+        <div class="optional-task-body">
+          ${block.instructions ? `<p class="muted">${escapeHtml(block.instructions)}</p>` : ''}
+          <div class="interview-person-row">
+            <label class="family-field"><span>Person</span><input type="text" data-interview-person placeholder="my mother / my cousin" autocomplete="off"></label>
+          </div>
+          <div class="interview-questions">${questions.map((question, index) => `<label class="interview-question"><span><strong>${index + 1}</strong>${escapeHtml(question)}</span><input type="text" data-interview-answer="${index}" placeholder="Short answer" autocomplete="off"></label>`).join('')}</div>
+          <label class="interview-summary"><span>Optional mini-story</span><textarea data-interview-summary placeholder="I interviewed my ... Her/His name is ..."></textarea></label>
+        </div>
+      </details>
+      <div class="feedback" aria-live="polite"></div>
+    </article>`;
+  }
+
+  function collectFamilyTree(node) {
+    return {
+      members: [...node.querySelectorAll('[data-family-member]')].map((card) => ({
+        id: safeText(card.dataset.memberId, clientGeneratedId('family')),
+        group: safeText(card.dataset.familyGroup, 'extended'),
+        relation: card.querySelector('[data-family-field="relation"]')?.value || '',
+        name: card.querySelector('[data-family-field="name"]')?.value || '',
+        age: card.querySelector('[data-family-field="age"]')?.value || '',
+        city: card.querySelector('[data-family-field="city"]')?.value || '',
+        occupation: card.querySelector('[data-family-field="occupation"]')?.value || '',
+        hobby: card.querySelector('[data-family-field="hobby"]')?.value || '',
+        showDetails: !card.classList.contains('is-compact'),
+        removable: card.dataset.memberFixed !== 'true'
+      }))
+    };
+  }
+
+  function collectWordGroups(node) {
+    return {
+      female: node.querySelector('[data-word-group="female"]')?.value || '',
+      male: node.querySelector('[data-word-group="male"]')?.value || '',
+      both: node.querySelector('[data-word-group="both"]')?.value || ''
+    };
+  }
+
+  function collectMiniInterview(node) {
+    return {
+      person: node.querySelector('[data-interview-person]')?.value || '',
+      answers: [...node.querySelectorAll('[data-interview-answer]')].map((input) => input.value || ''),
+      summary: node.querySelector('[data-interview-summary]')?.value || ''
+    };
+  }
+
+  function restoreFamilyTree(node, saved) {
+    const members = Array.isArray(saved?.members) ? saved.members : null;
+    if (!members) return;
+    ['extended', 'parents', 'siblings'].forEach((group) => {
+      const container = node.querySelector(`[data-family-cards="${group}"]`);
+      if (!container) return;
+      container.innerHTML = members.filter((member) => safeText(member.group) === group).map((member) => renderFamilyMemberCard(member, group)).join('');
+    });
+  }
+
+  function updateSentenceCounter(node) {
+    const textarea = node.querySelector('[data-guided-writing]');
+    const counter = node.querySelector('[data-sentence-counter]');
+    if (!textarea || !counter) return;
+    const text = textarea.value.trim();
+    const count = text ? text.split(/[.!?]+|\n+/).map((part) => part.trim()).filter(Boolean).length : 0;
+    const min = Number(node.dataset.minSentences || 0);
+    const max = Number(node.dataset.maxSentences || 0);
+    counter.textContent = `${count} ${count === 1 ? 'предложение' : count > 1 && count < 5 ? 'предложения' : 'предложений'}`;
+    counter.classList.toggle('is-ready', min > 0 && count >= min && (!max || count <= max));
+  }
+
+  function setupManualLessonWidgets(root) {
+    root.querySelectorAll('[data-type="guided-writing"]').forEach(updateSentenceCounter);
+
+    root.addEventListener('input', (event) => {
+      const writing = event.target.closest('[data-type="guided-writing"]');
+      if (writing) updateSentenceCounter(writing);
+    });
+
+    root.addEventListener('click', (event) => {
+      const addButton = event.target.closest('[data-family-add]');
+      if (addButton) {
+        const task = addButton.closest('[data-type="family-tree"]');
+        const group = safeText(addButton.dataset.familyAdd, 'extended');
+        const container = task?.querySelector(`[data-family-cards="${CSS.escape(group)}"]`);
+        if (!container) return;
+        const count = task.querySelectorAll('[data-family-member]').length;
+        if (count >= 24) {
+          showToast('В древе уже 24 карточки — этого должно хватить даже очень дружной семье.');
+          return;
+        }
+        const relation = group === 'parents' ? 'parent' : group === 'siblings' ? 'sibling' : 'relative';
+        container.insertAdjacentHTML('beforeend', renderFamilyMemberCard({ id: clientGeneratedId('family'), relation, showDetails: group !== 'extended', removable: true }, group));
+        container.lastElementChild?.querySelector('[data-family-field="name"]')?.focus();
+        task.dispatchEvent(new Event('input', { bubbles: true }));
+        return;
+      }
+
+      const removeButton = event.target.closest('[data-family-remove]');
+      if (removeButton) {
+        const card = removeButton.closest('[data-family-member]');
+        const hasText = [...card.querySelectorAll('input')].some((input) => input.value.trim());
+        if (hasText && !window.confirm('Удалить заполненную карточку?')) return;
+        const task = card.closest('[data-type="family-tree"]');
+        card.remove();
+        task?.dispatchEvent(new Event('input', { bubbles: true }));
+        return;
+      }
+
+      const detailsButton = event.target.closest('[data-family-details]');
+      if (detailsButton) {
+        const card = detailsButton.closest('[data-family-member]');
+        const willShow = card.classList.contains('is-compact');
+        card.classList.toggle('is-compact', !willShow);
+        detailsButton.setAttribute('aria-expanded', willShow ? 'true' : 'false');
+        detailsButton.textContent = willShow ? 'Скрыть подробности' : 'Добавить подробности';
+        card.closest('[data-type="family-tree"]')?.dispatchEvent(new Event('input', { bubbles: true }));
+        return;
+      }
+
+      const starterButton = event.target.closest('[data-writing-starter]');
+      if (starterButton) {
+        const task = starterButton.closest('[data-type="guided-writing"]');
+        const textarea = task?.querySelector('[data-guided-writing]');
+        if (!textarea) return;
+        const starter = safeText(starterButton.dataset.writingStarter);
+        const separator = textarea.value.trim() ? (textarea.value.endsWith('\n') ? '' : '\n') : '';
+        const start = textarea.selectionStart ?? textarea.value.length;
+        const before = textarea.value.slice(0, start);
+        const after = textarea.value.slice(textarea.selectionEnd ?? start);
+        textarea.value = `${before}${separator}${starter}${after}`;
+        textarea.focus();
+        textarea.setSelectionRange((before + separator + starter).length, (before + separator + starter).length);
+        textarea.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+    });
+  }
+
   function renderLessonBlock(block, index) {
     const id = safeText(block.id, `task-${index}`);
     const title = escapeHtml(block.title || block.prompt || `Задание ${index + 1}`);
@@ -1137,6 +1375,10 @@
         <div class="exercise-items">${items.map((item, itemIndex) => renderExerciseItem(item, id, itemIndex)).join('')}</div>
       </article>`;
     }
+    if (block.type === 'family-tree') return renderFamilyTreeBlock(block, id, title);
+    if (block.type === 'guided-writing') return renderGuidedWritingBlock(block, id, title);
+    if (block.type === 'word-groups') return renderWordGroupsBlock(block, id, title);
+    if (block.type === 'mini-interview') return renderMiniInterviewBlock(block, id, title);
     if (block.type === 'text' || block.type === 'translate') return `<article class="card lesson-block" data-task="${escapeHtml(id)}" data-type="${escapeHtml(block.type)}"><label class="field-label" for="${escapeHtml(id)}">${title}</label>${block.source ? `<p class="muted">${escapeHtml(block.source)}</p>` : ''}<input class="text-field" id="${escapeHtml(id)}" name="${escapeHtml(id)}" autocomplete="off"><div class="feedback"></div></article>`;
     if (block.type === 'textarea') return `<article class="card lesson-block" data-task="${escapeHtml(id)}" data-type="textarea"><label class="field-label" for="${escapeHtml(id)}">${title}</label><textarea id="${escapeHtml(id)}" name="${escapeHtml(id)}"></textarea><div class="feedback"></div></article>`;
     if (block.type === 'single' || block.type === 'multiple') {
@@ -1253,6 +1495,10 @@
 
   function checkLessonTask(block, node) {
     if (block.type === 'exercise') return checkExerciseBlock(block, node);
+    if (block.type === 'family-tree') return { actual: collectFamilyTree(node), correctCount: 0, total: 0, manual: true };
+    if (block.type === 'guided-writing') return { actual: node.querySelector('[data-guided-writing]')?.value || '', correctCount: 0, total: 0, manual: true };
+    if (block.type === 'word-groups') return { actual: collectWordGroups(node), correctCount: 0, total: 0, manual: true };
+    if (block.type === 'mini-interview') return { actual: collectMiniInterview(node), correctCount: 0, total: 0, manual: true };
     let actual;
     let correct = false;
     if (block.type === 'single') {
@@ -1315,6 +1561,26 @@
       if (!node) return;
       if (block.type === 'exercise') {
         restoreExerciseAnswers(block, node, value);
+      } else if (block.type === 'family-tree') {
+        restoreFamilyTree(node, value);
+      } else if (block.type === 'guided-writing') {
+        const textarea = node.querySelector('[data-guided-writing]');
+        if (textarea) textarea.value = safeText(value);
+        updateSentenceCounter(node);
+      } else if (block.type === 'word-groups') {
+        ['female', 'male', 'both'].forEach((group) => {
+          const textarea = node.querySelector(`[data-word-group="${group}"]`);
+          if (textarea) textarea.value = safeText(value?.[group]);
+        });
+        if (Object.values(value || {}).some((item) => safeText(item).trim())) node.querySelector('details')?.setAttribute('open', '');
+      } else if (block.type === 'mini-interview') {
+        const person = node.querySelector('[data-interview-person]');
+        if (person) person.value = safeText(value?.person);
+        const answers = Array.isArray(value?.answers) ? value.answers : [];
+        node.querySelectorAll('[data-interview-answer]').forEach((input, answerIndex) => { input.value = safeText(answers[answerIndex]); });
+        const summary = node.querySelector('[data-interview-summary]');
+        if (summary) summary.value = safeText(value?.summary);
+        if (safeText(value?.person).trim() || answers.some((item) => safeText(item).trim()) || safeText(value?.summary).trim()) node.querySelector('details')?.setAttribute('open', '');
       } else if (block.type === 'single') {
         const input = node.querySelector(`input[value="${CSS.escape(safeText(value))}"]`);
         if (input) input.checked = true;
@@ -1338,6 +1604,16 @@
     if (block.type === 'exercise') return;
     const total = Number(result.total || 0);
     const correctCount = Number(result.correctCount || 0);
+    if (result.manual || MANUAL_LESSON_TYPES.includes(block.type) || total === 0) {
+      node.classList.remove('is-correct', 'is-wrong');
+      node.classList.add('is-saved');
+      const feedback = node.querySelector('.feedback');
+      if (feedback) {
+        feedback.className = 'feedback show neutral';
+        feedback.textContent = 'Ответ сохранён для проверки преподавателем.';
+      }
+      return;
+    }
     const isCorrect = total > 0 && correctCount === total;
     node.classList.toggle('is-correct', isCorrect);
     node.classList.toggle('is-wrong', !isCorrect);
@@ -1349,7 +1625,7 @@
   }
 
   function reviewRestoredLesson(root, blocks) {
-    const checkableTypes = ['text','textarea','single','multiple','select','match','reorder','translate','audio','exercise'];
+    const checkableTypes = LESSON_TASK_TYPES;
     blocks
       .filter((block) => checkableTypes.includes(block.type) && !(block.type === 'audio' && block.response === false))
       .forEach((block, index) => {
@@ -1371,7 +1647,7 @@
         control.setAttribute('aria-readonly', 'true');
       }
     });
-    root.querySelectorAll('select, button[data-word]').forEach((control) => {
+    root.querySelectorAll('select, button[data-word], [data-task] button').forEach((control) => {
       control.disabled = true;
     });
   }
@@ -1409,13 +1685,14 @@
     const isCompleted = progress.completedIds.includes(lesson.id)
       || Boolean(progress.submissions[lesson.id])
       || lessonRecord.status === 'completed';
-    const pointsLabel = Number(lesson.totalPoints || 0) > 0 ? `${escapeHtml(lesson.totalPoints)} проверяемых ответов` : 'Без автоматической оценки';
-    const hasManualResponses = blocks.some((block) => block.type === 'exercise' && (block.items || []).some((item) => item.scored === false));
+    const isManualOnly = Number(lesson.totalPoints || 0) <= 0;
+    const pointsLabel = isManualOnly ? 'Проверяет преподаватель' : `${escapeHtml(lesson.totalPoints)} проверяемых ответов`;
+    const hasManualResponses = isManualOnly || blocks.some((block) => MANUAL_LESSON_TYPES.includes(block.type) || (block.type === 'exercise' && (block.items || []).some((item) => item.scored === false)));
     const lessonSections = blocks
       .map((block, blockIndex) => block.type === 'section' ? { block, blockIndex } : null)
       .filter(Boolean);
     const roadmap = lessonSections.length
-      ? `<nav class="card lesson-roadmap" aria-label="План домашнего задания"><div class="lesson-roadmap-heading"><span class="eyebrow">План задания</span><p>Проходи блоки по порядку — ответы сохранятся после проверки.</p></div><ol>${lessonSections.map(({ block, blockIndex }, sectionIndex) => `<li><a href="#lesson-section-${blockIndex}"><span>${sectionIndex + 1}</span><strong>${escapeHtml(block.title || `Часть ${sectionIndex + 1}`)}</strong></a></li>`).join('')}</ol></nav>`
+      ? `<nav class="card lesson-roadmap" aria-label="План домашнего задания"><div class="lesson-roadmap-heading"><span class="eyebrow">План задания</span><p>${isManualOnly ? 'Проходи блоки в удобном темпе — черновик сохраняется автоматически.' : 'Проходи блоки по порядку — ответы сохранятся после проверки.'}</p></div><ol>${lessonSections.map(({ block, blockIndex }, sectionIndex) => `<li><a href="#lesson-section-${blockIndex}"><span>${sectionIndex + 1}</span><strong>${escapeHtml(block.title || `Часть ${sectionIndex + 1}`)}</strong></a></li>`).join('')}</ol></nav>`
       : '';
     let sectionNumber = 0;
     const renderedBlocks = blocks.map((block, blockIndex) => {
@@ -1423,8 +1700,10 @@
       return renderLessonBlock(block.type === 'section' ? { ...block, __sectionNumber: sectionNumber } : block, blockIndex);
     }).join('');
     const actionsMarkup = isCompleted
-      ? `<div class="card section lesson-actions lesson-completed-panel"><div id="lesson-result" aria-live="polite"></div><div class="completed-lock-message"><span class="completed-lock-icon" aria-hidden="true">🔒</span><div><h3>Работа выполнена</h3><p class="muted">Ответы проверены и заблокированы. Изменить или стереть их уже нельзя.</p></div></div></div>`
-      : `<div class="card section lesson-actions"><div id="lesson-result" aria-live="polite"></div><div class="button-row"><button class="btn btn-primary" id="check-lesson" type="button">Проверить ответы</button><button class="btn btn-secondary" id="submit-lesson" type="button" ${savedResult ? '' : 'disabled'}>Отправить преподавателю</button></div><p class="muted save-note">После проверки ответы сохраняются на устройстве и сразу синхронизируются с Supabase.</p></div>`;
+      ? `<div class="card section lesson-actions lesson-completed-panel"><div id="lesson-result" aria-live="polite"></div><div class="completed-lock-message"><span class="completed-lock-icon" aria-hidden="true">🔒</span><div><h3>Работа отправлена</h3><p class="muted">Ответы сохранены и переданы преподавателю. Изменить их после отправки нельзя.</p></div></div></div>`
+      : isManualOnly
+        ? `<div class="card section lesson-actions manual-lesson-actions"><div id="lesson-result" aria-live="polite"><p class="muted" data-draft-status>Черновик сохраняется автоматически на этом устройстве и синхронизируется с Supabase.</p></div><div class="button-row"><button class="btn btn-secondary" id="check-lesson" type="button">Сохранить черновик</button><button class="btn btn-primary" id="submit-lesson" type="button">Отправить преподавателю</button></div><p class="muted save-note">Сайт не выставляет баллы. Перед отправкой проверь семейное древо и текст из 6–8 предложений; дополнительные задания можно оставить пустыми.</p></div>`
+        : `<div class="card section lesson-actions"><div id="lesson-result" aria-live="polite"></div><div class="button-row"><button class="btn btn-primary" id="check-lesson" type="button">Проверить ответы</button><button class="btn btn-secondary" id="submit-lesson" type="button" ${savedResult ? '' : 'disabled'}>Отправить преподавателю</button></div><p class="muted save-note">После проверки ответы сохраняются на устройстве и сразу синхронизируются с Supabase.</p></div>`;
     root.innerHTML = `<div class="card lesson-intro"><div><span class="eyebrow">Домашнее задание</span><p>${escapeHtml(lesson.subtitle || '')}</p></div><span class="lesson-points">${pointsLabel}</span></div>
       ${roadmap}
       <div id="lesson-blocks">${renderedBlocks}</div>
@@ -1435,8 +1714,11 @@
       savedResult?.answers
     );
     restoreLessonAnswers(root, blocks, restoredAnswers);
+    setupManualLessonWidgets(root);
     if (savedResult && Number(savedResult.total) > 0) {
       byId('lesson-result').innerHTML = `<h3>Сохранённый результат: ${Number(savedResult.correct || 0)} из ${Number(savedResult.total || 0)}</h3><p class="muted">${Number(savedResult.percent || 0)}% правильных ответов</p>`;
+    } else if (savedResult && isManualOnly && !isCompleted) {
+      byId('lesson-result').innerHTML = '<p class="muted" data-draft-status>Сохранённый черновик восстановлен. Можно продолжить с того же места.</p>';
     }
     if (savedResult) reviewRestoredLesson(root, blocks);
     if (isCompleted) lockCompletedLesson(root);
@@ -1453,9 +1735,56 @@
       });
     });
 
+    const collectCurrentLessonAnswers = () => {
+      const answers = {};
+      const checkable = blocks.filter((block) => LESSON_TASK_TYPES.includes(block.type) && !(block.type === 'audio' && block.response === false));
+      checkable.forEach((block, index) => {
+        const taskId = safeText(block.id, `task-${index}`);
+        const node = root.querySelector(`[data-task="${CSS.escape(taskId)}"]`);
+        if (!node) return;
+        answers[taskId] = checkLessonTask(block, node).actual;
+      });
+      return answers;
+    };
+
+    const saveManualDraft = (announce = false) => {
+      const updatedProgress = window.ProgressService.loadHomeworkProgress();
+      updatedProgress.results[lesson.id] = {
+        correct: 0,
+        total: 0,
+        percent: 0,
+        answers: collectCurrentLessonAnswers(),
+        legacyAnswers: savedResult?.legacyAnswers || null,
+        migratedAt: savedResult?.migratedAt || null,
+        checkedAt: new Date().toISOString()
+      };
+      window.ProgressService.saveHomeworkProgress(updatedProgress);
+      const status = root.querySelector('[data-draft-status]');
+      if (status) status.textContent = announce ? 'Черновик сохранён. Автоматической оценки нет — работу проверит преподаватель.' : 'Черновик сохранён автоматически.';
+      if (announce) showToast('Черновик сохранён.');
+      return updatedProgress.results[lesson.id].answers;
+    };
+
+    if (isManualOnly && !isCompleted) {
+      let draftTimer = 0;
+      const queueDraftSave = () => {
+        const status = root.querySelector('[data-draft-status]');
+        if (status) status.textContent = 'Сохраняем изменения…';
+        window.clearTimeout(draftTimer);
+        draftTimer = window.setTimeout(() => saveManualDraft(false), 700);
+      };
+      const lessonBlocksRoot = byId('lesson-blocks');
+      lessonBlocksRoot?.addEventListener('input', queueDraftSave);
+      lessonBlocksRoot?.addEventListener('change', queueDraftSave);
+    }
+
     const checkLessonButton = byId('check-lesson');
     if (checkLessonButton) checkLessonButton.addEventListener('click', () => {
-      const checkableTypes = ['text','textarea','single','multiple','select','match','reorder','translate','audio','exercise'];
+      if (isManualOnly) {
+        saveManualDraft(true);
+        return;
+      }
+      const checkableTypes = LESSON_TASK_TYPES;
       const checkable = blocks.filter((block) => checkableTypes.includes(block.type) && !(block.type === 'audio' && block.response === false));
       let correct = 0;
       let total = 0;
@@ -1490,6 +1819,11 @@
     });
     const submitLessonButton = byId('submit-lesson');
     if (submitLessonButton) submitLessonButton.addEventListener('click', () => {
+      if (isManualOnly) {
+        saveManualDraft(false);
+        const confirmed = window.confirm('Отправить работу преподавателю? После отправки ответы будут заблокированы для редактирования.');
+        if (!confirmed) return;
+      }
       const updatedProgress = window.ProgressService.loadHomeworkProgress();
       updatedProgress.submissions[lesson.id] = { savedAt: new Date().toISOString(), status: CloudService.isConfigured() ? 'pending-cloud' : 'local' };
       if (!updatedProgress.completedIds.includes(lesson.id)) updatedProgress.completedIds.push(lesson.id);
@@ -1499,7 +1833,7 @@
       const actions = root.querySelector('.lesson-actions');
       if (actions) {
         actions.classList.add('lesson-completed-panel');
-        actions.innerHTML = `<div id="lesson-result" aria-live="polite"><h3>Работа отправлена</h3><p class="muted">Ответы сохранены и больше не редактируются.</p></div><div class="completed-lock-message"><span class="completed-lock-icon" aria-hidden="true">🔒</span><div><h3>Работа выполнена</h3><p class="muted">Ответы проверены и заблокированы. Изменить или стереть их уже нельзя.</p></div></div>`;
+        actions.innerHTML = `<div id="lesson-result" aria-live="polite"><h3>Работа отправлена</h3><p class="muted">Ответы сохранены и переданы преподавателю для личной проверки.</p></div><div class="completed-lock-message"><span class="completed-lock-icon" aria-hidden="true">🔒</span><div><h3>Готово</h3><p class="muted">После отправки ответы заблокированы. Преподаватель проверит работу без автоматической оценки.</p></div></div>`;
       }
     });
   }

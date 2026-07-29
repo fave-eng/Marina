@@ -953,5 +953,343 @@ window.VOCABULARY_DATA = [
         "icon": "💬"
       }
     ]
+  },
+  {
+    "id": "vocab-lesson-4-family",
+    "title": "Family",
+    "label": "Lesson 1D · 30 useful words and phrases",
+    "icon": "👨‍👩‍👧‍👦",
+    "type": "lesson",
+    "linkedLessonId": "lesson-4",
+    "page": "vocabulary.html?id=vocab-lesson-4-family",
+    "description": "30 слов и выражений для семейного древа, рассказа о близких и дополнительного мини-интервью.",
+    "words": [
+      {
+        "id": "l4-01",
+        "uniqueKey": "family tree",
+        "en": "family tree",
+        "ru": "семейное древо",
+        "transcription": "/ˌfæməli ˈtriː/",
+        "exampleEn": "I made a family tree for my homework.",
+        "exampleRu": "Я составила семейное древо для домашней работы.",
+        "group": "family-basics"
+      },
+      {
+        "id": "l4-02",
+        "uniqueKey": "relative",
+        "en": "relative",
+        "ru": "родственник / родственница",
+        "transcription": "/ˈrelətɪv/",
+        "exampleEn": "My aunt is a close relative.",
+        "exampleRu": "Моя тётя — близкая родственница.",
+        "group": "family-basics"
+      },
+      {
+        "id": "l4-03",
+        "uniqueKey": "parent",
+        "en": "parent",
+        "ru": "родитель",
+        "transcription": "/ˈpeərənt/",
+        "exampleEn": "One of my parents works from home.",
+        "exampleRu": "Один из моих родителей работает из дома.",
+        "group": "close-family"
+      },
+      {
+        "id": "l4-04",
+        "uniqueKey": "mother",
+        "en": "mother",
+        "ru": "мать; мама",
+        "transcription": "/ˈmʌðə/",
+        "exampleEn": "My mother likes reading.",
+        "exampleRu": "Моя мама любит читать.",
+        "group": "close-family"
+      },
+      {
+        "id": "l4-05",
+        "uniqueKey": "father",
+        "en": "father",
+        "ru": "отец; папа",
+        "transcription": "/ˈfɑːðə/",
+        "exampleEn": "My father lives in another city.",
+        "exampleRu": "Мой папа живёт в другом городе.",
+        "group": "close-family"
+      },
+      {
+        "id": "l4-06",
+        "uniqueKey": "brother",
+        "en": "brother",
+        "ru": "брат",
+        "transcription": "/ˈbrʌðə/",
+        "exampleEn": "I have one brother.",
+        "exampleRu": "У меня есть один брат.",
+        "group": "close-family"
+      },
+      {
+        "id": "l4-07",
+        "uniqueKey": "sister",
+        "en": "sister",
+        "ru": "сестра",
+        "transcription": "/ˈsɪstə/",
+        "exampleEn": "My sister is called Anna.",
+        "exampleRu": "Мою сестру зовут Анна.",
+        "group": "close-family"
+      },
+      {
+        "id": "l4-08",
+        "uniqueKey": "sibling",
+        "en": "sibling",
+        "ru": "брат или сестра",
+        "transcription": "/ˈsɪblɪŋ/",
+        "exampleEn": "Have you got any siblings?",
+        "exampleRu": "У тебя есть братья или сёстры?",
+        "group": "close-family"
+      },
+      {
+        "id": "l4-09",
+        "uniqueKey": "husband",
+        "en": "husband",
+        "ru": "муж",
+        "transcription": "/ˈhʌzbənd/",
+        "exampleEn": "Her husband is a doctor.",
+        "exampleRu": "Её муж — врач.",
+        "group": "close-family"
+      },
+      {
+        "id": "l4-10",
+        "uniqueKey": "wife",
+        "en": "wife",
+        "ru": "жена",
+        "transcription": "/waɪf/",
+        "exampleEn": "His wife works at a school.",
+        "exampleRu": "Его жена работает в школе.",
+        "group": "close-family"
+      },
+      {
+        "id": "l4-11",
+        "uniqueKey": "partner",
+        "en": "partner",
+        "ru": "партнёр / партнёрша",
+        "transcription": "/ˈpɑːtnə/",
+        "exampleEn": "This is my partner, Alex.",
+        "exampleRu": "Это мой партнёр Алекс.",
+        "group": "close-family"
+      },
+      {
+        "id": "l4-12",
+        "uniqueKey": "son",
+        "en": "son",
+        "ru": "сын",
+        "transcription": "/sʌn/",
+        "exampleEn": "Their son is a university student.",
+        "exampleRu": "Их сын — студент университета.",
+        "group": "close-family"
+      },
+      {
+        "id": "l4-13",
+        "uniqueKey": "daughter",
+        "en": "daughter",
+        "ru": "дочь",
+        "transcription": "/ˈdɔːtə/",
+        "exampleEn": "Their daughter likes music.",
+        "exampleRu": "Их дочь любит музыку.",
+        "group": "close-family"
+      },
+      {
+        "id": "l4-14",
+        "uniqueKey": "child",
+        "en": "child",
+        "ru": "ребёнок",
+        "transcription": "/tʃaɪld/",
+        "exampleEn": "They have one child.",
+        "exampleRu": "У них один ребёнок.",
+        "group": "close-family"
+      },
+      {
+        "id": "l4-15",
+        "uniqueKey": "children",
+        "en": "children",
+        "ru": "дети",
+        "transcription": "/ˈtʃɪldrən/",
+        "exampleEn": "They have two children.",
+        "exampleRu": "У них двое детей.",
+        "group": "close-family"
+      },
+      {
+        "id": "l4-16",
+        "uniqueKey": "grandfather",
+        "en": "grandfather",
+        "ru": "дедушка",
+        "transcription": "/ˈɡrænfɑːðə/",
+        "exampleEn": "My grandfather is retired.",
+        "exampleRu": "Мой дедушка на пенсии.",
+        "group": "extended-family"
+      },
+      {
+        "id": "l4-17",
+        "uniqueKey": "grandmother",
+        "en": "grandmother",
+        "ru": "бабушка",
+        "transcription": "/ˈɡrænmʌðə/",
+        "exampleEn": "My grandmother enjoys cooking.",
+        "exampleRu": "Моя бабушка любит готовить.",
+        "group": "extended-family"
+      },
+      {
+        "id": "l4-18",
+        "uniqueKey": "grandparent",
+        "en": "grandparent",
+        "ru": "бабушка или дедушка",
+        "transcription": "/ˈɡrænpeərənt/",
+        "exampleEn": "A grandparent can be a grandmother or a grandfather.",
+        "exampleRu": "Grandparent — это бабушка или дедушка.",
+        "group": "extended-family"
+      },
+      {
+        "id": "l4-19",
+        "uniqueKey": "grandson",
+        "en": "grandson",
+        "ru": "внук",
+        "transcription": "/ˈɡrænsʌn/",
+        "exampleEn": "Joel is their grandson.",
+        "exampleRu": "Джоэл — их внук.",
+        "group": "extended-family"
+      },
+      {
+        "id": "l4-20",
+        "uniqueKey": "granddaughter",
+        "en": "granddaughter",
+        "ru": "внучка",
+        "transcription": "/ˈɡrændɔːtə/",
+        "exampleEn": "Barbara is their granddaughter.",
+        "exampleRu": "Барбара — их внучка.",
+        "group": "extended-family"
+      },
+      {
+        "id": "l4-21",
+        "uniqueKey": "aunt",
+        "en": "aunt",
+        "ru": "тётя",
+        "transcription": "/ɑːnt/",
+        "exampleEn": "My aunt lives in London.",
+        "exampleRu": "Моя тётя живёт в Лондоне.",
+        "group": "extended-family"
+      },
+      {
+        "id": "l4-22",
+        "uniqueKey": "uncle",
+        "en": "uncle",
+        "ru": "дядя",
+        "transcription": "/ˈʌŋkəl/",
+        "exampleEn": "My uncle is an engineer.",
+        "exampleRu": "Мой дядя — инженер.",
+        "group": "extended-family"
+      },
+      {
+        "id": "l4-23",
+        "uniqueKey": "cousin",
+        "en": "cousin",
+        "ru": "двоюродный брат / двоюродная сестра",
+        "transcription": "/ˈkʌzən/",
+        "exampleEn": "I often see my cousin at weekends.",
+        "exampleRu": "Я часто вижусь с двоюродной сестрой по выходным.",
+        "group": "extended-family"
+      },
+      {
+        "id": "l4-24",
+        "uniqueKey": "nephew",
+        "en": "nephew",
+        "ru": "племянник",
+        "transcription": "/ˈnefjuː/",
+        "exampleEn": "My nephew is five years old.",
+        "exampleRu": "Моему племяннику пять лет.",
+        "group": "extended-family"
+      },
+      {
+        "id": "l4-25",
+        "uniqueKey": "niece",
+        "en": "niece",
+        "ru": "племянница",
+        "transcription": "/niːs/",
+        "exampleEn": "My niece likes drawing.",
+        "exampleRu": "Моя племянница любит рисовать.",
+        "group": "extended-family"
+      },
+      {
+        "id": "l4-26",
+        "uniqueKey": "only child",
+        "en": "only child",
+        "ru": "единственный ребёнок в семье",
+        "transcription": "/ˌəʊnli ˈtʃaɪld/",
+        "exampleEn": "I am an only child.",
+        "exampleRu": "Я единственный ребёнок в семье.",
+        "group": "describing-family"
+      },
+      {
+        "id": "l4-27",
+        "uniqueKey": "older",
+        "en": "older",
+        "ru": "старше; старший",
+        "transcription": "/ˈəʊldə/",
+        "exampleEn": "My older brother works in an office.",
+        "exampleRu": "Мой старший брат работает в офисе.",
+        "group": "describing-family"
+      },
+      {
+        "id": "l4-28",
+        "uniqueKey": "younger",
+        "en": "younger",
+        "ru": "младше; младший",
+        "transcription": "/ˈjʌŋɡə/",
+        "exampleEn": "My younger sister is a student.",
+        "exampleRu": "Моя младшая сестра — студентка.",
+        "group": "describing-family"
+      },
+      {
+        "id": "l4-29",
+        "uniqueKey": "close to",
+        "en": "close to",
+        "ru": "быть близким с кем-либо",
+        "transcription": "/ˈkləʊs tə/",
+        "exampleEn": "I am close to my sister.",
+        "exampleRu": "Я близка со своей сестрой.",
+        "group": "describing-family"
+      },
+      {
+        "id": "l4-30",
+        "uniqueKey": "family",
+        "en": "family",
+        "ru": "семья",
+        "transcription": "/ˈfæməli/",
+        "exampleEn": "This is my family.",
+        "exampleRu": "Это моя семья.",
+        "group": "family-basics"
+      }
+    ],
+    "groups": [
+      {
+        "id": "family-basics",
+        "title": "Family basics",
+        "subtitle": "Основные понятия",
+        "icon": "🌳"
+      },
+      {
+        "id": "close-family",
+        "title": "Close family",
+        "subtitle": "Ближайшие родственники",
+        "icon": "🏠"
+      },
+      {
+        "id": "extended-family",
+        "title": "Extended family",
+        "subtitle": "Другие родственники",
+        "icon": "👪"
+      },
+      {
+        "id": "describing-family",
+        "title": "Describing family",
+        "subtitle": "Как рассказать о семье",
+        "icon": "💬"
+      }
+    ]
   }
 ];

@@ -1,0 +1,147 @@
+{
+  "id": "lesson-4",
+  "number": 4,
+  "title": "My family tree",
+  "subtitle": "Speakout · Unit 1 · Lesson 1D: family vocabulary, a personal family tree and a short description",
+  "status": "available",
+  "page": "lesson.html?id=lesson-4",
+  "vocabularyId": "vocab-lesson-4-family",
+  "grammarIds": [],
+  "publishedAt": "2026-07-29",
+  "totalPoints": 0,
+  "notification": {
+    "enabled": false,
+    "version": 1
+  },
+  "blocks": [
+    {
+      "type": "section",
+      "eyebrow": "Lesson 1D · Personal project",
+      "title": "Create your family tree",
+      "text": "Сделай удобное семейное древо по готовому шаблону. Карточки можно добавлять и удалять. Указывай только ту информацию, которой тебе комфортно делиться."
+    },
+    {
+      "type": "info",
+      "title": "Важно: можно выбрать комфортный вариант",
+      "text": "Можно использовать настоящие имена, инициалы или вымышленные имена. Фотографии не нужны. Для родителей, братьев и сестёр можно заполнить подробности. Для остальных родственников достаточно имени и родственной связи — возраст, город, работа и увлечения необязательны."
+    },
+    {
+      "type": "family-tree",
+      "id": "l4-family-tree",
+      "title": "1. My family tree",
+      "instructions": "Отредактируй шаблон. Оставь только нужные карточки и добавь родственников, которых не хватает.",
+      "initialMembers": [
+        {
+          "id": "relative-grandmother",
+          "group": "extended",
+          "relation": "grandmother",
+          "name": "",
+          "showDetails": false,
+          "removable": true
+        },
+        {
+          "id": "relative-grandfather",
+          "group": "extended",
+          "relation": "grandfather",
+          "name": "",
+          "showDetails": false,
+          "removable": true
+        },
+        {
+          "id": "parent-mother",
+          "group": "parents",
+          "relation": "mother",
+          "name": "",
+          "showDetails": true,
+          "removable": true
+        },
+        {
+          "id": "parent-father",
+          "group": "parents",
+          "relation": "father",
+          "name": "",
+          "showDetails": true,
+          "removable": true
+        },
+        {
+          "id": "person-me",
+          "group": "siblings",
+          "relation": "me",
+          "name": "Marina",
+          "showDetails": true,
+          "removable": false
+        },
+        {
+          "id": "sibling-one",
+          "group": "siblings",
+          "relation": "sibling",
+          "name": "",
+          "showDetails": true,
+          "removable": true
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "eyebrow": "Writing",
+      "title": "Write about your family",
+      "text": "Напиши небольшой связный текст по своему древу. Новая грамматика здесь не проверяется: используй знакомые конструкции."
+    },
+    {
+      "type": "guided-writing",
+      "id": "l4-family-writing",
+      "title": "2. Write 6–8 sentences about your family",
+      "instructions": "Расскажи о семье в удобном для тебя объёме. Можно не упоминать личную информацию, которую не хочется сообщать.",
+      "minSentences": 6,
+      "maxSentences": 8,
+      "starters": [
+        "This is my family.",
+        "I have ...",
+        "My ... is called ...",
+        "He is ... / She is ...",
+        "He lives in ... / She lives in ...",
+        "He works ... / She studies ...",
+        "He likes ... / She likes ...",
+        "We often ... together."
+      ],
+      "placeholder": "This is my family. I have ..."
+    },
+    {
+      "type": "tip",
+      "title": "Useful language",
+      "text": "Можно использовать: This is my family. · I have one brother. · My sister is called Anna. · She lives in ... · He works ... · She likes ... · We often spend time together. Конструкции с ’s / s’ использовать необязательно."
+    },
+    {
+      "type": "section",
+      "eyebrow": "Optional practice",
+      "title": "Extra tasks",
+      "text": "Следующие задания необязательные. Открой их только при желании. Пустые дополнительные задания не помешают отправить работу."
+    },
+    {
+      "type": "word-groups",
+      "id": "l4-family-word-groups",
+      "title": "3. Family word groups",
+      "instructions": "Распредели известные слова по группам Female, Male и Both. Можно добавить свои слова.",
+      "optional": true
+    },
+    {
+      "type": "mini-interview",
+      "id": "l4-family-interview",
+      "title": "4. Mini-interview",
+      "instructions": "При желании задай вопросы одному родственнику и кратко запиши ответы. Можно провести вымышленное интервью.",
+      "optional": true,
+      "questions": [
+        "What’s your name?",
+        "Where do you live?",
+        "What do you do?",
+        "What do you like doing?",
+        "Have you got any brothers or sisters?"
+      ]
+    },
+    {
+      "type": "info",
+      "title": "Как проверяется работа",
+      "text": "Сайт не выставляет баллы и не оценивает содержание. Он только сохраняет ответы. После отправки работу лично проверит преподаватель и даст комментарии."
+    }
+  ]
+}
