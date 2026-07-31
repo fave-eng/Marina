@@ -636,13 +636,22 @@
           } else if (cloudLegacyAnswers && !localResult.legacyAnswers) {
             homework.results[row.lesson_id] = { ...localResult, legacyAnswers: cloudLegacyAnswers };
           }
-          if (row.status === 'submitted' || row.migrated_from_legacy) {
+          const cloudSubmitted = ['submitted_pending_report', 'submitted'].includes(row.status);
+          if (cloudSubmitted || row.migrated_from_legacy) {
             homework.submissions[row.lesson_id] = {
               savedAt: row.submitted_at || row.updated_at,
-              status: row.migrated_from_legacy ? 'migrated-cloud' : 'cloud'
+              status: row.migrated_from_legacy
+                ? 'migrated-cloud'
+                : row.status === 'submitted'
+                  ? 'cloud'
+                  : 'cloud-pending-report',
+              cloudStatus: row.status || null,
+              reportStatus: row.report_status || null,
+              reportSentAt: row.report_sent_at || null,
+              reportError: row.report_error || null
             };
           }
-          if (row.status === 'submitted' || row.migrated_from_legacy) {
+          if (cloudSubmitted || row.migrated_from_legacy) {
             homework.completedIds.push(row.lesson_id);
           }
         });
@@ -712,12 +721,19 @@
           const lesson = HOMEWORK_DATA.find((item) => item.id === lessonId) || {};
           const total = Number(result.total || 0);
           const correct = Number(result.correct || 0);
+          const hasSubmission = Boolean(submission);
+          const isFinalCloudSubmission = submission?.cloudStatus === 'submitted';
+          const pendingReportStatus = ['pending', 'failed'].includes(submission?.reportStatus)
+            ? submission.reportStatus
+            : 'pending';
           return {
             student_id: studentId,
             student_name: safeText(student.nameRu || student.nameEn),
             lesson_id: lessonId,
             lesson_title: safeText(lesson.title, lessonId),
-            status: submission ? 'submitted' : 'checked',
+            status: hasSubmission
+              ? (isFinalCloudSubmission ? 'submitted' : 'submitted_pending_report')
+              : 'draft',
             answers: result.answers && typeof result.answers === 'object' ? result.answers : {},
             legacy_answers: result.legacyAnswers && typeof result.legacyAnswers === 'object' ? result.legacyAnswers : null,
             migrated_from_legacy: Boolean(result.migratedAt || result.legacyAnswers),
@@ -726,7 +742,14 @@
             score_percent: total > 0 ? safePercent(correct, total) : null,
             checked_at: result.checkedAt || null,
             submitted_at: submission?.savedAt || null,
-            locked_at: submission?.savedAt || null
+            locked_at: submission?.savedAt || null,
+            report_status: hasSubmission
+              ? (isFinalCloudSubmission ? (submission.reportStatus || 'sent') : pendingReportStatus)
+              : 'not_sent',
+            report_sent_at: isFinalCloudSubmission
+              ? (submission.reportSentAt || submission.savedAt || null)
+              : null,
+            report_error: isFinalCloudSubmission ? (submission.reportError || null) : (submission?.reportError || null)
           };
         });
         if (rows.length) {
