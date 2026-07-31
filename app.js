@@ -725,7 +725,8 @@
             score_total: total > 0 ? total : null,
             score_percent: total > 0 ? safePercent(correct, total) : null,
             checked_at: result.checkedAt || null,
-            submitted_at: submission?.savedAt || null
+            submitted_at: submission?.savedAt || null,
+            locked_at: submission?.savedAt || null
           };
         });
         if (rows.length) {
