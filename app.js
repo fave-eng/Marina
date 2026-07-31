@@ -714,7 +714,25 @@
 
       if (sections.includes('homework')) {
         const progress = this.loadHomeworkProgress();
-        const lessonIds = unique([...Object.keys(progress.results), ...Object.keys(progress.submissions)]);
+
+        // Final submissions are maintained by the server-side Telegram function.
+        // Do not send them back through a client-side upsert: PostgreSQL validates
+        // the proposed INSERT row before resolving ON CONFLICT, which can reject
+        // an otherwise existing final row when local report metadata is incomplete.
+        const { data: cloudHomeworkRows, error: cloudHomeworkReadError } = await client
+          .from(tables.homework)
+          .select('lesson_id,status,report_status')
+          .eq('student_id', studentId);
+        if (cloudHomeworkReadError) throw cloudHomeworkReadError;
+
+        const finalCloudLessonIds = new Set(
+          (cloudHomeworkRows || [])
+            .filter((row) => row.status === 'submitted' && row.report_status === 'sent')
+            .map((row) => row.lesson_id)
+        );
+
+        const lessonIds = unique([...Object.keys(progress.results), ...Object.keys(progress.submissions)])
+          .filter((lessonId) => !finalCloudLessonIds.has(lessonId));
         const rows = lessonIds.map((lessonId) => {
           const result = progress.results[lessonId] || {};
           const submission = progress.submissions[lessonId];
@@ -722,7 +740,7 @@
           const total = Number(result.total || 0);
           const correct = Number(result.correct || 0);
           const hasSubmission = Boolean(submission);
-          const isFinalCloudSubmission = submission?.cloudStatus === 'submitted';
+          const isFinalCloudSubmission = submission?.cloudStatus === 'submitted' && submission?.reportStatus === 'sent';
           const pendingReportStatus = ['pending', 'failed'].includes(submission?.reportStatus)
             ? submission.reportStatus
             : 'pending';
