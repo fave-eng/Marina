@@ -1291,5 +1291,177 @@ window.VOCABULARY_DATA = [
         "icon": "💬"
       }
     ]
+  },
+  {
+    "id": "vocab-lesson-5-possessives-family-listening",
+    "title": "Possessives and family listening",
+    "label": "Lesson 1D · 14 new words and phrases",
+    "icon": "👪",
+    "type": "lesson",
+    "linkedLessonId": "lesson-5",
+    "page": "vocabulary.html?id=vocab-lesson-5-possessives-family-listening",
+    "description": "Новые слова и термины из упражнений Lesson 1D, которых ещё не было в словаре сайта.",
+    "words": [
+      {
+        "id": "l5-01",
+        "uniqueKey": "possessive",
+        "en": "possessive",
+        "ru": "притяжательный; форма принадлежности",
+        "transcription": "/pəˈzesɪv/",
+        "exampleEn": "possessives: ’s, s’",
+        "exampleRu": "притяжательные формы: ’s, s’",
+        "group": "grammar-language"
+      },
+      {
+        "id": "l5-02",
+        "uniqueKey": "apostrophe",
+        "en": "apostrophe",
+        "ru": "апостроф",
+        "transcription": "/əˈpɒstrəfi/",
+        "exampleEn": "Complete the conversation with seven apostrophes.",
+        "exampleRu": "Дополните диалог семью апострофами.",
+        "group": "grammar-language"
+      },
+      {
+        "id": "l5-03",
+        "uniqueKey": "contraction",
+        "en": "contraction",
+        "ru": "сокращённая форма",
+        "transcription": "/kənˈtrækʃən/",
+        "exampleEn": "three for contractions",
+        "exampleRu": "три для сокращённых форм",
+        "group": "grammar-language"
+      },
+      {
+        "id": "l5-04",
+        "uniqueKey": "possession",
+        "en": "possession",
+        "ru": "принадлежность; притяжательное значение",
+        "transcription": "/pəˈzeʃən/",
+        "exampleEn": "four for possession",
+        "exampleRu": "четыре для выражения принадлежности",
+        "group": "grammar-language"
+      },
+      {
+        "id": "l5-05",
+        "uniqueKey": "mistake",
+        "en": "mistake",
+        "ru": "ошибка",
+        "transcription": "/mɪˈsteɪk/",
+        "exampleEn": "The sentences below have a mistake.",
+        "exampleRu": "В предложениях ниже есть ошибка.",
+        "group": "grammar-language"
+      },
+      {
+        "id": "l5-06",
+        "uniqueKey": "option",
+        "en": "option",
+        "ru": "вариант",
+        "transcription": "/ˈɒpʃən/",
+        "exampleEn": "Choose the best option to correct the mistake.",
+        "exampleRu": "Выберите лучший вариант, чтобы исправить ошибку.",
+        "group": "grammar-language"
+      },
+      {
+        "id": "l5-07",
+        "uniqueKey": "photo",
+        "en": "photo",
+        "ru": "фотография",
+        "transcription": "/ˈfəʊtəʊ/",
+        "exampleEn": "Who’s that in the photo?",
+        "exampleRu": "Кто это на фотографии?",
+        "group": "conversation"
+      },
+      {
+        "id": "l5-08",
+        "uniqueKey": "both",
+        "en": "both",
+        "ru": "оба; обе",
+        "transcription": "/bəʊθ/",
+        "exampleEn": "They’re both teachers.",
+        "exampleRu": "Они оба учителя.",
+        "group": "conversation"
+      },
+      {
+        "id": "l5-09",
+        "uniqueKey": "dog",
+        "en": "dog",
+        "ru": "собака",
+        "transcription": "/dɒɡ/",
+        "exampleEn": "They also have a dog.",
+        "exampleRu": "У них также есть собака.",
+        "group": "conversation"
+      },
+      {
+        "id": "l5-10",
+        "uniqueKey": "key",
+        "en": "key",
+        "ru": "ключ",
+        "transcription": "/kiː/",
+        "exampleEn": "Where are the keys of Anna?",
+        "exampleRu": "Где ключи Анны?",
+        "group": "conversation"
+      },
+      {
+        "id": "l5-11",
+        "uniqueKey": "near",
+        "en": "near",
+        "ru": "рядом; недалеко",
+        "transcription": "/nɪə/",
+        "exampleEn": "Do you live near your parents?",
+        "exampleRu": "Ты живёшь рядом с родителями?",
+        "group": "place"
+      },
+      {
+        "id": "l5-12",
+        "uniqueKey": "street",
+        "en": "street",
+        "ru": "улица",
+        "transcription": "/striːt/",
+        "exampleEn": "My parents’ house is in the street next to us.",
+        "exampleRu": "Дом моих родителей находится на соседней улице.",
+        "group": "place"
+      },
+      {
+        "id": "l5-13",
+        "uniqueKey": "next to",
+        "en": "next to",
+        "ru": "рядом с; по соседству с",
+        "transcription": "/ˈnekst tə/",
+        "exampleEn": "My parents’ house is in the street next to us.",
+        "exampleRu": "Дом моих родителей находится на соседней улице.",
+        "group": "place"
+      },
+      {
+        "id": "l5-14",
+        "uniqueKey": "quite near",
+        "en": "quite near",
+        "ru": "довольно близко",
+        "transcription": "/kwaɪt nɪə/",
+        "exampleEn": "We all live quite near.",
+        "exampleRu": "Мы все живём довольно близко друг к другу.",
+        "group": "place"
+      }
+    ],
+    "groups": [
+      {
+        "id": "grammar-language",
+        "title": "Grammar language",
+        "subtitle": "Термины задания",
+        "icon": "✍️"
+      },
+      {
+        "id": "conversation",
+        "title": "Conversation",
+        "subtitle": "Слова из диалога",
+        "icon": "💬"
+      },
+      {
+        "id": "place",
+        "title": "Place",
+        "subtitle": "Где живут люди",
+        "icon": "📍"
+      }
+    ]
   }
 ];

@@ -2266,3 +2266,46 @@ body[data-view="lesson"] #lesson-root {
 .family-field input,
 .family-relation-field select,
 .interview-question input { width: 100%; max-width: 100%; }
+
+
+.exercise-media-grid {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.exercise-media {
+  margin: 0;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.exercise-media img {
+  display: block;
+  width: 100%;
+  max-height: 620px;
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+.exercise-media figcaption {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: .85rem;
+  text-align: center;
+}
+
+.sentence-gaps.is-dialogue {
+  display: block;
+  line-height: 2.8;
+  white-space: normal;
+}
+
+.sentence-gaps.is-dialogue .gap-input {
+  width: 54px;
+  min-height: 38px;
+  margin: 0 3px;
+  padding: 4px 6px;
+}

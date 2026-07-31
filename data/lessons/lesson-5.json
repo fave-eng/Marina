@@ -1,0 +1,258 @@
+{
+  "id": "lesson-5",
+  "number": 5,
+  "title": "Possessives: ’s, s’",
+  "subtitle": "Speakout · Unit 1 · Lesson 1D: possessives and listening about family",
+  "status": "available",
+  "page": "lesson.html?id=lesson-5",
+  "vocabularyId": "vocab-lesson-5-possessives-family-listening",
+  "grammarIds": [],
+  "totalPoints": 25,
+  "notification": {
+    "enabled": true,
+    "version": 1
+  },
+  "blocks": [
+    {
+      "type": "section",
+      "eyebrow": "Lesson 1D · GRAMMAR",
+      "title": "possessives: ’s, s’"
+    },
+    {
+      "type": "exercise",
+      "id": "l5-ex1a",
+      "title": "1A. The sentences below have a mistake. Choose the best option to correct the mistake.",
+      "items": [
+        {
+          "id": "1",
+          "prompt": "My brothers’ name is Harry.",
+          "input": "single",
+          "options": [
+            "brothers",
+            "brother",
+            "brother’s"
+          ],
+          "answer": 2,
+          "explanation": "My brother’s name is Harry."
+        },
+        {
+          "id": "2",
+          "prompt": "This isn’t my room. It’s the childrens’.",
+          "input": "single",
+          "options": [
+            "children’s",
+            "children",
+            "childrens"
+          ],
+          "answer": 0,
+          "explanation": "This isn’t my room. It’s the children’s."
+        },
+        {
+          "id": "3",
+          "prompt": "Where are the keys of Anna?",
+          "input": "single",
+          "options": [
+            "the keys’ of Anna",
+            "Anna’s keys",
+            "Annas’ keys"
+          ],
+          "answer": 1,
+          "explanation": "Where are Anna’s keys?"
+        },
+        {
+          "id": "4",
+          "prompt": "Mia’s Tim sister.",
+          "input": "single",
+          "options": [
+            "Mia Tim’s",
+            "Mia’s Tim’s",
+            "Mia’s Tims’"
+          ],
+          "answer": 1,
+          "explanation": "Mia’s Tim’s sister."
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l5-ex1b",
+      "title": "1B. Complete the conversation with seven apostrophes (four for possession and three for contractions).",
+      "items": [
+        {
+          "id": "conversation",
+          "number": "",
+          "prompt": "",
+          "input": "gaps",
+          "layout": "dialogue",
+          "segments": [
+            "A: Who",
+            "s that in the photo?\nB: That",
+            "s my sister and her family. Her name",
+            "s Charlotte. Her husband",
+            "s name is Andy, and they’re both teachers.\nA: Do they have children?\nB: They have a daughter. Their daughter",
+            "s name is Emily. They also have a dog. Their dog",
+            "s name is Buster.\nA: Do you live near your parents?\nB: Yes, we all do. My parents",
+            " house is in the street next to us, so we all live quite near."
+          ],
+          "answers": [
+            "'",
+            "'",
+            "'",
+            "'",
+            "'",
+            "'",
+            "'"
+          ],
+          "explanation": "A: Who’s that in the photo?\nB: That’s my sister and her family. Her name’s Charlotte. Her husband’s name is Andy, and they’re both teachers.\nA: Do they have children?\nB: They have a daughter. Their daughter’s name is Emily. They also have a dog. Their dog’s name is Buster.\nA: Do you live near your parents?\nB: Yes, we all do. My parents’ house is in the street next to us, so we all live quite near."
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "eyebrow": "Lesson 1D · LISTENING",
+      "title": "talk about family"
+    },
+    {
+      "type": "exercise",
+      "id": "l5-ex2a",
+      "title": "2A. Listen to Grace and Marco talk about their families. Complete the table.",
+      "audio": "audio/SO3_A2_WB_1D_Audio_1_10.mp3",
+      "items": [
+        {
+          "id": "grace-from",
+          "prompt": "Grace — From:",
+          "input": "text",
+          "answer": "Scotland",
+          "explanation": "Grace — From: Scotland"
+        },
+        {
+          "id": "grace-lives",
+          "prompt": "Grace — Lives in:",
+          "input": "text",
+          "answer": "Birmingham",
+          "explanation": "Grace — Lives in: Birmingham"
+        },
+        {
+          "id": "grace-job",
+          "prompt": "Grace — Job:",
+          "input": "text",
+          "answer": "digital designer",
+          "explanation": "Grace — Job: digital designer"
+        },
+        {
+          "id": "marco-from",
+          "prompt": "Marco — From:",
+          "input": "text",
+          "answer": "New York",
+          "explanation": "Marco — From: New York"
+        },
+        {
+          "id": "marco-lives",
+          "prompt": "Marco — Lives in:",
+          "input": "text",
+          "answer": "London",
+          "explanation": "Marco — Lives in: London"
+        },
+        {
+          "id": "marco-job",
+          "prompt": "Marco — Job:",
+          "input": "text",
+          "answer": "pilot",
+          "explanation": "Marco — Job: pilot"
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l5-ex2b",
+      "title": "2B. Listen again. Complete the gaps in the family tree (1–8) with the names in the box.",
+      "audio": "audio/SO3_A2_WB_1D_Audio_1_10.mp3",
+      "wordBank": [
+        "Alan",
+        "April",
+        "Deepak",
+        "Leila",
+        "Oliver",
+        "Sally",
+        "Veronika",
+        "Zach"
+      ],
+      "images": [
+        {
+          "src": "assets/lessons/lesson-5/family-tree-grace.jpg",
+          "alt": "Grace’s family tree with gaps 1–4"
+        },
+        {
+          "src": "assets/lessons/lesson-5/family-tree-marco.jpg",
+          "alt": "Marco’s family tree with gaps 5–8"
+        }
+      ],
+      "items": [
+        {
+          "id": "1",
+          "prompt": "1",
+          "number": "",
+          "input": "text",
+          "answer": "Sally",
+          "explanation": "1 Sally"
+        },
+        {
+          "id": "2",
+          "prompt": "2",
+          "number": "",
+          "input": "text",
+          "answer": "Alan",
+          "explanation": "2 Alan"
+        },
+        {
+          "id": "3",
+          "prompt": "3",
+          "number": "",
+          "input": "text",
+          "answer": "Deepak",
+          "explanation": "3 Deepak"
+        },
+        {
+          "id": "4",
+          "prompt": "4",
+          "number": "",
+          "input": "text",
+          "answer": "Leila",
+          "explanation": "4 Leila"
+        },
+        {
+          "id": "5",
+          "prompt": "5",
+          "number": "",
+          "input": "text",
+          "answer": "Veronika",
+          "explanation": "5 Veronika"
+        },
+        {
+          "id": "6",
+          "prompt": "6",
+          "number": "",
+          "input": "text",
+          "answer": "Oliver",
+          "explanation": "6 Oliver"
+        },
+        {
+          "id": "7",
+          "prompt": "7",
+          "number": "",
+          "input": "text",
+          "answer": "April",
+          "explanation": "7 April"
+        },
+        {
+          "id": "8",
+          "prompt": "8",
+          "number": "",
+          "input": "text",
+          "answer": "Zach",
+          "explanation": "8 Zach"
+        }
+      ]
+    }
+  ]
+}

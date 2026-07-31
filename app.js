@@ -875,7 +875,7 @@
       const homeworkProgress = window.ProgressService.loadHomeworkProgress();
       const currentHomework = HOMEWORK_DATA
         .filter((item) => item.status === 'available' && !homeworkProgress.completedIds.includes(item.id) && !homeworkProgress.submissions[item.id])
-        .sort((a, b) => dateMs(b.publishedAt) - dateMs(a.publishedAt) || Number(b.number || 0) - Number(a.number || 0))[0];
+        .sort((a, b) => Number(b.number || 0) - Number(a.number || 0) || dateMs(b.publishedAt) - dateMs(a.publishedAt))[0];
 
       if (currentHomework) {
         const href = currentHomework.page || `lesson.html?id=${encodeURIComponent(currentHomework.id)}`;
@@ -919,8 +919,8 @@
       return 0;
     };
 
-    const newestLessonFirst = (a, b) => dateMs(b.publishedAt) - dateMs(a.publishedAt)
-      || Number(b.number || 0) - Number(a.number || 0);
+    const newestLessonFirst = (a, b) => Number(b.number || 0) - Number(a.number || 0)
+      || dateMs(b.publishedAt) - dateMs(a.publishedAt);
 
     const completedNewestFirst = (a, b) => completionTime(b) - completionTime(a)
       || Number(b.number || 0) - Number(a.number || 0);
@@ -1004,7 +1004,7 @@
       root.innerHTML = emptyState('📐', 'Грамматические темы пока не опубликованы', `Материалы будут добавляться в соответствии с уроками и учебником «${safeText(student.textbook)}».`);
       return;
     }
-    root.innerHTML = [...published].sort((a,b) => (a.order || 0) - (b.order || 0)).map((topic) => {
+    root.innerHTML = [...published].sort((a,b) => Number(b.order || 0) - Number(a.order || 0)).map((topic) => {
       const locked = topic.status === 'locked';
       const isPassed = progress.topics[topic.id]?.passed || topic.passed;
       const title = locked ? '🔒 Coming soon' : safeText(topic.title, 'Грамматическая тема');
@@ -1043,7 +1043,11 @@
         root.innerHTML = emptyState('💥', 'Словарных тренажёров пока нет', 'Новые темы появятся после уроков. Повторяющиеся слова автоматически исключаются.');
         return;
       }
-      root.innerHTML = filtered.map((topic) => {
+      const newestTopics = [...filtered].sort((a, b) => {
+        const lessonNumber = (topic) => Number(String(topic.linkedLessonId || '').match(/(\d+)(?!.*\d)/)?.[1] || topic.order || 0);
+        return lessonNumber(b) - lessonNumber(a);
+      });
+      root.innerHTML = newestTopics.map((topic) => {
         const wordCount = topic.words.length;
         const topicKnown = effectiveKnownCountForTopic(progress, topic);
         const complete = wordCount > 0 && topicKnown >= wordCount;
@@ -1102,7 +1106,9 @@
     } else if (item.input === 'gaps') {
       const answers = Array.isArray(item.answers) ? item.answers : [];
       const segments = Array.isArray(item.segments) ? item.segments : [];
-      control = `<div class="sentence-gaps" aria-label="${prompt}">${answers.map((answer, gapIndex) => `${gapIndex < segments.length ? `<span>${escapeHtml(segments[gapIndex])}</span>` : ''}<input class="gap-input" data-gap-index="${gapIndex}" aria-label="Gap ${gapIndex + 1}" autocomplete="off">`).join('')}${segments.length > answers.length ? `<span>${escapeHtml(segments[segments.length - 1])}</span>` : ''}</div>`;
+      const gapClass = item.layout === 'dialogue' ? 'sentence-gaps is-dialogue' : 'sentence-gaps';
+      const segmentMarkup = (segment) => escapeHtml(segment).replaceAll('\n', '<br>');
+      control = `<div class="${gapClass}" aria-label="${prompt}">${answers.map((answer, gapIndex) => `${gapIndex < segments.length ? `<span>${segmentMarkup(segments[gapIndex])}</span>` : ''}<input class="gap-input" data-gap-index="${gapIndex}" aria-label="Gap ${gapIndex + 1}" autocomplete="off">`).join('')}${segments.length > answers.length ? `<span>${segmentMarkup(segments[segments.length - 1])}</span>` : ''}</div>`;
     } else {
       control = `<input class="text-field" id="${escapeHtml(inputId)}" autocomplete="off" placeholder="${escapeHtml(item.placeholder || '')}">`;
     }
@@ -1370,8 +1376,16 @@
         ? `<div class="word-bank" aria-label="Word bank"><strong class="word-bank-label">Word bank</strong>${block.wordBank.map((word) => `<span>${escapeHtml(word)}</span>`).join('')}</div>`
         : '';
       const player = block.audio ? `<audio class="audio-player" controls preload="none" src="${escapeHtml(block.audio)}"></audio>` : '';
+      const mediaItems = Array.isArray(block.images) ? block.images : block.image ? [block.image] : [];
+      const media = mediaItems.length ? `<div class="exercise-media-grid">${mediaItems.map((image) => {
+        const source = typeof image === 'string' ? image : image?.src;
+        const alt = typeof image === 'string' ? '' : image?.alt;
+        const caption = typeof image === 'string' ? '' : image?.caption;
+        if (!source) return '';
+        return `<figure class="exercise-media"><img src="${escapeHtml(source)}" alt="${escapeHtml(alt || '')}" loading="lazy">${caption ? `<figcaption>${escapeHtml(caption)}</figcaption>` : ''}</figure>`;
+      }).join('')}</div>` : '';
       return `<article class="card lesson-block exercise-card" data-task="${escapeHtml(id)}" data-type="exercise">
-        <div class="exercise-heading"><span class="eyebrow">Exercise</span><h3>${title}</h3>${block.instructions ? `<p class="muted exercise-instructions">${escapeHtml(block.instructions)}</p>` : ''}${player}${wordBank}</div>
+        <div class="exercise-heading"><span class="eyebrow">Exercise</span><h3>${title}</h3>${block.instructions ? `<p class="muted exercise-instructions">${escapeHtml(block.instructions)}</p>` : ''}${player}${wordBank}${media}</div>
         <div class="exercise-items">${items.map((item, itemIndex) => renderExerciseItem(item, id, itemIndex)).join('')}</div>
       </article>`;
     }
@@ -1443,10 +1457,12 @@
     } else if (inputType === 'gaps') {
       actual = [...itemNode.querySelectorAll('[data-gap-index]')].map((input) => input.value);
       const expected = Array.isArray(item.answers) ? item.answers : [];
-      correct = expected.length > 0 && expected.every((answer, index) => {
+      const gapResults = expected.map((answer, index) => {
         const accepted = Array.isArray(answer) ? answer : [answer];
         return accepted.some((variant) => normalizeAnswer(variant) === normalizeAnswer(actual[index]));
       });
+      correct = expected.length > 0 && gapResults.every(Boolean);
+      return { actual, correct, scoreCorrect: gapResults.filter(Boolean).length, scoreTotal: expected.length };
     } else {
       actual = itemNode.querySelector('input, textarea')?.value || '';
       correct = textAnswerMatches(item, actual);
@@ -1479,8 +1495,10 @@
         return;
       }
 
-      total += 1;
-      if (result.correct) correctCount += 1;
+      const itemTotal = Number.isFinite(Number(result.scoreTotal)) && Number(result.scoreTotal) > 0 ? Number(result.scoreTotal) : 1;
+      const itemCorrect = Number.isFinite(Number(result.scoreCorrect)) ? Number(result.scoreCorrect) : result.correct ? 1 : 0;
+      total += itemTotal;
+      correctCount += itemCorrect;
       itemNode.classList.toggle('is-correct', result.correct);
       itemNode.classList.toggle('is-wrong', !result.correct);
       itemNode.classList.remove('is-saved');
