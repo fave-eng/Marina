@@ -696,6 +696,7 @@
             passedAt: local.passedAt || row.passed_at || null,
             attempts: Math.max(Number(local.attempts || 0), Number(row.attempts || 0)),
             bestScore: Math.max(Number(local.bestScore || 0), Number(row.best_score || 0)),
+            answers: Array.isArray(local.answers) ? local.answers : [],
             updatedAt: dateMs(row.updated_at) >= dateMs(local.updatedAt) ? row.updated_at : local.updatedAt
           };
         });
@@ -1123,10 +1124,49 @@
     </section>`).join('')}</div>`;
   }
 
+
+  function renderMarkedDialogueLine(value) {
+    const text = safeText(value);
+    const pattern = /\[\[(\d+)\|([^\]]+)\]\]/g;
+    let cursor = 0;
+    let markup = '';
+    let match;
+    while ((match = pattern.exec(text))) {
+      markup += escapeHtml(text.slice(cursor, match.index));
+      markup += `<span class="dialogue-mistake"><sup>${escapeHtml(match[1])}</sup><u>${escapeHtml(match[2])}</u></span>`;
+      cursor = pattern.lastIndex;
+    }
+    return markup + escapeHtml(text.slice(cursor));
+  }
+
+  function renderExerciseDialogue(block) {
+    const lines = Array.isArray(block.dialogue) ? block.dialogue : [];
+    if (!lines.length) return '';
+    return `<div class="exercise-dialogue" aria-label="Conversation">${lines.map((line) => `<p>${renderMarkedDialogueLine(line)}</p>`).join('')}</div>`;
+  }
+
+  function renderExerciseContentCards(block) {
+    const cards = Array.isArray(block.contentCards) ? block.contentCards : [];
+    if (!cards.length) return '';
+    return `<section class="social-reading" aria-label="${escapeHtml(block.contentTitle || 'Reading text')}">
+      ${block.contentTitle ? `<h4>${escapeHtml(block.contentTitle)}</h4>` : ''}
+      <div class="social-reading-list">${cards.map((card) => {
+        const image = card?.image || {};
+        const source = typeof image === 'string' ? image : image.src;
+        const alt = typeof image === 'string' ? '' : image.alt;
+        return `<article class="social-reading-card">
+          ${source ? `<img src="${escapeHtml(source)}" alt="${escapeHtml(alt || '')}" loading="lazy">` : ''}
+          <p>${escapeHtml(card.text || '')}</p>
+          ${card.author ? `<strong>${escapeHtml(card.author)}</strong>` : ''}
+        </article>`;
+      }).join('')}</div>
+    </section>`;
+  }
+
   function renderExerciseItem(item, blockId, index) {
     const itemId = safeText(item.id, `${index + 1}`);
     const number = item.number === undefined ? index + 1 : item.number;
-    const prompt = escapeHtml(item.prompt || '');
+    const prompt = escapeHtml(item.prompt || '').replaceAll('\n', '<br>');
     const inputId = `exercise-${blockId}-${itemId}`.replace(/[^a-zA-Z0-9_-]/g, '-');
     const numberMarkup = number === '' || number === null ? '' : `<span class="exercise-number">${escapeHtml(number)}</span>`;
 
@@ -1151,6 +1191,20 @@
       const gapClass = item.layout === 'dialogue' ? 'sentence-gaps is-dialogue' : 'sentence-gaps';
       const segmentMarkup = (segment) => escapeHtml(segment).replaceAll('\n', '<br>');
       control = `<div class="${gapClass}" aria-label="${prompt}">${answers.map((answer, gapIndex) => `${gapIndex < segments.length ? `<span>${segmentMarkup(segments[gapIndex])}</span>` : ''}<input class="gap-input" data-gap-index="${gapIndex}" aria-label="Gap ${gapIndex + 1}" autocomplete="off">`).join('')}${segments.length > answers.length ? `<span>${segmentMarkup(segments[segments.length - 1])}</span>` : ''}</div>`;
+    } else if (item.input === 'mark') {
+      let markIndex = 0;
+      const paragraphs = Array.isArray(item.paragraphs) ? item.paragraphs : [];
+      control = `<div class="mark-text">${paragraphs.map((paragraph) => {
+        const segments = Array.isArray(paragraph) ? paragraph : [paragraph];
+        return `<p>${segments.map((segment) => {
+          if (segment && typeof segment === 'object' && segment.word) {
+            const currentIndex = markIndex;
+            markIndex += 1;
+            return `<button class="mark-word" type="button" data-mark-index="${currentIndex}" aria-pressed="false">${escapeHtml(segment.word)}</button>`;
+          }
+          return escapeHtml(segment || '');
+        }).join('')}</p>`;
+      }).join('')}</div>`;
     } else {
       control = `<input class="text-field" id="${escapeHtml(inputId)}" autocomplete="off" placeholder="${escapeHtml(item.placeholder || '')}">`;
     }
@@ -1408,6 +1462,11 @@
     }
     if (block.type === 'info') return `<article class="card info-card lesson-block"><h3>${title}</h3><p>${text}</p></article>`;
     if (block.type === 'tip') return `<article class="card tip-card lesson-block"><h3>${title}</h3><p>${text}</p></article>`;
+    if (block.type === 'grammar-link') {
+      const grammarId = safeText(block.grammarId);
+      const href = grammarId ? `grammar-topic.html?id=${encodeURIComponent(grammarId)}` : 'grammar.html';
+      return `<article class="card lesson-block grammar-link-card"><div class="grammar-link-icon" aria-hidden="true">∑</div><div><span class="eyebrow">Grammar</span><h3>${title}</h3>${text ? `<p>${text}</p>` : ''}</div><a class="btn btn-primary" href="${escapeHtml(href)}">${escapeHtml(block.buttonLabel || 'Открыть тему')}</a></article>`;
+    }
     if (block.type === 'reading') {
       const sectionCount = Array.isArray(block.sections) ? block.sections.length : 0;
       return `<article class="card lesson-block reading-card"><div class="reading-title"><div><span class="eyebrow">Reading</span><h3>${title}</h3></div>${sectionCount ? `<span class="reading-count">${sectionCount} sections</span>` : ''}</div>${renderReadingSections(block)}</article>`;
@@ -1426,8 +1485,10 @@
         if (!source) return '';
         return `<figure class="exercise-media"><img src="${escapeHtml(source)}" alt="${escapeHtml(alt || '')}" loading="lazy">${caption ? `<figcaption>${escapeHtml(caption)}</figcaption>` : ''}</figure>`;
       }).join('')}</div>` : '';
+      const dialogue = renderExerciseDialogue(block);
+      const contentCards = renderExerciseContentCards(block);
       return `<article class="card lesson-block exercise-card" data-task="${escapeHtml(id)}" data-type="exercise">
-        <div class="exercise-heading"><span class="eyebrow">Exercise</span><h3>${title}</h3>${block.instructions ? `<p class="muted exercise-instructions">${escapeHtml(block.instructions)}</p>` : ''}${player}${wordBank}${media}</div>
+        <div class="exercise-heading"><span class="eyebrow">Exercise</span><h3>${title}</h3>${block.instructions ? `<p class="muted exercise-instructions">${escapeHtml(block.instructions)}</p>` : ''}${player}${wordBank}${media}${dialogue}${contentCards}</div>
         <div class="exercise-items">${items.map((item, itemIndex) => renderExerciseItem(item, id, itemIndex)).join('')}</div>
       </article>`;
     }
@@ -1505,6 +1566,14 @@
       });
       correct = expected.length > 0 && gapResults.every(Boolean);
       return { actual, correct, scoreCorrect: gapResults.filter(Boolean).length, scoreTotal: expected.length };
+    } else if (inputType === 'mark') {
+      actual = [...itemNode.querySelectorAll('[data-mark-index].is-selected')].map((button) => Number(button.dataset.markIndex)).sort((a, b) => a - b);
+      const expected = [...(item.answer || [])].map(Number).sort((a, b) => a - b);
+      const expectedSet = new Set(expected);
+      const selectedSet = new Set(actual);
+      const scoreCorrect = expected.filter((value) => selectedSet.has(value)).length;
+      correct = actual.length === expected.length && actual.every((value) => expectedSet.has(value));
+      return { actual, correct, scoreCorrect, scoreTotal: expected.length };
     } else {
       actual = itemNode.querySelector('input, textarea')?.value || '';
       correct = textAnswerMatches(item, actual);
@@ -1604,6 +1673,13 @@
       } else if (inputType === 'gaps') {
         const values = Array.isArray(value) ? value : [];
         itemNode.querySelectorAll('[data-gap-index]').forEach((input, gapIndex) => { input.value = safeText(values[gapIndex]); });
+      } else if (inputType === 'mark') {
+        const selected = new Set(Array.isArray(value) ? value.map(Number) : []);
+        itemNode.querySelectorAll('[data-mark-index]').forEach((button) => {
+          const active = selected.has(Number(button.dataset.markIndex));
+          button.classList.toggle('is-selected', active);
+          button.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
       } else {
         const input = itemNode.querySelector('input, textarea');
         if (input) input.value = safeText(value);
@@ -1775,6 +1851,13 @@
     );
     restoreLessonAnswers(root, blocks, restoredAnswers);
     setupManualLessonWidgets(root);
+    root.querySelectorAll('[data-mark-index]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const active = !button.classList.contains('is-selected');
+        button.classList.toggle('is-selected', active);
+        button.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+    });
     if (savedResult && Number(savedResult.total) > 0) {
       byId('lesson-result').innerHTML = `<h3>Сохранённый результат: ${Number(savedResult.correct || 0)} из ${Number(savedResult.total || 0)}</h3><p class="muted">${Number(savedResult.percent || 0)}% правильных ответов</p>`;
     } else if (savedResult && isManualOnly && !isCompleted) {
@@ -1982,7 +2065,7 @@
       ${uses.length ? `<section class="grammar-content-section" aria-labelledby="grammar-use-title">
         <div class="grammar-section-heading">
           <span class="grammar-section-number">1</span>
-          <div><h2 id="grammar-use-title">Когда используем</h2><p>Три основных случая для уровня A2.2</p></div>
+          <div><h2 id="grammar-use-title">Когда используем</h2><p>Основные случаи для уровня A2.2</p></div>
         </div>
         <div class="grammar-use-grid">${uses.map((item) => `<article class="grammar-use-card">
           <span class="grammar-use-icon" aria-hidden="true">${escapeHtml(item.icon || '•')}</span>
@@ -2082,7 +2165,7 @@
           <div>
             <span class="eyebrow">Мини-тест</span>
             <h2 id="mini-test-title">4 задания: от лёгкого к сложному</h2>
-            <p>Ответь на все вопросы. Для зачёта нужно 4 из 4. Тест можно переделывать.</p>
+            <p>Ответь на все вопросы. Для зачёта нужно 4 из 4. После успешной проверки ответы блокируются.</p>
           </div>
           <span class="grammar-test-goal">4 / 4</span>
         </div>
@@ -2099,6 +2182,61 @@
 
     const renderQuiz = () => {
       const { state: currentState } = grammarProgressState(topic);
+      const savedAnswers = Array.isArray(currentState.answers) ? currentState.answers : [];
+      const locked = Boolean(currentState.passed && savedAnswers.length === quiz.length);
+
+      const renderQuestionControl = (question, index, savedValue) => {
+        const type = safeText(question.type, 'single');
+        if (type === 'select') {
+          return `<select class="grammar-select" data-grammar-control>
+            <option value="">Choose an answer</option>
+            ${(question.options || []).map((option, optionIndex) => `<option value="${optionIndex}" ${Number(savedValue) === optionIndex ? 'selected' : ''}>${escapeHtml(option)}</option>`).join('')}
+          </select>`;
+        }
+        if (type === 'text') {
+          return `<input class="text-field grammar-text-answer" data-grammar-control type="text" value="${escapeHtml(savedValue || '')}" placeholder="${escapeHtml(question.placeholder || '')}" autocomplete="off">`;
+        }
+        if (type === 'gaps') {
+          const answers = Array.isArray(question.answers) ? question.answers : [];
+          const segments = Array.isArray(question.segments) ? question.segments : [];
+          const values = Array.isArray(savedValue) ? savedValue : [];
+          return `<div class="grammar-gaps">${answers.map((_, gapIndex) => `${gapIndex < segments.length ? `<span>${escapeHtml(segments[gapIndex])}</span>` : ''}<input class="gap-input" data-grammar-gap="${gapIndex}" value="${escapeHtml(values[gapIndex] || '')}" aria-label="Gap ${gapIndex + 1}" autocomplete="off">`).join('')}${segments.length > answers.length ? `<span>${escapeHtml(segments[segments.length - 1])}</span>` : ''}</div>`;
+        }
+        return `<div class="option-list">${(question.options || []).map((option, optionIndex) => `<label class="option grammar-option">
+          <input type="radio" name="grammar-${index}" value="${optionIndex}" ${Number(savedValue) === optionIndex ? 'checked' : ''}>
+          <span>${escapeHtml(option)}</span>
+        </label>`).join('')}</div>`;
+      };
+
+      const readAnswer = (question, node) => {
+        const type = safeText(question.type, 'single');
+        if (type === 'select') return node.querySelector('select')?.value ?? '';
+        if (type === 'text') return node.querySelector('input[type="text"]')?.value || '';
+        if (type === 'gaps') return [...node.querySelectorAll('[data-grammar-gap]')].map((input) => input.value);
+        return node.querySelector('input[type="radio"]:checked')?.value ?? '';
+      };
+
+      const isAnswered = (question, value) => {
+        const type = safeText(question.type, 'single');
+        if (type === 'gaps') return Array.isArray(value) && value.length === (question.answers || []).length && value.every((item) => normalizeAnswer(item) !== '');
+        return normalizeAnswer(value) !== '';
+      };
+
+      const isCorrectAnswer = (question, value) => {
+        const type = safeText(question.type, 'single');
+        if (type === 'select' || type === 'single') return value !== '' && Number(value) === Number(question.answer);
+        if (type === 'gaps') {
+          const expected = Array.isArray(question.answers) ? question.answers : [];
+          return expected.length > 0 && expected.every((answer, gapIndex) => {
+            const variants = Array.isArray(answer) ? answer : [answer];
+            return variants.some((variant) => normalizeAnswer(variant) === normalizeAnswer(value?.[gapIndex]));
+          });
+        }
+        const accepted = Array.isArray(question.acceptedAnswers) && question.acceptedAnswers.length
+          ? question.acceptedAnswers
+          : [question.answer];
+        return accepted.some((answer) => normalizeAnswer(answer) !== '' && normalizeAnswer(answer) === normalizeAnswer(value));
+      };
 
       quizRoot.innerHTML = `${quiz.map((question, index) => `<article class="card grammar-question-card" data-grammar-question="${index}">
         <div class="grammar-question-meta">
@@ -2106,62 +2244,67 @@
           <span>${escapeHtml(question.skill || '')}</span>
         </div>
         <h3>${index + 1}. ${escapeHtml(question.prompt)}</h3>
-        <div class="option-list">${(question.options || []).map((option, optionIndex) => `<label class="option grammar-option">
-          <input type="radio" name="grammar-${index}" value="${optionIndex}">
-          <span>${escapeHtml(option)}</span>
-        </label>`).join('')}</div>
+        ${renderQuestionControl(question, index, savedAnswers[index])}
         <div class="feedback"></div>
       </article>`).join('')}
       <article class="card grammar-test-actions">
         <div id="grammar-result" aria-live="polite">
-          <strong>${currentState.passed ? 'Тема уже засчитана.' : 'Выбери ответы во всех четырёх заданиях.'}</strong>
-          <span>${currentState.passed ? `Лучший результат: ${Number(currentState.bestScore || 0)}%` : 'Кнопка проверки станет активной после заполнения теста.'}</span>
+          <strong>${locked ? 'Тема засчитана. Ответы заблокированы.' : 'Заполни все четыре задания.'}</strong>
+          <span>${locked ? `Лучший результат: ${Number(currentState.bestScore || 0)}%` : 'Кнопка проверки станет активной после заполнения теста.'}</span>
         </div>
-        <div class="button-row">
-          <button class="btn btn-primary" type="button" id="check-grammar" disabled>Проверить тест</button>
-          <button class="btn btn-secondary" type="button" id="retry-grammar">Начать заново</button>
-        </div>
+        ${locked ? '' : `<div class="button-row">
+          <button class="btn btn-primary" type="button" id="check-grammar" disabled>Проверить задания</button>
+          <button class="btn btn-secondary" type="button" id="retry-grammar">Очистить ответы</button>
+        </div>`}
       </article>`;
+
+      if (locked) {
+        quizRoot.querySelectorAll('input, select').forEach((control) => { control.disabled = true; });
+        quizRoot.querySelectorAll('[data-grammar-question]').forEach((node) => node.classList.add('is-correct'));
+        return;
+      }
 
       const checkButton = byId('check-grammar');
       const retryButton = byId('retry-grammar');
 
+      const collectAnswers = () => quiz.map((question, index) => {
+        const node = quizRoot.querySelector(`[data-grammar-question="${index}"]`);
+        return readAnswer(question, node);
+      });
+
       const updateCheckState = () => {
-        const answered = quiz.filter((_, index) =>
-          quizRoot.querySelector(`[data-grammar-question="${index}"] input:checked`)
-        ).length;
+        const answers = collectAnswers();
+        const answered = answers.filter((value, index) => isAnswered(quiz[index], value)).length;
         checkButton.disabled = answered !== quiz.length;
         checkButton.textContent = answered === quiz.length
-          ? 'Проверить тест'
+          ? 'Проверить задания'
           : `Ответы: ${answered} / ${quiz.length}`;
       };
 
-      quizRoot.querySelectorAll('input[type="radio"]').forEach((input) => {
-        input.addEventListener('change', updateCheckState);
+      quizRoot.querySelectorAll('input, select').forEach((control) => {
+        control.addEventListener('input', updateCheckState);
+        control.addEventListener('change', updateCheckState);
       });
       updateCheckState();
 
       checkButton.addEventListener('click', () => {
         let correct = 0;
+        const actualAnswers = collectAnswers();
 
         quiz.forEach((question, index) => {
           const node = quizRoot.querySelector(`[data-grammar-question="${index}"]`);
-          const selected = node.querySelector('input:checked');
-          const isCorrect = selected && Number(selected.value) === Number(question.answer);
+          const isCorrect = isCorrectAnswer(question, actualAnswers[index]);
           if (isCorrect) correct += 1;
 
-          node.classList.toggle('is-correct', Boolean(isCorrect));
+          node.classList.toggle('is-correct', isCorrect);
           node.classList.toggle('is-wrong', !isCorrect);
-
-          node.querySelectorAll('input').forEach((input) => {
-            input.disabled = true;
-          });
+          node.querySelectorAll('input, select').forEach((control) => { control.disabled = true; });
 
           const feedback = node.querySelector('.feedback');
           feedback.className = `feedback show ${isCorrect ? 'good' : 'bad'}`;
           feedback.textContent = isCorrect
             ? 'Верно.'
-            : safeText(question.explanation, 'Проверь правило и попробуй ещё раз.');
+            : safeText(question.explanation, 'Есть ошибка. Проверь правило и попробуй ещё раз.');
         });
 
         const percent = safePercent(correct, quiz.length);
@@ -2177,6 +2320,7 @@
           passedAt,
           attempts: Number(previous.attempts || 0) + 1,
           bestScore: Math.max(Number(previous.bestScore || 0), percent),
+          answers: passedNow ? actualAnswers : (Array.isArray(previous.answers) ? previous.answers : []),
           updatedAt: new Date().toISOString()
         };
         window.ProgressService.saveGrammarProgress(progress);
@@ -2184,19 +2328,19 @@
         const result = byId('grammar-result');
         result.className = `grammar-result-box ${passedNow ? 'is-passed' : 'is-retry'}`;
         result.innerHTML = passedNow
-          ? `<strong>Тема засчитана ✓</strong><span>${correct} из ${quiz.length} · ${percent}%. Отличная работа!</span>`
-          : `<strong>${correct} из ${quiz.length} · ${percent}%</strong><span>Для зачёта нужно 4 из 4. Посмотри объяснения и попробуй ещё раз.</span>`;
+          ? `<strong>Тема засчитана ✓</strong><span>${correct} из ${quiz.length} · ${percent}%. Ответы заблокированы.</span>`
+          : `<strong>${correct} из ${quiz.length} · ${percent}%</strong><span>Есть ошибки. Правильные ответы не показаны — проверь правило и исправь задания.</span>`;
 
         checkButton.disabled = true;
-        checkButton.textContent = passedNow ? 'Тест сдан' : 'Проверено';
-        retryButton.textContent = passedNow ? 'Пройти ещё раз' : 'Исправить ответы';
+        checkButton.textContent = passedNow ? 'Тема выучена' : 'Проверено';
+        retryButton.disabled = passedNow;
+        retryButton.hidden = passedNow;
+        retryButton.textContent = 'Исправить ответы';
 
         const statusNode = byId('grammar-topic-status');
-        if (statusNode) {
-          statusNode.outerHTML = grammarStatusMarkup(topic, progress.topics[topic.id]);
-        }
+        if (statusNode) statusNode.outerHTML = grammarStatusMarkup(topic, progress.topics[topic.id]);
 
-        showToast(passedNow ? 'Тема засчитана.' : 'Попробуй ещё раз: результат сохранён.');
+        showToast(passedNow ? 'Тема засчитана.' : 'В заданиях есть ошибки.');
       });
 
       retryButton.addEventListener('click', () => {

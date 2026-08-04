@@ -191,5 +191,211 @@ window.GRAMMAR_DATA = [
         "explanation": "Правильный порядок: Where + do + you + come from?"
       }
     ]
+  },
+  {
+    "id": "grammar-lesson-6-countable-uncountable",
+    "order": 2,
+    "title": "Countable and uncountable nouns: a, an, some, any",
+    "level": "A2.2",
+    "status": "available",
+    "linkedLessonId": "lesson-6",
+    "page": "grammar-topic.html?id=grammar-lesson-6-countable-uncountable",
+    "passScore": 100,
+    "showCorrectAnswerOnError": false,
+    "overview": {
+      "lead": "В английском важно сначала понять, можно ли посчитать существительное поштучно. От этого зависит, можно ли поставить a / an и какую форму выбрать: some или any.",
+      "keyRule": "Можно посчитать один предмет — используй a / an. Нельзя посчитать поштучно — a / an не ставится; обычно используй some или any.",
+      "subjects": [
+        "a / an",
+        "some",
+        "any"
+      ],
+      "example": "an apple · some rice · any orange juice"
+    },
+    "uses": [
+      {
+        "icon": "1️⃣",
+        "title": "Countable — исчисляемые",
+        "text": "Можно посчитать: one apple, two apples. Есть форма единственного и множественного числа.",
+        "example": "an apple · three apples"
+      },
+      {
+        "icon": "🥣",
+        "title": "Uncountable — неисчисляемые",
+        "text": "Обычно воспринимаются как масса или вещество и не считаются поштучно.",
+        "example": "rice · sugar · broccoli"
+      },
+      {
+        "icon": "➕",
+        "title": "Some",
+        "text": "Обычно используется в утвердительных предложениях, а также в просьбах и предложениях.",
+        "example": "some noodles · Would you like some sugar?"
+      },
+      {
+        "icon": "❓",
+        "title": "Any",
+        "text": "Обычно используется в вопросах и отрицаниях.",
+        "example": "Do we have any cheese? · We haven’t got any juice."
+      }
+    ],
+    "forms": [
+      {
+        "id": "affirmative",
+        "icon": "A",
+        "title": "A перед согласным звуком",
+        "formula": "a + singular countable noun",
+        "example": "a pear",
+        "translation": "одна груша",
+        "note": "Смотри на первый звук следующего слова."
+      },
+      {
+        "id": "negative",
+        "icon": "AN",
+        "title": "An перед гласным звуком",
+        "formula": "an + singular countable noun",
+        "example": "an apple",
+        "translation": "одно яблоко",
+        "note": "An употребляется перед гласным звуком: an egg, an orange."
+      },
+      {
+        "id": "question",
+        "icon": "S",
+        "title": "Some",
+        "formula": "some + plural countable / uncountable noun",
+        "example": "some grapes · some oil",
+        "translation": "немного / несколько",
+        "note": "Чаще в утверждениях, предложениях и просьбах."
+      },
+      {
+        "id": "short-answer",
+        "icon": "?",
+        "title": "Any",
+        "formula": "any + plural countable / uncountable noun",
+        "example": "any carrots · any rice",
+        "translation": "какие-нибудь / сколько-нибудь",
+        "note": "Чаще в вопросах и отрицаниях."
+      }
+    ],
+    "contrast": {
+      "title": "Сначала определи тип существительного",
+      "intro": "Один и тот же выбор работает и для еды, и для других предметов.",
+      "ordinary": {
+        "label": "Countable",
+        "verbs": "apple, egg, pear, carrot, grape",
+        "affirmative": "a pear / an egg",
+        "negative": "some pears / any pears",
+        "question": "Do you want an apple?",
+        "rule": "В единственном числе нужен a или an; во множественном числе можно использовать some / any."
+      },
+      "be": {
+        "label": "Uncountable",
+        "verbs": "rice, sugar, oil, cheese, broccoli",
+        "affirmative": "some rice",
+        "negative": "not any rice",
+        "question": "Do we have any rice?",
+        "rule": "Не ставь a / an и обычно не добавляй -s."
+      }
+    },
+    "questionBuilder": {
+      "title": "Алгоритм выбора",
+      "pattern": [
+        "Можно посчитать?",
+        "Один предмет?",
+        "a / an",
+        "Иначе",
+        "some / any"
+      ],
+      "example": "one apple → an apple; rice → some rice",
+      "translation": "Сначала тип существительного, затем контекст предложения.",
+      "note": "В утвердительном предложении обычно some; в вопросе или отрицании обычно any."
+    },
+    "memoryRule": {
+      "title": "Запомни в четыре шага",
+      "steps": [
+        "Определи: существительное исчисляемое или неисчисляемое.",
+        "Один исчисляемый предмет: a перед согласным звуком, an перед гласным.",
+        "Утверждение, просьба или предложение: чаще some.",
+        "Вопрос или отрицание: чаще any."
+      ]
+    },
+    "commonMistakes": [
+      {
+        "wrong": "a rice",
+        "right": "some rice",
+        "reason": "Rice — неисчисляемое существительное."
+      },
+      {
+        "wrong": "a apple",
+        "right": "an apple",
+        "reason": "Apple начинается с гласного звука."
+      },
+      {
+        "wrong": "We haven’t got some juice.",
+        "right": "We haven’t got any juice.",
+        "reason": "В отрицании обычно используется any."
+      },
+      {
+        "wrong": "some carrot",
+        "right": "a carrot / some carrots",
+        "reason": "Carrot — исчисляемое: один предмет или множественное число."
+      }
+    ],
+    "quiz": [
+      {
+        "type": "single",
+        "difficulty": "1 · Easy",
+        "skill": "a или an",
+        "prompt": "Choose the correct phrase.",
+        "options": [
+          "a apple",
+          "an apple",
+          "some apple"
+        ],
+        "answer": 1,
+        "explanation": "Есть ошибка. Проверь правило для одного исчисляемого предмета."
+      },
+      {
+        "type": "select",
+        "difficulty": "2 · Basic",
+        "skill": "some или any",
+        "prompt": "We haven’t got ___ orange juice.",
+        "options": [
+          "some",
+          "any",
+          "an"
+        ],
+        "answer": 1,
+        "explanation": "Есть ошибка. Проверь, какое слово обычно используется в отрицании."
+      },
+      {
+        "type": "gaps",
+        "difficulty": "3 · Medium",
+        "skill": "два разных типа существительных",
+        "prompt": "Complete the sentence: I’d like ___ egg and ___ rice, please.",
+        "segments": [
+          "I’d like ",
+          " egg and ",
+          " rice, please."
+        ],
+        "answers": [
+          "an",
+          "some"
+        ],
+        "explanation": "Есть ошибка. Сначала определи тип каждого существительного."
+      },
+      {
+        "type": "text",
+        "difficulty": "4 · Challenge",
+        "skill": "исправление предложения",
+        "prompt": "Correct the sentence: Can I have a broccoli, please?",
+        "answer": "Can I have some broccoli, please?",
+        "acceptedAnswers": [
+          "Can I have some broccoli, please?",
+          "Can I have some broccoli please"
+        ],
+        "placeholder": "Write the complete sentence",
+        "explanation": "Есть ошибка. Проверь существительное и слово перед ним."
+      }
+    ]
   }
 ];

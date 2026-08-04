@@ -1463,5 +1463,409 @@ window.VOCABULARY_DATA = [
         "icon": "📍"
       }
     ]
+  },
+  {
+    "id": "vocab-lesson-6-food-and-drink",
+    "title": "Food and drink",
+    "label": "Lesson 2A · 36 new words and phrases",
+    "icon": "🥗",
+    "type": "lesson",
+    "linkedLessonId": "lesson-6",
+    "page": "vocabulary.html?id=vocab-lesson-6-food-and-drink",
+    "description": "Новые слова из упражнений и текстов Lesson 2A: продукты, напитки и полезная еда.",
+    "words": [
+      {
+        "id": "l6-01",
+        "uniqueKey": "orange juice",
+        "en": "orange juice",
+        "ru": "апельсиновый сок",
+        "transcription": "/ˈɒrɪndʒ dʒuːs/",
+        "exampleEn": "I drink orange juice for breakfast.",
+        "exampleRu": "Я пью апельсиновый сок на завтрак.",
+        "group": "food-drink"
+      },
+      {
+        "id": "l6-02",
+        "uniqueKey": "tomatoes",
+        "en": "tomatoes",
+        "ru": "помидоры",
+        "transcription": "/təˈmɑːtəʊz/",
+        "exampleEn": "The salad has red tomatoes.",
+        "exampleRu": "В салате есть красные помидоры.",
+        "group": "vegetables"
+      },
+      {
+        "id": "l6-03",
+        "uniqueKey": "rice",
+        "en": "rice",
+        "ru": "рис",
+        "transcription": "/raɪs/",
+        "exampleEn": "Can you buy some rice?",
+        "exampleRu": "Ты можешь купить рис?",
+        "group": "food-drink"
+      },
+      {
+        "id": "l6-04",
+        "uniqueKey": "broccoli",
+        "en": "broccoli",
+        "ru": "брокколи",
+        "transcription": "/ˈbrɒkəli/",
+        "exampleEn": "Jake eats a lot of broccoli.",
+        "exampleRu": "Джейк ест много брокколи.",
+        "group": "vegetables"
+      },
+      {
+        "id": "l6-05",
+        "uniqueKey": "eggs",
+        "en": "eggs",
+        "ru": "яйца",
+        "transcription": "/eɡz/",
+        "exampleEn": "We need some eggs.",
+        "exampleRu": "Нам нужны яйца.",
+        "group": "food-drink"
+      },
+      {
+        "id": "l6-06",
+        "uniqueKey": "apple",
+        "en": "apple",
+        "ru": "яблоко",
+        "transcription": "/ˈæpəl/",
+        "exampleEn": "Do you want an apple?",
+        "exampleRu": "Ты хочешь яблоко?",
+        "group": "fruit"
+      },
+      {
+        "id": "l6-07",
+        "uniqueKey": "beans",
+        "en": "beans",
+        "ru": "фасоль; бобы",
+        "transcription": "/biːnz/",
+        "exampleEn": "I like beans with rice.",
+        "exampleRu": "Мне нравится фасоль с рисом.",
+        "group": "vegetables"
+      },
+      {
+        "id": "l6-08",
+        "uniqueKey": "yoghurt",
+        "en": "yoghurt",
+        "ru": "йогурт",
+        "transcription": "/ˈjɒɡət/",
+        "exampleEn": "I have yoghurt for breakfast.",
+        "exampleRu": "Я ем йогурт на завтрак.",
+        "group": "food-drink"
+      },
+      {
+        "id": "l6-09",
+        "uniqueKey": "sugar",
+        "en": "sugar",
+        "ru": "сахар",
+        "transcription": "/ˈʃʊɡə/",
+        "exampleEn": "I don’t have any sugar in my coffee.",
+        "exampleRu": "Я не кладу сахар в кофе.",
+        "group": "food-drink"
+      },
+      {
+        "id": "l6-10",
+        "uniqueKey": "cereal",
+        "en": "cereal",
+        "ru": "хлопья; сухой завтрак",
+        "transcription": "/ˈsɪəriəl/",
+        "exampleEn": "I have cereal in the morning.",
+        "exampleRu": "Утром я ем хлопья.",
+        "group": "food-drink"
+      },
+      {
+        "id": "l6-11",
+        "uniqueKey": "bread",
+        "en": "bread",
+        "ru": "хлеб",
+        "transcription": "/bred/",
+        "exampleEn": "Can you get some bread?",
+        "exampleRu": "Ты можешь купить хлеб?",
+        "group": "food-drink"
+      },
+      {
+        "id": "l6-12",
+        "uniqueKey": "noodles",
+        "en": "noodles",
+        "ru": "лапша",
+        "transcription": "/ˈnuːdəlz/",
+        "exampleEn": "I like hot noodles with vegetables.",
+        "exampleRu": "Мне нравится горячая лапша с овощами.",
+        "group": "food-drink"
+      },
+      {
+        "id": "l6-13",
+        "uniqueKey": "chicken",
+        "en": "chicken",
+        "ru": "курица; куриное мясо",
+        "transcription": "/ˈtʃɪkɪn/",
+        "exampleEn": "She doesn’t eat chicken.",
+        "exampleRu": "Она не ест курицу.",
+        "group": "food-drink"
+      },
+      {
+        "id": "l6-14",
+        "uniqueKey": "carrots",
+        "en": "carrots",
+        "ru": "морковь",
+        "transcription": "/ˈkærəts/",
+        "exampleEn": "The salad has tomatoes and carrots.",
+        "exampleRu": "В салате есть помидоры и морковь.",
+        "group": "vegetables"
+      },
+      {
+        "id": "l6-15",
+        "uniqueKey": "oil",
+        "en": "oil",
+        "ru": "масло",
+        "transcription": "/ɔɪl/",
+        "exampleEn": "I put some oil on the salad.",
+        "exampleRu": "Я добавляю немного масла в салат.",
+        "group": "food-drink"
+      },
+      {
+        "id": "l6-16",
+        "uniqueKey": "pear",
+        "en": "pear",
+        "ru": "груша",
+        "transcription": "/peə/",
+        "exampleEn": "I always eat a pear after lunch.",
+        "exampleRu": "Я всегда ем грушу после обеда.",
+        "group": "fruit"
+      },
+      {
+        "id": "l6-17",
+        "uniqueKey": "grapes",
+        "en": "grapes",
+        "ru": "виноград",
+        "transcription": "/ɡreɪps/",
+        "exampleEn": "Would you like some grapes?",
+        "exampleRu": "Хочешь винограда?",
+        "group": "fruit"
+      },
+      {
+        "id": "l6-18",
+        "uniqueKey": "cheese",
+        "en": "cheese",
+        "ru": "сыр",
+        "transcription": "/tʃiːz/",
+        "exampleEn": "Do you like cheese?",
+        "exampleRu": "Тебе нравится сыр?",
+        "group": "food-drink"
+      },
+      {
+        "id": "l6-19",
+        "uniqueKey": "fish",
+        "en": "fish",
+        "ru": "рыба",
+        "transcription": "/fɪʃ/",
+        "exampleEn": "Yuki eats fish.",
+        "exampleRu": "Юки ест рыбу.",
+        "group": "food-drink"
+      },
+      {
+        "id": "l6-20",
+        "uniqueKey": "lamb",
+        "en": "lamb",
+        "ru": "ягнятина",
+        "transcription": "/læm/",
+        "exampleEn": "Theo likes lamb.",
+        "exampleRu": "Тео любит ягнятину.",
+        "group": "food-drink"
+      },
+      {
+        "id": "l6-21",
+        "uniqueKey": "lemonade",
+        "en": "lemonade",
+        "ru": "лимонад",
+        "transcription": "/ˌleməˈneɪd/",
+        "exampleEn": "They buy lemonade for Jake.",
+        "exampleRu": "Они покупают лимонад для Джейка.",
+        "group": "drinks"
+      },
+      {
+        "id": "l6-22",
+        "uniqueKey": "olives",
+        "en": "olives",
+        "ru": "оливки",
+        "transcription": "/ˈɒlɪvz/",
+        "exampleEn": "The market sells cheese and olives.",
+        "exampleRu": "На рынке продают сыр и оливки.",
+        "group": "food-drink"
+      },
+      {
+        "id": "l6-23",
+        "uniqueKey": "meat",
+        "en": "meat",
+        "ru": "мясо",
+        "transcription": "/miːt/",
+        "exampleEn": "Theo loves meat.",
+        "exampleRu": "Тео любит мясо.",
+        "group": "food-drink"
+      },
+      {
+        "id": "l6-24",
+        "uniqueKey": "pasta",
+        "en": "pasta",
+        "ru": "макароны; паста",
+        "transcription": "/ˈpæstə/",
+        "exampleEn": "Do you want pasta or noodles?",
+        "exampleRu": "Ты хочешь пасту или лапшу?",
+        "group": "food-drink"
+      },
+      {
+        "id": "l6-25",
+        "uniqueKey": "prawns",
+        "en": "prawns",
+        "ru": "креветки",
+        "transcription": "/prɔːnz/",
+        "exampleEn": "They sell really nice prawns at the market.",
+        "exampleRu": "На рынке продают очень хорошие креветки.",
+        "group": "food-drink"
+      },
+      {
+        "id": "l6-26",
+        "uniqueKey": "strawberries",
+        "en": "strawberries",
+        "ru": "клубника",
+        "transcription": "/ˈstrɔːbəriz/",
+        "exampleEn": "The fruit salad has strawberries.",
+        "exampleRu": "Во фруктовом салате есть клубника.",
+        "group": "fruit"
+      },
+      {
+        "id": "l6-27",
+        "uniqueKey": "dessert",
+        "en": "dessert",
+        "ru": "десерт",
+        "transcription": "/dɪˈzɜːt/",
+        "exampleEn": "Can you buy something for dessert?",
+        "exampleRu": "Ты можешь купить что-нибудь на десерт?",
+        "group": "food-drink"
+      },
+      {
+        "id": "l6-28",
+        "uniqueKey": "favourite",
+        "en": "favourite",
+        "ru": "любимый",
+        "transcription": "/ˈfeɪvərɪt/",
+        "exampleEn": "What’s your favourite healthy food?",
+        "exampleRu": "Какая у тебя любимая полезная еда?",
+        "group": "text-words"
+      },
+      {
+        "id": "l6-29",
+        "uniqueKey": "healthy",
+        "en": "healthy",
+        "ru": "полезный для здоровья",
+        "transcription": "/ˈhelθi/",
+        "exampleEn": "This is my favourite healthy food.",
+        "exampleRu": "Это моя любимая полезная еда.",
+        "group": "text-words"
+      },
+      {
+        "id": "l6-30",
+        "uniqueKey": "cucumber",
+        "en": "cucumber",
+        "ru": "огурец",
+        "transcription": "/ˈkjuːkʌmbə/",
+        "exampleEn": "The salad has green cucumber.",
+        "exampleRu": "В салате есть зелёный огурец.",
+        "group": "vegetables"
+      },
+      {
+        "id": "l6-31",
+        "uniqueKey": "sparkling water",
+        "en": "sparkling water",
+        "ru": "газированная вода",
+        "transcription": "/ˈspɑːklɪŋ ˌwɔːtə/",
+        "exampleEn": "I like to drink sparkling water with it.",
+        "exampleRu": "Я люблю пить с этим газированную воду.",
+        "group": "drinks"
+      },
+      {
+        "id": "l6-32",
+        "uniqueKey": "soup",
+        "en": "soup",
+        "ru": "суп",
+        "transcription": "/suːp/",
+        "exampleEn": "Moqueca is a fish soup.",
+        "exampleRu": "Мокека — это рыбный суп.",
+        "group": "food-drink"
+      },
+      {
+        "id": "l6-33",
+        "uniqueKey": "fruit salad",
+        "en": "fruit salad",
+        "ru": "фруктовый салат",
+        "transcription": "/ˈfruːt ˌsæləd/",
+        "exampleEn": "My favourite food is a fruit salad.",
+        "exampleRu": "Моя любимая еда — фруктовый салат.",
+        "group": "food-drink"
+      },
+      {
+        "id": "l6-34",
+        "uniqueKey": "melon",
+        "en": "melon",
+        "ru": "дыня",
+        "transcription": "/ˈmelən/",
+        "exampleEn": "I make it with strawberries, melon and pears.",
+        "exampleRu": "Я готовлю его с клубникой, дыней и грушами.",
+        "group": "fruit"
+      },
+      {
+        "id": "l6-35",
+        "uniqueKey": "herbs",
+        "en": "herbs",
+        "ru": "зелень; травы",
+        "transcription": "/hɜːbz/",
+        "exampleEn": "The salad has green herbs.",
+        "exampleRu": "В салате есть зелень.",
+        "group": "vegetables"
+      },
+      {
+        "id": "l6-36",
+        "uniqueKey": "smell",
+        "en": "smell",
+        "ru": "чувствовать запах; пахнуть",
+        "transcription": "/smel/",
+        "exampleEn": "Mmm, I can smell it now!",
+        "exampleRu": "Ммм, я уже чувствую запах!",
+        "group": "text-words"
+      }
+    ],
+    "groups": [
+      {
+        "id": "food-drink",
+        "title": "Food",
+        "subtitle": "Основные продукты и блюда",
+        "icon": "🍽️"
+      },
+      {
+        "id": "vegetables",
+        "title": "Vegetables",
+        "subtitle": "Овощи и зелень",
+        "icon": "🥦"
+      },
+      {
+        "id": "fruit",
+        "title": "Fruit",
+        "subtitle": "Фрукты и ягоды",
+        "icon": "🍓"
+      },
+      {
+        "id": "drinks",
+        "title": "Drinks",
+        "subtitle": "Напитки",
+        "icon": "🥤"
+      },
+      {
+        "id": "text-words",
+        "title": "Words from the texts",
+        "subtitle": "Слова для понимания комментариев",
+        "icon": "💬"
+      }
+    ]
   }
 ];

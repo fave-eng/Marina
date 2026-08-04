@@ -2309,3 +2309,184 @@ body[data-view="lesson"] #lesson-root {
   margin: 0 3px;
   padding: 4px 6px;
 }
+
+/* Lesson 2A: linked grammar, conversations, social posts and text marking */
+.grammar-link-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  padding: 20px 22px;
+  border-color: #c7d2fe;
+  background: linear-gradient(135deg, #ffffff, #f5f3ff);
+}
+
+.grammar-link-icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 15px;
+  background: linear-gradient(135deg, var(--indigo), var(--violet));
+  color: #fff;
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+
+.grammar-link-card h3 { margin: 5px 0 4px; }
+.grammar-link-card p { color: var(--muted); line-height: 1.55; }
+
+.exercise-dialogue {
+  display: grid;
+  gap: 7px;
+  margin-top: 18px;
+  padding: 17px 18px;
+  border: 1px solid #dbe3ef;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.exercise-dialogue p {
+  margin: 0;
+  color: #27364a;
+  line-height: 1.65;
+}
+
+.dialogue-mistake {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 1px;
+  font-weight: 700;
+}
+
+.dialogue-mistake sup {
+  color: var(--indigo);
+  font-size: .68em;
+  line-height: 1;
+}
+
+.social-reading {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #cbd5e1;
+  border-radius: 16px;
+  background: #e8edf4;
+}
+
+.social-reading > h4 {
+  margin: 0 0 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #315e88;
+  color: #fff;
+  font-size: clamp(1.15rem, 4vw, 1.55rem);
+}
+
+.social-reading-list {
+  display: grid;
+  gap: 12px;
+}
+
+.social-reading-card {
+  overflow: hidden;
+  border: 1px solid #d5dce6;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.social-reading-card img {
+  display: block;
+  width: 100%;
+  max-height: 360px;
+  object-fit: cover;
+}
+
+.social-reading-card p {
+  margin: 0;
+  padding: 14px 16px 8px;
+  color: #263445;
+  font-size: .98rem;
+  line-height: 1.68;
+}
+
+.social-reading-card strong {
+  display: block;
+  padding: 0 16px 15px;
+  color: #315e88;
+}
+
+.mark-text {
+  display: grid;
+  gap: 14px;
+  padding: 2px 0;
+}
+
+.mark-text p {
+  margin: 0;
+  color: #27364a;
+  line-height: 1.85;
+}
+
+.mark-word {
+  display: inline;
+  margin: 0;
+  padding: 1px 2px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.mark-word:hover,
+.mark-word:focus-visible {
+  border-color: var(--indigo);
+  outline: none;
+}
+
+.mark-word.is-selected {
+  border-style: solid;
+  border-color: #6366f1;
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.grammar-select {
+  width: 100%;
+  margin-top: 14px;
+}
+
+.grammar-text-answer {
+  margin-top: 14px;
+}
+
+.grammar-gaps {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  margin-top: 14px;
+  color: #27364a;
+  line-height: 2.2;
+}
+
+.grammar-gaps .gap-input {
+  width: 92px;
+}
+
+@media (max-width: 680px) {
+  .grammar-link-card {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .grammar-link-card .btn {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .social-reading { padding: 9px; }
+  .social-reading-card p { padding-inline: 13px; }
+  .social-reading-card strong { padding-inline: 13px; }
+  .exercise-dialogue { padding: 14px; }
+}

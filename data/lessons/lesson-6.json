@@ -1,0 +1,714 @@
+{
+  "id": "lesson-6",
+  "number": 6,
+  "title": "Food and drink",
+  "subtitle": "Speakout · Unit 2 · Lesson 2A: food and drink, countable and uncountable nouns, listening and writing",
+  "status": "available",
+  "page": "lesson.html?id=lesson-6",
+  "vocabularyId": "vocab-lesson-6-food-and-drink",
+  "grammarIds": [
+    "grammar-lesson-6-countable-uncountable"
+  ],
+  "totalPoints": 62,
+  "notification": {
+    "enabled": true,
+    "version": 1
+  },
+  "blocks": [
+    {
+      "type": "section",
+      "eyebrow": "Lesson 2A · VOCABULARY",
+      "title": "food and drink"
+    },
+    {
+      "type": "exercise",
+      "id": "l6-ex1a",
+      "title": "1A. Complete the words. The first letter is given.",
+      "images": [
+        {
+          "src": "assets/lessons/lesson-6/food-grid.jpg",
+          "alt": "Eight pictures of food and drink numbered 1–8 with the first letters of the words"
+        }
+      ],
+      "items": [
+        {
+          "id": "1",
+          "prompt": "o________ j________",
+          "input": "text",
+          "answer": "orange juice"
+        },
+        {
+          "id": "2",
+          "prompt": "t________",
+          "input": "text",
+          "answer": "tomatoes"
+        },
+        {
+          "id": "3",
+          "prompt": "r________",
+          "input": "text",
+          "answer": "rice"
+        },
+        {
+          "id": "4",
+          "prompt": "b________",
+          "input": "text",
+          "answer": "broccoli"
+        },
+        {
+          "id": "5",
+          "prompt": "e________",
+          "input": "text",
+          "answer": "eggs"
+        },
+        {
+          "id": "6",
+          "prompt": "a________",
+          "input": "text",
+          "answer": "apple"
+        },
+        {
+          "id": "7",
+          "prompt": "b________",
+          "input": "text",
+          "answer": "beans"
+        },
+        {
+          "id": "8",
+          "prompt": "y________",
+          "input": "text",
+          "answer": "yoghurt"
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l6-ex1b",
+      "title": "1B. Complete the conversation with the words in the box.",
+      "wordBank": [
+        "apple juice",
+        "bread",
+        "carrots",
+        "cereal",
+        "chicken",
+        "grapes",
+        "noodles",
+        "oil",
+        "pear",
+        "sugar"
+      ],
+      "items": [
+        {
+          "id": "conversation",
+          "number": "",
+          "prompt": "",
+          "input": "gaps",
+          "layout": "dialogue",
+          "segments": [
+            "A: What do you have for breakfast?\nB: First I have coffee. I need it to wake up in the morning! But I don’t have any ",
+            " in it. Then I have ",
+            " or ",
+            " and butter.\nA: I don’t eat breakfast. I don’t have time in the morning. But I drink green tea or ",
+            ".\nB: No breakfast! Are you hungry at work?\nA: Yes! Sometimes I eat lunch early, at 11 a.m. I go to a café near my office for lunch. I like hot ",
+            " with vegetables. I’m a vegetarian, though, so I don’t have any ",
+            " with it.\nB: I like vegetables for lunch, too. I make a salad when I work at home. I make it with lettuce, tomatoes and ",
+            ". I put ",
+            " on it, too.\nA: Yum! But I need a big lunch. So I always eat a ",
+            " or some ",
+            " as well."
+          ],
+          "answers": [
+            "sugar",
+            "cereal",
+            "bread",
+            "apple juice",
+            "noodles",
+            "chicken",
+            "carrots",
+            "oil",
+            "pear",
+            "grapes"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "eyebrow": "Lesson 2A · GRAMMAR",
+      "title": "countable and uncountable nouns; a, an, some, any"
+    },
+    {
+      "type": "grammar-link",
+      "id": "l6-grammar-link",
+      "title": "countable and uncountable nouns; a, an, some, any",
+      "text": "Открой тему в разделе грамматики перед упражнениями 2A–2B.",
+      "grammarId": "grammar-lesson-6-countable-uncountable",
+      "buttonLabel": "Перейти к теме"
+    },
+    {
+      "type": "exercise",
+      "id": "l6-ex2a",
+      "title": "2A. Choose the correct answers to complete the sentences.",
+      "items": [
+        {
+          "id": "1",
+          "prompt": "We haven’t got a / two / any orange juice.",
+          "input": "single",
+          "options": [
+            "a",
+            "two",
+            "any"
+          ],
+          "answer": 2
+        },
+        {
+          "id": "2",
+          "prompt": "Would you like a / some / three sugar?",
+          "input": "single",
+          "options": [
+            "a",
+            "some",
+            "three"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "3",
+          "prompt": "A: Do you like a / – / some cheese?\nB: Yes, I love it!",
+          "input": "single",
+          "options": [
+            "a",
+            "–",
+            "some"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "4",
+          "prompt": "Can I have a / any / some broccoli, please?",
+          "input": "single",
+          "options": [
+            "a",
+            "any",
+            "some"
+          ],
+          "answer": 2
+        },
+        {
+          "id": "5",
+          "prompt": "Do you want any / an / a apple?",
+          "input": "single",
+          "options": [
+            "any",
+            "an",
+            "a"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "6",
+          "prompt": "Let’s buy any / some / a noodles.",
+          "input": "single",
+          "options": [
+            "any",
+            "some",
+            "a"
+          ],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l6-ex2b",
+      "title": "2B. Choose the best option (a or b) to correct the mistakes (1–8) in the conversation.",
+      "dialogue": [
+        "A: Hi Carl. Are you at the supermarket?",
+        "B: Yes, I am.",
+        "A: Great. Can you get [[1|a]] bread? We don’t have [[2|some]].",
+        "B: Sure. Just that?",
+        "A: Yes. Oh, wait. Can you also buy [[3|any]] chillies, please?",
+        "B: OK … chillies. Ahh. They don’t have [[4|anything]] fish, so we can’t eat that tonight. But they have a [[5|lots]] of prawns. Do you want [[6|a]]?",
+        "A: Yes. Good idea. Can you buy [[7|an]] rice, too? And maybe [[8|any]] melon, to eat after dinner?",
+        "B: Sure. See you soon."
+      ],
+      "items": [
+        {
+          "id": "1",
+          "prompt": "1",
+          "input": "single",
+          "options": [
+            "a  one",
+            "b  some"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "2",
+          "prompt": "2",
+          "input": "single",
+          "options": [
+            "a  any",
+            "b  one"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "3",
+          "prompt": "3",
+          "input": "single",
+          "options": [
+            "a  lot",
+            "b  some"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "4",
+          "prompt": "4",
+          "input": "single",
+          "options": [
+            "a  some",
+            "b  any"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "5",
+          "prompt": "5",
+          "input": "single",
+          "options": [
+            "a  lot",
+            "b  some"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "6",
+          "prompt": "6",
+          "input": "single",
+          "options": [
+            "a  an",
+            "b  any"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "7",
+          "prompt": "7",
+          "input": "single",
+          "options": [
+            "a  some",
+            "b  a"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "8",
+          "prompt": "8",
+          "input": "single",
+          "options": [
+            "a  some",
+            "b  something"
+          ],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "eyebrow": "Lesson 2A · LISTENING",
+      "title": "food people like"
+    },
+    {
+      "type": "exercise",
+      "id": "l6-ex4a",
+      "title": "4A. Listen to the conversation. Match the people (1–3) with the food they like (a–c).",
+      "audio": "audio/SO3_A2_WB_1B_Audio_1_03.mp3",
+      "items": [
+        {
+          "id": "1",
+          "prompt": "Theo",
+          "input": "select",
+          "options": [
+            "a  vegetables",
+            "b  meat",
+            "c  fish"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "2",
+          "prompt": "Yuki",
+          "input": "select",
+          "options": [
+            "a  vegetables",
+            "b  meat",
+            "c  fish"
+          ],
+          "answer": 2
+        },
+        {
+          "id": "3",
+          "prompt": "Jake",
+          "input": "select",
+          "options": [
+            "a  vegetables",
+            "b  meat",
+            "c  fish"
+          ],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l6-ex4b",
+      "title": "4B. Listen again. Which items do they NOT mention?",
+      "audio": "audio/SO3_A2_WB_1B_Audio_1_03.mp3",
+      "items": [
+        {
+          "id": "items",
+          "number": "",
+          "prompt": "",
+          "input": "multiple",
+          "options": [
+            "broccoli",
+            "cheese",
+            "fish",
+            "ice cream",
+            "lamb",
+            "lemonade",
+            "olives",
+            "meat",
+            "orange juice",
+            "pasta",
+            "prawns",
+            "strawberries"
+          ],
+          "answer": [
+            1,
+            6,
+            8,
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l6-ex4c",
+      "title": "4C. Listen again. Are the statements True (T) or False (F)?",
+      "audio": "audio/SO3_A2_WB_1B_Audio_1_03.mp3",
+      "items": [
+        {
+          "id": "1",
+          "prompt": "Theo likes lamb.",
+          "input": "single",
+          "options": [
+            "T",
+            "F"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "2",
+          "prompt": "Yuki doesn’t eat fish.",
+          "input": "single",
+          "options": [
+            "T",
+            "F"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "3",
+          "prompt": "They sell prawns at the market.",
+          "input": "single",
+          "options": [
+            "T",
+            "F"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "4",
+          "prompt": "Jake doesn’t like broccoli.",
+          "input": "single",
+          "options": [
+            "T",
+            "F"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "5",
+          "prompt": "They don’t buy anything for dessert.",
+          "input": "single",
+          "options": [
+            "T",
+            "F"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "6",
+          "prompt": "They buy lemonade for Jake.",
+          "input": "single",
+          "options": [
+            "T",
+            "F"
+          ],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "eyebrow": "Lesson 2A · WRITING",
+      "title": "write an online comment; use linking words: and, but, or"
+    },
+    {
+      "type": "exercise",
+      "id": "l6-ex5a",
+      "title": "5A. Read the social media post and the replies. Match the people with the food they like.",
+      "contentTitle": "What’s your favourite healthy food?",
+      "contentCards": [
+        {
+          "image": {
+            "src": "assets/lessons/lesson-6/post-rainbow-salad.jpg",
+            "alt": "A rainbow salad"
+          },
+          "text": "This is a photo of my favourite healthy food – a rainbow salad. I usually eat meat or fish for dinner, but not today! I like this salad because it’s easy to make. You use lots of vegetables with different colours! This one has green cucumber, red tomatoes, red onions, yellow peppers and green herbs. I like to drink sparkling water with it.",
+          "author": "Jaylan, Australia"
+        },
+        {
+          "image": {
+            "src": "assets/lessons/lesson-6/post-moqueca.jpg",
+            "alt": "Moqueca, a Brazilian fish soup"
+          },
+          "text": "That looks very nice, Jaylan. I want to make it and eat it! My favourite healthy food is Moqueca. It’s a fish soup that we eat here in the north of Brazil. You can buy it in other countries, but it’s not the same. It’s fish, red peppers, onions or other vegetables in a tomato sauce. Mmm, I can smell it now!",
+          "author": "Giselle, Brazil"
+        },
+        {
+          "image": {
+            "src": "assets/lessons/lesson-6/post-fruit-salad.jpg",
+            "alt": "A fruit salad with strawberries and melon"
+          },
+          "text": "My favourite healthy food is a fruit salad. I make it with strawberries, melon and pears. I sometimes use oranges too, but when I don’t have any, I add a little bit of lemonade or sparkling water. It’s great on a hot day when I feel thirsty.",
+          "author": "Tom, Canada"
+        }
+      ],
+      "items": [
+        {
+          "id": "1",
+          "prompt": "onions",
+          "input": "single",
+          "options": [
+            "Jaylan",
+            "Giselle",
+            "Tom"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "2",
+          "prompt": "pears",
+          "input": "single",
+          "options": [
+            "Jaylan",
+            "Giselle",
+            "Tom"
+          ],
+          "answer": 2
+        },
+        {
+          "id": "3",
+          "prompt": "fish",
+          "input": "multiple",
+          "options": [
+            "Jaylan",
+            "Giselle",
+            "Tom"
+          ],
+          "answer": [
+            0,
+            1
+          ]
+        },
+        {
+          "id": "4",
+          "prompt": "cucumber",
+          "input": "single",
+          "options": [
+            "Jaylan",
+            "Giselle",
+            "Tom"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "5",
+          "prompt": "sparkling water",
+          "input": "multiple",
+          "options": [
+            "Jaylan",
+            "Giselle",
+            "Tom"
+          ],
+          "answer": [
+            0,
+            2
+          ]
+        },
+        {
+          "id": "6",
+          "prompt": "tomatoes",
+          "input": "multiple",
+          "options": [
+            "Jaylan",
+            "Giselle",
+            "Tom"
+          ],
+          "answer": [
+            0,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l6-ex5b",
+      "title": "5B. Choose the correct words to complete the sentences.",
+      "items": [
+        {
+          "id": "1",
+          "prompt": "This food is delicious, but / or it’s not very healthy.",
+          "input": "single",
+          "options": [
+            "but",
+            "or"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "2",
+          "prompt": "I usually have my lunch with sparkling water and / but lemonade.",
+          "input": "single",
+          "options": [
+            "and",
+            "but"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "3",
+          "prompt": "For dinner I usually have salmon, rice and / but broccoli.",
+          "input": "single",
+          "options": [
+            "and",
+            "but"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "4",
+          "prompt": "I like fish, but / or I don’t like prawns.",
+          "input": "single",
+          "options": [
+            "but",
+            "or"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "5",
+          "prompt": "Do you want pasta but / or noodles for dinner?",
+          "input": "single",
+          "options": [
+            "but",
+            "or"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "6",
+          "prompt": "I have yoghurt but / or fruit for breakfast every day.",
+          "input": "single",
+          "options": [
+            "but",
+            "or"
+          ],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l6-ex5c",
+      "title": "5C. Find more examples of and, but and or in the online comments.",
+      "items": [
+        {
+          "id": "comments",
+          "number": "",
+          "prompt": "",
+          "input": "mark",
+          "paragraphs": [
+            [
+              "This is a photo of my favourite healthy food – a rainbow salad. I usually eat meat or fish for dinner, ",
+              {
+                "word": "but"
+              },
+              " not today! I like this salad because it’s easy to make. You use lots of vegetables with different colours! This one has green cucumber, red tomatoes, red onions, yellow peppers ",
+              {
+                "word": "and"
+              },
+              " green herbs. I like to drink sparkling water with it."
+            ],
+            [
+              "That looks very nice, Jaylan. I want to make it ",
+              {
+                "word": "and"
+              },
+              " eat it! My favourite healthy food is Moqueca. It’s a fish soup that we eat here in the north of Brazil. You can buy it in other countries, ",
+              {
+                "word": "but"
+              },
+              " it’s not the same. It’s fish, red peppers, onions ",
+              {
+                "word": "or"
+              },
+              " other vegetables in a tomato sauce. Mmm, I can smell it now!"
+            ],
+            [
+              "My favourite healthy food is a fruit salad. I make it with strawberries, melon ",
+              {
+                "word": "and"
+              },
+              " pears. I sometimes use oranges too, ",
+              {
+                "word": "but"
+              },
+              " when I don’t have any, I add a little bit of lemonade ",
+              {
+                "word": "or"
+              },
+              " sparkling water. It’s great on a hot day when I feel thirsty."
+            ]
+          ],
+          "answer": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ]
+        }
+      ]
+    }
+  ]
+}
