@@ -2,14 +2,14 @@
   "id": "lesson-6",
   "number": 6,
   "title": "Food and drink",
-  "subtitle": "Speakout · Unit 2 · Lesson 2A: food and drink, countable and uncountable nouns, listening and writing",
+  "subtitle": "Speakout · Unit 2 · Lesson 2A: food and drink, countable and uncountable nouns, writing",
   "status": "available",
   "page": "lesson.html?id=lesson-6",
   "vocabularyId": "vocab-lesson-6-food-and-drink",
   "grammarIds": [
     "grammar-lesson-6-countable-uncountable"
   ],
-  "totalPoints": 62,
+  "totalPoints": 52,
   "notification": {
     "enabled": true,
     "version": 1
@@ -310,154 +310,6 @@
           "options": [
             "a  some",
             "b  something"
-          ],
-          "answer": 0
-        }
-      ]
-    },
-    {
-      "type": "section",
-      "eyebrow": "Lesson 2A · LISTENING",
-      "title": "food people like"
-    },
-    {
-      "type": "exercise",
-      "id": "l6-ex4a",
-      "title": "4A. Listen to the conversation. Match the people (1–3) with the food they like (a–c).",
-      "audio": "audio/SO3_A2_WB_1B_Audio_1_03.mp3",
-      "items": [
-        {
-          "id": "1",
-          "prompt": "Theo",
-          "input": "select",
-          "options": [
-            "a  vegetables",
-            "b  meat",
-            "c  fish"
-          ],
-          "answer": 1
-        },
-        {
-          "id": "2",
-          "prompt": "Yuki",
-          "input": "select",
-          "options": [
-            "a  vegetables",
-            "b  meat",
-            "c  fish"
-          ],
-          "answer": 2
-        },
-        {
-          "id": "3",
-          "prompt": "Jake",
-          "input": "select",
-          "options": [
-            "a  vegetables",
-            "b  meat",
-            "c  fish"
-          ],
-          "answer": 0
-        }
-      ]
-    },
-    {
-      "type": "exercise",
-      "id": "l6-ex4b",
-      "title": "4B. Listen again. Which items do they NOT mention?",
-      "audio": "audio/SO3_A2_WB_1B_Audio_1_03.mp3",
-      "items": [
-        {
-          "id": "items",
-          "number": "",
-          "prompt": "",
-          "input": "multiple",
-          "options": [
-            "broccoli",
-            "cheese",
-            "fish",
-            "ice cream",
-            "lamb",
-            "lemonade",
-            "olives",
-            "meat",
-            "orange juice",
-            "pasta",
-            "prawns",
-            "strawberries"
-          ],
-          "answer": [
-            1,
-            6,
-            8,
-            9
-          ]
-        }
-      ]
-    },
-    {
-      "type": "exercise",
-      "id": "l6-ex4c",
-      "title": "4C. Listen again. Are the statements True (T) or False (F)?",
-      "audio": "audio/SO3_A2_WB_1B_Audio_1_03.mp3",
-      "items": [
-        {
-          "id": "1",
-          "prompt": "Theo likes lamb.",
-          "input": "single",
-          "options": [
-            "T",
-            "F"
-          ],
-          "answer": 0
-        },
-        {
-          "id": "2",
-          "prompt": "Yuki doesn’t eat fish.",
-          "input": "single",
-          "options": [
-            "T",
-            "F"
-          ],
-          "answer": 1
-        },
-        {
-          "id": "3",
-          "prompt": "They sell prawns at the market.",
-          "input": "single",
-          "options": [
-            "T",
-            "F"
-          ],
-          "answer": 0
-        },
-        {
-          "id": "4",
-          "prompt": "Jake doesn’t like broccoli.",
-          "input": "single",
-          "options": [
-            "T",
-            "F"
-          ],
-          "answer": 1
-        },
-        {
-          "id": "5",
-          "prompt": "They don’t buy anything for dessert.",
-          "input": "single",
-          "options": [
-            "T",
-            "F"
-          ],
-          "answer": 1
-        },
-        {
-          "id": "6",
-          "prompt": "They buy lemonade for Jake.",
-          "input": "single",
-          "options": [
-            "T",
-            "F"
           ],
           "answer": 0
         }
