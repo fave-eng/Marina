@@ -172,6 +172,34 @@ export default {
 
     const recipientSource = recipient ? 'database' : 'github_actions_secret'
 
+    // A homework publication is a one-time event. Once any notification for
+    // this material has been sent, edits to the lesson or changes to
+    // notificationVersion must never produce another Telegram message.
+    const { data: alreadySent, error: alreadySentError } = await ctx.supabaseAdmin
+      .from('material_publications')
+      .select('id, telegram_message_id, notification_version')
+      .eq('student_id', studentId)
+      .eq('material_type', materialType)
+      .eq('material_id', materialId)
+      .eq('status', 'sent')
+      .order('sent_at', { ascending: true })
+      .limit(1)
+      .maybeSingle()
+
+    if (alreadySentError) {
+      return Response.json({ ok: false, error: alreadySentError.message }, { status: 500 })
+    }
+
+    if (alreadySent) {
+      return Response.json({
+        ok: true,
+        skipped: true,
+        reason: 'already_sent_once',
+        telegramMessageId: alreadySent.telegram_message_id,
+        originalNotificationVersion: alreadySent.notification_version,
+      })
+    }
+
     const { data: existing, error: existingError } = await ctx.supabaseAdmin
       .from('material_publications')
       .select('id, status, telegram_message_id')
