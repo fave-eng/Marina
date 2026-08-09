@@ -1,0 +1,478 @@
+{
+  "id": "lesson-7",
+  "number": 7,
+  "title": "Food and drink · Review",
+  "subtitle": "Unit 2A review: food and drink, countable and uncountable nouns, a/an/some/any",
+  "status": "available",
+  "page": "lesson.html?id=lesson-7",
+  "vocabularyId": "vocab-lesson-6-food-and-drink",
+  "grammarIds": [
+    "grammar-lesson-6-countable-uncountable"
+  ],
+  "publishedAt": "2026-08-09",
+  "totalPoints": 36,
+  "notification": {
+    "enabled": true,
+    "version": 1
+  },
+  "blocks": [
+    {
+      "type": "section",
+      "eyebrow": "Unit 2A · REVIEW",
+      "title": "Food and drink + grammar practice",
+      "text": "Повтори лексику прошлого урока и ещё раз отработай countable / uncountable nouns и a, an, some, any."
+    },
+    {
+      "type": "grammar-link",
+      "id": "l7-grammar-link",
+      "title": "Countable and uncountable nouns; a, an, some, any",
+      "text": "Если правило забылось, быстро повтори грамматику перед упражнениями.",
+      "grammarId": "grammar-lesson-6-countable-uncountable",
+      "buttonLabel": "Повторить правило"
+    },
+    {
+      "type": "exercise",
+      "id": "l7-ex1",
+      "title": "1. Food and drink. Choose the best word to complete each sentence.",
+      "instructions": "Выбери слово, которое лучше всего подходит по смыслу.",
+      "items": [
+        {
+          "id": "1",
+          "prompt": "I drink ___ for breakfast. It is made from oranges.",
+          "input": "single",
+          "options": [
+            "orange juice",
+            "oil",
+            "cheese"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "2",
+          "prompt": "I put some ___ on my salad.",
+          "input": "single",
+          "options": [
+            "cereal",
+            "oil",
+            "lemonade"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "3",
+          "prompt": "These small green or purple fruits grow in bunches.",
+          "input": "single",
+          "options": [
+            "grapes",
+            "carrots",
+            "prawns"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "4",
+          "prompt": "I like hot ___ with vegetables for lunch.",
+          "input": "single",
+          "options": [
+            "noodles",
+            "sugar",
+            "yoghurt"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "5",
+          "prompt": "A ___ is a green vegetable. It is long and fresh in a salad.",
+          "input": "single",
+          "options": [
+            "pear",
+            "cucumber",
+            "strawberry"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "6",
+          "prompt": "We need some ___ to make sandwiches.",
+          "input": "single",
+          "options": [
+            "bread",
+            "grapes",
+            "eggs"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "7",
+          "prompt": "This food is made from milk and is often yellow or white.",
+          "input": "single",
+          "options": [
+            "cheese",
+            "rice",
+            "broccoli"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "8",
+          "prompt": "For dessert, I sometimes have ___ with fruit.",
+          "input": "single",
+          "options": [
+            "yoghurt",
+            "chicken",
+            "oil"
+          ],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l7-ex2",
+      "title": "2. Countable or uncountable?",
+      "instructions": "Выбери, является ли существительное countable или uncountable в значении еды.",
+      "items": [
+        {
+          "id": "1",
+          "prompt": "apple",
+          "input": "single",
+          "options": [
+            "countable",
+            "uncountable"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "2",
+          "prompt": "rice",
+          "input": "single",
+          "options": [
+            "countable",
+            "uncountable"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "3",
+          "prompt": "eggs",
+          "input": "single",
+          "options": [
+            "countable",
+            "uncountable"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "4",
+          "prompt": "cheese",
+          "input": "single",
+          "options": [
+            "countable",
+            "uncountable"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "5",
+          "prompt": "tomatoes",
+          "input": "single",
+          "options": [
+            "countable",
+            "uncountable"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "6",
+          "prompt": "bread",
+          "input": "single",
+          "options": [
+            "countable",
+            "uncountable"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "7",
+          "prompt": "grapes",
+          "input": "single",
+          "options": [
+            "countable",
+            "uncountable"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "8",
+          "prompt": "pasta",
+          "input": "single",
+          "options": [
+            "countable",
+            "uncountable"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "9",
+          "prompt": "pears",
+          "input": "single",
+          "options": [
+            "countable",
+            "uncountable"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "10",
+          "prompt": "sugar",
+          "input": "single",
+          "options": [
+            "countable",
+            "uncountable"
+          ],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l7-ex3",
+      "title": "3. Choose a, an, some or any.",
+      "instructions": "Обрати внимание на singular/plural, а также на утвердительные, отрицательные предложения и вопросы.",
+      "items": [
+        {
+          "id": "1",
+          "prompt": "I'd like ___ apple, please.",
+          "input": "single",
+          "options": [
+            "a",
+            "an",
+            "some",
+            "any"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "2",
+          "prompt": "We have ___ rice for dinner.",
+          "input": "single",
+          "options": [
+            "a",
+            "an",
+            "some",
+            "any"
+          ],
+          "answer": 2
+        },
+        {
+          "id": "3",
+          "prompt": "Have we got ___ cheese?",
+          "input": "single",
+          "options": [
+            "a",
+            "an",
+            "some",
+            "any"
+          ],
+          "answer": 3
+        },
+        {
+          "id": "4",
+          "prompt": "There are ___ eggs in the fridge.",
+          "input": "single",
+          "options": [
+            "a",
+            "an",
+            "some",
+            "any"
+          ],
+          "answer": 2
+        },
+        {
+          "id": "5",
+          "prompt": "We haven't got ___ orange juice.",
+          "input": "single",
+          "options": [
+            "a",
+            "an",
+            "some",
+            "any"
+          ],
+          "answer": 3
+        },
+        {
+          "id": "6",
+          "prompt": "She eats ___ pear after lunch.",
+          "input": "single",
+          "options": [
+            "a",
+            "an",
+            "some",
+            "any"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "7",
+          "prompt": "Can I have ___ bread, please?",
+          "input": "single",
+          "options": [
+            "a",
+            "an",
+            "some",
+            "any"
+          ],
+          "answer": 2
+        },
+        {
+          "id": "8",
+          "prompt": "I usually have ___ egg for breakfast.",
+          "input": "single",
+          "options": [
+            "a",
+            "an",
+            "some",
+            "any"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "9",
+          "prompt": "Are there ___ tomatoes in the salad?",
+          "input": "single",
+          "options": [
+            "a",
+            "an",
+            "some",
+            "any"
+          ],
+          "answer": 3
+        },
+        {
+          "id": "10",
+          "prompt": "Would you like ___ yoghurt?",
+          "input": "single",
+          "options": [
+            "a",
+            "an",
+            "some",
+            "any"
+          ],
+          "answer": 2
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l7-ex4",
+      "title": "4. Find the mistake. Choose the correct version.",
+      "instructions": "В каждом предложении есть ошибка с a/an/some/any. Выбери правильный вариант.",
+      "items": [
+        {
+          "id": "1",
+          "prompt": "I'd like a rice.",
+          "input": "single",
+          "options": [
+            "I'd like some rice.",
+            "I'd like an rice.",
+            "I'd like any rice."
+          ],
+          "answer": 0
+        },
+        {
+          "id": "2",
+          "prompt": "We haven't got some cheese.",
+          "input": "single",
+          "options": [
+            "We haven't got a cheese.",
+            "We haven't got any cheese.",
+            "We haven't got an cheese."
+          ],
+          "answer": 1
+        },
+        {
+          "id": "3",
+          "prompt": "Can I have an bread, please?",
+          "input": "single",
+          "options": [
+            "Can I have some bread, please?",
+            "Can I have a bread, please?",
+            "Can I have any bread, please?"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "4",
+          "prompt": "Do you want a apple?",
+          "input": "single",
+          "options": [
+            "Do you want some apple?",
+            "Do you want an apple?",
+            "Do you want any apple?"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "5",
+          "prompt": "There aren't some eggs in the fridge.",
+          "input": "single",
+          "options": [
+            "There aren't any eggs in the fridge.",
+            "There aren't an eggs in the fridge.",
+            "There aren't a eggs in the fridge."
+          ],
+          "answer": 0
+        },
+        {
+          "id": "6",
+          "prompt": "She has any yoghurt for breakfast.",
+          "input": "single",
+          "options": [
+            "She has a yoghurt for breakfast.",
+            "She has some yoghurt for breakfast.",
+            "She has an yoghurt for breakfast."
+          ],
+          "answer": 1
+        },
+        {
+          "id": "7",
+          "prompt": "Let's buy a grapes.",
+          "input": "single",
+          "options": [
+            "Let's buy an grapes.",
+            "Let's buy any grapes.",
+            "Let's buy some grapes."
+          ],
+          "answer": 2
+        },
+        {
+          "id": "8",
+          "prompt": "I need an sugar for my coffee.",
+          "input": "single",
+          "options": [
+            "I need some sugar for my coffee.",
+            "I need a sugar for my coffee.",
+            "I need any sugar for my coffee."
+          ],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l7-ex5",
+      "title": "5. What food have you got at home?",
+      "instructions": "Напиши 6–8 предложений. Используй минимум 6 слов по теме Food and drink и постарайся использовать a/an, some и any. Можно написать и о том, что у тебя есть, и о том, чего нет.",
+      "items": [
+        {
+          "id": "writing",
+          "number": "",
+          "prompt": "Example: I've got some rice and some cheese. I've got an apple, but I haven't got any grapes.",
+          "input": "textarea",
+          "placeholder": "I've got ...\nI haven't got any ...\nFor breakfast, I usually have ...",
+          "scored": false
+        }
+      ]
+    }
+  ]
+}
