@@ -1867,5 +1867,208 @@ window.VOCABULARY_DATA = [
         "icon": "💬"
       }
     ]
+  },
+  {
+    "id": "vocab-lesson-8-everyday-frequency",
+    "title": "Everyday activities and frequency",
+    "label": "Lesson 2B · 17 new words and phrases",
+    "icon": "🕒",
+    "type": "lesson",
+    "linkedLessonId": "lesson-8",
+    "page": "vocabulary.html?id=vocab-lesson-8-everyday-frequency",
+    "description": "Полезные новые слова и устойчивые фразы из Lesson 2B: повседневные действия и частотность.",
+    "words": [
+      {
+        "id": "l8-01",
+        "uniqueKey": "go shopping",
+        "en": "go shopping",
+        "ru": "ходить за покупками",
+        "transcription": "/ɡəʊ ˈʃɒpɪŋ/",
+        "exampleEn": "We go shopping after work on Fridays.",
+        "exampleRu": "Мы ходим за покупками после работы по пятницам.",
+        "group": "activities"
+      },
+      {
+        "id": "l8-02",
+        "uniqueKey": "check emails",
+        "en": "check emails",
+        "ru": "проверять электронную почту",
+        "transcription": "/tʃek ˈiːmeɪlz/",
+        "exampleEn": "She checks her emails after breakfast.",
+        "exampleRu": "Она проверяет электронную почту после завтрака.",
+        "group": "activities"
+      },
+      {
+        "id": "l8-03",
+        "uniqueKey": "check messages",
+        "en": "check messages",
+        "ru": "проверять сообщения",
+        "transcription": "/tʃek ˈmesɪdʒɪz/",
+        "exampleEn": "Please check your messages this evening.",
+        "exampleRu": "Пожалуйста, проверь сообщения сегодня вечером.",
+        "group": "activities"
+      },
+      {
+        "id": "l8-04",
+        "uniqueKey": "go running",
+        "en": "go running",
+        "ru": "ходить на пробежку; бегать",
+        "transcription": "/ɡəʊ ˈrʌnɪŋ/",
+        "exampleEn": "They go running in the park on Sundays.",
+        "exampleRu": "Они бегают в парке по воскресеньям.",
+        "group": "activities"
+      },
+      {
+        "id": "l8-05",
+        "uniqueKey": "go to a meeting",
+        "en": "go to a meeting",
+        "ru": "идти на встречу / совещание",
+        "transcription": "/ɡəʊ tə ə ˈmiːtɪŋ/",
+        "exampleEn": "I go to a meeting after lunch.",
+        "exampleRu": "Я иду на встречу после обеда.",
+        "group": "activities"
+      },
+      {
+        "id": "l8-06",
+        "uniqueKey": "meet for coffee",
+        "en": "meet for coffee",
+        "ru": "встретиться за кофе",
+        "transcription": "/miːt fə ˈkɒfi/",
+        "exampleEn": "We sometimes meet for coffee after class.",
+        "exampleRu": "Мы иногда встречаемся за кофе после занятия.",
+        "group": "activities"
+      },
+      {
+        "id": "l8-07",
+        "uniqueKey": "go to a party",
+        "en": "go to a party",
+        "ru": "идти на вечеринку",
+        "transcription": "/ɡəʊ tə ə ˈpɑːti/",
+        "exampleEn": "They go to a party on Saturday night.",
+        "exampleRu": "Они идут на вечеринку в субботу вечером.",
+        "group": "activities"
+      },
+      {
+        "id": "l8-08",
+        "uniqueKey": "online",
+        "en": "online",
+        "ru": "онлайн; в интернете",
+        "transcription": "/ˌɒnˈlaɪn/",
+        "exampleEn": "I study English online in the evening.",
+        "exampleRu": "Я занимаюсь английским онлайн вечером.",
+        "group": "activities"
+      },
+      {
+        "id": "l8-09",
+        "uniqueKey": "relax",
+        "en": "relax",
+        "ru": "отдыхать; расслабляться",
+        "transcription": "/rɪˈlæks/",
+        "exampleEn": "We relax at home in the evening.",
+        "exampleRu": "Мы отдыхаем дома вечером.",
+        "group": "activities"
+      },
+      {
+        "id": "l8-10",
+        "uniqueKey": "get ready",
+        "en": "get ready",
+        "ru": "собираться; готовиться",
+        "transcription": "/ɡet ˈredi/",
+        "exampleEn": "He gets ready for work at seven.",
+        "exampleRu": "Он собирается на работу в семь.",
+        "group": "activities"
+      },
+      {
+        "id": "l8-11",
+        "uniqueKey": "at the end of the day",
+        "en": "at the end of the day",
+        "ru": "в конце дня",
+        "transcription": "/ət ði ˌend əv ðə ˈdeɪ/",
+        "exampleEn": "We are tired at the end of the day.",
+        "exampleRu": "Мы устаём к концу дня.",
+        "group": "time"
+      },
+      {
+        "id": "l8-12",
+        "uniqueKey": "hardly ever",
+        "en": "hardly ever",
+        "ru": "почти никогда; очень редко",
+        "transcription": "/ˈhɑːdli ˈevə/",
+        "exampleEn": "We hardly ever watch TV.",
+        "exampleRu": "Мы почти никогда не смотрим телевизор.",
+        "group": "frequency"
+      },
+      {
+        "id": "l8-13",
+        "uniqueKey": "always",
+        "en": "always",
+        "ru": "всегда",
+        "transcription": "/ˈɔːlweɪz/",
+        "exampleEn": "Tom always has breakfast at home.",
+        "exampleRu": "Том всегда завтракает дома.",
+        "group": "frequency"
+      },
+      {
+        "id": "l8-14",
+        "uniqueKey": "usually",
+        "en": "usually",
+        "ru": "обычно",
+        "transcription": "/ˈjuːʒuəli/",
+        "exampleEn": "I usually take the bus to work.",
+        "exampleRu": "Я обычно езжу на работу на автобусе.",
+        "group": "frequency"
+      },
+      {
+        "id": "l8-15",
+        "uniqueKey": "often",
+        "en": "often",
+        "ru": "часто",
+        "transcription": "/ˈɒfən/",
+        "exampleEn": "They often cook dinner together.",
+        "exampleRu": "Они часто готовят ужин вместе.",
+        "group": "frequency"
+      },
+      {
+        "id": "l8-16",
+        "uniqueKey": "sometimes",
+        "en": "sometimes",
+        "ru": "иногда",
+        "transcription": "/ˈsʌmtaɪmz/",
+        "exampleEn": "She sometimes walks to work.",
+        "exampleRu": "Она иногда ходит на работу пешком.",
+        "group": "frequency"
+      },
+      {
+        "id": "l8-17",
+        "uniqueKey": "never",
+        "en": "never",
+        "ru": "никогда",
+        "transcription": "/ˈnevə/",
+        "exampleEn": "We never work on Sundays.",
+        "exampleRu": "Мы никогда не работаем по воскресеньям.",
+        "group": "frequency"
+      }
+    ],
+    "groups": [
+      {
+        "id": "activities",
+        "title": "Everyday activities",
+        "subtitle": "Повседневные действия",
+        "icon": "🏃"
+      },
+      {
+        "id": "frequency",
+        "title": "Frequency",
+        "subtitle": "Как часто происходит действие",
+        "icon": "🔁"
+      },
+      {
+        "id": "time",
+        "title": "Time phrases",
+        "subtitle": "Полезные фразы времени",
+        "icon": "🕒"
+      }
+    ]
   }
+
 ];

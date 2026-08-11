@@ -1,0 +1,505 @@
+{
+  "id": "lesson-8",
+  "number": 8,
+  "title": "Everyday activities and frequency",
+  "subtitle": "Speakout · Unit 2 · Lesson 2B: everyday activities, adverbs and phrases of frequency, linking",
+  "status": "available",
+  "page": "lesson.html?id=lesson-8",
+  "vocabularyId": "vocab-lesson-8-everyday-frequency",
+  "grammarIds": [
+    "grammar-lesson-8-frequency"
+  ],
+  "totalPoints": 46,
+  "notification": {
+    "enabled": true,
+    "version": 1
+  },
+  "blocks": [
+    {
+      "type": "section",
+      "eyebrow": "Lesson 2B · VOCABULARY",
+      "title": "everyday activities"
+    },
+    {
+      "type": "exercise",
+      "id": "l8-vocab-1a",
+      "title": "1A. Complete the conversations with the correct form of the verbs in the box.",
+      "wordBank": [
+        "check",
+        "get up",
+        "go (x2)",
+        "go to",
+        "meet",
+        "spend (x2)"
+      ],
+      "items": [
+        {
+          "id": "1",
+          "number": 1,
+          "prompt": "",
+          "input": "gaps",
+          "layout": "dialogue",
+          "segments": [
+            "A: Do you want to ",
+            " shopping with me on Saturday?\nB: Sorry, I can’t. I always ",
+            " my mum for lunch on Saturdays."
+          ],
+          "answers": [
+            "go",
+            "meet"
+          ]
+        },
+        {
+          "id": "2",
+          "number": 2,
+          "prompt": "",
+          "input": "gaps",
+          "layout": "dialogue",
+          "segments": [
+            "A: Does Amanda always ",
+            " early?\nB: Yes, she does. She ",
+            " running before work."
+          ],
+          "answers": [
+            "get up",
+            "goes"
+          ]
+        },
+        {
+          "id": "3",
+          "number": 3,
+          "prompt": "",
+          "input": "gaps",
+          "layout": "dialogue",
+          "segments": [
+            "A: I work a lot, but I’d like to ",
+            " more time with my family.\nB: Me too. The problem is that my son ",
+            " a lot of time online!"
+          ],
+          "answers": [
+            "spend",
+            "spends"
+          ]
+        },
+        {
+          "id": "4",
+          "number": 4,
+          "prompt": "",
+          "input": "gaps",
+          "layout": "dialogue",
+          "segments": [
+            "A: You need to ",
+            " the meeting at ten.\nB: OK. I just need to ",
+            " my emails first."
+          ],
+          "answers": [
+            "go to",
+            "check"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l8-vocab-1b",
+      "title": "1B. Choose the correct word or phrase to complete the sentences.",
+      "items": [
+        {
+          "id": "1",
+          "prompt": "Do you ______ time with your family at the weekend?",
+          "input": "single",
+          "options": [
+            "go",
+            "spend",
+            "meet"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "2",
+          "prompt": "I usually ______ running every morning before breakfast.",
+          "input": "single",
+          "options": [
+            "do",
+            "get up",
+            "go"
+          ],
+          "answer": 2
+        },
+        {
+          "id": "3",
+          "prompt": "______ your messages before the meeting.",
+          "input": "single",
+          "options": [
+            "Check",
+            "Meet",
+            "Get"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "4",
+          "prompt": "Let’s ______ for coffee tomorrow morning.",
+          "input": "single",
+          "options": [
+            "get up",
+            "spend time",
+            "meet"
+          ],
+          "answer": 2
+        },
+        {
+          "id": "5",
+          "prompt": "I don’t want to ______ Jen’s party at the weekend.",
+          "input": "single",
+          "options": [
+            "go to",
+            "get",
+            "go"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "6",
+          "prompt": "It’s Sunday tomorrow. We can ______ up late.",
+          "input": "single",
+          "options": [
+            "go",
+            "get",
+            "go to"
+          ],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l8-vocab-1c",
+      "title": "1C. Choose the correct words to complete the profile.",
+      "images": [
+        {
+          "src": "assets/lessons/lesson-8/my-weekend-profile.png",
+          "alt": "Portrait from the My weekend profile",
+          "compact": true
+        }
+      ],
+      "items": [
+        {
+          "id": "profile",
+          "number": "",
+          "prompt": "My weekend",
+          "input": "inline-single",
+          "segments": [
+            "At the weekend, I usually ",
+            " up early on Saturday and ",
+            " shopping at the market. I go early because it’s busy later. After that, I ",
+            " friends for lunch. In the afternoon, I like to ",
+            " time with my boyfriend. We go to the park, or go to the cinema. We do something together because I ",
+            " a lot of time at work. I try not to ",
+            " emails on my phone at the weekends! On Sunday, I get ",
+            " late and have lunch with my family. Sometimes I ",
+            " running in the afternoon. Then I relax in the evening."
+          ],
+          "choices": [
+            {
+              "number": 1,
+              "options": [
+                "go",
+                "get"
+              ],
+              "answer": 1
+            },
+            {
+              "number": 2,
+              "options": [
+                "go",
+                "get"
+              ],
+              "answer": 0
+            },
+            {
+              "number": 3,
+              "options": [
+                "take",
+                "meet"
+              ],
+              "answer": 1
+            },
+            {
+              "number": 4,
+              "options": [
+                "spend",
+                "do"
+              ],
+              "answer": 0
+            },
+            {
+              "number": 5,
+              "options": [
+                "make",
+                "spend"
+              ],
+              "answer": 1
+            },
+            {
+              "number": 6,
+              "options": [
+                "check",
+                "spend"
+              ],
+              "answer": 0
+            },
+            {
+              "number": 7,
+              "options": [
+                "on",
+                "up"
+              ],
+              "answer": 1
+            },
+            {
+              "number": 8,
+              "options": [
+                "go",
+                "get"
+              ],
+              "answer": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "eyebrow": "Lesson 2B · GRAMMAR",
+      "title": "adverbs and phrases of frequency"
+    },
+    {
+      "type": "grammar-link",
+      "id": "l8-grammar-link",
+      "title": "adverbs and phrases of frequency",
+      "grammarId": "grammar-lesson-8-frequency",
+      "buttonLabel": "Перейти к теме"
+    },
+    {
+      "type": "exercise",
+      "id": "l8-grammar-2a",
+      "title": "2A. The sentences below have a mistake. Choose the best option to correct the mistake.",
+      "items": [
+        {
+          "id": "1",
+          "prompt": "I meet my sister for lunch every Tuesdays.",
+          "input": "single",
+          "options": [
+            "always Tuesday",
+            "every Tuesday",
+            "every a Tuesday"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "2",
+          "prompt": "Jack doesn’t work usually at the weekend.",
+          "input": "single",
+          "options": [
+            "don’t work usually",
+            "usually don’t work",
+            "doesn’t usually work"
+          ],
+          "answer": 2
+        },
+        {
+          "id": "3",
+          "prompt": "I always am tired at the end of the day.",
+          "input": "single",
+          "options": [
+            "Am I always",
+            "I am always",
+            "Always I am"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "4",
+          "prompt": "He plays football twice in week.",
+          "input": "single",
+          "options": [
+            "twice weeks",
+            "twice week",
+            "twice a week"
+          ],
+          "answer": 2
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l8-grammar-2b",
+      "title": "2B. Choose the correct words to complete the sentences.",
+      "items": [
+        {
+          "id": "sentences",
+          "number": "",
+          "prompt": "",
+          "input": "inline-single",
+          "segments": [
+            "1 I ",
+            " get up early. I love to sleep!\n2 ",
+            " meet for lunch at a café.\n3 I go shopping with my mum every ",
+            ".\n4 I check my emails three or four ",
+            " a day.\n5 I ",
+            " late for school.\n6 ",
+            " often do you go on holiday?\n7 I ",
+            " finish work late, every day!\n8 Jamie hardly ever ",
+            " books."
+          ],
+          "choices": [
+            {
+              "options": [
+                "often",
+                "never"
+              ],
+              "answer": 1
+            },
+            {
+              "options": [
+                "Often we",
+                "We often"
+              ],
+              "answer": 1
+            },
+            {
+              "options": [
+                "weekend",
+                "weekends"
+              ],
+              "answer": 0
+            },
+            {
+              "options": [
+                "time",
+                "times"
+              ],
+              "answer": 1
+            },
+            {
+              "options": [
+                "never am",
+                "am never"
+              ],
+              "answer": 1
+            },
+            {
+              "options": [
+                "How",
+                "When"
+              ],
+              "answer": 0
+            },
+            {
+              "options": [
+                "sometimes",
+                "always"
+              ],
+              "answer": 1
+            },
+            {
+              "options": [
+                "reads",
+                "doesn’t read"
+              ],
+              "answer": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l8-grammar-2c",
+      "title": "2C. Put the words in brackets in the correct order to make sentences.",
+      "items": [
+        {
+          "id": "paragraph",
+          "number": "",
+          "prompt": "",
+          "input": "gaps",
+          "wideGaps": true,
+          "segments": [
+            "1 ",
+            " (quiet / It’s / never) in the mornings in our house. There’s lots to do before work and school. 2 ",
+            " (up / My / late / often / gets / son), so he doesn’t have time to have breakfast. I make it for him every day, but 3 ",
+            " (ever / it / he / eats / hardly). I eat cereal and have a coffee in the kitchen, but 4 ",
+            " (usually / news / to / my / the / listens / wife) in the bedroom while she gets ready. 5 ",
+            " (listens / music / daughter / often / My / to) in her bedroom, too. Then the dog wakes up and runs around the house. It’s crazy! However, 6 ",
+            " (never / work / I’m / late / for) !"
+          ],
+          "answers": [
+            "It’s never quiet",
+            "My son often gets up late",
+            "he hardly ever eats it",
+            "my wife usually listens to the news",
+            "My daughter often listens to music",
+            "I’m never late for work"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "eyebrow": "Lesson 2B · PRONUNCIATION",
+      "title": "linking"
+    },
+    {
+      "type": "exercise",
+      "id": "l8-pron-3a",
+      "title": "3A. 2.04 | linking | Listen and complete the sentences with one word in each gap.",
+      "items": [
+        {
+          "id": "1",
+          "prompt": "We have Spanish classes twice a ______.",
+          "input": "text",
+          "answer": "week"
+        },
+        {
+          "id": "2",
+          "prompt": "I go to a party once a ______.",
+          "input": "text",
+          "answer": "month"
+        },
+        {
+          "id": "3",
+          "prompt": "I check my messages once a ______!",
+          "input": "text",
+          "answer": "minute"
+        },
+        {
+          "id": "4",
+          "prompt": "We meet for lunch every ______.",
+          "input": "text",
+          "answer": "Sunday"
+        },
+        {
+          "id": "5",
+          "prompt": "We only go on holiday once a ______.",
+          "input": "text",
+          "answer": "year"
+        },
+        {
+          "id": "6",
+          "prompt": "I check my emails once an ______.",
+          "input": "text",
+          "answer": "hour"
+        }
+      ],
+      "audio": "audio/lesson-8-audio-2_04.mp3"
+    },
+    {
+      "type": "audio",
+      "id": "l8-pron-3b",
+      "title": "3B. 2.04 | Listen again and repeat. Practise the linking between words.",
+      "audio": "audio/lesson-8-audio-2_04.mp3",
+      "response": false
+    }
+  ]
+}

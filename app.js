@@ -442,6 +442,38 @@
     }
   }
 
+
+  function archiveLegacyLesson8LocalProgress() {
+    const marker = key('lesson8_slot_archive_v1');
+    if (window.localStorage.getItem(marker)) return;
+
+    try {
+      const homework = storage.read(key('homework'), { completedIds: [], results: {}, submissions: {} });
+      homework.completedIds = unique(homework.completedIds);
+      homework.results = homework.results && typeof homework.results === 'object' ? homework.results : {};
+      homework.submissions = homework.submissions && typeof homework.submissions === 'object' ? homework.submissions : {};
+
+      const oldResult = homework.results['lesson-8'];
+      const oldSubmission = homework.submissions['lesson-8'];
+      const isLegacyResult = Boolean(oldResult?.migratedAt || oldResult?.legacyAnswers);
+      const isLegacySubmission = safeText(oldSubmission?.status).startsWith('migrated');
+
+      if (isLegacyResult || isLegacySubmission) {
+        const archiveId = 'legacy-lesson-8';
+        if (!homework.results[archiveId] && oldResult) homework.results[archiveId] = oldResult;
+        if (!homework.submissions[archiveId] && oldSubmission) homework.submissions[archiveId] = oldSubmission;
+        delete homework.results['lesson-8'];
+        delete homework.submissions['lesson-8'];
+        homework.completedIds = unique(homework.completedIds.map((id) => id === 'lesson-8' ? archiveId : id));
+        storage.write(key('homework'), homework);
+      }
+
+      window.localStorage.setItem(marker, 'done');
+    } catch (error) {
+      console.warn('Не удалось освободить локальный ID lesson-8 после legacy-миграции:', error);
+    }
+  }
+
   function findLegacyLessonTarget(lessonId, legacyKey) {
     const keyText = safeText(legacyKey);
     let match;
@@ -1185,10 +1217,15 @@
       control = `<select id="${escapeHtml(inputId)}"><option value="">Choose an answer</option>${(item.options || []).map((option, optionIndex) => `<option value="${optionIndex}">${escapeHtml(option)}</option>`).join('')}</select>`;
     } else if (item.input === 'textarea') {
       control = `<textarea id="${escapeHtml(inputId)}" placeholder="${escapeHtml(item.placeholder || '')}"></textarea>`;
+    } else if (item.input === 'inline-single') {
+      const choices = Array.isArray(item.choices) ? item.choices : [];
+      const segments = Array.isArray(item.segments) ? item.segments : [];
+      const segmentMarkup = (segment) => escapeHtml(segment).replaceAll('\n', '<br>');
+      control = `<div class="inline-choice-text">${choices.map((choice, choiceIndex) => `${choiceIndex < segments.length ? `<span>${segmentMarkup(segments[choiceIndex])}</span>` : ''}<span class="inline-choice-group" role="group" aria-label="Choice ${choice.number || choiceIndex + 1}">${choice.number ? `<sup>${escapeHtml(choice.number)}</sup>` : ''}${(choice.options || []).map((option, optionIndex) => `${optionIndex ? '<span class="inline-choice-slash">/</span>' : ''}<label><input type="radio" data-inline-choice="${choiceIndex}" name="${escapeHtml(inputId)}-choice-${choiceIndex}" value="${optionIndex}"><span>${escapeHtml(option)}</span></label>`).join('')}</span>`).join('')}${segments.length > choices.length ? `<span>${segmentMarkup(segments[segments.length - 1])}</span>` : ''}</div>`;
     } else if (item.input === 'gaps') {
       const answers = Array.isArray(item.answers) ? item.answers : [];
       const segments = Array.isArray(item.segments) ? item.segments : [];
-      const gapClass = item.layout === 'dialogue' ? 'sentence-gaps is-dialogue' : 'sentence-gaps';
+      const gapClass = `${item.layout === 'dialogue' ? 'sentence-gaps is-dialogue' : 'sentence-gaps'}${item.wideGaps ? ' has-wide-gaps' : ''}`;
       const segmentMarkup = (segment) => escapeHtml(segment).replaceAll('\n', '<br>');
       control = `<div class="${gapClass}" aria-label="${prompt}">${answers.map((answer, gapIndex) => `${gapIndex < segments.length ? `<span>${segmentMarkup(segments[gapIndex])}</span>` : ''}<input class="gap-input" data-gap-index="${gapIndex}" aria-label="Gap ${gapIndex + 1}" autocomplete="off">`).join('')}${segments.length > answers.length ? `<span>${segmentMarkup(segments[segments.length - 1])}</span>` : ''}</div>`;
     } else if (item.input === 'mark') {
@@ -1482,8 +1519,9 @@
         const source = typeof image === 'string' ? image : image?.src;
         const alt = typeof image === 'string' ? '' : image?.alt;
         const caption = typeof image === 'string' ? '' : image?.caption;
+        const compact = typeof image === 'string' ? false : Boolean(image?.compact);
         if (!source) return '';
-        return `<figure class="exercise-media"><img src="${escapeHtml(source)}" alt="${escapeHtml(alt || '')}" loading="lazy">${caption ? `<figcaption>${escapeHtml(caption)}</figcaption>` : ''}</figure>`;
+        return `<figure class="exercise-media${compact ? ' is-compact' : ''}"><img src="${escapeHtml(source)}" alt="${escapeHtml(alt || '')}" loading="lazy">${caption ? `<figcaption>${escapeHtml(caption)}</figcaption>` : ''}</figure>`;
       }).join('')}</div>` : '';
       const dialogue = renderExerciseDialogue(block);
       const contentCards = renderExerciseContentCards(block);
@@ -1557,6 +1595,12 @@
     } else if (inputType === 'select') {
       actual = itemNode.querySelector('select')?.value ?? '';
       correct = actual !== '' && Number(actual) === Number(item.answer);
+    } else if (inputType === 'inline-single') {
+      const choices = Array.isArray(item.choices) ? item.choices : [];
+      actual = choices.map((_, choiceIndex) => itemNode.querySelector(`input[data-inline-choice="${choiceIndex}"]:checked`)?.value ?? '');
+      const choiceResults = choices.map((choice, choiceIndex) => actual[choiceIndex] !== '' && Number(actual[choiceIndex]) === Number(choice.answer));
+      correct = choices.length > 0 && choiceResults.every(Boolean);
+      return { actual, correct, scoreCorrect: choiceResults.filter(Boolean).length, scoreTotal: choices.length };
     } else if (inputType === 'gaps') {
       actual = [...itemNode.querySelectorAll('[data-gap-index]')].map((input) => input.value);
       const expected = Array.isArray(item.answers) ? item.answers : [];
@@ -1670,6 +1714,12 @@
       } else if (inputType === 'select') {
         const select = itemNode.querySelector('select');
         if (select) select.value = safeText(value);
+      } else if (inputType === 'inline-single') {
+        const values = Array.isArray(value) ? value : [];
+        itemNode.querySelectorAll('[data-inline-choice]').forEach((input) => {
+          const choiceIndex = Number(input.dataset.inlineChoice);
+          input.checked = safeText(values[choiceIndex]) === input.value;
+        });
       } else if (inputType === 'gaps') {
         const values = Array.isArray(value) ? value : [];
         itemNode.querySelectorAll('[data-gap-index]').forEach((input, gapIndex) => { input.value = safeText(values[gapIndex]); });
@@ -1994,10 +2044,17 @@
     };
   }
 
+  function grammarTaskCount(topic) {
+    const exercises = Array.isArray(topic.quizExercises) ? topic.quizExercises : [];
+    if (exercises.length) return exercises.reduce((total, exercise) => total + (Array.isArray(exercise.items) ? exercise.items.length : 0), 0);
+    return Array.isArray(topic.quiz) ? topic.quiz.length : 0;
+  }
+
   function grammarStatusMarkup(topic, state) {
     const passed = Boolean(state.passed || topic.passed);
     const attempts = Math.max(0, Number(state.attempts || 0));
     const bestScore = Math.max(0, Number(state.bestScore || 0));
+    const taskCount = grammarTaskCount(topic);
 
     return `<div class="grammar-status-card ${passed ? 'is-passed' : ''}" id="grammar-topic-status">
       <div class="grammar-status-icon" aria-hidden="true">${passed ? '✓' : '◎'}</div>
@@ -2007,9 +2064,9 @@
           ? `Лучший результат: ${bestScore}% · попыток: ${attempts}`
           : attempts
             ? `Лучший результат: ${bestScore}% · попыток: ${attempts}`
-            : 'Изучи схему и сдай мини-тест из 4 заданий.'}</span>
+            : `Изучи схему и сдай мини-тест из ${taskCount} заданий.`}</span>
       </div>
-      <span class="grammar-status-badge">${passed ? 'Засчитано' : 'Нужно 4 / 4'}</span>
+      <span class="grammar-status-badge">${passed ? 'Засчитано' : `Нужно ${taskCount} / ${taskCount}`}</span>
     </div>`;
   }
 
@@ -2030,7 +2087,18 @@
     const uses = Array.isArray(topic.uses) ? topic.uses : [];
     const forms = Array.isArray(topic.forms) ? topic.forms : [];
     const mistakes = Array.isArray(topic.commonMistakes) ? topic.commonMistakes : [];
-    const quiz = Array.isArray(topic.quiz) ? topic.quiz : [];
+    const quizExercises = Array.isArray(topic.quizExercises)
+      ? topic.quizExercises.filter((exercise) => Array.isArray(exercise.items) && exercise.items.length)
+      : [];
+    let flatQuizIndex = 0;
+    const quiz = quizExercises.length
+      ? quizExercises.flatMap((exercise, exerciseIndex) => exercise.items.map((question, itemIndex) => ({
+          ...question,
+          __exerciseIndex: exerciseIndex,
+          __itemIndex: itemIndex,
+          __flatIndex: flatQuizIndex++
+        })))
+      : (Array.isArray(topic.quiz) ? topic.quiz : []);
     const contrast = topic.contrast || {};
     const builder = topic.questionBuilder || {};
     const memoryRule = topic.memoryRule || {};
@@ -2164,10 +2232,10 @@
         <div class="grammar-test-intro">
           <div>
             <span class="eyebrow">Мини-тест</span>
-            <h2 id="mini-test-title">4 задания: от лёгкого к сложному</h2>
-            <p>Ответь на все вопросы. Для зачёта нужно 4 из 4. После успешной проверки ответы блокируются.</p>
+            <h2 id="mini-test-title">${quizExercises.length ? '4 упражнения × 4 задания' : `${quiz.length} задания: от лёгкого к сложному`}</h2>
+            <p>Ответь на все вопросы. Для зачёта нужно ${quiz.length} из ${quiz.length}. После успешной проверки ответы блокируются.</p>
           </div>
-          <span class="grammar-test-goal">4 / 4</span>
+          <span class="grammar-test-goal">${quiz.length} / ${quiz.length}</span>
         </div>
         <div id="grammar-quiz"></div>
       </section>
@@ -2196,6 +2264,10 @@
         if (type === 'text') {
           return `<input class="text-field grammar-text-answer" data-grammar-control type="text" value="${escapeHtml(savedValue || '')}" placeholder="${escapeHtml(question.placeholder || '')}" autocomplete="off">`;
         }
+        if (type === 'reorder') {
+          const tokens = Array.isArray(question.tokens) ? question.tokens : [];
+          return `${tokens.length ? `<div class="grammar-reorder-tokens">${tokens.map((token) => `<span>${escapeHtml(token)}</span>`).join('')}</div>` : ''}<input class="text-field grammar-text-answer" data-grammar-control type="text" value="${escapeHtml(savedValue || '')}" placeholder="${escapeHtml(question.placeholder || 'Write the complete sentence')}" autocomplete="off">`;
+        }
         if (type === 'gaps') {
           const answers = Array.isArray(question.answers) ? question.answers : [];
           const segments = Array.isArray(question.segments) ? question.segments : [];
@@ -2211,7 +2283,7 @@
       const readAnswer = (question, node) => {
         const type = safeText(question.type, 'single');
         if (type === 'select') return node.querySelector('select')?.value ?? '';
-        if (type === 'text') return node.querySelector('input[type="text"]')?.value || '';
+        if (type === 'text' || type === 'reorder') return node.querySelector('input[type="text"]')?.value || '';
         if (type === 'gaps') return [...node.querySelectorAll('[data-grammar-gap]')].map((input) => input.value);
         return node.querySelector('input[type="radio"]:checked')?.value ?? '';
       };
@@ -2238,23 +2310,39 @@
         return accepted.some((answer) => normalizeAnswer(answer) !== '' && normalizeAnswer(answer) === normalizeAnswer(value));
       };
 
-      quizRoot.innerHTML = `${quiz.map((question, index) => `<article class="card grammar-question-card" data-grammar-question="${index}">
+      const questionCard = (question, index, displayNumber) => `<article class="card grammar-question-card" data-grammar-question="${index}">
         <div class="grammar-question-meta">
-          <span class="grammar-difficulty">${escapeHtml(question.difficulty || `${index + 1}`)}</span>
+          <span class="grammar-difficulty">${escapeHtml(question.difficulty || `${displayNumber}`)}</span>
           <span>${escapeHtml(question.skill || '')}</span>
         </div>
-        <h3>${index + 1}. ${escapeHtml(question.prompt)}</h3>
+        <h3>${displayNumber}. ${escapeHtml(question.prompt)}</h3>
         ${renderQuestionControl(question, index, savedAnswers[index])}
         <div class="feedback"></div>
-      </article>`).join('')}
+      </article>`;
+
+      const questionsMarkup = quizExercises.length
+        ? quizExercises.map((exercise, exerciseIndex) => {
+            const exerciseQuestions = quiz.filter((question) => question.__exerciseIndex === exerciseIndex);
+            return `<section class="grammar-practice-group">
+              <div class="grammar-practice-heading">
+                <span class="eyebrow">Упражнение ${exerciseIndex + 1}</span>
+                <h3>${escapeHtml(exercise.title || `Упражнение ${exerciseIndex + 1}`)}</h3>
+                ${exercise.instructions ? `<p>${escapeHtml(exercise.instructions)}</p>` : ''}
+              </div>
+              ${exerciseQuestions.map((question) => questionCard(question, question.__flatIndex, question.__itemIndex + 1)).join('')}
+            </section>`;
+          }).join('')
+        : quiz.map((question, index) => questionCard(question, index, index + 1)).join('');
+
+      quizRoot.innerHTML = `${questionsMarkup}
       <article class="card grammar-test-actions">
         <div id="grammar-result" aria-live="polite">
-          <strong>${locked ? 'Тема засчитана. Ответы заблокированы.' : 'Заполни все четыре задания.'}</strong>
+          <strong>${locked ? 'Тема засчитана. Ответы заблокированы.' : quizExercises.length ? `Заполни все ${quiz.length} заданий.` : 'Заполни все четыре задания.'}</strong>
           <span>${locked ? `Лучший результат: ${Number(currentState.bestScore || 0)}%` : 'Кнопка проверки станет активной после заполнения теста.'}</span>
         </div>
         ${locked ? '' : `<div class="button-row">
           <button class="btn btn-primary" type="button" id="check-grammar" disabled>Проверить задания</button>
-          <button class="btn btn-secondary" type="button" id="retry-grammar">Очистить ответы</button>
+          <button class="btn btn-secondary" type="button" id="retry-grammar">${quizExercises.length ? 'Исправить ответы' : 'Очистить ответы'}</button>
         </div>`}
       </article>`;
 
@@ -2320,7 +2408,7 @@
           passedAt,
           attempts: Number(previous.attempts || 0) + 1,
           bestScore: Math.max(Number(previous.bestScore || 0), percent),
-          answers: passedNow ? actualAnswers : (Array.isArray(previous.answers) ? previous.answers : []),
+          answers: (passedNow || quizExercises.length) ? actualAnswers : (Array.isArray(previous.answers) ? previous.answers : []),
           updatedAt: new Date().toISOString()
         };
         window.ProgressService.saveGrammarProgress(progress);
@@ -2755,6 +2843,7 @@
 
   async function init() {
     migrateLegacyMarinaProgress();
+    archiveLegacyLesson8LocalProgress();
     fillConfig();
     markNavigation();
     try {

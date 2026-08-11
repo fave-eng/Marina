@@ -1,15 +1,10 @@
 name: 2 - Notify about new materials
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'data/lessons/lesson-*.json'
   workflow_dispatch:
     inputs:
       lesson_id:
-        description: 'Lesson ID to retry, for example lesson-9.'
+        description: 'Technical lesson ID to notify, for example lesson-8 (Homework 8).'
         required: true
         type: string
 
@@ -28,51 +23,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          # We need the previous commit in order to distinguish a newly added
-          # lesson from an edit to an already published lesson.
-          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
 
-      - name: Notify only newly added lessons
-        if: ${{ github.event_name == 'push' }}
-        shell: bash
-        env:
-          BEFORE_SHA: ${{ github.event.before }}
-          AFTER_SHA: ${{ github.sha }}
-        run: |
-          set -euo pipefail
-
-          # A publication notification is tied to the first appearance of the
-          # lesson file. Modifying lesson-7.json later must never create a new
-          # publication notification.
-          # If GitHub cannot provide a trustworthy previous commit (for example
-          # after an unusual branch/force-push event), fail safe and send nothing.
-          if [[ "$BEFORE_SHA" =~ ^0+$ ]] || ! git cat-file -e "$BEFORE_SHA^{commit}" 2>/dev/null; then
-            echo "Previous commit is unavailable; skipping automatic Telegram notification to avoid duplicates."
-            exit 0
-          fi
-
-          mapfile -t NEW_LESSON_FILES < <(
-            git diff --diff-filter=A --name-only "$BEFORE_SHA" "$AFTER_SHA" -- 'data/lessons/lesson-*.json'
-          )
-
-          if [ "${#NEW_LESSON_FILES[@]}" -eq 0 ]; then
-            echo "No newly added lesson files. This push only edits existing homework; no Telegram notification will be sent."
-            exit 0
-          fi
-
-          for lesson_file in "${NEW_LESSON_FILES[@]}"; do
-            lesson_id="$(basename "$lesson_file" .json)"
-            echo "First publication detected: $lesson_id"
-            LESSON_ID="$lesson_id" node scripts/prepare-notification.mjs
-          done
-
-      - name: Retry one lesson manually
-        if: ${{ github.event_name == 'workflow_dispatch' }}
+      - name: Notify one lesson manually
         env:
           LESSON_ID: ${{ inputs.lesson_id }}
         run: node scripts/prepare-notification.mjs

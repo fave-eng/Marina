@@ -2490,3 +2490,119 @@ body[data-view="lesson"] #lesson-root {
   .social-reading-card strong { padding-inline: 13px; }
   .exercise-dialogue { padding: 14px; }
 }
+
+/* Lesson 2B: connected inline choices and long sentence-building gaps. */
+.inline-choice-text {
+  color: #27364a;
+  font-size: .98rem;
+  line-height: 2.05;
+}
+
+.inline-choice-group {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  margin: 0 3px;
+  white-space: nowrap;
+}
+
+.inline-choice-group sup {
+  margin-right: 1px;
+  color: var(--indigo);
+  font-size: .7em;
+  font-weight: 900;
+}
+
+.inline-choice-group label {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 3px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.inline-choice-group label:has(input:checked) {
+  background: #eef2ff;
+  color: #3730a3;
+  font-weight: 800;
+}
+
+.inline-choice-group input {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+}
+
+.inline-choice-slash {
+  color: #64748b;
+  font-weight: 700;
+}
+
+.sentence-gaps.has-wide-gaps .gap-input {
+  width: clamp(220px, 42vw, 350px);
+  text-align: left;
+}
+
+.exercise-media.is-compact {
+  width: fit-content;
+  max-width: 190px;
+}
+
+.exercise-media.is-compact img {
+  width: auto;
+  max-width: 170px;
+  max-height: 170px;
+}
+
+.grammar-practice-group {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid #dce4ee;
+  border-radius: 18px;
+  background: #f8fafc;
+}
+
+.grammar-practice-heading {
+  padding: 4px 5px 2px;
+}
+
+.grammar-practice-heading h3 {
+  margin-top: 4px;
+  color: var(--dark);
+  font-size: 1.08rem;
+}
+
+.grammar-practice-heading p {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: .86rem;
+  line-height: 1.5;
+}
+
+.grammar-reorder-tokens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.grammar-reorder-tokens span {
+  padding: 6px 9px;
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  background: #fff;
+  color: #334155;
+  font-size: .84rem;
+  font-weight: 700;
+}
+
+@media (max-width: 680px) {
+  .inline-choice-text { line-height: 2.35; }
+  .inline-choice-group { margin-inline: 1px; }
+  .sentence-gaps.has-wide-gaps .gap-input { width: 100%; }
+  .exercise-media.is-compact { max-width: 150px; }
+  .exercise-media.is-compact img { max-width: 132px; max-height: 132px; }
+  .grammar-practice-group { padding: 10px; }
+}
