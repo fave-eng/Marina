@@ -105,23 +105,52 @@ function parseTelegramId(value: string | undefined | null): number | null {
   return Number.isSafeInteger(parsed) ? parsed : null
 }
 
-function buildMessage(hasVocabulary: boolean): string {
-  if (hasVocabulary) {
-    return [
-      '🚀 <b>Новые материалы уже доступны!</b>',
-      '',
-      'Сначала изучи слова к уроку — так выполнять домашнюю работу будет легче. Затем переходи к заданиям.',
-      '',
-      'Удачи! Если что-то будет непонятно, отметь вопросы — разберём их на следующем уроке ✨',
-    ].join('\n')
+function stableChoice(seed: string, size: number): number {
+  let hash = 0
+  for (let index = 0; index < seed.length; index += 1) {
+    hash = ((hash * 31) + seed.charCodeAt(index)) >>> 0
   }
+  return size > 0 ? hash % size : 0
+}
+
+function buildGreeting(studentName: unknown, seed: string): string {
+  const name = escapeTelegramHtml(String(studentName || 'Marina').trim() || 'Marina')
+  const variants = [
+    `Hi, ${name}! 👋`,
+    `Hello, ${name}! 🌟`,
+    `Hey, ${name}! 👋`,
+    `${name}, hi! ✨`,
+    `Hi there, ${name}! 😊`,
+  ]
+  return variants[stableChoice(seed, variants.length)]
+}
+
+function buildMessage(
+  hasVocabulary: boolean,
+  hasGrammar: boolean,
+  homeworkTitle: unknown,
+  studentName: unknown,
+  seed: string,
+): string {
+  const title = escapeTelegramHtml(homeworkTitle || 'English homework')
+  const greeting = buildGreeting(studentName, seed)
+
+  const steps: string[] = []
+  if (hasVocabulary) steps.push('First, learn the new words.')
+  if (hasGrammar) steps.push(hasVocabulary ? 'Review the grammar.' : 'First, review the grammar.')
+  if (hasVocabulary || hasGrammar) steps.push('Then, do the homework.')
+  else steps.push('Open the homework and complete the tasks.')
 
   return [
-    '🚀 <b>Новая домашняя работа уже доступна!</b>',
+    greeting,
     '',
-    'Переходи к заданиям. Если что-то будет непонятно, отметь вопросы — разберём их на следующем уроке.',
+    'Your new English homework is ready.',
     '',
-    'Удачи! ✨',
+    `📘 <b>${title}</b>`,
+    '',
+    ...steps,
+    '',
+    'Good luck! ⭐',
   ].join('\n')
 }
 
@@ -315,23 +344,52 @@ async function handleHomeworkReport(req: Request, ctx: any, payload: any): Promi
 
   const scoreText = Number.isFinite(Number(row.score_total)) && Number(row.score_total) > 0
     ? `${Number(row.score_correct || 0)}/${Number(row.score_total)} (${Number(row.score_percent || 0)}%)`
-    : 'без автоматической оценки'
-  const submittedText = row.submitted_at ? new Date(row.submitted_at).toISOString() : '—'
-  const answerText = formatHomeworkAnswers(row.answers)
-  const text = truncateText([
-    '📝 <b>Новая домашняя работа</b>',
+    : 'проверяет преподаватель'
+  const storedLessonTitle = String(row.lesson_title || '').trim()
+  const requestedLessonTitle = typeof payload?.lessonTitle === 'string' ? payload.lessonTitle.trim() : ''
+  const lessonTitle = storedLessonTitle && storedLessonTitle !== lessonId
+    ? storedLessonTitle
+    : (requestedLessonTitle || storedLessonTitle || lessonId)
+
+  let homeworkUrl = isHttpUrl(payload?.homeworkUrl) ? payload.homeworkUrl : null
+  let resultUrl = isHttpUrl(payload?.resultUrl) ? payload.resultUrl : null
+  if (!homeworkUrl || !resultUrl) {
+    const siteBaseUrl = String(Deno.env.get('SITE_BASE_URL') || '').trim().replace(/\/+$/, '')
+    if (isHttpUrl(siteBaseUrl)) {
+      const target = new URL(`lesson.html?id=${encodeURIComponent(lessonId)}`, `${siteBaseUrl}/`)
+      if (!homeworkUrl) homeworkUrl = target.toString()
+      if (!resultUrl) {
+        target.hash = 'lesson-result'
+        resultUrl = target.toString()
+      }
+    }
+  }
+  if (homeworkUrl && !resultUrl) {
+    const target = new URL(homeworkUrl)
+    target.hash = 'lesson-result'
+    resultUrl = target.toString()
+  }
+  if (resultUrl && !homeworkUrl) {
+    const target = new URL(resultUrl)
+    target.hash = ''
+    homeworkUrl = target.toString()
+  }
+
+  const text = [
+    '✅ <b>Homework completed</b>',
     '',
-    `👤 ${escapeTelegramHtml(row.student_name || 'Marina')}`,
-    `📚 <b>${escapeTelegramHtml(row.lesson_title || lessonId)}</b>`,
-    `📊 ${escapeTelegramHtml(scoreText)}`,
-    `🕒 ${escapeTelegramHtml(submittedText)}`,
+    `📘 <b>${escapeTelegramHtml(lessonTitle)}</b>`,
+    `📊 <b>Result:</b> ${escapeTelegramHtml(scoreText)}`,
     '',
-    '<b>Ответы</b>',
-    answerText,
-  ].join('\n'), 3900)
+    'Open it on the site to see the answers and mistakes.',
+  ].join('\n')
+
+  const keyboard: Array<Array<{ text: string; url: string }>> = []
+  if (homeworkUrl) keyboard.push([{ text: '📝 Open homework', url: homeworkUrl }])
+  if (resultUrl) keyboard.push([{ text: '📊 View results', url: resultUrl }])
 
   try {
-    const message = await sendTelegramMessage(botToken, recipient.chatId as number, recipient.threadId, text, [])
+    const message = await sendTelegramMessage(botToken, recipient.chatId as number, recipient.threadId, text, keyboard)
     const reportSentAt = new Date().toISOString()
 
     const { error: publicationUpdateError } = await ctx.supabaseAdmin
@@ -654,6 +712,7 @@ export default {
     }
 
     const studentId = typeof payload.studentId === 'string' ? payload.studentId.trim() : ''
+    const studentName = typeof payload.studentName === 'string' ? payload.studentName.trim() : ''
     const materialType = typeof payload.materialType === 'string' ? payload.materialType.trim() : ''
     const materialId = typeof payload.materialId === 'string' ? payload.materialId.trim() : ''
     const notificationVersion = Number(payload.notificationVersion)
@@ -800,22 +859,28 @@ export default {
     }
 
     const keyboard: Array<Array<{ text: string; url: string }>> = []
-    if (vocabulary) keyboard.push([{ text: '💥 Открыть словарь', url: vocabulary.url }])
-    keyboard.push([{ text: '📝 Перейти к заданию', url: homework.url }])
-
-    grammar.forEach((item: any, index: number) => {
-      const label = grammar.length === 1
-        ? '📐 Повторить грамматику'
-        : `📐 ${String(item.title || `Грамматика ${index + 1}`).slice(0, 48)}`
-      keyboard.push([{ text: label, url: item.url }])
-    })
+    if (vocabulary) keyboard.push([{ text: '📚 Learn new words', url: vocabulary.url }])
+    if (grammar.length === 1) {
+      keyboard.push([{ text: '📘 Grammar', url: grammar[0].url }])
+    } else if (grammar.length > 1) {
+      for (const item of grammar) {
+        keyboard.push([{ text: `📘 ${item.title}`, url: item.url }])
+      }
+    }
+    keyboard.push([{ text: '📝 Do the homework', url: homework.url }])
 
     try {
       const telegramMessage = await sendTelegramMessage(
         botToken,
         recipientChatId,
         recipientThreadId,
-        buildMessage(Boolean(vocabulary)),
+        buildMessage(
+          Boolean(vocabulary),
+          grammar.length > 0,
+          homework.title,
+          studentName || (studentId === 'marina' ? 'Marina' : studentId),
+          `${materialId}:${notificationVersion}`,
+        ),
         keyboard,
       )
 
