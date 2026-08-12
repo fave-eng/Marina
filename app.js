@@ -305,10 +305,30 @@
     async sendHomeworkReport(lessonId) {
       const normalizedLessonId = safeText(lessonId).trim();
       if (!/^lesson-\d+$/.test(normalizedLessonId)) return null;
+
+      const lesson = HOMEWORK_DATA.find((item) => item.id === normalizedLessonId) || {};
+      let homeworkUrl = '';
+      let resultUrl = '';
+      try {
+        const target = new URL(
+          lesson.page || `lesson.html?id=${encodeURIComponent(normalizedLessonId)}`,
+          document.baseURI
+        );
+        target.hash = '';
+        homeworkUrl = target.toString();
+        target.hash = 'lesson-result';
+        resultUrl = target.toString();
+      } catch (error) {
+        console.warn('Не удалось сформировать ссылки на ДЗ и результат:', error);
+      }
+
       const result = await this.invokePublicFunction({
         kind: 'homework_submit_report',
         studentId,
-        lessonId: normalizedLessonId
+        lessonId: normalizedLessonId,
+        lessonTitle: safeText(lesson.title, normalizedLessonId),
+        homeworkUrl,
+        resultUrl
       });
 
       if (result.sent || result.reason === 'already_sent') {
@@ -1565,6 +1585,132 @@
     });
   }
 
+  function renderLessonAudio(block) {
+    const speech = block?.speech && typeof block.speech === 'object' ? block.speech : null;
+    if (!speech) return block.audio ? `<audio class="audio-player" controls preload="none" src="${escapeHtml(block.audio)}"></audio>` : '';
+
+    const lines = Array.isArray(speech.lines) ? speech.lines.map((line) => safeText(line)).filter(Boolean) : [];
+    const speechText = lines.join(' ');
+    if (!speechText) return block.audio ? `<audio class="audio-player" controls preload="none" src="${escapeHtml(block.audio)}"></audio>` : '';
+
+    const lang = safeText(speech.lang, 'en-GB');
+    const rate = Math.min(1.35, Math.max(0.7, Number(speech.rate || 1)));
+    const label = safeText(speech.label, 'Natural voice · conversational speed');
+    const fallback = block.audio ? `<audio class="audio-player" controls preload="none" src="${escapeHtml(block.audio)}" data-speech-fallback hidden></audio>` : '';
+    return `<div class="speech-player" data-speech-player data-speech-text="${escapeHtml(speechText)}" data-speech-lang="${escapeHtml(lang)}" data-speech-rate="${rate}">
+      <div class="button-row">
+        <button class="btn btn-secondary" type="button" data-speech-play>▶ Listen</button>
+        <button class="btn btn-secondary" type="button" data-speech-stop hidden>■ Stop</button>
+      </div>
+      <p class="muted">${escapeHtml(label)}</p>
+      ${fallback}
+    </div>`;
+  }
+
+  function preferredSpeechVoice(lang = 'en-GB') {
+    if (!('speechSynthesis' in window)) return null;
+    const voices = window.speechSynthesis.getVoices();
+    if (!voices.length) return null;
+    const normalized = safeText(lang, 'en-GB').toLowerCase();
+    const language = normalized.split('-')[0];
+    const candidates = voices.filter((voice) => safeText(voice.lang).toLowerCase().startsWith(language));
+    const exact = candidates.filter((voice) => safeText(voice.lang).toLowerCase() === normalized);
+    const pool = exact.length ? exact : candidates;
+    const preferredNames = [
+      /natural/i,
+      /premium/i,
+      /enhanced/i,
+      /siri/i,
+      /sonia/i,
+      /ryan/i,
+      /serena/i,
+      /daniel/i,
+      /google uk english/i,
+      /samantha/i
+    ];
+    for (const pattern of preferredNames) {
+      const match = pool.find((voice) => pattern.test(safeText(voice.name)));
+      if (match) return match;
+    }
+    return pool[0] || voices[0] || null;
+  }
+
+  function setupSpeechPlayers(root) {
+    const players = [...root.querySelectorAll('[data-speech-player]')];
+    if (!players.length) return;
+
+    const synthesisAvailable = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+    if (!synthesisAvailable) {
+      players.forEach((player) => {
+        player.querySelector('[data-speech-play]')?.setAttribute('hidden', '');
+        player.querySelector('[data-speech-stop]')?.setAttribute('hidden', '');
+        player.querySelector('[data-speech-fallback]')?.removeAttribute('hidden');
+      });
+      return;
+    }
+
+    let activePlayer = null;
+    const resetPlayer = (player) => {
+      if (!player) return;
+      const play = player.querySelector('[data-speech-play]');
+      const stop = player.querySelector('[data-speech-stop]');
+      if (play) {
+        play.removeAttribute('hidden');
+        play.textContent = '▶ Listen';
+      }
+      if (stop) stop.setAttribute('hidden', '');
+      player.classList.remove('is-speaking');
+    };
+
+    const stopSpeech = () => {
+      window.speechSynthesis.cancel();
+      resetPlayer(activePlayer);
+      activePlayer = null;
+    };
+
+    players.forEach((player) => {
+      const playButton = player.querySelector('[data-speech-play]');
+      const stopButton = player.querySelector('[data-speech-stop]');
+      if (!playButton) return;
+
+      playButton.addEventListener('click', () => {
+        stopSpeech();
+        const text = safeText(player.dataset.speechText);
+        if (!text) return;
+        const lang = safeText(player.dataset.speechLang, 'en-GB');
+        const rate = Math.min(1.35, Math.max(0.7, Number(player.dataset.speechRate || 1)));
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = lang;
+        utterance.rate = rate;
+        utterance.pitch = 1;
+        utterance.volume = 1;
+        const voice = preferredSpeechVoice(lang);
+        if (voice) utterance.voice = voice;
+        utterance.onstart = () => {
+          activePlayer = player;
+          player.classList.add('is-speaking');
+          playButton.setAttribute('hidden', '');
+          stopButton?.removeAttribute('hidden');
+        };
+        utterance.onend = () => {
+          if (activePlayer === player) activePlayer = null;
+          resetPlayer(player);
+        };
+        utterance.onerror = () => {
+          if (activePlayer === player) activePlayer = null;
+          resetPlayer(player);
+          const fallback = player.querySelector('[data-speech-fallback]');
+          if (fallback) fallback.removeAttribute('hidden');
+        };
+        window.speechSynthesis.speak(utterance);
+      });
+
+      stopButton?.addEventListener('click', stopSpeech);
+    });
+
+    window.addEventListener('pagehide', stopSpeech, { once: true });
+  }
+
   function renderLessonBlock(block, index) {
     const id = safeText(block.id, `task-${index}`);
     const title = escapeHtml(block.title || block.prompt || `Задание ${index + 1}`);
@@ -1589,7 +1735,7 @@
       const wordBank = Array.isArray(block.wordBank) && block.wordBank.length
         ? `<div class="word-bank" aria-label="Word bank"><strong class="word-bank-label">Word bank</strong>${block.wordBank.map((word) => `<span>${escapeHtml(word)}</span>`).join('')}</div>`
         : '';
-      const player = block.audio ? `<audio class="audio-player" controls preload="none" src="${escapeHtml(block.audio)}"></audio>` : '';
+      const player = renderLessonAudio(block);
       const mediaItems = Array.isArray(block.images) ? block.images : block.image ? [block.image] : [];
       const media = mediaItems.length ? `<div class="exercise-media-grid">${mediaItems.map((image) => {
         const source = typeof image === 'string' ? image : image?.src;
@@ -1631,7 +1777,7 @@
       return `<article class="card lesson-block" data-task="${escapeHtml(id)}" data-type="reorder"><h3>${title}</h3><div class="word-chips" data-reorder-source>${chips}</div><label class="field-label" for="${escapeHtml(id)}">Собранный ответ</label><input class="text-field" id="${escapeHtml(id)}" readonly><div class="feedback"></div></article>`;
     }
     if (block.type === 'audio') {
-      const player = block.audio ? `<audio class="audio-player" controls preload="none" src="${escapeHtml(block.audio)}"></audio>` : '<p class="muted">Аудиофайл ещё не прикреплён.</p>';
+      const player = renderLessonAudio(block) || '<p class="muted">Аудиофайл ещё не прикреплён.</p>';
       const response = block.response === false ? '' : `<input class="text-field" id="${escapeHtml(id)}" aria-label="Ответ на аудиозадание"><div class="feedback"></div>`;
       const taskAttrs = block.response === false ? '' : ` data-task="${escapeHtml(id)}" data-type="audio"`;
       return `<article class="card lesson-block audio-card"${taskAttrs}><div class="audio-icon" aria-hidden="true">🎧</div><div class="audio-content"><h3>${title}</h3>${text ? `<p class="muted">${text}</p>` : ''}${player}${response}</div></article>`;
@@ -1977,6 +2123,7 @@
     );
     restoreLessonAnswers(root, blocks, restoredAnswers);
     setupManualLessonWidgets(root);
+    setupSpeechPlayers(root);
     root.querySelectorAll('[data-mark-index]').forEach((button) => {
       button.addEventListener('click', () => {
         const active = !button.classList.contains('is-selected');
@@ -1991,6 +2138,11 @@
     }
     if (savedResult) reviewRestoredLesson(root, blocks);
     if (isCompleted) lockCompletedLesson(root);
+    if (window.location.hash === '#lesson-result') {
+      window.requestAnimationFrame(() => {
+        byId('lesson-result')?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      });
+    }
 
     root.querySelectorAll('[data-reorder-source]').forEach((source) => {
       source.addEventListener('click', (event) => {
