@@ -485,7 +485,6 @@
           "answer": "hour"
         }
       ],
-      "audio": "audio/lesson-8-audio-2_04.mp3",
       "speech": {
         "lang": "en-GB",
         "rate": 1.0,
@@ -497,14 +496,13 @@
           "We only go on holiday once a year.",
           "I check my emails once an hour."
         ],
-        "label": "Natural voice · conversational speed"
+        "label": "British English · same voice as Vocabulary"
       }
     },
     {
       "type": "audio",
       "id": "l8-pron-3b",
       "title": "3B. 2.04 | Listen again and repeat. Practise the linking between words.",
-      "audio": "audio/lesson-8-audio-2_04.mp3",
       "response": false,
       "speech": {
         "lang": "en-GB",
@@ -517,7 +515,7 @@
           "We only go on holiday once a year.",
           "I check my emails once an hour."
         ],
-        "label": "Natural voice · conversational speed"
+        "label": "British English · same voice as Vocabulary"
       }
     }
   ]

@@ -1607,34 +1607,6 @@
     </div>`;
   }
 
-  function preferredSpeechVoice(lang = 'en-GB') {
-    if (!('speechSynthesis' in window)) return null;
-    const voices = window.speechSynthesis.getVoices();
-    if (!voices.length) return null;
-    const normalized = safeText(lang, 'en-GB').toLowerCase();
-    const language = normalized.split('-')[0];
-    const candidates = voices.filter((voice) => safeText(voice.lang).toLowerCase().startsWith(language));
-    const exact = candidates.filter((voice) => safeText(voice.lang).toLowerCase() === normalized);
-    const pool = exact.length ? exact : candidates;
-    const preferredNames = [
-      /natural/i,
-      /premium/i,
-      /enhanced/i,
-      /siri/i,
-      /sonia/i,
-      /ryan/i,
-      /serena/i,
-      /daniel/i,
-      /google uk english/i,
-      /samantha/i
-    ];
-    for (const pattern of preferredNames) {
-      const match = pool.find((voice) => pattern.test(safeText(voice.name)));
-      if (match) return match;
-    }
-    return pool[0] || voices[0] || null;
-  }
-
   function setupSpeechPlayers(root) {
     const players = [...root.querySelectorAll('[data-speech-player]')];
     if (!players.length) return;
@@ -1684,8 +1656,6 @@
         utterance.rate = rate;
         utterance.pitch = 1;
         utterance.volume = 1;
-        const voice = preferredSpeechVoice(lang);
-        if (voice) utterance.voice = voice;
         utterance.onstart = () => {
           activePlayer = player;
           player.classList.add('is-speaking');
