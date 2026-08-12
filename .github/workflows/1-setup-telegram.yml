@@ -38,11 +38,20 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          SITE_PUBLIC_API_KEY="$(node - <<'NODE'
+          global.window = {}
+          require('./config.js')
+          process.stdout.write(window.APP_CONFIG?.supabase?.anonKey || '')
+          NODE
+          )"
+          test -n "$SITE_PUBLIC_API_KEY" || (echo "Missing public Supabase key in config.js" && exit 1)
+
           supabase secrets set \
             --project-ref "$SUPABASE_PROJECT_ID" \
             TELEGRAM_BOT_TOKEN="$TELEGRAM_BOT_TOKEN" \
             NOTIFY_WEBHOOK_SECRET="$NOTIFY_WEBHOOK_SECRET" \
-            TEACHER_CHAT_ID="$TEACHER_CHAT_ID"
+            TEACHER_CHAT_ID="$TEACHER_CHAT_ID" \
+            SITE_PUBLIC_API_KEY="$SITE_PUBLIC_API_KEY"
 
       - name: Deploy notification function
         shell: bash

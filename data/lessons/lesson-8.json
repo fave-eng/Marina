@@ -176,13 +176,6 @@
       "type": "exercise",
       "id": "l8-vocab-1c",
       "title": "1C. Choose the correct words to complete the profile.",
-      "images": [
-        {
-          "src": "assets/lessons/lesson-8/my-weekend-profile.png",
-          "alt": "Portrait from the My weekend profile",
-          "compact": true
-        }
-      ],
       "items": [
         {
           "id": "profile",

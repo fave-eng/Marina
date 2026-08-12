@@ -76,8 +76,7 @@
       method: 'POST',
       headers: {
         'content-type': 'application/json',
-        'apikey': anonKey,
-        'authorization': `Bearer ${anonKey}`
+        'apikey': anonKey
       },
       body: JSON.stringify(body)
     });
@@ -90,7 +89,11 @@
   function explainFunctionFailure(result) {
     const message = String(result?.data?.error || result?.data?.message || result?.data?.raw || '').trim();
     if (result?.status === 404) return 'Edge Function notify-telegram не найдена или не задеплоена.';
-    if (result?.status === 401 && /Unauthorized/i.test(message)) return 'В Supabase, вероятно, задеплоена старая версия notify-telegram: она ещё не поддерживает диагностические запросы.';
+    if (result?.status === 401 && /Unauthorized diagnostics request/i.test(message)) {
+      const version = result?.data?.diagnosticVersion ? ` Версия функции: ${result.data.diagnosticVersion}.` : '';
+      return `Edge Function отвечает, но не принимает публичный ключ из config.js.${version} Задеплой актуальную notify-telegram из этого проекта.`;
+    }
+    if (result?.status === 401 && /Unauthorized/i.test(message)) return 'Edge Function отклонила запрос авторизации. Проверь, что задеплоена актуальная notify-telegram и verify_jwt=false.';
     if (result?.status === 403) return message || 'Диагностика запрещена для этого student_id.';
     if (/Failed to fetch/i.test(message)) return 'Браузер не смог вызвать Edge Function: проверь сеть, URL проекта и CORS.';
     return `HTTP ${result?.status || '—'}${message ? `: ${message}` : ''}`;
@@ -177,13 +180,15 @@
         const h = edgeResult.data;
         const browserRows = Array.isArray(lastReport.directRows) ? lastReport.directRows.length : 0;
         const serviceRows = Number(h.database?.homeworkRows || 0);
-        const visibilityOk = !readResponse.error && browserRows === serviceRows;
+        const removedProbes = Number(h.database?.staleDiagnosticProbesRemoved || 0);
+        const browserRowsAfterCleanup = Math.max(0, browserRows - removedProbes);
+        const visibilityOk = !readResponse.error && browserRowsAfterCleanup === serviceRows;
         addCheck(
           '6. RLS / одинаковое чтение browser и service role',
           visibilityOk ? 'ok' : 'bad',
           visibilityOk
-            ? `Браузер и сервер видят одинаковое количество строк ДЗ: ${browserRows}.`
-            : `Браузер видит ${browserRows}, Edge Function видит ${serviceRows}. Проверь SELECT policy для student_id=${studentId}.`
+            ? `Браузер и сервер видят одинаковое количество рабочих строк ДЗ: ${serviceRows}${removedProbes ? ` (ещё ${removedProbes} технических probe удалено сервером)` : ''}.`
+            : `Браузер видит ${browserRowsAfterCleanup} рабочих строк после учёта cleanup, Edge Function видит ${serviceRows}. Проверь SELECT policy для student_id=${studentId}.`
         );
 
         addCheck('7. Edge Function → Supabase (service role)', h.database?.ok ? 'ok' : 'bad', h.database?.ok ? `Сервер читает таблицы Supabase. Строк ДЗ: ${h.database.homeworkRows}.` : (h.database?.error || 'Сервер не может читать Supabase.'));
@@ -197,12 +202,27 @@
         } else {
           const legacyCount = Array.isArray(h.database?.legacyHomework) ? h.database.legacyHomework.length : 0;
           addCheck(
-            '11. Состояние сохранённых ДЗ',
+            '12. Состояние сохранённых ДЗ',
             'ok',
             legacyCount
               ? `Новые записи соответствуют state machine. Старых мигрированных записей: ${legacyCount}; диагностика их не изменяет.`
               : 'Записи соответствуют state machine draft → submitted_pending_report → submitted.'
           );
+        }
+
+        const pendingHomework = Array.isArray(h.database?.pendingHomework) ? h.database.pendingHomework : [];
+        if (pendingHomework.length) {
+          addCheck(
+            '13. Telegram-отчёты по ДЗ',
+            'warn',
+            `Ожидают отправки/повтора: ${pendingHomework.map((item) => `${item.lessonId} (${item.reportStatus || 'pending'})`).join(', ')}. Новая версия сайта повторит отправку автоматически после синхронизации.`
+          );
+        } else {
+          addCheck('13. Telegram-отчёты по ДЗ', 'ok', 'Зависших submitted_pending_report записей нет.');
+        }
+
+        if (removedProbes > 0) {
+          addCheck('14. Очистка диагностики', 'ok', `Удалено старых технических probe-записей: ${removedProbes}.`);
         }
 
         telegramInfoEl.innerHTML = '';

@@ -279,6 +279,75 @@
       }
       return this.client;
     },
+    async invokePublicFunction(payload) {
+      const base = safeText(config.supabase?.url).replace(/\/+$/, '');
+      const apiKey = safeText(config.supabase?.anonKey).trim();
+      if (!base || !apiKey) throw new Error('Supabase function URL или public key не настроены');
+      const response = await fetch(`${base}/functions/v1/notify-telegram`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'apikey': apiKey
+        },
+        body: JSON.stringify(payload || {})
+      });
+      const text = await response.text();
+      let data = null;
+      try { data = text ? JSON.parse(text) : null; } catch { data = { raw: text }; }
+      if (!response.ok || !data?.ok) {
+        const error = new Error(data?.error || data?.message || `Edge Function HTTP ${response.status}`);
+        error.status = response.status;
+        error.data = data;
+        throw error;
+      }
+      return data;
+    },
+    async sendHomeworkReport(lessonId) {
+      const normalizedLessonId = safeText(lessonId).trim();
+      if (!/^lesson-\d+$/.test(normalizedLessonId)) return null;
+      const result = await this.invokePublicFunction({
+        kind: 'homework_submit_report',
+        studentId,
+        lessonId: normalizedLessonId
+      });
+
+      if (result.sent || result.reason === 'already_sent') {
+        const progress = window.ProgressService.loadHomeworkProgress();
+        const submission = progress.submissions[normalizedLessonId];
+        if (submission) {
+          progress.submissions[normalizedLessonId] = {
+            ...submission,
+            status: 'cloud',
+            cloudStatus: 'submitted',
+            reportStatus: 'sent',
+            reportSentAt: result.reportSentAt || submission.reportSentAt || new Date().toISOString(),
+            reportError: null
+          };
+          storage.write(key('homework'), progress);
+        }
+      }
+      return result;
+    },
+    async retryHomeworkReports(lessonIds) {
+      for (const lessonId of unique(lessonIds)) {
+        try {
+          await this.sendHomeworkReport(lessonId);
+        } catch (error) {
+          console.warn(`Не удалось отправить Telegram-отчёт для ${lessonId}:`, error);
+          const progress = window.ProgressService.loadHomeworkProgress();
+          const submission = progress.submissions[lessonId];
+          if (submission) {
+            progress.submissions[lessonId] = {
+              ...submission,
+              cloudStatus: 'submitted_pending_report',
+              reportStatus: 'failed',
+              reportError: error?.message || String(error)
+            };
+            storage.write(key('homework'), progress);
+          }
+        }
+      }
+    },
     queue(section) {
       if (!this.isConfigured() || !this.client || this.syncing) return;
       window.clearTimeout(this.timers[section]);
@@ -806,6 +875,13 @@
         if (rows.length) {
           const { error } = await client.from(tables.homework).upsert(rows, { onConflict: 'student_id,lesson_id' });
           if (error) throw error;
+
+          const pendingReportLessonIds = rows
+            .filter((row) => row.status === 'submitted_pending_report' && ['pending', 'failed'].includes(row.report_status))
+            .map((row) => row.lesson_id);
+          if (pendingReportLessonIds.length) {
+            await CloudService.retryHomeworkReports(pendingReportLessonIds);
+          }
         }
       }
 
@@ -2021,7 +2097,7 @@
       updatedProgress.submissions[lesson.id] = { savedAt: new Date().toISOString(), status: CloudService.isConfigured() ? 'pending-cloud' : 'local' };
       if (!updatedProgress.completedIds.includes(lesson.id)) updatedProgress.completedIds.push(lesson.id);
       window.ProgressService.saveHomeworkProgress(updatedProgress);
-      showToast(CloudService.isConfigured() ? 'Ответы сохранены и отправляются в Supabase.' : 'Ответы сохранены на устройстве.');
+      showToast(CloudService.isConfigured() ? 'Ответы сохранены. После синхронизации отчёт автоматически уйдёт преподавателю.' : 'Ответы сохранены на устройстве.');
       lockCompletedLesson(root);
       const actions = root.querySelector('.lesson-actions');
       if (actions) {
