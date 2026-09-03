@@ -1684,14 +1684,16 @@
         const rate = Math.min(1.35, Math.max(0.7, Number(player.dataset.speechRate || 1)));
         const languagePrefix = lang.toLowerCase().split('-')[0];
         const matchingVoices = window.speechSynthesis.getVoices().filter((voice) => voice.lang.toLowerCase().startsWith(languagePrefix));
-        const waiterVoice = matchingVoices.find((item) => /daniel|ryan|arthur|oliver|alex|google uk english male/i.test(item.name))
-          || matchingVoices.find((item) => item.localService)
+        // The waiter deliberately uses the device's standard en-GB voice,
+        // exactly like the pronunciation buttons in Vocabulary.
+        const vocabularyVoice = matchingVoices.find((item) => item.default)
+          || matchingVoices.find((item) => item.lang.toLowerCase() === lang.toLowerCase())
           || matchingVoices[0]
           || null;
-        const customerVoice = matchingVoices.find((item) => /serena|sonia|kate|samantha|victoria|google uk english female/i.test(item.name))
-          || matchingVoices.find((item) => item !== waiterVoice)
-          || waiterVoice;
-        const defaultVoice = customerVoice || waiterVoice || matchingVoices[0] || null;
+        const customerVoice = matchingVoices.find((item) => (
+          /serena|sonia|kate|samantha|victoria|google uk english female/i.test(item.name)
+          && item !== vocabularyVoice
+        )) || matchingVoices.find((item) => item !== vocabularyVoice) || null;
 
         activePlayer = player;
         player.classList.add('is-speaking');
@@ -1711,7 +1713,7 @@
           utterance.rate = rate;
           utterance.pitch = 1;
           utterance.volume = 1;
-          const voice = line.voice === 'waiter' ? waiterVoice : line.voice === 'customer' ? customerVoice : defaultVoice;
+          const voice = line.voice === 'customer' ? customerVoice : null;
           if (voice) utterance.voice = voice;
           utterance.onend = () => {
             if (activePlayer !== player) return;
