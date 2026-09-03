@@ -1,7 +1,8 @@
 (() => {
   'use strict';
 
-  const EXPECTED_DIAGNOSTIC_VERSION = 'marina-diagnostics-v1';
+  const EXPECTED_DIAGNOSTIC_VERSION = 'multi-student-diagnostics-v1';
+  const CURRENT_LESSON_ID = 'lesson-9';
   const config = window.APP_CONFIG || {};
   const student = config.student || {};
   const studentId = String(student.id || 'marina').trim().toLowerCase();
@@ -150,13 +151,13 @@
         lastReport.directRows = readResponse.data || [];
         addCheck('3. Supabase Database / чтение homework_progress', 'ok', `Доступ есть. Получено строк: ${(readResponse.data || []).length}.`);
 
-        const lesson8Row = (readResponse.data || []).find((row) => row.lesson_id === 'lesson-8');
-        if (lesson8Row?.migrated_from_legacy) {
-          addCheck('4. ID lesson-8 свободен от legacy-данных', 'bad', 'В Supabase ещё есть мигрированная старая строка lesson-8. Перед новой Homework 8 выполни supabase/archive-legacy-lesson-8.sql.');
-        } else if (lesson8Row) {
-          addCheck('4. ID lesson-8 свободен от legacy-данных', 'ok', `lesson-8 уже относится к текущей работе (${lesson8Row.status || 'без статуса'}), legacy-флаг отсутствует.`);
+        const currentLessonRow = (readResponse.data || []).find((row) => row.lesson_id === CURRENT_LESSON_ID);
+        if (currentLessonRow?.migrated_from_legacy) {
+          addCheck(`4. Текущая Homework 9 / ${CURRENT_LESSON_ID}`, 'bad', `У ${CURRENT_LESSON_ID} обнаружен legacy-флаг. Не перезаписывай строку: сначала проверь её в Supabase.`);
+        } else if (currentLessonRow) {
+          addCheck(`4. Текущая Homework 9 / ${CURRENT_LESSON_ID}`, 'ok', `${CURRENT_LESSON_ID} найдена (${currentLessonRow.status || 'без статуса'}), legacy-флаг отсутствует.`);
         } else {
-          addCheck('4. ID lesson-8 свободен от legacy-данных', 'ok', 'Старой мигрированной строки lesson-8 в Supabase нет; ID можно использовать для новой Homework 8.');
+          addCheck(`4. Текущая Homework 9 / ${CURRENT_LESSON_ID}`, 'ok', `Прогресса по ${CURRENT_LESSON_ID} в Supabase пока нет. Эта проверка только читает существующие строки.`);
         }
       }
 

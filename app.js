@@ -11,7 +11,7 @@
   const maxLessonNumber = 200;
   const maxConsecutiveMissingLessons = 3;
   const MANUAL_LESSON_TYPES = ['family-tree', 'guided-writing', 'word-groups', 'mini-interview'];
-  const LESSON_TASK_TYPES = ['text', 'textarea', 'single', 'multiple', 'select', 'match', 'reorder', 'translate', 'audio', 'exercise', ...MANUAL_LESSON_TYPES];
+  const LESSON_TASK_TYPES = ['text', 'textarea', 'single', 'multiple', 'select', 'match', 'reorder', 'translate', 'audio', 'exercise', 'reading-quiz', ...MANUAL_LESSON_TYPES];
 
   const safeText = (value, fallback = '') => value === undefined || value === null ? fallback : String(value);
   const escapeHtml = (value) => safeText(value)
@@ -1681,6 +1681,141 @@
     window.addEventListener('pagehide', stopSpeech, { once: true });
   }
 
+  function readingQuizPartsMarkup(parts, mode = 'fill') {
+    const values = Array.isArray(parts) ? parts : [parts];
+    return values.map((part) => {
+      if (part && typeof part === 'object' && part.gap) {
+        const gapId = safeText(part.gap);
+        if (mode === 'inject') return `<span class="reading-injected-gap" data-inject-gap="${escapeHtml(gapId)}"></span>`;
+        const options = (window.__readingQuizWordBank || []).map((word) => `<option value="${escapeHtml(word)}">${escapeHtml(word)}</option>`).join('');
+        return `<span class="reading-gap-wrap" data-reading-gap-wrap="${escapeHtml(gapId)}"><sup>${escapeHtml(gapId)}</sup><select class="reading-gap-select" data-quiz-gap="${escapeHtml(gapId)}" aria-label="Gap ${escapeHtml(gapId)}"><option value="">Choose</option>${options}</select><span class="reading-gap-feedback" aria-live="polite"></span></span>`;
+      }
+      return escapeHtml(part || '');
+    }).join('');
+  }
+
+  function readingQuizQuestionsMarkup(block, mode = 'fill', taskId = '') {
+    const questions = Array.isArray(block?.quiz?.questions) ? block.quiz.questions : [];
+    const personal = mode === 'personal';
+    return `<div class="reading-quiz-questions ${personal ? 'is-personal' : 'is-fill'}">${questions.map((question) => {
+      const number = safeText(question.number);
+      const questionText = readingQuizPartsMarkup(question.question, personal ? 'inject' : 'fill');
+      const options = (Array.isArray(question.options) ? question.options : []).map((option) => {
+        const letter = safeText(option.letter);
+        const optionText = readingQuizPartsMarkup(option.text, personal ? 'inject' : 'fill');
+        const control = personal
+          ? `<input type="radio" name="${escapeHtml(taskId)}-personal-${escapeHtml(number)}" value="${escapeHtml(letter)}" data-personal-question="${escapeHtml(number)}">`
+          : '';
+        const tag = personal ? 'label' : 'div';
+        return `<${tag} class="reading-quiz-option${personal ? ' is-selectable' : ''}">${control}<strong>${escapeHtml(letter)}</strong><span>${optionText}</span></${tag}>`;
+      }).join('');
+      return `<section class="reading-quiz-question" data-reading-question="${escapeHtml(number)}"><h4><span>${escapeHtml(number)}</span>${questionText}</h4><div class="reading-quiz-options">${options}</div></section>`;
+    }).join('')}</div>`;
+  }
+
+  function readingQuizKeyMarkup(block) {
+    const entries = Array.isArray(block?.partB?.key) ? block.partB.key : [];
+    return `<aside class="reading-key-card"><strong class="reading-key-label">Key</strong>${entries.map((entry) => `<p><b>${escapeHtml(entry.title || `Mostly ${entry.letter}:`)}</b> ${escapeHtml(entry.text || '')}</p>`).join('')}</aside>`;
+  }
+
+  function renderReadingQuizBlock(block, id, title) {
+    const partA = block.partA || {};
+    const partB = block.partB || {};
+    const partC = block.partC || {};
+    const wordBank = Array.isArray(partA.wordBank) ? partA.wordBank : [];
+    const people = Array.isArray(partC.people) ? partC.people : [];
+    const matchOptions = ['a', 'b', 'c'];
+    const quiz = block.quiz || {};
+    window.__readingQuizWordBank = wordBank;
+    return `<article class="card lesson-block reading-quiz-block" data-task="${escapeHtml(id)}" data-type="reading-quiz">
+      <div class="reading-quiz-section-head"><span class="eyebrow">${escapeHtml(title || 'READING')}</span></div>
+      <section class="reading-part reading-part-a">
+        <div class="reading-part-heading"><strong>${escapeHtml(partA.label || '4A')}</strong><p>${escapeHtml(partA.instructions || '')}</p></div>
+        ${wordBank.length ? `<div class="reading-word-bank" aria-label="Words in the box">${wordBank.map((word) => `<span>${escapeHtml(word)}</span>`).join('')}</div>` : ''}
+        <div class="reading-quiz-layout">
+          <div class="reading-quiz-reference">
+            <div class="reading-quiz-banner" aria-label="Alone or together quiz illustration">
+              <div class="reading-banner-copy"><span>${escapeHtml(quiz.title || 'QUIZ')}</span><h3>${escapeHtml(quiz.headline || '')}</h3><p>${escapeHtml(quiz.intro || '')}</p></div>
+              <div class="reading-cafe-illustration" aria-hidden="true"><span class="person p1"></span><span class="person p2"></span><span class="person p3"></span><span class="person p4"></span><span class="cafe-table"></span><span class="cup c1"></span><span class="cup c2"></span></div>
+            </div>
+          </div>
+          <div class="reading-quiz-work">${readingQuizQuestionsMarkup(block, 'fill', id)}</div>
+        </div>
+      </section>
+      <section class="reading-bc-grid">
+        <div class="reading-key-sticky">${readingQuizKeyMarkup(block)}</div>
+        <div class="reading-bc-work">
+          <section class="reading-part reading-part-b">
+            <div class="reading-part-heading"><strong>${escapeHtml(partB.label || 'B')}</strong><p>${escapeHtml(partB.instructions || '')}</p></div>
+            <div class="reading-personal-lock" data-personal-lock>Сначала заполни все пропуски в 4A.</div>
+            <div class="reading-personal-quiz" data-personal-quiz hidden>${readingQuizQuestionsMarkup(block, 'personal', id)}</div>
+          </section>
+          <section class="reading-part reading-part-c">
+            <div class="reading-part-heading"><strong>${escapeHtml(partC.label || 'C')}</strong><p>${escapeHtml(partC.instructions || '')}</p></div>
+            <div class="reading-person-list">${people.map((person) => `<article class="reading-person-row" data-reading-person="${escapeHtml(person.number)}"><div class="reading-person-copy"><strong>${escapeHtml(person.number)}</strong><p>${escapeHtml(person.text || '')}</p></div><div class="reading-match-control"><select data-reading-match="${escapeHtml(person.number)}" aria-label="Match person ${escapeHtml(person.number)}"><option value="">Choose</option>${matchOptions.map((option) => `<option value="${option}">${option}</option>`).join('')}</select><span class="reading-match-feedback feedback" aria-live="polite"></span></div></article>`).join('')}</div>
+          </section>
+        </div>
+      </section>
+      <div class="reading-quiz-summary feedback" aria-live="polite"></div>
+    </article>`;
+  }
+
+  function collectReadingQuizAnswers(node) {
+    const gaps = {};
+    node.querySelectorAll('[data-quiz-gap]').forEach((input) => { gaps[safeText(input.dataset.quizGap)] = input.value; });
+    const personal = {};
+    node.querySelectorAll('[data-personal-question]:checked').forEach((input) => { personal[safeText(input.dataset.personalQuestion)] = safeText(input.value); });
+    const matches = {};
+    node.querySelectorAll('[data-reading-match]').forEach((select) => { matches[safeText(select.dataset.readingMatch)] = safeText(select.value); });
+    return { gaps, personal, matches };
+  }
+
+  function updateReadingQuizDependency(node, block) {
+    const answers = block?.partA?.answers && typeof block.partA.answers === 'object' ? block.partA.answers : {};
+    const gapIds = Object.keys(answers);
+    const inputs = gapIds.map((gapId) => node.querySelector(`[data-quiz-gap="${CSS.escape(gapId)}"]`));
+    const complete = inputs.length === gapIds.length && inputs.every((input) => safeText(input?.value).trim() !== '');
+    const personalQuiz = node.querySelector('[data-personal-quiz]');
+    const lock = node.querySelector('[data-personal-lock]');
+    if (personalQuiz) personalQuiz.hidden = !complete;
+    if (lock) lock.hidden = complete;
+    node.querySelectorAll('[data-personal-question]').forEach((input) => { input.disabled = !complete; });
+    if (!complete) return;
+    gapIds.forEach((gapId) => {
+      const value = safeText(node.querySelector(`[data-quiz-gap="${CSS.escape(gapId)}"]`)?.value).trim();
+      node.querySelectorAll(`[data-inject-gap="${CSS.escape(gapId)}"]`).forEach((target) => { target.textContent = value; });
+    });
+  }
+
+  function restoreReadingQuizAnswers(node, block, value) {
+    const gaps = value?.gaps && typeof value.gaps === 'object' ? value.gaps : {};
+    Object.entries(gaps).forEach(([gapId, answer]) => {
+      const input = node.querySelector(`[data-quiz-gap="${CSS.escape(safeText(gapId))}"]`);
+      if (input) input.value = safeText(answer);
+    });
+    const personal = value?.personal && typeof value.personal === 'object' ? value.personal : {};
+    Object.entries(personal).forEach(([questionId, answer]) => {
+      const input = node.querySelector(`[data-personal-question="${CSS.escape(safeText(questionId))}"][value="${CSS.escape(safeText(answer))}"]`);
+      if (input) input.checked = true;
+    });
+    const matches = value?.matches && typeof value.matches === 'object' ? value.matches : {};
+    Object.entries(matches).forEach(([personId, answer]) => {
+      const select = node.querySelector(`[data-reading-match="${CSS.escape(safeText(personId))}"]`);
+      if (select) select.value = safeText(answer);
+    });
+    updateReadingQuizDependency(node, block);
+  }
+
+  function setupReadingQuizBlocks(root, blocks) {
+    blocks.filter((block) => block.type === 'reading-quiz').forEach((block, index) => {
+      const taskId = safeText(block.id, `task-${index}`);
+      const node = root.querySelector(`[data-task="${CSS.escape(taskId)}"]`);
+      if (!node) return;
+      node.querySelectorAll('[data-quiz-gap]').forEach((input) => input.addEventListener('input', () => updateReadingQuizDependency(node, block)));
+      updateReadingQuizDependency(node, block);
+    });
+  }
+
   function renderLessonBlock(block, index) {
     const id = safeText(block.id, `task-${index}`);
     const title = escapeHtml(block.title || block.prompt || `Задание ${index + 1}`);
@@ -1700,6 +1835,7 @@
       const sectionCount = Array.isArray(block.sections) ? block.sections.length : 0;
       return `<article class="card lesson-block reading-card"><div class="reading-title"><div><span class="eyebrow">Reading</span><h3>${title}</h3></div>${sectionCount ? `<span class="reading-count">${sectionCount} sections</span>` : ''}</div>${renderReadingSections(block)}</article>`;
     }
+    if (block.type === 'reading-quiz') return renderReadingQuizBlock(block, id, title);
     if (block.type === 'exercise') {
       const items = Array.isArray(block.items) ? block.items : [];
       const wordBank = Array.isArray(block.wordBank) && block.wordBank.length
@@ -1858,7 +1994,55 @@
     return { actual, correctCount, total };
   }
 
+  function checkReadingQuizBlock(block, node) {
+    const actual = collectReadingQuizAnswers(node);
+    const gapAnswers = block?.partA?.answers && typeof block.partA.answers === 'object' ? block.partA.answers : {};
+    const matchAnswers = block?.partC?.answers && typeof block.partC.answers === 'object' ? block.partC.answers : {};
+    let correctCount = 0;
+    let total = 0;
+
+    Object.entries(gapAnswers).forEach(([gapId, expected]) => {
+      total += 1;
+      const input = node.querySelector(`[data-quiz-gap="${CSS.escape(safeText(gapId))}"]`);
+      const wrap = node.querySelector(`[data-reading-gap-wrap="${CSS.escape(safeText(gapId))}"]`);
+      const feedback = wrap?.querySelector('.reading-gap-feedback');
+      const correct = normalizeAnswer(input?.value) === normalizeAnswer(expected);
+      if (correct) correctCount += 1;
+      wrap?.classList.toggle('is-correct', correct);
+      wrap?.classList.toggle('is-wrong', !correct);
+      if (feedback) feedback.textContent = '';
+    });
+
+    Object.entries(matchAnswers).forEach(([personId, expected]) => {
+      total += 1;
+      const row = node.querySelector(`[data-reading-person="${CSS.escape(safeText(personId))}"]`);
+      const select = node.querySelector(`[data-reading-match="${CSS.escape(safeText(personId))}"]`);
+      const feedback = row?.querySelector('.reading-match-feedback');
+      const correct = safeText(select?.value) === safeText(expected);
+      if (correct) correctCount += 1;
+      row?.classList.toggle('is-correct', correct);
+      row?.classList.toggle('is-wrong', !correct);
+      if (feedback) {
+        feedback.className = 'reading-match-feedback feedback';
+        feedback.textContent = '';
+      }
+    });
+
+    const personalCount = Object.keys(actual.personal || {}).length;
+    const requiredPersonalCount = Array.isArray(block?.quiz?.questions) ? block.quiz.questions.length : 0;
+    const requiredComplete = requiredPersonalCount === 0 || personalCount >= requiredPersonalCount;
+    const summary = node.querySelector('.reading-quiz-summary');
+    if (summary) {
+      summary.className = 'reading-quiz-summary feedback show neutral';
+      summary.textContent = requiredComplete
+        ? 'Личные ответы из части B сохранены и не входят в балл.'
+        : 'Заполни все личные ответы в части B. Они не входят в балл.';
+    }
+    return { actual, correctCount, total, requiredComplete };
+  }
+
   function checkLessonTask(block, node) {
+    if (block.type === 'reading-quiz') return checkReadingQuizBlock(block, node);
     if (block.type === 'exercise') return checkExerciseBlock(block, node);
     if (block.type === 'family-tree') return { actual: collectFamilyTree(node), correctCount: 0, total: 0, manual: true };
     if (block.type === 'guided-writing') return { actual: node.querySelector('[data-guided-writing]')?.value || '', correctCount: 0, total: 0, manual: true };
@@ -1937,7 +2121,9 @@
       if (value === undefined) return;
       const node = root.querySelector(`[data-task="${CSS.escape(taskId)}"]`);
       if (!node) return;
-      if (block.type === 'exercise') {
+      if (block.type === 'reading-quiz') {
+        restoreReadingQuizAnswers(node, block, value);
+      } else if (block.type === 'exercise') {
         restoreExerciseAnswers(block, node, value);
       } else if (block.type === 'family-tree') {
         restoreFamilyTree(node, value);
@@ -1979,7 +2165,7 @@
   }
 
   function showLessonTaskResult(block, node, result) {
-    if (block.type === 'exercise') return;
+    if (block.type === 'exercise' || block.type === 'reading-quiz') return;
     const total = Number(result.total || 0);
     const correctCount = Number(result.correctCount || 0);
     if (result.manual || MANUAL_LESSON_TYPES.includes(block.type) || total === 0) {
@@ -2060,12 +2246,19 @@
 
     const progress = window.ProgressService.loadHomeworkProgress();
     const savedResult = progress.results[lesson.id];
+    const savedRequiredComplete = blocks.every((block) => {
+      if (block.type !== 'reading-quiz' || block.manualResponses !== true) return true;
+      const personal = savedResult?.answers?.[safeText(block.id)]?.personal;
+      const required = Array.isArray(block?.quiz?.questions) ? block.quiz.questions.length : 0;
+      return required === 0 || Object.keys(personal && typeof personal === 'object' ? personal : {}).length >= required;
+    });
+    const hasCheckedResult = Boolean(savedResult && Number(savedResult.total || 0) > 0 && savedRequiredComplete);
     const isCompleted = progress.completedIds.includes(lesson.id)
       || Boolean(progress.submissions[lesson.id])
       || lessonRecord.status === 'completed';
     const isManualOnly = Number(lesson.totalPoints || 0) <= 0;
     const pointsLabel = isManualOnly ? 'Проверяет преподаватель' : `${escapeHtml(lesson.totalPoints)} проверяемых ответов`;
-    const hasManualResponses = isManualOnly || blocks.some((block) => MANUAL_LESSON_TYPES.includes(block.type) || (block.type === 'exercise' && (block.items || []).some((item) => item.scored === false)));
+    const hasManualResponses = isManualOnly || blocks.some((block) => block.manualResponses === true || MANUAL_LESSON_TYPES.includes(block.type) || (block.type === 'exercise' && (block.items || []).some((item) => item.scored === false)));
     const lessonSections = blocks
       .map((block, blockIndex) => block.type === 'section' ? { block, blockIndex } : null)
       .filter(Boolean);
@@ -2081,7 +2274,7 @@
       ? `<div class="card section lesson-actions lesson-completed-panel"><div id="lesson-result" aria-live="polite"></div><div class="completed-lock-message"><span class="completed-lock-icon" aria-hidden="true">🔒</span><div><h3>Работа отправлена</h3><p class="muted">Ответы сохранены и переданы преподавателю. Изменить их после отправки нельзя.</p></div></div></div>`
       : isManualOnly
         ? `<div class="card section lesson-actions manual-lesson-actions"><div id="lesson-result" aria-live="polite"><p class="muted" data-draft-status>Черновик сохраняется автоматически на этом устройстве и синхронизируется с Supabase.</p></div><div class="button-row"><button class="btn btn-secondary" id="check-lesson" type="button">Сохранить черновик</button><button class="btn btn-primary" id="submit-lesson" type="button">Отправить преподавателю</button></div><p class="muted save-note">Сайт не выставляет баллы. Перед отправкой проверь семейное древо и текст из 6–8 предложений; дополнительные задания можно оставить пустыми.</p></div>`
-        : `<div class="card section lesson-actions"><div id="lesson-result" aria-live="polite"></div><div class="button-row"><button class="btn btn-primary" id="check-lesson" type="button">Проверить ответы</button><button class="btn btn-secondary" id="submit-lesson" type="button" ${savedResult ? '' : 'disabled'}>Отправить преподавателю</button></div><p class="muted save-note">После проверки ответы сохраняются на устройстве и сразу синхронизируются с Supabase.</p></div>`;
+        : `<div class="card section lesson-actions"><div id="lesson-result" aria-live="polite"></div><div class="button-row"><button class="btn btn-primary" id="check-lesson" type="button">Проверить ответы</button><button class="btn btn-secondary" id="submit-lesson" type="button" ${hasCheckedResult ? '' : 'disabled'}>Отправить преподавателю</button></div><p class="muted save-note">После проверки ответы сохраняются на устройстве и сразу синхронизируются с Supabase.</p></div>`;
     root.innerHTML = `<div class="card lesson-intro"><div><span class="eyebrow">Домашнее задание</span><p>${escapeHtml(lesson.subtitle || '')}</p></div><span class="lesson-points">${pointsLabel}</span></div>
       ${roadmap}
       <div id="lesson-blocks">${renderedBlocks}</div>
@@ -2092,6 +2285,7 @@
       savedResult?.answers
     );
     restoreLessonAnswers(root, blocks, restoredAnswers);
+    setupReadingQuizBlocks(root, blocks);
     setupManualLessonWidgets(root);
     setupSpeechPlayers(root);
     root.querySelectorAll('[data-mark-index]').forEach((button) => {
@@ -2106,7 +2300,7 @@
     } else if (savedResult && isManualOnly && !isCompleted) {
       byId('lesson-result').innerHTML = '<p class="muted" data-draft-status>Сохранённый черновик восстановлен. Можно продолжить с того же места.</p>';
     }
-    if (savedResult) reviewRestoredLesson(root, blocks);
+    if (savedResult && (isManualOnly || Number(savedResult.total || 0) > 0)) reviewRestoredLesson(root, blocks);
     if (isCompleted) lockCompletedLesson(root);
     if (window.location.hash === '#lesson-result') {
       window.requestAnimationFrame(() => {
@@ -2133,10 +2327,41 @@
         const taskId = safeText(block.id, `task-${index}`);
         const node = root.querySelector(`[data-task="${CSS.escape(taskId)}"]`);
         if (!node) return;
-        answers[taskId] = checkLessonTask(block, node).actual;
+        answers[taskId] = block.type === 'reading-quiz'
+          ? collectReadingQuizAnswers(node)
+          : checkLessonTask(block, node).actual;
       });
       return answers;
     };
+
+    const hasInteractiveAutosave = !isManualOnly && blocks.some((block) => block.autosaveDraft === true);
+    const saveInteractiveDraft = () => {
+      const updatedProgress = window.ProgressService.loadHomeworkProgress();
+      const previous = updatedProgress.results[lesson.id] || {};
+      updatedProgress.results[lesson.id] = {
+        ...previous,
+        correct: 0,
+        total: 0,
+        percent: 0,
+        answers: collectCurrentLessonAnswers(),
+        checkedAt: null,
+        draftUpdatedAt: new Date().toISOString()
+      };
+      window.ProgressService.saveHomeworkProgress(updatedProgress);
+      const submit = byId('submit-lesson');
+      if (submit) submit.disabled = true;
+    };
+
+    let interactiveDraftTimer = 0;
+    if (hasInteractiveAutosave && !isCompleted) {
+      const queueInteractiveDraftSave = () => {
+        window.clearTimeout(interactiveDraftTimer);
+        interactiveDraftTimer = window.setTimeout(saveInteractiveDraft, 500);
+      };
+      const lessonBlocksRoot = byId('lesson-blocks');
+      lessonBlocksRoot?.addEventListener('input', queueInteractiveDraftSave);
+      lessonBlocksRoot?.addEventListener('change', queueInteractiveDraftSave);
+    }
 
     const saveManualDraft = (announce = false) => {
       const updatedProgress = window.ProgressService.loadHomeworkProgress();
@@ -2171,6 +2396,7 @@
 
     const checkLessonButton = byId('check-lesson');
     if (checkLessonButton) checkLessonButton.addEventListener('click', () => {
+      window.clearTimeout(interactiveDraftTimer);
       if (isManualOnly) {
         saveManualDraft(true);
         return;
@@ -2179,6 +2405,7 @@
       const checkable = blocks.filter((block) => checkableTypes.includes(block.type) && !(block.type === 'audio' && block.response === false));
       let correct = 0;
       let total = 0;
+      let requiredComplete = true;
       const answers = {};
       checkable.forEach((block, index) => {
         const taskId = safeText(block.id, `task-${index}`);
@@ -2188,13 +2415,18 @@
         answers[taskId] = result.actual;
         correct += Number(result.correctCount || 0);
         total += Number(result.total || 0);
+        if (result.requiredComplete === false) requiredComplete = false;
         if (block.type !== 'exercise') {
           showLessonTaskResult(block, node, result);
         }
       });
       const percent = safePercent(correct, total);
-      const manualNote = hasManualResponses ? ' · развёрнутый ответ сохранён отдельно и не входит в балл' : '';
-      byId('lesson-result').innerHTML = `<h3>Результат: ${correct} из ${total}</h3><p class="muted">${percent}% правильных ответов${manualNote}</p>`;
+      const hasPersonalResponses = blocks.some((block) => block.manualResponses === true);
+      const manualNote = hasManualResponses
+        ? (hasPersonalResponses ? ' · личные ответы сохранены и не входят в балл' : ' · развёрнутый ответ сохранён отдельно и не входит в балл')
+        : '';
+      const completionNote = requiredComplete ? '' : ' · заполни часть B полностью перед отправкой';
+      byId('lesson-result').innerHTML = `<h3>Результат: ${correct} из ${total}</h3><p class="muted">${percent}% правильных ответов${manualNote}${completionNote}</p>`;
       const updatedProgress = window.ProgressService.loadHomeworkProgress();
       updatedProgress.results[lesson.id] = {
         correct,
@@ -2206,10 +2438,11 @@
         checkedAt: new Date().toISOString()
       };
       window.ProgressService.saveHomeworkProgress(updatedProgress);
-      byId('submit-lesson').disabled = false;
+      byId('submit-lesson').disabled = !requiredComplete;
     });
     const submitLessonButton = byId('submit-lesson');
     if (submitLessonButton) submitLessonButton.addEventListener('click', () => {
+      window.clearTimeout(interactiveDraftTimer);
       if (isManualOnly) {
         saveManualDraft(false);
         const confirmed = window.confirm('Отправить работу преподавателю? После отправки ответы будут заблокированы для редактирования.');

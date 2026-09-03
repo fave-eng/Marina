@@ -2,8 +2,8 @@ import { withSupabase } from 'npm:@supabase/server'
 
 const encoder = new TextEncoder()
 
-const DIAGNOSTIC_VERSION = 'marina-diagnostics-v1'
-const DIAGNOSTIC_STUDENT_ID = 'marina'
+const FUNCTION_VERSION = 'homework-reports-v8-multi-student'
+const DIAGNOSTIC_VERSION = 'multi-student-diagnostics-v1'
 const DIAGNOSTIC_COOLDOWN_MS = 30_000
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -12,7 +12,10 @@ const corsHeaders = {
 }
 
 function diagnosticJson(body: unknown, status = 200): Response {
-  return Response.json(body, { status, headers: corsHeaders })
+  const responseBody = body && typeof body === 'object' && !Array.isArray(body)
+    ? { ...(body as Record<string, unknown>), functionVersion: FUNCTION_VERSION }
+    : body
+  return Response.json(responseBody, { status, headers: corsHeaders })
 }
 
 
@@ -50,6 +53,12 @@ function publicClientAuthorized(req: Request): boolean {
   ].filter(Boolean)
 
   return allowedKeys.some((key) => secureEqual(apiKey, key))
+}
+
+function normalizeStudentId(value: unknown): string | null {
+  if (typeof value !== 'string') return null
+  const normalized = value.trim().toLowerCase()
+  return /^[a-z0-9][a-z0-9_-]{0,63}$/.test(normalized) ? normalized : null
 }
 
 function escapeTelegramHtml(value: unknown): string {
@@ -114,7 +123,7 @@ function stableChoice(seed: string, size: number): number {
 }
 
 function buildGreeting(studentName: unknown, seed: string): string {
-  const name = escapeTelegramHtml(String(studentName || 'Marina').trim() || 'Marina')
+  const name = escapeTelegramHtml(String(studentName || 'Student').trim() || 'Student')
   const variants = [
     `Hi, ${name}! 👋`,
     `Hello, ${name}! 🌟`,
@@ -249,9 +258,9 @@ async function handleHomeworkReport(req: Request, ctx: any, payload: any): Promi
     return diagnosticJson({ ok: false, error: 'Unauthorized homework report request' }, 401)
   }
 
-  const studentId = typeof payload?.studentId === 'string' ? payload.studentId.trim().toLowerCase() : ''
+  const studentId = normalizeStudentId(payload?.studentId)
   const lessonId = typeof payload?.lessonId === 'string' ? payload.lessonId.trim() : ''
-  if (studentId !== DIAGNOSTIC_STUDENT_ID || !/^lesson-\d+$/.test(lessonId)) {
+  if (!studentId || !/^lesson-\d+$/.test(lessonId)) {
     return diagnosticJson({ ok: false, error: 'Invalid homework report identity' }, 400)
   }
 
@@ -441,9 +450,9 @@ async function handleDiagnostics(req: Request, ctx: any, payload: any): Promise<
     return diagnosticJson({ ok: false, error: 'Unauthorized diagnostics request', diagnosticVersion: DIAGNOSTIC_VERSION }, 401)
   }
 
-  const studentId = typeof payload?.studentId === 'string' ? payload.studentId.trim().toLowerCase() : ''
-  if (studentId !== DIAGNOSTIC_STUDENT_ID) {
-    return diagnosticJson({ ok: false, error: 'Diagnostics are not enabled for this student_id' }, 403)
+  const studentId = normalizeStudentId(payload?.studentId)
+  if (!studentId) {
+    return diagnosticJson({ ok: false, error: 'Invalid diagnostics student_id' }, 400)
   }
 
   const kind = String(payload?.kind || '')
@@ -583,7 +592,7 @@ async function handleDiagnostics(req: Request, ctx: any, payload: any): Promise<
       const text = [
         '🧪 <b>Тест диагностики English Space</b>',
         '',
-        'Марина: браузер → Supabase → Edge Function → Telegram работает.',
+        `<code>student_id=${escapeTelegramHtml(studentId)}</code>: браузер → Supabase → Edge Function → Telegram работает.`,
         '',
         'Это служебное тестовое сообщение. Домашние работы и прогресс не изменялись.',
       ].join('\n')
@@ -878,7 +887,7 @@ export default {
           Boolean(vocabulary),
           grammar.length > 0,
           homework.title,
-          studentName || (studentId === 'marina' ? 'Marina' : studentId),
+          studentName || studentId,
           `${materialId}:${notificationVersion}`,
         ),
         keyboard,
