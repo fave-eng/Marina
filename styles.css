@@ -2639,6 +2639,15 @@ body[data-view="lesson"] #lesson-root {
   font-weight: 800;
 }
 
+[data-task="l10-howto-2a"] .exercise-dialogue {
+  background: #f8fafc;
+}
+
+[data-task="l10-howto-2a"] .exercise-dialogue p:first-child {
+  color: var(--indigo);
+  font-weight: 900;
+}
+
 @media (max-width: 680px) {
   [data-task="l10-vocab-1b"] .sentence-gaps {
     padding: 18px 12px;
