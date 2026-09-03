@@ -1,0 +1,160 @@
+{
+  "id": "lesson-12",
+  "number": 12,
+  "title": "Like, hate, love + -ing & The 5,000 km race",
+  "subtitle": "Speakout · Unit 2 · Lesson 2D: Grammar and Reading",
+  "status": "available",
+  "page": "lesson.html?id=lesson-12",
+  "vocabularyId": "vocab-lesson-12-race",
+  "grammarIds": [
+    "grammar-lesson-12-like-hate-love-ing"
+  ],
+  "publishedAt": "2026-09-03",
+  "totalPoints": 24,
+  "notification": {
+    "enabled": true,
+    "version": 1
+  },
+  "blocks": [
+    {
+      "type": "section",
+      "eyebrow": "Lesson 2D · GRAMMAR",
+      "title": "like, hate, love + -ing"
+    },
+    {
+      "type": "grammar-link",
+      "grammarId": "grammar-lesson-12-like-hate-love-ing",
+      "title": "Like, hate, love + -ing",
+      "text": "Изучи правило и выполни мини-тест по новой теме перед отправкой домашней работы.",
+      "buttonLabel": "Открыть тему"
+    },
+    {
+      "type": "exercise",
+      "id": "l12-grammar-1a",
+      "title": "1A. Choose the correct word or phrase to complete the sentences.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "1",
+          "prompt": "I hate ______ for clothes.",
+          "input": "single",
+          "options": ["a  go shopping", "b  shop", "c  shopping"],
+          "answer": 2
+        },
+        {
+          "id": "2",
+          "prompt": "What ______ on holiday?",
+          "input": "single",
+          "options": ["a  do you like do", "b  do you like doing", "c  you like doing"],
+          "answer": 1
+        },
+        {
+          "id": "3",
+          "prompt": "Getting up early is ______.",
+          "input": "single",
+          "options": ["a  all right", "b  enjoy", "c  like"],
+          "answer": 0
+        },
+        {
+          "id": "4",
+          "prompt": "I don’t like ______ for people.",
+          "input": "single",
+          "options": ["a  wait", "b  waiting", "c  to waiting"],
+          "answer": 1
+        },
+        {
+          "id": "5",
+          "prompt": "Would you like ______ football?",
+          "input": "single",
+          "options": ["a  to play", "b  play", "c  playing"],
+          "answer": 0
+        },
+        {
+          "id": "6",
+          "prompt": "I love ______ English.",
+          "input": "single",
+          "options": ["a  studying", "b  study", "c  do studying"],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l12-grammar-1b",
+      "title": "1B. Complete the conversation with the -ing form of the words in the box.",
+      "autosaveDraft": true,
+      "wordBank": ["do", "get up", "meet", "shop", "spend", "study", "swim", "walk"],
+      "items": [
+        {
+          "id": "conversation",
+          "number": "",
+          "prompt": "",
+          "input": "gaps",
+          "layout": "dialogue",
+          "wideGaps": true,
+          "segments": [
+            "A: What do you like 1 ",
+            " at the weekend?\nB: Well, I don’t like 2 ",
+            " early! I usually do some exercise. I enjoy 3 ",
+            " and I usually go on Sunday, with my family. What about you?\nA: I love 4 ",
+            " time with my friends. We like 5 ",
+            " for coffee or for lunch on Saturday. I hate 6 ",
+            " at the weekend, but I have a big exam soon at university, so I sometimes do that. I also like 7 ",
+            " for clothes at the big centre in town. Do you like that?\nB: No, I hate 8 ",
+            " around the town centre!"
+          ],
+          "answers": ["doing", "getting up", "swimming", "spending", "meeting", "studying", "shopping", "walking"]
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "eyebrow": "Lesson 2D · READING",
+      "title": "a special event"
+    },
+    {
+      "type": "reading",
+      "id": "l12-reading-article",
+      "title": "The 5,000 km race",
+      "text": "Some people enjoy running, but these people love it. This 5,000 km race happens every year from June to August. 5,000 km is the same distance as from the East to the West of the USA, plus eleven marathons (a marathon is 42.2 km). But runners in this race run around a single city block (925 metres) in Queens, New York, over and over again!\n\nThe race lasts 52 days, and people run from 6 a.m. until midnight, every day. Most people in the competition run about 100 km a day. They only have six hours to wash and sleep each day. They need to visit the doctor before they enter, to check they are strong and healthy.\n\nPeople give the runners vegetarian food to eat while they run. They need to eat all the time because they use a lot of energy when they do the race.\n\nIt’s very hot in New York at this time of year and sometimes there is a lot of rain, too. Runners often carry umbrellas while they run!\n\nNot everyone finishes the race, but runners receive a T-shirt if they do. It’s not much, but people don’t do it for the prize. They do it because it makes them feel good."
+    },
+    {
+      "type": "exercise",
+      "id": "l12-reading-2a",
+      "title": "2A. Read the article and answer the questions.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "1",
+          "prompt": "Where is the race?",
+          "input": "text",
+          "answer": "Queens, New York",
+          "acceptedAnswers": ["Queens, New York", "Queens", "in Queens, New York", "in Queens"]
+        },
+        {
+          "id": "2",
+          "prompt": "What do people who finish it get?",
+          "input": "text",
+          "answer": "a T-shirt",
+          "acceptedAnswers": ["a T-shirt", "T-shirt", "a t shirt", "t shirt"]
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l12-reading-2b",
+      "title": "2B. Read the article again. Are the statements True (T) or False (F)?",
+      "autosaveDraft": true,
+      "items": [
+        {"id":"1","prompt":"The race happens in the summer.","input":"single","options":["T","F"],"answer":0},
+        {"id":"2","prompt":"The race is the same as 11 marathons.","input":"single","options":["T","F"],"answer":1},
+        {"id":"3","prompt":"The race is only in one part of the city.","input":"single","options":["T","F"],"answer":0},
+        {"id":"4","prompt":"People in the competition run for six hours a day.","input":"single","options":["T","F"],"answer":1},
+        {"id":"5","prompt":"Anybody can run in the competition.","input":"single","options":["T","F"],"answer":1},
+        {"id":"6","prompt":"The runners eat a lot of food.","input":"single","options":["T","F"],"answer":0},
+        {"id":"7","prompt":"It isn’t cold at that time of year.","input":"single","options":["T","F"],"answer":0},
+        {"id":"8","prompt":"All runners who finish the race get a T-shirt.","input":"single","options":["T","F"],"answer":0}
+      ]
+    }
+  ]
+}

@@ -2277,5 +2277,47 @@ window.VOCABULARY_DATA = [
       {"id":"restaurant","title":"Restaurant conversation","subtitle":"Диалог в ресторане","icon":"🍽️"},
       {"id":"time","title":"Time phrases","subtitle":"Фразы времени","icon":"🕡"}
     ]
+  },
+  {
+    "id": "vocab-lesson-12-race",
+    "title": "The 5,000 km race",
+    "label": "Lesson 2D · Reading · 24 new words and phrases",
+    "icon": "🏃",
+    "type": "lesson",
+    "linkedLessonId": "lesson-12",
+    "page": "vocabulary.html?id=vocab-lesson-12-race",
+    "description": "New vocabulary from the article about the 5,000 km race.",
+    "words": [
+      {"id":"l12-01","uniqueKey":"special event","en":"special event","ru":"особое событие","transcription":"/ˌspeʃəl ɪˈvent/","exampleEn":"The race is a special event.","exampleRu":"Этот забег — особое событие.","group":"race"},
+      {"id":"l12-02","uniqueKey":"race","en":"race","ru":"гонка; забег","transcription":"/reɪs/","exampleEn":"This 5,000 km race happens every year.","exampleRu":"Этот забег на 5 000 км проходит каждый год.","group":"race"},
+      {"id":"l12-03","uniqueKey":"runner","en":"runner","ru":"бегун; участник забега","transcription":"/ˈrʌnə/","exampleEn":"Every runner visits the doctor before the race.","exampleRu":"Каждый бегун посещает врача перед забегом.","group":"race"},
+      {"id":"l12-04","uniqueKey":"happen","en":"happen","ru":"происходить; проходить","transcription":"/ˈhæpən/","exampleEn":"The race happens from June to August.","exampleRu":"Забег проходит с июня по август.","group":"race"},
+      {"id":"l12-05","uniqueKey":"distance","en":"distance","ru":"расстояние; дистанция","transcription":"/ˈdɪstəns/","exampleEn":"It is the same distance as eleven marathons.","exampleRu":"Это такое же расстояние, как одиннадцать марафонов.","group":"race"},
+      {"id":"l12-06","uniqueKey":"marathon","en":"marathon","ru":"марафон","transcription":"/ˈmærəθən/","exampleEn":"A marathon is 42.2 km.","exampleRu":"Длина марафона — 42,2 км.","group":"race"},
+      {"id":"l12-07","uniqueKey":"city block","en":"city block","ru":"городской квартал","transcription":"/ˈsɪti blɒk/","exampleEn":"They run around a single city block.","exampleRu":"Они бегут вокруг одного городского квартала.","group":"race"},
+      {"id":"l12-08","uniqueKey":"competition","en":"competition","ru":"соревнование","transcription":"/ˌkɒmpəˈtɪʃən/","exampleEn":"Most people in the competition run about 100 km a day.","exampleRu":"Большинство участников соревнования пробегают около 100 км в день.","group":"race"},
+      {"id":"l12-09","uniqueKey":"enter a competition","en":"enter a competition","ru":"принять участие в соревновании","transcription":"/ˌentər ə ˌkɒmpəˈtɪʃən/","exampleEn":"They visit a doctor before they enter the competition.","exampleRu":"Перед участием в соревновании они посещают врача.","group":"race"},
+      {"id":"l12-10","uniqueKey":"strong","en":"strong","ru":"сильный","transcription":"/strɒŋ/","exampleEn":"The doctor checks that they are strong and healthy.","exampleRu":"Врач проверяет, что они сильные и здоровые.","group":"people"},
+      {"id":"l12-11","uniqueKey":"vegetarian food","en":"vegetarian food","ru":"вегетарианская еда","transcription":"/ˌvedʒəˈteəriən fuːd/","exampleEn":"People give the runners vegetarian food.","exampleRu":"Бегунам дают вегетарианскую еду.","group":"people"},
+      {"id":"l12-12","uniqueKey":"energy","en":"energy","ru":"энергия","transcription":"/ˈenədʒi/","exampleEn":"They use a lot of energy when they run.","exampleRu":"Во время бега они тратят много энергии.","group":"people"},
+      {"id":"l12-13","uniqueKey":"carry an umbrella","en":"carry an umbrella","ru":"нести с собой зонт","transcription":"/ˌkæri ən ʌmˈbrelə/","exampleEn":"Runners often carry umbrellas while they run.","exampleRu":"Бегуны часто несут с собой зонты во время бега.","group":"actions"},
+      {"id":"l12-14","uniqueKey":"finish a race","en":"finish a race","ru":"закончить забег","transcription":"/ˌfɪnɪʃ ə ˈreɪs/","exampleEn":"Not everyone finishes the race.","exampleRu":"Не все заканчивают забег.","group":"actions"},
+      {"id":"l12-15","uniqueKey":"receive","en":"receive","ru":"получать","transcription":"/rɪˈsiːv/","exampleEn":"Runners receive a T-shirt if they finish.","exampleRu":"Закончившие бегуны получают футболку.","group":"actions"},
+      {"id":"l12-16","uniqueKey":"prize","en":"prize","ru":"приз","transcription":"/praɪz/","exampleEn":"People don’t do it for the prize.","exampleRu":"Люди участвуют не ради приза.","group":"actions"},
+      {"id":"l12-17","uniqueKey":"t-shirt","en":"T-shirt","ru":"футболка","transcription":"/ˈtiː ʃɜːt/","exampleEn":"All runners who finish get a T-shirt.","exampleRu":"Все финишировавшие бегуны получают футболку.","group":"actions"},
+      {"id":"l12-18","uniqueKey":"feel good","en":"feel good","ru":"хорошо себя чувствовать","transcription":"/ˌfiːl ˈɡʊd/","exampleEn":"They do it because it makes them feel good.","exampleRu":"Они делают это, потому что так чувствуют себя хорошо.","group":"people"},
+      {"id":"l12-19","uniqueKey":"from ... to ...","en":"from … to …","ru":"с … до …; от … до …","transcription":"/frəm ... tə/","exampleEn":"The race happens from June to August.","exampleRu":"Забег проходит с июня по август.","group":"time"},
+      {"id":"l12-20","uniqueKey":"all the time","en":"all the time","ru":"всё время","transcription":"/ˌɔːl ðə ˈtaɪm/","exampleEn":"They need to eat all the time.","exampleRu":"Им нужно всё время есть.","group":"time"},
+      {"id":"l12-21","uniqueKey":"while","en":"while","ru":"пока; во время того как","transcription":"/waɪl/","exampleEn":"They eat while they run.","exampleRu":"Они едят во время бега.","group":"time"},
+      {"id":"l12-22","uniqueKey":"wash","en":"wash","ru":"мыться; умываться","transcription":"/wɒʃ/","exampleEn":"They only have six hours to wash and sleep.","exampleRu":"У них есть всего шесть часов, чтобы помыться и поспать.","group":"actions"},
+      {"id":"l12-23","uniqueKey":"sleep","en":"sleep","ru":"спать","transcription":"/sliːp/","exampleEn":"The runners sleep for only a few hours.","exampleRu":"Бегуны спят всего несколько часов.","group":"actions"},
+      {"id":"l12-24","uniqueKey":"over and over again","en":"over and over again","ru":"снова и снова","transcription":"/ˌəʊvər ən ˌəʊvər əˈɡen/","exampleEn":"They run around the same block over and over again.","exampleRu":"Они снова и снова бегут вокруг одного и того же квартала.","group":"time"}
+    ],
+    "groups": [
+      {"id":"race","title":"The race","subtitle":"Забег и соревнование","icon":"🏁"},
+      {"id":"people","title":"Runners","subtitle":"Люди и их состояние","icon":"🏃"},
+      {"id":"actions","title":"Actions and results","subtitle":"Действия и результат","icon":"🎽"},
+      {"id":"time","title":"Time and repetition","subtitle":"Время и повторение","icon":"🔁"}
+    ]
   }
 ];

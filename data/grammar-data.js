@@ -795,6 +795,191 @@ window.GRAMMAR_DATA = [
         ]
       }
     ]
+  },
+  {
+    "id": "grammar-lesson-12-like-hate-love-ing",
+    "order": 4,
+    "title": "Like, hate, love + -ing",
+    "level": "A2.2",
+    "status": "available",
+    "linkedLessonId": "lesson-12",
+    "page": "grammar-topic.html?id=grammar-lesson-12-like-hate-love-ing",
+    "passScore": 100,
+    "showCorrectAnswerOnError": false,
+    "overview": {
+      "lead": "После like, love, hate и enjoy, когда мы говорим о занятиях и предпочтениях, следующий глагол обычно получает окончание -ing.",
+      "keyRule": "like / love / hate / enjoy + verb-ing",
+      "subjects": ["like doing", "love doing", "hate doing", "enjoy doing"],
+      "example": "I love studying English. She hates getting up early."
+    },
+    "uses": [
+      {
+        "icon": "🙂",
+        "title": "Like + -ing",
+        "text": "Говорим, что нам нравится какое-либо занятие.",
+        "example": "I like walking around the town centre."
+      },
+      {
+        "icon": "❤️",
+        "title": "Love + -ing",
+        "text": "Говорим, что очень любим какое-либо занятие.",
+        "example": "I love spending time with my friends."
+      },
+      {
+        "icon": "🙁",
+        "title": "Hate / don’t like + -ing",
+        "text": "Говорим, что занятие нам не нравится.",
+        "example": "I hate studying at the weekend."
+      },
+      {
+        "icon": "✨",
+        "title": "Enjoy + -ing",
+        "text": "После enjoy также используется форма глагола с -ing.",
+        "example": "I enjoy swimming."
+      }
+    ],
+    "forms": [
+      {
+        "id": "affirmative",
+        "icon": "+",
+        "title": "Утверждение",
+        "formula": "subject + like / love / hate / enjoy + verb-ing",
+        "example": "We like meeting for coffee.",
+        "translation": "Нам нравится встречаться за чашкой кофе.",
+        "note": "Основной смысловой глагол после слова предпочтения получает -ing."
+      },
+      {
+        "id": "negative",
+        "icon": "−",
+        "title": "Отрицание",
+        "formula": "subject + don’t / doesn’t like + verb-ing",
+        "example": "I don’t like getting up early.",
+        "translation": "Мне не нравится рано вставать.",
+        "note": "После don’t like и doesn’t like также используется форма -ing."
+      },
+      {
+        "id": "question",
+        "icon": "?",
+        "title": "Вопрос",
+        "formula": "What + do / does + subject + like + doing?",
+        "example": "What do you like doing on holiday?",
+        "translation": "Что тебе нравится делать в отпуске?",
+        "note": "В вопросе вспомогательный do / does ставится перед подлежащим."
+      },
+      {
+        "id": "short-answer",
+        "icon": "→",
+        "title": "Would like",
+        "formula": "would like + to + base verb",
+        "example": "Would you like to play football?",
+        "translation": "Ты хотел(а) бы поиграть в футбол?",
+        "note": "После would like используется to + глагол, а не форма -ing."
+      }
+    ],
+    "contrast": {
+      "title": "Like или would like?",
+      "intro": "Формы похожи, но после них используется разная конструкция.",
+      "ordinary": {
+        "label": "Предпочтение вообще",
+        "verbs": "like · love · hate · enjoy",
+        "affirmative": "I like playing football.",
+        "negative": "I don’t like waiting.",
+        "question": "What do you like doing?",
+        "rule": "Для общих предпочтений используй глагол с -ing."
+      },
+      "be": {
+        "label": "Желание сейчас",
+        "verbs": "would like",
+        "affirmative": "I’d like to play football.",
+        "negative": "I wouldn’t like to wait.",
+        "question": "Would you like to play?",
+        "rule": "После would like используй to + базовую форму глагола."
+      }
+    },
+    "questionBuilder": {
+      "title": "Порядок слов в вопросе",
+      "pattern": ["What", "do / does", "subject", "like", "doing", "...?"],
+      "example": "What do you like doing at the weekend?",
+      "translation": "Что тебе нравится делать на выходных?",
+      "note": "После like в таком вопросе используется doing."
+    },
+    "memoryRule": {
+      "title": "Быстрая проверка",
+      "steps": [
+        "После like, love, hate и enjoy поставь следующий глагол в форме -ing.",
+        "Для короткого глагола обычно добавь -ing: walk → walking, study → studying.",
+        "Для swim удвой последнюю m: swimming. Для meet просто добавь -ing: meeting.",
+        "После would like используй to + базовую форму: would like to play."
+      ]
+    },
+    "commonMistakes": [
+      {
+        "wrong": "I love study English.",
+        "right": "I love studying English.",
+        "reason": "После love нужен глагол с окончанием -ing."
+      },
+      {
+        "wrong": "I hate get up early.",
+        "right": "I hate getting up early.",
+        "reason": "У фразового глагола get up форму -ing получает get: getting up."
+      },
+      {
+        "wrong": "I enjoy to swim.",
+        "right": "I enjoy swimming.",
+        "reason": "После enjoy используется форма -ing; в swimming удваивается m."
+      },
+      {
+        "wrong": "Would you like playing football?",
+        "right": "Would you like to play football?",
+        "reason": "После would like нужна конструкция to + базовый глагол."
+      }
+    ],
+    "quizExercises": [
+      {
+        "id": "like-ing-choice",
+        "title": "1. Выбери правильную форму",
+        "instructions": "Choose the correct answer.",
+        "items": [
+          {"type":"single","skill":"like + -ing","prompt":"I like ___ around the town centre.","options":["walking","walk","to walking"],"answer":0,"explanation":"Есть ошибка. После like используй форму -ing."},
+          {"type":"single","skill":"love + -ing","prompt":"We love ___ time with our friends.","options":["spend","spending","to spending"],"answer":1,"explanation":"Есть ошибка. После love используй spending."},
+          {"type":"single","skill":"hate + -ing","prompt":"She hates ___ early.","options":["getting up","get up","to getting up"],"answer":0,"explanation":"Есть ошибка. После hate используй getting up."},
+          {"type":"single","skill":"would like + to","prompt":"Would you like ___ football?","options":["playing","to play","play"],"answer":1,"explanation":"Есть ошибка. После would like используй to + глагол."}
+        ]
+      },
+      {
+        "id": "like-ing-gaps",
+        "title": "2. Поставь глагол в форму -ing",
+        "instructions": "Complete each sentence with the -ing form.",
+        "items": [
+          {"type":"text","skill":"do → doing","prompt":"What do you like ___ at the weekend? (do)","answer":"doing","acceptedAnswers":["doing"],"placeholder":"One word","explanation":"Есть ошибка. do → doing."},
+          {"type":"text","skill":"swim → swimming","prompt":"I enjoy ___. (swim)","answer":"swimming","acceptedAnswers":["swimming"],"placeholder":"One word","explanation":"Есть ошибка. swim → swimming: удвой m."},
+          {"type":"text","skill":"meet → meeting","prompt":"We like ___ for coffee. (meet)","answer":"meeting","acceptedAnswers":["meeting"],"placeholder":"One word","explanation":"Есть ошибка. meet → meeting."},
+          {"type":"text","skill":"study → studying","prompt":"I hate ___ at the weekend. (study)","answer":"studying","acceptedAnswers":["studying"],"placeholder":"One word","explanation":"Есть ошибка. study → studying."}
+        ]
+      },
+      {
+        "id": "like-ing-order",
+        "title": "3. Собери полное предложение",
+        "instructions": "Put the words in the correct order and write the complete sentence.",
+        "items": [
+          {"type":"reorder","skill":"love + -ing","prompt":"I / love / study / English.","tokens":["I","love","studying","English"],"answer":"I love studying English.","acceptedAnswers":["I love studying English.","I love studying English"],"placeholder":"Write the sentence","explanation":"Есть ошибка. После love используй studying."},
+          {"type":"reorder","skill":"вопрос","prompt":"What / do / you / like / do / at the weekend?","tokens":["What","do","you","like","doing","at the weekend"],"answer":"What do you like doing at the weekend?","acceptedAnswers":["What do you like doing at the weekend?","What do you like doing at the weekend"],"placeholder":"Write the question","explanation":"Есть ошибка. Проверь порядок слов и форму doing."},
+          {"type":"reorder","skill":"hate + -ing","prompt":"She / hate / get up / early.","tokens":["She","hates","getting up","early"],"answer":"She hates getting up early.","acceptedAnswers":["She hates getting up early.","She hates getting up early"],"placeholder":"Write the sentence","explanation":"Есть ошибка. С she используй hates; get up → getting up."},
+          {"type":"reorder","skill":"would like + to","prompt":"Would / you / like / play / football?","tokens":["Would","you","like","to play","football"],"answer":"Would you like to play football?","acceptedAnswers":["Would you like to play football?","Would you like to play football"],"placeholder":"Write the question","explanation":"Есть ошибка. После would like используй to play."}
+        ]
+      },
+      {
+        "id": "like-ing-conversation",
+        "title": "4. Закрепи формы из диалога",
+        "instructions": "Write the correct -ing form.",
+        "items": [
+          {"type":"text","skill":"get up","prompt":"I don’t like ___ early. (get up)","answer":"getting up","acceptedAnswers":["getting up"],"placeholder":"Two words","explanation":"Есть ошибка. get up → getting up."},
+          {"type":"text","skill":"spend","prompt":"I love ___ time with my friends. (spend)","answer":"spending","acceptedAnswers":["spending"],"placeholder":"One word","explanation":"Есть ошибка. spend → spending."},
+          {"type":"text","skill":"shop","prompt":"I like ___ for clothes. (shop)","answer":"shopping","acceptedAnswers":["shopping"],"placeholder":"One word","explanation":"Есть ошибка. shop → shopping: удвой p."},
+          {"type":"text","skill":"walk","prompt":"I hate ___ around the town centre. (walk)","answer":"walking","acceptedAnswers":["walking"],"placeholder":"One word","explanation":"Есть ошибка. walk → walking."}
+        ]
+      }
+    ]
   }
 
 ];
