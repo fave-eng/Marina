@@ -2069,6 +2069,137 @@ window.VOCABULARY_DATA = [
         "icon": "🕒"
       }
     ]
+  },
+  {
+    "id": "vocab-lesson-9-alone-together",
+    "title": "Alone or together?",
+    "label": "Lesson 2B · Reading · 12 useful words and phrases",
+    "icon": "👥",
+    "type": "lesson",
+    "linkedLessonId": "lesson-9",
+    "page": "vocabulary.html?id=vocab-lesson-9-alone-together",
+    "description": "Useful vocabulary from Reading 4A–4C about social life, routines and spending time with other people.",
+    "words": [
+      {
+        "id": "l9-01",
+        "uniqueKey": "together",
+        "en": "together",
+        "ru": "вместе",
+        "transcription": "/təˈɡeðə/",
+        "exampleEn": "We often have lunch together.",
+        "exampleRu": "Мы часто обедаем вместе.",
+        "group": "social-life"
+      },
+      {
+        "id": "l9-02",
+        "uniqueKey": "a group of friends",
+        "en": "a group of friends",
+        "ru": "группа друзей",
+        "transcription": "/ə ɡruːp əv frendz/",
+        "exampleEn": "I meet a group of friends for coffee.",
+        "exampleRu": "Я встречаюсь с группой друзей за кофе.",
+        "group": "social-life"
+      },
+      {
+        "id": "l9-03",
+        "uniqueKey": "social media",
+        "en": "social media",
+        "ru": "социальные сети",
+        "transcription": "/ˌsəʊʃəl ˈmiːdiə/",
+        "exampleEn": "She spends a lot of time on social media.",
+        "exampleRu": "Она проводит много времени в социальных сетях.",
+        "group": "online"
+      },
+      {
+        "id": "l9-04",
+        "uniqueKey": "once a week",
+        "en": "once a week",
+        "ru": "раз в неделю",
+        "transcription": "/wʌns ə wiːk/",
+        "exampleEn": "I play sport once a week.",
+        "exampleRu": "Я занимаюсь спортом раз в неделю.",
+        "group": "frequency"
+      },
+      {
+        "id": "l9-05",
+        "uniqueKey": "twice a week",
+        "en": "twice a week",
+        "ru": "два раза в неделю",
+        "transcription": "/twaɪs ə wiːk/",
+        "exampleEn": "She plays tennis twice a week.",
+        "exampleRu": "Она играет в теннис два раза в неделю.",
+        "group": "frequency"
+      },
+      {
+        "id": "l9-06",
+        "uniqueKey": "every day",
+        "en": "every day",
+        "ru": "каждый день",
+        "transcription": "/ˈevri deɪ/",
+        "exampleEn": "He goes running every day.",
+        "exampleRu": "Он бегает каждый день.",
+        "group": "frequency"
+      },
+      {
+        "id": "l9-07",
+        "uniqueKey": "quiet time",
+        "en": "quiet time",
+        "ru": "спокойное время; время в тишине",
+        "transcription": "/ˈkwaɪət taɪm/",
+        "exampleEn": "Sometimes I like to have a quiet time alone.",
+        "exampleRu": "Иногда мне нравится спокойно побыть одному.",
+        "group": "social-life"
+      },
+      {
+        "id": "l9-08",
+        "uniqueKey": "useful",
+        "en": "useful",
+        "ru": "полезный",
+        "transcription": "/ˈjuːsfəl/",
+        "exampleEn": "She thinks short meetings are useful.",
+        "exampleRu": "Она считает короткие встречи полезными.",
+        "group": "descriptions"
+      },
+      {
+        "id": "l9-09",
+        "uniqueKey": "an article",
+        "en": "an article",
+        "ru": "статья",
+        "transcription": "/ən ˈɑːtɪkəl/",
+        "exampleEn": "He likes to read interesting articles.",
+        "exampleRu": "Ему нравится читать интересные статьи.",
+        "group": "reading"
+      },
+      {
+        "id": "l9-10",
+        "uniqueKey": "the news",
+        "en": "the news",
+        "ru": "новости",
+        "transcription": "/ðə njuːz/",
+        "exampleEn": "I read the news in the morning.",
+        "exampleRu": "Я читаю новости утром.",
+        "group": "reading"
+      },
+      {
+        "id": "l9-11",
+        "uniqueKey": "most of the time",
+        "en": "most of the time",
+        "ru": "большую часть времени",
+        "transcription": "/məʊst əv ðə taɪm/",
+        "exampleEn": "He works from home most of the time.",
+        "exampleRu": "Большую часть времени он работает из дома.",
+        "group": "frequency"
+      },
+      {
+        "id": "l9-12",
+        "uniqueKey": "a local team",
+        "en": "a local team",
+        "ru": "местная команда",
+        "transcription": "/ə ˈləʊkəl tiːm/",
+        "exampleEn": "He plays football in a local team.",
+        "exampleRu": "Он играет в футбол в местной команде.",
+        "group": "activities"
+      }
+    ]
   }
-
 ];
