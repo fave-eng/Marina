@@ -2676,15 +2676,33 @@ body[data-view="lesson"] #lesson-root {
   display: none;
 }
 
-[data-task="l11-speaking-4a"] .gap-input {
-  width: 54px;
-  text-align: center;
-  font-weight: 900;
+[data-task="l11-speaking-4a"] .sentence-gaps.has-select-gaps {
+  line-height: 1.65;
+}
+
+[data-task="l11-speaking-4a"] .dialogue-answer-select {
+  display: block;
+  width: min(100%, 760px);
+  max-width: 100%;
+  min-height: 48px;
+  margin: 7px 0 13px;
+  padding: 10px 42px 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 700;
 }
 
 @media (max-width: 680px) {
   [data-task="l10-vocab-1b"] .sentence-gaps {
     padding: 18px 12px;
+  }
+
+  [data-task="l11-speaking-4a"] .dialogue-answer-select {
+    width: 100%;
+    font-size: .92rem;
   }
 }
 

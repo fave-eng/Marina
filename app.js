@@ -1327,6 +1327,14 @@
       const gapClass = `${item.layout === 'dialogue' ? 'sentence-gaps is-dialogue' : 'sentence-gaps'}${item.wideGaps ? ' has-wide-gaps' : ''}`;
       const segmentMarkup = (segment) => escapeHtml(segment).replaceAll('\n', '<br>');
       control = `<div class="${gapClass}" aria-label="${prompt}">${answers.map((answer, gapIndex) => `${gapIndex < segments.length ? `<span>${segmentMarkup(segments[gapIndex])}</span>` : ''}<input class="gap-input" data-gap-index="${gapIndex}" aria-label="Gap ${gapIndex + 1}" autocomplete="off">`).join('')}${segments.length > answers.length ? `<span>${segmentMarkup(segments[segments.length - 1])}</span>` : ''}</div>`;
+    } else if (item.input === 'select-gaps') {
+      const answers = Array.isArray(item.answers) ? item.answers : [];
+      const segments = Array.isArray(item.segments) ? item.segments : [];
+      const options = Array.isArray(item.options) ? item.options : [];
+      const gapClass = item.layout === 'dialogue' ? 'sentence-gaps is-dialogue has-select-gaps' : 'sentence-gaps has-select-gaps';
+      const segmentMarkup = (segment) => escapeHtml(segment).replaceAll('\n', '<br>');
+      const optionMarkup = options.map((option, optionIndex) => `<option value="${optionIndex}">${escapeHtml(option)}</option>`).join('');
+      control = `<div class="${gapClass}" aria-label="${prompt}">${answers.map((answer, gapIndex) => `${gapIndex < segments.length ? `<span>${segmentMarkup(segments[gapIndex])}</span>` : ''}<select class="dialogue-answer-select" data-gap-index="${gapIndex}" aria-label="Response ${gapIndex + 1}"><option value="">Выберите полный ответ</option>${optionMarkup}</select>`).join('')}${segments.length > answers.length ? `<span>${segmentMarkup(segments[segments.length - 1])}</span>` : ''}</div>`;
     } else if (item.input === 'mark') {
       let markIndex = 0;
       const paragraphs = Array.isArray(item.paragraphs) ? item.paragraphs : [];
@@ -1592,8 +1600,13 @@
     const speech = block?.speech && typeof block.speech === 'object' ? block.speech : null;
     if (!speech) return block.audio ? `<audio class="audio-player" controls preload="none" src="${escapeHtml(block.audio)}"></audio>` : '';
 
-    const lines = Array.isArray(speech.lines) ? speech.lines.map((line) => safeText(line)).filter(Boolean) : [];
-    const speechText = lines.join(' ');
+    const lines = Array.isArray(speech.lines) ? speech.lines.map((line) => {
+      if (line && typeof line === 'object') {
+        return { text: safeText(line.text), voice: safeText(line.voice) };
+      }
+      return { text: safeText(line), voice: '' };
+    }).filter((line) => line.text) : [];
+    const speechText = lines.map((line) => line.text).join(' ');
     if (!speechText) return block.audio ? `<audio class="audio-player" controls preload="none" src="${escapeHtml(block.audio)}"></audio>` : '';
 
     const lang = safeText(speech.lang, 'en-GB');
@@ -1653,23 +1666,32 @@
         let lines = [];
         try {
           const storedLines = JSON.parse(player.dataset.speechLines || '[]');
-          if (Array.isArray(storedLines)) lines = storedLines.map((line) => safeText(line)).filter(Boolean);
+          if (Array.isArray(storedLines)) {
+            lines = storedLines.map((line) => {
+              if (line && typeof line === 'object') return { text: safeText(line.text), voice: safeText(line.voice) };
+              return { text: safeText(line), voice: '' };
+            }).filter((line) => line.text);
+          }
         } catch (error) {
           lines = [];
         }
         if (!lines.length) {
           const text = safeText(player.dataset.speechText);
-          if (text) lines = [text];
+          if (text) lines = [{ text, voice: '' }];
         }
         if (!lines.length) return;
         const lang = safeText(player.dataset.speechLang, 'en-GB');
         const rate = Math.min(1.35, Math.max(0.7, Number(player.dataset.speechRate || 1)));
         const languagePrefix = lang.toLowerCase().split('-')[0];
         const matchingVoices = window.speechSynthesis.getVoices().filter((voice) => voice.lang.toLowerCase().startsWith(languagePrefix));
-        const voice = matchingVoices.find((item) => /daniel|serena|sonia|ryan|siri|google uk english/i.test(item.name))
+        const waiterVoice = matchingVoices.find((item) => /daniel|ryan|arthur|oliver|alex|google uk english male/i.test(item.name))
           || matchingVoices.find((item) => item.localService)
           || matchingVoices[0]
           || null;
+        const customerVoice = matchingVoices.find((item) => /serena|sonia|kate|samantha|victoria|google uk english female/i.test(item.name))
+          || matchingVoices.find((item) => item !== waiterVoice)
+          || waiterVoice;
+        const defaultVoice = customerVoice || waiterVoice || matchingVoices[0] || null;
 
         activePlayer = player;
         player.classList.add('is-speaking');
@@ -1683,11 +1705,13 @@
             resetPlayer(player);
             return;
           }
-          const utterance = new SpeechSynthesisUtterance(lines[lineIndex]);
+          const line = lines[lineIndex];
+          const utterance = new SpeechSynthesisUtterance(line.text);
           utterance.lang = lang;
           utterance.rate = rate;
           utterance.pitch = 1;
           utterance.volume = 1;
+          const voice = line.voice === 'waiter' ? waiterVoice : line.voice === 'customer' ? customerVoice : defaultVoice;
           if (voice) utterance.voice = voice;
           utterance.onend = () => {
             if (activePlayer !== player) return;
@@ -1967,6 +1991,12 @@
       });
       correct = expected.length > 0 && gapResults.every(Boolean);
       return { actual, correct, scoreCorrect: gapResults.filter(Boolean).length, scoreTotal: expected.length };
+    } else if (inputType === 'select-gaps') {
+      actual = [...itemNode.querySelectorAll('[data-gap-index]')].map((select) => select.value);
+      const expected = Array.isArray(item.answers) ? item.answers : [];
+      const gapResults = expected.map((answer, index) => actual[index] !== '' && Number(actual[index]) === Number(answer));
+      correct = expected.length > 0 && gapResults.every(Boolean);
+      return { actual, correct, scoreCorrect: gapResults.filter(Boolean).length, scoreTotal: expected.length };
     } else if (inputType === 'mark') {
       actual = [...itemNode.querySelectorAll('[data-mark-index].is-selected')].map((button) => Number(button.dataset.markIndex)).sort((a, b) => a - b);
       const expected = [...(item.answer || [])].map(Number).sort((a, b) => a - b);
@@ -2125,7 +2155,7 @@
           const choiceIndex = Number(input.dataset.inlineChoice);
           input.checked = safeText(values[choiceIndex]) === input.value;
         });
-      } else if (inputType === 'gaps') {
+      } else if (inputType === 'gaps' || inputType === 'select-gaps') {
         const values = Array.isArray(value) ? value : [];
         itemNode.querySelectorAll('[data-gap-index]').forEach((input, gapIndex) => { input.value = safeText(values[gapIndex]); });
       } else if (inputType === 'mark') {

@@ -71,21 +71,21 @@
       "type": "exercise",
       "id": "l11-speaking-4a",
       "title": "4A. Complete the conversation with the responses (a–e).",
-      "wordBank": [
-        "a Yes. For a starter, can I have the salad, please?",
-        "b No thanks. Could we have the bill, please?",
-        "c Yes, we have a table for two for half past six.",
-        "d I’d like the chicken, please.",
-        "e Could I have some sparkling water, please?"
-      ],
       "autosaveDraft": true,
       "items": [
         {
           "id": "conversation",
           "number": "",
           "prompt": "",
-          "input": "gaps",
+          "input": "select-gaps",
           "layout": "dialogue",
+          "options": [
+            "a — Yes. For a starter, can I have the salad, please?",
+            "b — No thanks. Could we have the bill, please?",
+            "c — Yes, we have a table for two for half past six.",
+            "d — I’d like the chicken, please.",
+            "e — Could I have some sparkling water, please?"
+          ],
           "segments": [
             "Waiter: Good evening, do you have a reservation?\nCustomer: 1 ",
             "\nWaiter: Are you ready to order?\nCustomer: 2 ",
@@ -94,7 +94,7 @@
             "\nWaiter: Yes, certainly.\nWaiter: Would you like to look at the dessert menu?\nCustomer: 5 ",
             "\nWaiter: Yes, of course."
           ],
-          "answers": ["c", "a", "d", "e", "b"]
+          "answers": [2, 0, 3, 4, 1]
         }
       ]
     },
@@ -107,18 +107,18 @@
         "rate": 0.92,
         "label": "Audio 2.08 and 2.09 · British English · natural reading",
         "lines": [
-          "Good evening, do you have a reservation?",
-          "Yes, we have a table for two for half past six.",
-          "Are you ready to order?",
-          "Yes. For a starter, can I have the salad, please?",
-          "Yes, of course. And for the main course?",
-          "I’d like the chicken, please.",
-          "Would you like something to drink?",
-          "Could I have some sparkling water, please?",
-          "Yes, certainly.",
-          "Would you like to look at the dessert menu?",
-          "No thanks. Could we have the bill, please?",
-          "Yes, of course."
+          {"voice":"waiter","text":"Good evening, do you have a reservation?"},
+          {"voice":"customer","text":"Yes, we have a table for two for half past six."},
+          {"voice":"waiter","text":"Are you ready to order?"},
+          {"voice":"customer","text":"Yes. For a starter, can I have the salad, please?"},
+          {"voice":"waiter","text":"Yes, of course. And for the main course?"},
+          {"voice":"customer","text":"I’d like the chicken, please."},
+          {"voice":"waiter","text":"Would you like something to drink?"},
+          {"voice":"customer","text":"Could I have some sparkling water, please?"},
+          {"voice":"waiter","text":"Yes, certainly."},
+          {"voice":"waiter","text":"Would you like to look at the dessert menu?"},
+          {"voice":"customer","text":"No thanks. Could we have the bill, please?"},
+          {"voice":"waiter","text":"Yes, of course."}
         ]
       },
       "dialogueCollapsible": true,
