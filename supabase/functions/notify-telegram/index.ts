@@ -2,7 +2,7 @@ import { withSupabase } from 'npm:@supabase/server'
 
 const encoder = new TextEncoder()
 
-const FUNCTION_VERSION = 'homework-reports-v8-multi-student'
+const FUNCTION_VERSION = 'homework-reports-v9-name-free-motivation'
 const DIAGNOSTIC_VERSION = 'multi-student-diagnostics-v1'
 const DIAGNOSTIC_COOLDOWN_MS = 30_000
 const corsHeaders = {
@@ -122,14 +122,13 @@ function stableChoice(seed: string, size: number): number {
   return size > 0 ? hash % size : 0
 }
 
-function buildGreeting(studentName: unknown, seed: string): string {
-  const name = escapeTelegramHtml(String(studentName || 'Student').trim() || 'Student')
+function buildMotivation(seed: string): string {
   const variants = [
-    `Hi, ${name}! 👋`,
-    `Hello, ${name}! 🌟`,
-    `Hey, ${name}! 👋`,
-    `${name}, hi! ✨`,
-    `Hi there, ${name}! 😊`,
+    'Good luck! ⭐',
+    'You can do it! 💪',
+    "You've got this! 🌟",
+    'Take your time and do your best! ✨',
+    'Enjoy the lesson! 📚',
   ]
   return variants[stableChoice(seed, variants.length)]
 }
@@ -138,11 +137,10 @@ function buildMessage(
   hasVocabulary: boolean,
   hasGrammar: boolean,
   homeworkTitle: unknown,
-  studentName: unknown,
   seed: string,
 ): string {
   const title = escapeTelegramHtml(homeworkTitle || 'English homework')
-  const greeting = buildGreeting(studentName, seed)
+  const motivation = buildMotivation(seed)
 
   const steps: string[] = []
   if (hasVocabulary) steps.push('First, learn the new words.')
@@ -151,7 +149,7 @@ function buildMessage(
   else steps.push('Open the homework and complete the tasks.')
 
   return [
-    greeting,
+    'Hi there! 👋',
     '',
     'Your new English homework is ready.',
     '',
@@ -159,7 +157,7 @@ function buildMessage(
     '',
     ...steps,
     '',
-    'Good luck! ⭐',
+    motivation,
   ].join('\n')
 }
 
@@ -721,7 +719,6 @@ export default {
     }
 
     const studentId = typeof payload.studentId === 'string' ? payload.studentId.trim() : ''
-    const studentName = typeof payload.studentName === 'string' ? payload.studentName.trim() : ''
     const materialType = typeof payload.materialType === 'string' ? payload.materialType.trim() : ''
     const materialId = typeof payload.materialId === 'string' ? payload.materialId.trim() : ''
     const notificationVersion = Number(payload.notificationVersion)
@@ -887,7 +884,6 @@ export default {
           Boolean(vocabulary),
           grammar.length > 0,
           homework.title,
-          studentName || studentId,
           `${materialId}:${notificationVersion}`,
         ),
         keyboard,
