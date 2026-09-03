@@ -2356,6 +2356,30 @@ body[data-view="lesson"] #lesson-root {
   line-height: 1.65;
 }
 
+.exercise-transcript {
+  margin-top: 16px;
+  border: 1px solid #dbe3ef;
+  border-radius: 14px;
+  background: #f8fafc;
+}
+
+.exercise-transcript summary {
+  padding: 13px 16px;
+  color: var(--indigo);
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.exercise-transcript[open] summary {
+  border-bottom: 1px solid #dbe3ef;
+}
+
+.exercise-transcript .exercise-dialogue {
+  margin-top: 0;
+  border: 0;
+  background: transparent;
+}
+
 .dialogue-mistake {
   display: inline-flex;
   align-items: flex-start;
@@ -2645,6 +2669,16 @@ body[data-view="lesson"] #lesson-root {
 
 [data-task="l10-howto-2a"] .exercise-dialogue p:first-child {
   color: var(--indigo);
+  font-weight: 900;
+}
+
+[data-task="l11-speaking-4a"] .exercise-item-header {
+  display: none;
+}
+
+[data-task="l11-speaking-4a"] .gap-input {
+  width: 54px;
+  text-align: center;
   font-weight: 900;
 }
 

@@ -2243,5 +2243,39 @@ window.VOCABULARY_DATA = [
       {"id":"menu","title":"On the menu","subtitle":"Блюда и меню","icon":"📋"},
       {"id":"ordering","title":"Ordering a meal","subtitle":"Полезные фразы для заказа","icon":"🗣️"}
     ]
+  },
+  {
+    "id": "vocab-lesson-11-polite-requests",
+    "title": "Polite requests",
+    "label": "Lesson 2C · Pronunciation and Speaking · 16 useful words and phrases",
+    "icon": "💬",
+    "type": "lesson",
+    "linkedLessonId": "lesson-11",
+    "page": "vocabulary.html?id=vocab-lesson-11-polite-requests",
+    "description": "New vocabulary for polite requests and a restaurant conversation.",
+    "words": [
+      {"id":"l11-01","uniqueKey":"polite","en":"polite","ru":"вежливый","transcription":"/pəˈlaɪt/","exampleEn":"That request sounds polite.","exampleRu":"Эта просьба звучит вежливо.","group":"intonation"},
+      {"id":"l11-02","uniqueKey":"not polite","en":"not polite","ru":"невежливо","transcription":"/nɒt pəˈlaɪt/","exampleEn":"The second request does not sound polite.","exampleRu":"Вторая просьба звучит невежливо.","group":"intonation"},
+      {"id":"l11-03","uniqueKey":"a polite request","en":"a polite request","ru":"вежливая просьба","transcription":"/ə pəˌlaɪt rɪˈkwest/","exampleEn":"Could I have some water? is a polite request.","exampleRu":"Could I have some water? — это вежливая просьба.","group":"intonation"},
+      {"id":"l11-04","uniqueKey":"customer","en":"customer","ru":"клиент; посетитель","transcription":"/ˈkʌstəmə/","exampleEn":"The customer orders a main course.","exampleRu":"Посетитель заказывает основное блюдо.","group":"restaurant"},
+      {"id":"l11-05","uniqueKey":"salad","en":"salad","ru":"салат","transcription":"/ˈsæləd/","exampleEn":"Can I have the salad, please?","exampleRu":"Можно мне салат, пожалуйста?","group":"restaurant"},
+      {"id":"l11-06","uniqueKey":"chips","en":"chips","ru":"картофель фри","transcription":"/tʃɪps/","exampleEn":"Can I have some chips?","exampleRu":"Можно мне картофель фри?","group":"restaurant"},
+      {"id":"l11-07","uniqueKey":"at the same time","en":"at the same time","ru":"одновременно; в то же время","transcription":"/ət ðə ˌseɪm ˈtaɪm/","exampleEn":"Could we have the bill at the same time?","exampleRu":"Можно нам одновременно принести счёт?","group":"time"},
+      {"id":"l11-08","uniqueKey":"half past six","en":"half past six","ru":"половина седьмого","transcription":"/ˌhɑːf pɑːst ˈsɪks/","exampleEn":"We have a table for half past six.","exampleRu":"У нас столик на половину седьмого.","group":"time"},
+      {"id":"l11-09","uniqueKey":"look at the dessert menu","en":"look at the dessert menu","ru":"посмотреть меню десертов","transcription":"/lʊk ət ðə dɪˈzɜːt ˌmenjuː/","exampleEn":"Would you like to look at the dessert menu?","exampleRu":"Хотите посмотреть меню десертов?","group":"restaurant"},
+      {"id":"l11-10","uniqueKey":"no thanks","en":"No thanks.","ru":"Нет, спасибо.","transcription":"/nəʊ θæŋks/","exampleEn":"No thanks. Could we have the bill?","exampleRu":"Нет, спасибо. Можно нам счёт?","group":"requests"},
+      {"id":"l11-11","uniqueKey":"certainly","en":"certainly","ru":"конечно","transcription":"/ˈsɜːtənli/","exampleEn":"Yes, certainly.","exampleRu":"Да, конечно.","group":"requests"},
+      {"id":"l11-12","uniqueKey":"could i have ...?","en":"Could I have …?","ru":"Можно мне …?","transcription":"/kʊd aɪ hæv/","exampleEn":"Could I have some sparkling water, please?","exampleRu":"Можно мне газированную воду, пожалуйста?","group":"requests"},
+      {"id":"l11-13","uniqueKey":"can i have ...?","en":"Can I have …?","ru":"Можно мне …?","transcription":"/kæn aɪ hæv/","exampleEn":"Can I have the soup, please?","exampleRu":"Можно мне суп, пожалуйста?","group":"requests"},
+      {"id":"l11-14","uniqueKey":"can we have ...?","en":"Can we have …?","ru":"Можно нам …?","transcription":"/kæn wi hæv/","exampleEn":"Can we have some water, please?","exampleRu":"Можно нам воды, пожалуйста?","group":"requests"},
+      {"id":"l11-15","uniqueKey":"near the window","en":"near the window","ru":"у окна; рядом с окном","transcription":"/nɪə ðə ˈwɪndəʊ/","exampleEn":"Could we have a table near the window?","exampleRu":"Можно нам столик у окна?","group":"restaurant"},
+      {"id":"l11-16","uniqueKey":"for the main course","en":"for the main course","ru":"на основное блюдо","transcription":"/fə ðə ˌmeɪn ˈkɔːs/","exampleEn":"I’d like the chicken for the main course.","exampleRu":"На основное блюдо я бы хотела курицу.","group":"restaurant"}
+    ],
+    "groups": [
+      {"id":"intonation","title":"Polite intonation","subtitle":"Вежливая интонация","icon":"🎵"},
+      {"id":"requests","title":"Polite requests","subtitle":"Фразы для вежливой просьбы","icon":"💬"},
+      {"id":"restaurant","title":"Restaurant conversation","subtitle":"Диалог в ресторане","icon":"🍽️"},
+      {"id":"time","title":"Time phrases","subtitle":"Фразы времени","icon":"🕡"}
+    ]
   }
 ];

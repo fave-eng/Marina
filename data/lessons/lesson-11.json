@@ -1,0 +1,149 @@
+{
+  "id": "lesson-11",
+  "number": 11,
+  "title": "Polite requests & restaurant conversation",
+  "subtitle": "Speakout · Unit 2 · Lesson 2C: Pronunciation and Speaking",
+  "status": "available",
+  "page": "lesson.html?id=lesson-11",
+  "vocabularyId": "vocab-lesson-11-polite-requests",
+  "grammarIds": [],
+  "publishedAt": "2026-09-03",
+  "totalPoints": 11,
+  "notification": {
+    "enabled": true,
+    "version": 1
+  },
+  "blocks": [
+    {
+      "type": "section",
+      "eyebrow": "Lesson 2C · PRONUNCIATION",
+      "title": "polite intonation"
+    },
+    {
+      "type": "exercise",
+      "id": "l11-pron-3a",
+      "title": "3A. 2.06 | polite intonation | Listen to the requests. Do the requests sound polite (P) or not polite (NP)?",
+      "autosaveDraft": true,
+      "speech": {
+        "lang": "en-GB",
+        "rate": 0.92,
+        "label": "Audio 2.06 and 2.07 · British English · natural reading",
+        "lines": [
+          "Can we have some water, please?",
+          "Could I have a salad, please?",
+          "Can I have some chips?",
+          "Could we have a table near the window?",
+          "Can I have the soup, please?",
+          "Could we have the bill at the same time?"
+        ]
+      },
+      "dialogueCollapsible": true,
+      "dialogueSummary": "Показать транскрипцию Audio 2.06 и 2.07",
+      "dialogue": [
+        "1 Can we have some water, please?",
+        "2 Could I have a salad, please?",
+        "3 Can I have some chips?",
+        "4 Could we have a table near the window?",
+        "5 Can I have the soup, please?",
+        "6 Could we have the bill at the same time?"
+      ],
+      "items": [
+        {"id":"1","prompt":"Can we have some water, please?","input":"single","options":["P","NP"],"answer":0},
+        {"id":"2","prompt":"Could I have a salad, please?","input":"single","options":["P","NP"],"answer":0},
+        {"id":"3","prompt":"Can I have some chips?","input":"single","options":["P","NP"],"answer":1},
+        {"id":"4","prompt":"Could we have a table near the window?","input":"single","options":["P","NP"],"answer":0},
+        {"id":"5","prompt":"Can I have the soup, please?","input":"single","options":["P","NP"],"answer":0},
+        {"id":"6","prompt":"Could we have the bill at the same time?","input":"single","options":["P","NP"],"answer":1}
+      ]
+    },
+    {
+      "type": "info",
+      "id": "l11-pron-3b",
+      "title": "3B. 2.07 | Listen and repeat the polite requests.",
+      "text": ""
+    },
+    {
+      "type": "section",
+      "eyebrow": "Lesson 2C",
+      "title": "SPEAKING"
+    },
+    {
+      "type": "exercise",
+      "id": "l11-speaking-4a",
+      "title": "4A. Complete the conversation with the responses (a–e).",
+      "wordBank": [
+        "a Yes. For a starter, can I have the salad, please?",
+        "b No thanks. Could we have the bill, please?",
+        "c Yes, we have a table for two for half past six.",
+        "d I’d like the chicken, please.",
+        "e Could I have some sparkling water, please?"
+      ],
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "conversation",
+          "number": "",
+          "prompt": "",
+          "input": "gaps",
+          "layout": "dialogue",
+          "segments": [
+            "Waiter: Good evening, do you have a reservation?\nCustomer: 1 ",
+            "\nWaiter: Are you ready to order?\nCustomer: 2 ",
+            "\nWaiter: Yes, of course. And for the main course?\nCustomer: 3 ",
+            "\nWaiter: Would you like something to drink?\nCustomer: 4 ",
+            "\nWaiter: Yes, certainly.\nWaiter: Would you like to look at the dessert menu?\nCustomer: 5 ",
+            "\nWaiter: Yes, of course."
+          ],
+          "answers": ["c", "a", "d", "e", "b"]
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l11-speaking-4b",
+      "title": "4B. 2.08 | Listen and check.",
+      "speech": {
+        "lang": "en-GB",
+        "rate": 0.92,
+        "label": "Audio 2.08 and 2.09 · British English · natural reading",
+        "lines": [
+          "Good evening, do you have a reservation?",
+          "Yes, we have a table for two for half past six.",
+          "Are you ready to order?",
+          "Yes. For a starter, can I have the salad, please?",
+          "Yes, of course. And for the main course?",
+          "I’d like the chicken, please.",
+          "Would you like something to drink?",
+          "Could I have some sparkling water, please?",
+          "Yes, certainly.",
+          "Would you like to look at the dessert menu?",
+          "No thanks. Could we have the bill, please?",
+          "Yes, of course."
+        ]
+      },
+      "dialogueCollapsible": true,
+      "dialogueSummary": "Показать транскрипцию Audio 2.08 и 2.09",
+      "dialogue": [
+        "Waiter: Good evening, do you have a reservation?",
+        "Customer: Yes, we have a table for two for half past six.",
+        "Waiter: Are you ready to order?",
+        "Customer: Yes. For a starter, can I have the salad, please?",
+        "Waiter: Yes, of course. And for the main course?",
+        "Customer: I’d like the chicken, please.",
+        "Waiter: Would you like something to drink?",
+        "Customer: Could I have some sparkling water, please?",
+        "Waiter: Yes, certainly.",
+        "Waiter: Would you like to look at the dessert menu?",
+        "Customer: No thanks. Could we have the bill, please?",
+        "Waiter: Yes, of course."
+      ],
+      "items": []
+    },
+    {
+      "type": "info",
+      "id": "l11-speaking-practice",
+      "title": "2.09 | You are the customer in the conversation in Ex 4A. Listen and speak after the beep. Record the conversation if you can.",
+      "text": "D. Listen to the recording and compare it to the model in Ex 4B."
+    }
+  ]
+}

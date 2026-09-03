@@ -1270,7 +1270,10 @@
   function renderExerciseDialogue(block) {
     const lines = Array.isArray(block.dialogue) ? block.dialogue : [];
     if (!lines.length) return '';
-    return `<div class="exercise-dialogue" aria-label="Conversation">${lines.map((line) => `<p>${renderMarkedDialogueLine(line)}</p>`).join('')}</div>`;
+    const dialogue = `<div class="exercise-dialogue" aria-label="Conversation">${lines.map((line) => `<p>${renderMarkedDialogueLine(line)}</p>`).join('')}</div>`;
+    if (!block.dialogueCollapsible) return dialogue;
+    const summary = safeText(block.dialogueSummary, 'Показать транскрипцию');
+    return `<details class="exercise-transcript"><summary>${escapeHtml(summary)}</summary>${dialogue}</details>`;
   }
 
   function renderExerciseContentCards(block) {
@@ -1597,7 +1600,7 @@
     const rate = Math.min(1.35, Math.max(0.7, Number(speech.rate || 1)));
     const label = safeText(speech.label, 'Natural voice · conversational speed');
     const fallback = block.audio ? `<audio class="audio-player" controls preload="none" src="${escapeHtml(block.audio)}" data-speech-fallback hidden></audio>` : '';
-    return `<div class="speech-player" data-speech-player data-speech-text="${escapeHtml(speechText)}" data-speech-lang="${escapeHtml(lang)}" data-speech-rate="${rate}">
+    return `<div class="speech-player" data-speech-player data-speech-text="${escapeHtml(speechText)}" data-speech-lines="${escapeHtml(JSON.stringify(lines))}" data-speech-lang="${escapeHtml(lang)}" data-speech-rate="${rate}">
       <div class="button-row">
         <button class="btn btn-secondary" type="button" data-speech-play>▶ Listen</button>
         <button class="btn btn-secondary" type="button" data-speech-stop hidden>■ Stop</button>
@@ -1647,32 +1650,58 @@
 
       playButton.addEventListener('click', () => {
         stopSpeech();
-        const text = safeText(player.dataset.speechText);
-        if (!text) return;
+        let lines = [];
+        try {
+          const storedLines = JSON.parse(player.dataset.speechLines || '[]');
+          if (Array.isArray(storedLines)) lines = storedLines.map((line) => safeText(line)).filter(Boolean);
+        } catch (error) {
+          lines = [];
+        }
+        if (!lines.length) {
+          const text = safeText(player.dataset.speechText);
+          if (text) lines = [text];
+        }
+        if (!lines.length) return;
         const lang = safeText(player.dataset.speechLang, 'en-GB');
         const rate = Math.min(1.35, Math.max(0.7, Number(player.dataset.speechRate || 1)));
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = lang;
-        utterance.rate = rate;
-        utterance.pitch = 1;
-        utterance.volume = 1;
-        utterance.onstart = () => {
-          activePlayer = player;
-          player.classList.add('is-speaking');
-          playButton.setAttribute('hidden', '');
-          stopButton?.removeAttribute('hidden');
+        const languagePrefix = lang.toLowerCase().split('-')[0];
+        const matchingVoices = window.speechSynthesis.getVoices().filter((voice) => voice.lang.toLowerCase().startsWith(languagePrefix));
+        const voice = matchingVoices.find((item) => /daniel|serena|sonia|ryan|siri|google uk english/i.test(item.name))
+          || matchingVoices.find((item) => item.localService)
+          || matchingVoices[0]
+          || null;
+
+        activePlayer = player;
+        player.classList.add('is-speaking');
+        playButton.setAttribute('hidden', '');
+        stopButton?.removeAttribute('hidden');
+
+        const speakLine = (lineIndex) => {
+          if (activePlayer !== player) return;
+          if (lineIndex >= lines.length) {
+            activePlayer = null;
+            resetPlayer(player);
+            return;
+          }
+          const utterance = new SpeechSynthesisUtterance(lines[lineIndex]);
+          utterance.lang = lang;
+          utterance.rate = rate;
+          utterance.pitch = 1;
+          utterance.volume = 1;
+          if (voice) utterance.voice = voice;
+          utterance.onend = () => {
+            if (activePlayer !== player) return;
+            window.setTimeout(() => speakLine(lineIndex + 1), 220);
+          };
+          utterance.onerror = () => {
+            if (activePlayer === player) activePlayer = null;
+            resetPlayer(player);
+            const fallback = player.querySelector('[data-speech-fallback]');
+            if (fallback) fallback.removeAttribute('hidden');
+          };
+          window.speechSynthesis.speak(utterance);
         };
-        utterance.onend = () => {
-          if (activePlayer === player) activePlayer = null;
-          resetPlayer(player);
-        };
-        utterance.onerror = () => {
-          if (activePlayer === player) activePlayer = null;
-          resetPlayer(player);
-          const fallback = player.querySelector('[data-speech-fallback]');
-          if (fallback) fallback.removeAttribute('hidden');
-        };
-        window.speechSynthesis.speak(utterance);
+        speakLine(0);
       });
 
       stopButton?.addEventListener('click', stopSpeech);
