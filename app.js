@@ -1690,10 +1690,9 @@
           || matchingVoices.find((item) => item.lang.toLowerCase() === lang.toLowerCase())
           || matchingVoices[0]
           || null;
-        const customerVoice = matchingVoices.find((item) => (
-          /serena|sonia|kate|samantha|victoria|google uk english female/i.test(item.name)
-          && item !== vocabularyVoice
-        )) || matchingVoices.find((item) => item !== vocabularyVoice) || null;
+        const customerVoice = matchingVoices.find((item) => /samantha/i.test(item.name))
+          || matchingVoices.find((item) => /serena|sonia|kate|google uk english female/i.test(item.name))
+          || vocabularyVoice;
 
         activePlayer = player;
         player.classList.add('is-speaking');

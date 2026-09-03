@@ -105,7 +105,7 @@
       "speech": {
         "lang": "en-GB",
         "rate": 0.92,
-        "label": "Audio 2.08 and 2.09 · Waiter: Vocabulary voice · Customer: separate voice",
+        "label": "Audio 2.08 and 2.09 · Waiter: Vocabulary voice · Customer: female voice",
         "lines": [
           {"voice":"waiter","text":"Good evening, do you have a reservation?"},
           {"voice":"customer","text":"Yes, we have a table for two for half past six."},
