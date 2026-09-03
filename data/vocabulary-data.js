@@ -2201,5 +2201,47 @@ window.VOCABULARY_DATA = [
         "group": "activities"
       }
     ]
+  },
+  {
+    "id": "vocab-lesson-10-restaurant",
+    "title": "Restaurant vocabulary",
+    "label": "Lesson 2C · Restaurant words · 25 useful words and phrases",
+    "icon": "🍽️",
+    "type": "lesson",
+    "linkedLessonId": "lesson-10",
+    "page": "vocabulary.html?id=vocab-lesson-10-restaurant",
+    "description": "New vocabulary for reading a menu and ordering a meal in a restaurant.",
+    "words": [
+      {"id":"l10-01","uniqueKey":"restaurant","en":"restaurant","ru":"ресторан","transcription":"/ˈrestrɒnt/","exampleEn":"We’re having dinner at a restaurant.","exampleRu":"Мы ужинаем в ресторане.","group":"restaurant-words"},
+      {"id":"l10-02","uniqueKey":"starter","en":"starter","ru":"закуска; первое блюдо","transcription":"/ˈstɑːtə/","exampleEn":"I’d like the soup for my starter.","exampleRu":"Я бы хотела суп на первое.","group":"restaurant-words"},
+      {"id":"l10-03","uniqueKey":"main course","en":"main course","ru":"основное блюдо","transcription":"/ˌmeɪn ˈkɔːs/","exampleEn":"The fish is my main course.","exampleRu":"Рыба — моё основное блюдо.","group":"restaurant-words"},
+      {"id":"l10-04","uniqueKey":"side dish","en":"side dish","ru":"гарнир","transcription":"/ˈsaɪd dɪʃ/","exampleEn":"Would you like a side dish?","exampleRu":"Хотите гарнир?","group":"restaurant-words"},
+      {"id":"l10-05","uniqueKey":"bill","en":"bill","ru":"счёт","transcription":"/bɪl/","exampleEn":"Can we have the bill, please?","exampleRu":"Можно нам счёт, пожалуйста?","group":"restaurant-words"},
+      {"id":"l10-06","uniqueKey":"service charge","en":"service charge","ru":"плата за обслуживание","transcription":"/ˈsɜːvɪs tʃɑːdʒ/","exampleEn":"The service charge is included.","exampleRu":"Плата за обслуживание включена.","group":"restaurant-words"},
+      {"id":"l10-07","uniqueKey":"waiter","en":"waiter","ru":"официант","transcription":"/ˈweɪtə/","exampleEn":"Let’s ask the waiter for some water.","exampleRu":"Давайте попросим у официанта воды.","group":"restaurant-words"},
+      {"id":"l10-08","uniqueKey":"dinner for two","en":"dinner for two","ru":"ужин на двоих","transcription":"/ˈdɪnə fə tuː/","exampleEn":"Dinner for two costs £25.","exampleRu":"Ужин на двоих стоит 25 фунтов.","group":"menu"},
+      {"id":"l10-09","uniqueKey":"set menu","en":"set menu","ru":"комплексное меню","transcription":"/ˌset ˈmenjuː/","exampleEn":"The set menu has three courses.","exampleRu":"В комплексном меню три блюда.","group":"menu"},
+      {"id":"l10-10","uniqueKey":"ice cream","en":"ice cream","ru":"мороженое","transcription":"/ˌaɪs ˈkriːm/","exampleEn":"I’d like some ice cream for dessert.","exampleRu":"Я бы хотела мороженое на десерт.","group":"menu"},
+      {"id":"l10-11","uniqueKey":"beefburger with chips","en":"beefburger with chips","ru":"бургер с говядиной и картофелем фри","transcription":"/ˈbiːfbɜːɡə wɪð tʃɪps/","exampleEn":"He orders a beefburger with chips.","exampleRu":"Он заказывает бургер с говядиной и картофелем фри.","group":"menu"},
+      {"id":"l10-12","uniqueKey":"vegetarian burger","en":"vegetarian burger","ru":"вегетарианский бургер","transcription":"/ˌvedʒəˈteəriən ˈbɜːɡə/","exampleEn":"A vegetarian burger is available.","exampleRu":"Вегетарианский бургер есть в наличии.","group":"menu"},
+      {"id":"l10-13","uniqueKey":"soup of the day","en":"soup of the day","ru":"суп дня","transcription":"/ˌsuːp əv ðə ˈdeɪ/","exampleEn":"What is the soup of the day?","exampleRu":"Какой сегодня суп дня?","group":"menu"},
+      {"id":"l10-14","uniqueKey":"sushi platter","en":"sushi platter","ru":"ассорти суши","transcription":"/ˈsuːʃi ˌplætə/","exampleEn":"The sushi platter is a starter.","exampleRu":"Ассорти суши — это закуска.","group":"menu"},
+      {"id":"l10-15","uniqueKey":"nut roast","en":"nut roast","ru":"ореховое жаркое","transcription":"/ˈnʌt rəʊst/","exampleEn":"The nut roast is vegetarian.","exampleRu":"Ореховое жаркое — вегетарианское блюдо.","group":"menu"},
+      {"id":"l10-16","uniqueKey":"reservation","en":"reservation","ru":"бронирование; бронь","transcription":"/ˌrezəˈveɪʃən/","exampleEn":"Do you have a reservation?","exampleRu":"У вас есть бронь?","group":"ordering"},
+      {"id":"l10-17","uniqueKey":"order","en":"order","ru":"заказывать; заказ","transcription":"/ˈɔːdə/","exampleEn":"Are you ready to order?","exampleRu":"Вы готовы сделать заказ?","group":"ordering"},
+      {"id":"l10-18","uniqueKey":"ready to order","en":"ready to order","ru":"готов сделать заказ","transcription":"/ˌredi tə ˈɔːdə/","exampleEn":"We’re ready to order now.","exampleRu":"Мы готовы сделать заказ.","group":"ordering"},
+      {"id":"l10-19","uniqueKey":"table for two","en":"table for two","ru":"столик на двоих","transcription":"/ˌteɪbəl fə ˈtuː/","exampleEn":"A table for two, please.","exampleRu":"Столик на двоих, пожалуйста.","group":"ordering"},
+      {"id":"l10-20","uniqueKey":"meal","en":"meal","ru":"приём пищи; еда","transcription":"/miːl/","exampleEn":"Enjoy your meal!","exampleRu":"Приятного аппетита!","group":"ordering"},
+      {"id":"l10-21","uniqueKey":"included","en":"included","ru":"включённый","transcription":"/ɪnˈkluːdɪd/","exampleEn":"Is the service charge included?","exampleRu":"Плата за обслуживание включена?","group":"ordering"},
+      {"id":"l10-22","uniqueKey":"i'd like ...","en":"I’d like …","ru":"Я бы хотел(а) …","transcription":"/aɪd ˈlaɪk/","exampleEn":"I’d like the lamb, please.","exampleRu":"Я бы хотела баранину, пожалуйста.","group":"ordering"},
+      {"id":"l10-23","uniqueKey":"would you like ...?","en":"Would you like …?","ru":"Хотите …?","transcription":"/wʊd ju ˈlaɪk/","exampleEn":"Would you like something to drink?","exampleRu":"Хотите что-нибудь выпить?","group":"ordering"},
+      {"id":"l10-24","uniqueKey":"something to drink","en":"something to drink","ru":"что-нибудь выпить","transcription":"/ˌsʌmθɪŋ tə ˈdrɪŋk/","exampleEn":"Would you like something to drink?","exampleRu":"Хотите что-нибудь выпить?","group":"ordering"},
+      {"id":"l10-25","uniqueKey":"for the starter","en":"for the starter","ru":"на первое; в качестве закуски","transcription":"/fə ðə ˈstɑːtə/","exampleEn":"For the starter, I’d like the soup.","exampleRu":"На первое я бы хотела суп.","group":"ordering"}
+    ],
+    "groups": [
+      {"id":"restaurant-words","title":"Restaurant words","subtitle":"Основные слова о ресторане","icon":"🍴"},
+      {"id":"menu","title":"On the menu","subtitle":"Блюда и меню","icon":"📋"},
+      {"id":"ordering","title":"Ordering a meal","subtitle":"Полезные фразы для заказа","icon":"🗣️"}
+    ]
   }
 ];

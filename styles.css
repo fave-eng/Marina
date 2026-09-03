@@ -2604,11 +2604,45 @@ body[data-view="lesson"] #lesson-root {
 
 @media (max-width: 680px) {
   .inline-choice-text { line-height: 2.35; }
-  .inline-choice-group { margin-inline: 1px; }
+  .inline-choice-group {
+    flex-wrap: wrap;
+    max-width: 100%;
+    margin-inline: 1px;
+    white-space: normal;
+  }
   .sentence-gaps.has-wide-gaps .gap-input { width: 100%; }
   .exercise-media.is-compact { max-width: 150px; }
   .exercise-media.is-compact img { max-width: 132px; max-height: 132px; }
   .grammar-practice-group { padding: 10px; }
+}
+
+/* Lesson 10 · Restaurant vocabulary and ordering a meal. */
+[data-task="l10-vocab-1b"] .exercise-item-header,
+[data-task="l10-howto-2b"] .exercise-item-header {
+  display: none;
+}
+
+[data-task="l10-vocab-1b"] .sentence-gaps {
+  width: min(100%, 620px);
+  margin-inline: auto;
+  padding: 28px;
+  border: 1px solid #dce4ee;
+  border-radius: 18px;
+  background: #f8fafc;
+  color: #27364a;
+  line-height: 2.15;
+  text-align: center;
+}
+
+[data-task="l10-vocab-1b"] .gap-input {
+  text-align: center;
+  font-weight: 800;
+}
+
+@media (max-width: 680px) {
+  [data-task="l10-vocab-1b"] .sentence-gaps {
+    padding: 18px 12px;
+  }
 }
 
 /* Lesson 9 · Reading 4A–4C · Alone or together? */
