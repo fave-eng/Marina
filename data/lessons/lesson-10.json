@@ -1,0 +1,236 @@
+{
+  "id": "lesson-10",
+  "number": 10,
+  "title": "Restaurant vocabulary & ordering food",
+  "subtitle": "Speakout · Unit 2 · Lesson 2C: Vocabulary and How to order a meal in a restaurant",
+  "status": "available",
+  "page": "lesson.html?id=lesson-10",
+  "vocabularyId": "vocab-lesson-10-restaurant",
+  "grammarIds": [],
+  "publishedAt": "2026-09-03",
+  "totalPoints": 25,
+  "notification": {
+    "enabled": true,
+    "version": 1
+  },
+  "blocks": [
+    {
+      "type": "section",
+      "eyebrow": "Lesson 2C · VOCABULARY",
+      "title": "restaurant words"
+    },
+    {
+      "type": "exercise",
+      "id": "l10-vocab-1a",
+      "title": "1A. Choose the correct words to complete the sentences.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "sentences",
+          "number": "",
+          "prompt": "",
+          "input": "inline-single",
+          "segments": [
+            "1 I’d like some ice cream for my ",
+            ".\n2 Let’s ask the ",
+            " for some water.\n3 The ",
+            " is soup or salad.\n4 Can we have the ",
+            ", please?\n5 The ",
+            " costs £25.\n6 The ",
+            " is included in the bill."
+          ],
+          "choices": [
+            {
+              "number": 1,
+              "options": ["bill", "main course", "dessert"],
+              "answer": 2
+            },
+            {
+              "number": 2,
+              "options": ["waiter", "service charge", "starter"],
+              "answer": 0
+            },
+            {
+              "number": 3,
+              "options": ["starter", "service charge", "bill"],
+              "answer": 0
+            },
+            {
+              "number": 4,
+              "options": ["dessert", "main course", "bill"],
+              "answer": 2
+            },
+            {
+              "number": 5,
+              "options": ["service charge", "starter", "dinner for two"],
+              "answer": 2
+            },
+            {
+              "number": 6,
+              "options": ["service charge", "waiter", "dinner for two"],
+              "answer": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l10-vocab-1b",
+      "title": "1B. Complete the menu with the words in the box.",
+      "wordBank": [
+        "bill",
+        "desserts",
+        "dinner for two",
+        "main courses",
+        "service charge",
+        "starters",
+        "waiter"
+      ],
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "menu",
+          "number": "",
+          "prompt": "",
+          "input": "gaps",
+          "layout": "dialogue",
+          "wideGaps": true,
+          "segments": [
+            "SET MENU\n\n",
+            "\nSoup of the day\nSushi platter\n\n",
+            "\nBeefburger with chips\nNut roast\n\n",
+            "\nIce cream\nFruit salad\n\nNote: A 10% ",
+            " is added to the ",
+            ".\n\nVegetarian burger available. Ask the ",
+            "."
+          ],
+          "answers": [
+            "Dinner for two",
+            "Starters",
+            "Main courses",
+            "Desserts",
+            "service charge",
+            "bill",
+            "waiter"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "eyebrow": "Lesson 2C · HOW TO",
+      "title": "order a meal in a restaurant"
+    },
+    {
+      "type": "exercise",
+      "id": "l10-howto-2a",
+      "title": "2A. Listen to a woman and a man ordering a meal. Who orders each thing? Choose W (woman) or M (man).",
+      "autosaveDraft": true,
+      "speech": {
+        "lang": "en-GB",
+        "rate": 0.9,
+        "label": "Audio 2.05 · British English · dialogue read aloud",
+        "lines": [
+          "Good evening. Do you have a reservation?",
+          "Yes, we have a table for two for 8 p.m. Can we have a table near the window?",
+          "Yes, certainly. Here you are. And here are your menus.",
+          "Thank you.",
+          "Are you ready to order?",
+          "Yes, I think so. For the starter, I’d like the olives, please. And I’d like the lamb for the main course.",
+          "Very good. And you?",
+          "Could I have the soup, then the fish, please?",
+          "Sure, no problem. Would you like something to drink?",
+          "Can we have some water, please?",
+          "Yes, of course.",
+          "Thank you.",
+          "How is your meal?",
+          "Very good, thank you!"
+        ]
+      },
+      "dialogue": [
+        "Audio 2.05 · Transcript",
+        "Waiter: Good evening. Do you have a reservation?",
+        "Alex: Yes, we have a table for two for 8 p.m. Can we have a table near the window?",
+        "Waiter: Yes, certainly. Here you are. And here are your menus.",
+        "Jenny: Thank you.",
+        "Waiter: Are you ready to order?",
+        "Alex: Yes, I think so. For the starter, I’d like the olives, please. And I’d like the lamb for the main course.",
+        "Waiter: Very good. And you?",
+        "Jenny: Could I have the soup, then the fish, please?",
+        "Waiter: Sure, no problem. Would you like something to drink?",
+        "Jenny: Can we have some water, please?",
+        "Waiter: Yes, of course.",
+        "Jenny: Thank you.",
+        "Waiter: How is your meal?",
+        "Alex/Jenny: Very good, thank you!"
+      ],
+      "items": [
+        {
+          "id": "1",
+          "prompt": "fish",
+          "input": "single",
+          "options": ["W", "M"],
+          "answer": 0
+        },
+        {
+          "id": "2",
+          "prompt": "lamb",
+          "input": "single",
+          "options": ["W", "M"],
+          "answer": 1
+        },
+        {
+          "id": "3",
+          "prompt": "olives",
+          "input": "single",
+          "options": ["W", "M"],
+          "answer": 1
+        },
+        {
+          "id": "4",
+          "prompt": "soup",
+          "input": "single",
+          "options": ["W", "M"],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l10-howto-2b",
+      "title": "2B. 2.05 | Listen again. Complete the sentences with one word in each gap.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "dialogue",
+          "number": "",
+          "prompt": "",
+          "input": "gaps",
+          "layout": "dialogue",
+          "segments": [
+            "1 Good evening. Do you have a ",
+            "?\n2 Yes, we have a table ",
+            " two for 8 p.m.\n3 Can we have a ",
+            " near the window?\n4 ",
+            " you ready to order?\n5 ",
+            " the starter, I’d like the olives, please.\n6 And I’d ",
+            " the lamb for the main course.\n7 Would you like something ",
+            " drink?\n8 How is your ",
+            "?"
+          ],
+          "answers": [
+            "reservation",
+            "for",
+            "table",
+            "Are",
+            "For",
+            "like",
+            "to",
+            "meal"
+          ]
+        }
+      ]
+    }
+  ]
+}
