@@ -1,0 +1,294 @@
+{
+  "id": "lesson-9",
+  "number": 9,
+  "title": "Alone or together?",
+  "subtitle": "Speakout · Unit 2 · Lesson 2B: Reading · Alone or together?",
+  "status": "available",
+  "page": "lesson.html?id=lesson-9",
+  "vocabularyId": "vocab-lesson-9-alone-together",
+  "grammarIds": [],
+  "publishedAt": "2026-09-03",
+  "totalPoints": 11,
+  "notification": {
+    "enabled": true,
+    "version": 1
+  },
+  "blocks": [
+    {
+      "type": "section",
+      "eyebrow": "Lesson 2B · READING",
+      "title": "Alone or together?"
+    },
+    {
+      "type": "reading-quiz",
+      "id": "l9-reading-4",
+      "title": "READING",
+      "partA": {
+        "label": "4A",
+        "instructions": "Complete the quiz with the words in the box.",
+        "wordBank": [
+          "always",
+          "ever",
+          "every",
+          "often",
+          "on",
+          "sometimes",
+          "twice",
+          "weekend"
+        ],
+        "answers": {
+          "1": "twice",
+          "2": "ever",
+          "3": "weekend",
+          "4": "always",
+          "5": "often",
+          "6": "Every",
+          "7": "on",
+          "8": "Sometimes"
+        }
+      },
+      "quiz": {
+        "title": "QUIZ",
+        "headline": "Alone OR together?",
+        "intro": "Some people like to do things with other people. Some people like to do things alone. Do our quiz and learn about yourself.",
+        "questions": [
+          {
+            "number": 1,
+            "question": [
+              "How often do you meet friends for coffee?"
+            ],
+            "options": [
+              {
+                "letter": "a",
+                "text": [
+                  "I meet a group of friends for coffee ",
+                  {
+                    "gap": "1"
+                  },
+                  " a week or more."
+                ]
+              },
+              {
+                "letter": "b",
+                "text": [
+                  "Once a week or less. I meet a friend and we talk about our lives."
+                ]
+              },
+              {
+                "letter": "c",
+                "text": [
+                  "Hardly ",
+                  {
+                    "gap": "2"
+                  },
+                  ". I like to read a book while I drink coffee."
+                ]
+              }
+            ]
+          },
+          {
+            "number": 2,
+            "question": [
+              "What type of exercise do you like?"
+            ],
+            "options": [
+              {
+                "letter": "a",
+                "text": [
+                  "Team sports. I meet friends and play sport once a week."
+                ]
+              },
+              {
+                "letter": "b",
+                "text": [
+                  "I usually go running with a friend at the ",
+                  {
+                    "gap": "3"
+                  },
+                  "."
+                ]
+              },
+              {
+                "letter": "c",
+                "text": [
+                  "I go running alone, never with other people."
+                ]
+              }
+            ]
+          },
+          {
+            "number": 3,
+            "question": [
+              "How do you spend time online?"
+            ],
+            "options": [
+              {
+                "letter": "a",
+                "text": [
+                  "I ",
+                  {
+                    "gap": "4"
+                  },
+                  " use social media and talk online with my friends."
+                ]
+              },
+              {
+                "letter": "b",
+                "text": [
+                  "I use social media and I sometimes watch videos."
+                ]
+              },
+              {
+                "letter": "c",
+                "text": [
+                  "I read websites about things I like."
+                ]
+              }
+            ]
+          },
+          {
+            "number": 4,
+            "question": [
+              "How ",
+              {
+                "gap": "5"
+              },
+              " do you go to parties?"
+            ],
+            "options": [
+              {
+                "letter": "a",
+                "text": [
+                  {
+                    "gap": "6"
+                  },
+                  " weekend. My friends always have parties!"
+                ]
+              },
+              {
+                "letter": "b",
+                "text": [
+                  "Rarely. Maybe five or six times a year."
+                ]
+              },
+              {
+                "letter": "c",
+                "text": [
+                  "Never. I don’t like parties."
+                ]
+              }
+            ]
+          },
+          {
+            "number": 5,
+            "question": [
+              "Do you get up late at the weekend?"
+            ],
+            "options": [
+              {
+                "letter": "a",
+                "text": [
+                  "Yes, always. And I come home late ",
+                  {
+                    "gap": "7"
+                  },
+                  " Fridays and Saturdays!"
+                ]
+              },
+              {
+                "letter": "b",
+                "text": [
+                  "Usually, but sometimes I get up early."
+                ]
+              },
+              {
+                "letter": "c",
+                "text": [
+                  "No. I always get up early at the weekend. I like the quiet mornings."
+                ]
+              }
+            ]
+          },
+          {
+            "number": 6,
+            "question": [
+              "Do you like meetings?"
+            ],
+            "options": [
+              {
+                "letter": "a",
+                "text": [
+                  "Yes, it’s good to talk to people I work with."
+                ]
+              },
+              {
+                "letter": "b",
+                "text": [
+                  {
+                    "gap": "8"
+                  },
+                  ", but only if they’re short."
+                ]
+              },
+              {
+                "letter": "c",
+                "text": [
+                  "I hate them. I like to work alone."
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "partB": {
+        "label": "B",
+        "instructions": "Answer the questions for you. Then read the key and check your answers.",
+        "key": [
+          {
+            "letter": "a",
+            "title": "Mostly a:",
+            "text": "You like being with other people. You have a lot of friends and you’re happy when you spend time with them. It’s important to be alone sometimes, too."
+          },
+          {
+            "letter": "b",
+            "title": "Mostly b:",
+            "text": "You like to be with other people and you have a good group of friends. But sometimes you like to do things alone and have a quiet time. Both are important to you and that’s a healthy way to spend your time."
+          },
+          {
+            "letter": "c",
+            "title": "Mostly c:",
+            "text": "You like being alone most of the time. You hardly ever spend time with other people and you don’t feel bored when you’re alone. That’s fine, but it’s good to be with your friends and family, too. Try to meet a friend for coffee or lunch sometimes."
+          }
+        ]
+      },
+      "partC": {
+        "label": "C",
+        "instructions": "Read the descriptions. Match the person (1–3) with the section of the key (a–c) in Ex 4B.",
+        "people": [
+          {
+            "number": 1,
+            "name": "Sofia",
+            "text": "Sofia is a writer and spends a lot of time online. She has 1,000 friends on social media, but doesn’t know all of them. She thinks short work meetings are useful. She plays tennis twice a week with her friend. At the weekend she usually meets another friend for dinner. She hardly ever goes to parties."
+          },
+          {
+            "number": 2,
+            "name": "Samuel",
+            "text": "Samuel is a doctor. He works hard in the week and often leaves the hospital at 8 p.m. He gets up early and goes running every day before work. At the weekend he spends time online and sometimes meets a friend or his family for lunch. He likes to read interesting articles and the news."
+          },
+          {
+            "number": 3,
+            "name": "Adesh",
+            "text": "Adesh is a digital designer. He likes long meetings and talks a lot about work with other people. He always gets up late at the weekend because he spends time with his friends on Friday and Saturday nights. They like parties! On Sunday afternoons he plays football in a local team."
+          }
+        ],
+        "answers": {
+          "1": "b",
+          "2": "c",
+          "3": "a"
+        }
+      },
+      "manualResponses": true,
+      "autosaveDraft": true
+    }
+  ]
+}
