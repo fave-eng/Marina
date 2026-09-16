@@ -1,0 +1,599 @@
+{
+  "id": "lesson-14",
+  "number": 14,
+  "title": "Rooms and furniture · this, that, these, those",
+  "subtitle": "Speakout · Unit 3 · Lesson 3A: Vocabulary and Grammar",
+  "status": "available",
+  "page": "lesson.html?id=lesson-14",
+  "vocabularyId": "vocab-lesson-14-rooms-furniture",
+  "grammarIds": [
+    "grammar-lesson-14-demonstratives-here-there"
+  ],
+  "publishedAt": "2026-09-16",
+  "totalPoints": 42,
+  "notification": {
+    "enabled": true,
+    "version": 1
+  },
+  "blocks": [
+    {
+      "type": "section",
+      "eyebrow": "UNIT 3 · Lesson 3A",
+      "title": "VOCABULARY · rooms and furniture"
+    },
+    {
+      "type": "exercise",
+      "id": "l14-vocab-1a",
+      "title": "1A. Choose the correct word or phrase to complete the sentences.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "1",
+          "prompt": "The ______ has a cooker, fridge and washing machine.",
+          "input": "single",
+          "options": [
+            "a  bathroom",
+            "b  kitchen",
+            "c  living room"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "2",
+          "prompt": "In the bathroom, there’s a very nice ______.",
+          "input": "single",
+          "options": [
+            "a  shower",
+            "b  desk",
+            "c  fridge"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "3",
+          "prompt": "I do my homework at my ______ in my bedroom.",
+          "input": "single",
+          "options": [
+            "a  lamp",
+            "b  mirror",
+            "c  desk"
+          ],
+          "answer": 2
+        },
+        {
+          "id": "4",
+          "prompt": "Please put the milk in the ______ after you use it.",
+          "input": "single",
+          "options": [
+            "a  oven",
+            "b  fridge",
+            "c  wardrobe"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "5",
+          "prompt": "Cook the cake in the ______ for 35 minutes.",
+          "input": "single",
+          "options": [
+            "a  shelf",
+            "b  washbasin",
+            "c  oven"
+          ],
+          "answer": 2
+        },
+        {
+          "id": "6",
+          "prompt": "My Dad always sits in that ______.",
+          "input": "single",
+          "options": [
+            "a  armchair",
+            "b  carpet",
+            "c  stairs"
+          ],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l14-vocab-1b",
+      "title": "1B. Complete the sentences with the words in the box. There are two extra words.",
+      "wordBank": [
+        "counter",
+        "cupboard",
+        "fridge",
+        "light",
+        "plant",
+        "rug",
+        "shelf",
+        "shower",
+        "sofa",
+        "washbasin"
+      ],
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "1",
+          "prompt": "Just put your cup on the kitchen ______.",
+          "input": "select",
+          "options": [
+            "counter",
+            "cupboard",
+            "fridge",
+            "light",
+            "plant",
+            "rug",
+            "shelf",
+            "shower",
+            "sofa",
+            "washbasin"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "2",
+          "prompt": "Your book is on that ______.",
+          "input": "select",
+          "options": [
+            "counter",
+            "cupboard",
+            "fridge",
+            "light",
+            "plant",
+            "rug",
+            "shelf",
+            "shower",
+            "sofa",
+            "washbasin"
+          ],
+          "answer": 6
+        },
+        {
+          "id": "3",
+          "prompt": "There’s cold water in the ______ if you would like some.",
+          "input": "select",
+          "options": [
+            "counter",
+            "cupboard",
+            "fridge",
+            "light",
+            "plant",
+            "rug",
+            "shelf",
+            "shower",
+            "sofa",
+            "washbasin"
+          ],
+          "answer": 2
+        },
+        {
+          "id": "4",
+          "prompt": "That ______ looks dry. It needs some water.",
+          "input": "select",
+          "options": [
+            "counter",
+            "cupboard",
+            "fridge",
+            "light",
+            "plant",
+            "rug",
+            "shelf",
+            "shower",
+            "sofa",
+            "washbasin"
+          ],
+          "answer": 4
+        },
+        {
+          "id": "5",
+          "prompt": "It’s dark in here. Can you turn the ______ on?",
+          "input": "select",
+          "options": [
+            "counter",
+            "cupboard",
+            "fridge",
+            "light",
+            "plant",
+            "rug",
+            "shelf",
+            "shower",
+            "sofa",
+            "washbasin"
+          ],
+          "answer": 3
+        },
+        {
+          "id": "6",
+          "prompt": "Is that the time? I need to have a ______ and go to work!",
+          "input": "select",
+          "options": [
+            "counter",
+            "cupboard",
+            "fridge",
+            "light",
+            "plant",
+            "rug",
+            "shelf",
+            "shower",
+            "sofa",
+            "washbasin"
+          ],
+          "answer": 7
+        },
+        {
+          "id": "7",
+          "prompt": "The beans and rice are in the ______ next to the sink.",
+          "input": "select",
+          "options": [
+            "counter",
+            "cupboard",
+            "fridge",
+            "light",
+            "plant",
+            "rug",
+            "shelf",
+            "shower",
+            "sofa",
+            "washbasin"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "8",
+          "prompt": "Come and sit on the ______ with me and watch TV.",
+          "input": "select",
+          "options": [
+            "counter",
+            "cupboard",
+            "fridge",
+            "light",
+            "plant",
+            "rug",
+            "shelf",
+            "shower",
+            "sofa",
+            "washbasin"
+          ],
+          "answer": 8
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l14-vocab-1c",
+      "title": "1C. Complete the words with the missing letters. The first letter is given.",
+      "dialogue": [
+        "This is our house. We always leave our shoes in the 1 h________ when we come in. We have a big living room with two 2 s________ and an 3 a________ to relax in front of the TV. The kitchen has a lot of 4 c________ to keep food in, and we cook with a small 5 o________. Upstairs we have three 6 b________ and a bathroom with a really good 7 s________. We also have a 8 h________ o________ where I sometimes work."
+      ],
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "1",
+          "prompt": "h________",
+          "input": "text",
+          "answer": "hall"
+        },
+        {
+          "id": "2",
+          "prompt": "s________",
+          "input": "text",
+          "answer": "sofas",
+          "acceptedAnswers": [
+            "sofas"
+          ]
+        },
+        {
+          "id": "3",
+          "prompt": "a________",
+          "input": "text",
+          "answer": "armchair"
+        },
+        {
+          "id": "4",
+          "prompt": "c________",
+          "input": "text",
+          "answer": "cupboards",
+          "acceptedAnswers": [
+            "cupboards"
+          ]
+        },
+        {
+          "id": "5",
+          "prompt": "o________",
+          "input": "text",
+          "answer": "oven"
+        },
+        {
+          "id": "6",
+          "prompt": "b________",
+          "input": "text",
+          "answer": "bedrooms",
+          "acceptedAnswers": [
+            "bedrooms"
+          ]
+        },
+        {
+          "id": "7",
+          "prompt": "s________",
+          "input": "text",
+          "answer": "shower"
+        },
+        {
+          "id": "8",
+          "prompt": "h________ o________",
+          "input": "text",
+          "answer": "home office",
+          "acceptedAnswers": [
+            "home office"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "eyebrow": "UNIT 3 · Lesson 3A",
+      "title": "GRAMMAR · this, that, these, those; here, there"
+    },
+    {
+      "type": "grammar-link",
+      "grammarId": "grammar-lesson-14-demonstratives-here-there",
+      "title": "This, that, these, those; here, there",
+      "text": "Изучи новую грамматическую тему и выполни 16 заданий в разделе Grammar.",
+      "buttonLabel": "Открыть тему"
+    },
+    {
+      "type": "exercise",
+      "id": "l14-grammar-2a",
+      "title": "2A. Complete the sentences with this, that, these, those, here or there.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "1",
+          "prompt": "Come and sit ______, next to me.",
+          "input": "select",
+          "options": [
+            "this",
+            "that",
+            "these",
+            "those",
+            "here",
+            "there"
+          ],
+          "answer": 4
+        },
+        {
+          "id": "2",
+          "prompt": "______ key here is for the back door.",
+          "input": "select",
+          "options": [
+            "this",
+            "that",
+            "these",
+            "those",
+            "here",
+            "there"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "3",
+          "prompt": "Can you pass me ______ towels over there, please?",
+          "input": "select",
+          "options": [
+            "this",
+            "that",
+            "these",
+            "those",
+            "here",
+            "there"
+          ],
+          "answer": 3
+        },
+        {
+          "id": "4",
+          "prompt": "How much is the chair over ______, by the window?",
+          "input": "select",
+          "options": [
+            "this",
+            "that",
+            "these",
+            "those",
+            "here",
+            "there"
+          ],
+          "answer": 5
+        },
+        {
+          "id": "5",
+          "prompt": "Put the book on ______ shelf over there, please.",
+          "input": "select",
+          "options": [
+            "this",
+            "that",
+            "these",
+            "those",
+            "here",
+            "there"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "6",
+          "prompt": "______ prawns are delicious, thank you!",
+          "input": "select",
+          "options": [
+            "this",
+            "that",
+            "these",
+            "those",
+            "here",
+            "there"
+          ],
+          "answer": 2
+        },
+        {
+          "id": "7",
+          "prompt": "Your phone is ______, on my desk. Do you want me to give it to you?",
+          "input": "select",
+          "options": [
+            "this",
+            "that",
+            "these",
+            "those",
+            "here",
+            "there"
+          ],
+          "answer": 4
+        },
+        {
+          "id": "8",
+          "prompt": "Who are ______ people over there?",
+          "input": "select",
+          "options": [
+            "this",
+            "that",
+            "these",
+            "those",
+            "here",
+            "there"
+          ],
+          "answer": 3
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l14-grammar-2b",
+      "title": "2B. Choose the correct word or phrase to complete the sentences.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "1",
+          "prompt": "Are ______ your keys, over there on the counter?",
+          "input": "single",
+          "options": [
+            "a  these",
+            "b  those",
+            "c  that"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "2",
+          "prompt": "Do you like ______ plant? I bought it at the supermarket.",
+          "input": "single",
+          "options": [
+            "a  this",
+            "b  these",
+            "c  those"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "3",
+          "prompt": "Let’s sit on ______ chairs here, next to the table.",
+          "input": "single",
+          "options": [
+            "a  these",
+            "b  this",
+            "c  those"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "4",
+          "prompt": "Can you bring those bottles over ______, to me please?",
+          "input": "single",
+          "options": [
+            "a  there",
+            "b  that",
+            "c  here"
+          ],
+          "answer": 2
+        },
+        {
+          "id": "5",
+          "prompt": "______ cheese in the fridge smells bad.",
+          "input": "single",
+          "options": [
+            "a  Those",
+            "b  That",
+            "c  These"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "6",
+          "prompt": "A: Where’s the TV remote?\nB: It’s over ______, on that shelf near the window.",
+          "input": "single",
+          "options": [
+            "a  here",
+            "b  that",
+            "c  there"
+          ],
+          "answer": 2
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l14-grammar-2c",
+      "title": "2C. Correct the underlined mistakes in the conversation.",
+      "dialogue": [
+        "A: Thanks again for helping me while I’m not [[1|there]] at home.",
+        "B: No problem.",
+        "A: OK, so this key is for the front door, and [[2|this]] key on the table over there is for the back door. The wi-fi password is there, on [[3|those]] piece of paper.",
+        "B: OK, thanks.",
+        "A: Can you water the plants, too?",
+        "B: Of course. How often?",
+        "A: [[4|This]] plants here by the window need water every day. But [[5|that]] ones over there only need water once a week. Oh, one more thing, you can use my bike if you want.",
+        "B: Great! Where is it?",
+        "A: It’s in the garage over [[6|here]], next to the big tree in the garden."
+      ],
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "1",
+          "prompt": "1",
+          "input": "text",
+          "answer": "here"
+        },
+        {
+          "id": "2",
+          "prompt": "2",
+          "input": "text",
+          "answer": "that"
+        },
+        {
+          "id": "3",
+          "prompt": "3",
+          "input": "text",
+          "answer": "that"
+        },
+        {
+          "id": "4",
+          "prompt": "4",
+          "input": "text",
+          "answer": "These",
+          "acceptedAnswers": [
+            "These",
+            "these"
+          ]
+        },
+        {
+          "id": "5",
+          "prompt": "5",
+          "input": "text",
+          "answer": "those"
+        },
+        {
+          "id": "6",
+          "prompt": "6",
+          "input": "text",
+          "answer": "there"
+        }
+      ]
+    }
+  ]
+}

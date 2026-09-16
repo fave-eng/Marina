@@ -2212,36 +2212,276 @@ window.VOCABULARY_DATA = [
     "page": "vocabulary.html?id=vocab-lesson-10-restaurant",
     "description": "New vocabulary for reading a menu and ordering a meal in a restaurant.",
     "words": [
-      {"id":"l10-01","uniqueKey":"restaurant","en":"restaurant","ru":"ресторан","transcription":"/ˈrestrɒnt/","exampleEn":"We’re having dinner at a restaurant.","exampleRu":"Мы ужинаем в ресторане.","group":"restaurant-words"},
-      {"id":"l10-02","uniqueKey":"starter","en":"starter","ru":"закуска; первое блюдо","transcription":"/ˈstɑːtə/","exampleEn":"I’d like the soup for my starter.","exampleRu":"Я бы хотела суп на первое.","group":"restaurant-words"},
-      {"id":"l10-03","uniqueKey":"main course","en":"main course","ru":"основное блюдо","transcription":"/ˌmeɪn ˈkɔːs/","exampleEn":"The fish is my main course.","exampleRu":"Рыба — моё основное блюдо.","group":"restaurant-words"},
-      {"id":"l10-04","uniqueKey":"side dish","en":"side dish","ru":"гарнир","transcription":"/ˈsaɪd dɪʃ/","exampleEn":"Would you like a side dish?","exampleRu":"Хотите гарнир?","group":"restaurant-words"},
-      {"id":"l10-05","uniqueKey":"bill","en":"bill","ru":"счёт","transcription":"/bɪl/","exampleEn":"Can we have the bill, please?","exampleRu":"Можно нам счёт, пожалуйста?","group":"restaurant-words"},
-      {"id":"l10-06","uniqueKey":"service charge","en":"service charge","ru":"плата за обслуживание","transcription":"/ˈsɜːvɪs tʃɑːdʒ/","exampleEn":"The service charge is included.","exampleRu":"Плата за обслуживание включена.","group":"restaurant-words"},
-      {"id":"l10-07","uniqueKey":"waiter","en":"waiter","ru":"официант","transcription":"/ˈweɪtə/","exampleEn":"Let’s ask the waiter for some water.","exampleRu":"Давайте попросим у официанта воды.","group":"restaurant-words"},
-      {"id":"l10-08","uniqueKey":"dinner for two","en":"dinner for two","ru":"ужин на двоих","transcription":"/ˈdɪnə fə tuː/","exampleEn":"Dinner for two costs £25.","exampleRu":"Ужин на двоих стоит 25 фунтов.","group":"menu"},
-      {"id":"l10-09","uniqueKey":"set menu","en":"set menu","ru":"комплексное меню","transcription":"/ˌset ˈmenjuː/","exampleEn":"The set menu has three courses.","exampleRu":"В комплексном меню три блюда.","group":"menu"},
-      {"id":"l10-10","uniqueKey":"ice cream","en":"ice cream","ru":"мороженое","transcription":"/ˌaɪs ˈkriːm/","exampleEn":"I’d like some ice cream for dessert.","exampleRu":"Я бы хотела мороженое на десерт.","group":"menu"},
-      {"id":"l10-11","uniqueKey":"beefburger with chips","en":"beefburger with chips","ru":"бургер с говядиной и картофелем фри","transcription":"/ˈbiːfbɜːɡə wɪð tʃɪps/","exampleEn":"He orders a beefburger with chips.","exampleRu":"Он заказывает бургер с говядиной и картофелем фри.","group":"menu"},
-      {"id":"l10-12","uniqueKey":"vegetarian burger","en":"vegetarian burger","ru":"вегетарианский бургер","transcription":"/ˌvedʒəˈteəriən ˈbɜːɡə/","exampleEn":"A vegetarian burger is available.","exampleRu":"Вегетарианский бургер есть в наличии.","group":"menu"},
-      {"id":"l10-13","uniqueKey":"soup of the day","en":"soup of the day","ru":"суп дня","transcription":"/ˌsuːp əv ðə ˈdeɪ/","exampleEn":"What is the soup of the day?","exampleRu":"Какой сегодня суп дня?","group":"menu"},
-      {"id":"l10-14","uniqueKey":"sushi platter","en":"sushi platter","ru":"ассорти суши","transcription":"/ˈsuːʃi ˌplætə/","exampleEn":"The sushi platter is a starter.","exampleRu":"Ассорти суши — это закуска.","group":"menu"},
-      {"id":"l10-15","uniqueKey":"nut roast","en":"nut roast","ru":"ореховое жаркое","transcription":"/ˈnʌt rəʊst/","exampleEn":"The nut roast is vegetarian.","exampleRu":"Ореховое жаркое — вегетарианское блюдо.","group":"menu"},
-      {"id":"l10-16","uniqueKey":"reservation","en":"reservation","ru":"бронирование; бронь","transcription":"/ˌrezəˈveɪʃən/","exampleEn":"Do you have a reservation?","exampleRu":"У вас есть бронь?","group":"ordering"},
-      {"id":"l10-17","uniqueKey":"order","en":"order","ru":"заказывать; заказ","transcription":"/ˈɔːdə/","exampleEn":"Are you ready to order?","exampleRu":"Вы готовы сделать заказ?","group":"ordering"},
-      {"id":"l10-18","uniqueKey":"ready to order","en":"ready to order","ru":"готов сделать заказ","transcription":"/ˌredi tə ˈɔːdə/","exampleEn":"We’re ready to order now.","exampleRu":"Мы готовы сделать заказ.","group":"ordering"},
-      {"id":"l10-19","uniqueKey":"table for two","en":"table for two","ru":"столик на двоих","transcription":"/ˌteɪbəl fə ˈtuː/","exampleEn":"A table for two, please.","exampleRu":"Столик на двоих, пожалуйста.","group":"ordering"},
-      {"id":"l10-20","uniqueKey":"meal","en":"meal","ru":"приём пищи; еда","transcription":"/miːl/","exampleEn":"Enjoy your meal!","exampleRu":"Приятного аппетита!","group":"ordering"},
-      {"id":"l10-21","uniqueKey":"included","en":"included","ru":"включённый","transcription":"/ɪnˈkluːdɪd/","exampleEn":"Is the service charge included?","exampleRu":"Плата за обслуживание включена?","group":"ordering"},
-      {"id":"l10-22","uniqueKey":"i'd like ...","en":"I’d like …","ru":"Я бы хотел(а) …","transcription":"/aɪd ˈlaɪk/","exampleEn":"I’d like the lamb, please.","exampleRu":"Я бы хотела баранину, пожалуйста.","group":"ordering"},
-      {"id":"l10-23","uniqueKey":"would you like ...?","en":"Would you like …?","ru":"Хотите …?","transcription":"/wʊd ju ˈlaɪk/","exampleEn":"Would you like something to drink?","exampleRu":"Хотите что-нибудь выпить?","group":"ordering"},
-      {"id":"l10-24","uniqueKey":"something to drink","en":"something to drink","ru":"что-нибудь выпить","transcription":"/ˌsʌmθɪŋ tə ˈdrɪŋk/","exampleEn":"Would you like something to drink?","exampleRu":"Хотите что-нибудь выпить?","group":"ordering"},
-      {"id":"l10-25","uniqueKey":"for the starter","en":"for the starter","ru":"на первое; в качестве закуски","transcription":"/fə ðə ˈstɑːtə/","exampleEn":"For the starter, I’d like the soup.","exampleRu":"На первое я бы хотела суп.","group":"ordering"}
+      {
+        "id": "l10-01",
+        "uniqueKey": "restaurant",
+        "en": "restaurant",
+        "ru": "ресторан",
+        "transcription": "/ˈrestrɒnt/",
+        "exampleEn": "We’re having dinner at a restaurant.",
+        "exampleRu": "Мы ужинаем в ресторане.",
+        "group": "restaurant-words"
+      },
+      {
+        "id": "l10-02",
+        "uniqueKey": "starter",
+        "en": "starter",
+        "ru": "закуска; первое блюдо",
+        "transcription": "/ˈstɑːtə/",
+        "exampleEn": "I’d like the soup for my starter.",
+        "exampleRu": "Я бы хотела суп на первое.",
+        "group": "restaurant-words"
+      },
+      {
+        "id": "l10-03",
+        "uniqueKey": "main course",
+        "en": "main course",
+        "ru": "основное блюдо",
+        "transcription": "/ˌmeɪn ˈkɔːs/",
+        "exampleEn": "The fish is my main course.",
+        "exampleRu": "Рыба — моё основное блюдо.",
+        "group": "restaurant-words"
+      },
+      {
+        "id": "l10-04",
+        "uniqueKey": "side dish",
+        "en": "side dish",
+        "ru": "гарнир",
+        "transcription": "/ˈsaɪd dɪʃ/",
+        "exampleEn": "Would you like a side dish?",
+        "exampleRu": "Хотите гарнир?",
+        "group": "restaurant-words"
+      },
+      {
+        "id": "l10-05",
+        "uniqueKey": "bill",
+        "en": "bill",
+        "ru": "счёт",
+        "transcription": "/bɪl/",
+        "exampleEn": "Can we have the bill, please?",
+        "exampleRu": "Можно нам счёт, пожалуйста?",
+        "group": "restaurant-words"
+      },
+      {
+        "id": "l10-06",
+        "uniqueKey": "service charge",
+        "en": "service charge",
+        "ru": "плата за обслуживание",
+        "transcription": "/ˈsɜːvɪs tʃɑːdʒ/",
+        "exampleEn": "The service charge is included.",
+        "exampleRu": "Плата за обслуживание включена.",
+        "group": "restaurant-words"
+      },
+      {
+        "id": "l10-07",
+        "uniqueKey": "waiter",
+        "en": "waiter",
+        "ru": "официант",
+        "transcription": "/ˈweɪtə/",
+        "exampleEn": "Let’s ask the waiter for some water.",
+        "exampleRu": "Давайте попросим у официанта воды.",
+        "group": "restaurant-words"
+      },
+      {
+        "id": "l10-08",
+        "uniqueKey": "dinner for two",
+        "en": "dinner for two",
+        "ru": "ужин на двоих",
+        "transcription": "/ˈdɪnə fə tuː/",
+        "exampleEn": "Dinner for two costs £25.",
+        "exampleRu": "Ужин на двоих стоит 25 фунтов.",
+        "group": "menu"
+      },
+      {
+        "id": "l10-09",
+        "uniqueKey": "set menu",
+        "en": "set menu",
+        "ru": "комплексное меню",
+        "transcription": "/ˌset ˈmenjuː/",
+        "exampleEn": "The set menu has three courses.",
+        "exampleRu": "В комплексном меню три блюда.",
+        "group": "menu"
+      },
+      {
+        "id": "l10-10",
+        "uniqueKey": "ice cream",
+        "en": "ice cream",
+        "ru": "мороженое",
+        "transcription": "/ˌaɪs ˈkriːm/",
+        "exampleEn": "I’d like some ice cream for dessert.",
+        "exampleRu": "Я бы хотела мороженое на десерт.",
+        "group": "menu"
+      },
+      {
+        "id": "l10-11",
+        "uniqueKey": "beefburger with chips",
+        "en": "beefburger with chips",
+        "ru": "бургер с говядиной и картофелем фри",
+        "transcription": "/ˈbiːfbɜːɡə wɪð tʃɪps/",
+        "exampleEn": "He orders a beefburger with chips.",
+        "exampleRu": "Он заказывает бургер с говядиной и картофелем фри.",
+        "group": "menu"
+      },
+      {
+        "id": "l10-12",
+        "uniqueKey": "vegetarian burger",
+        "en": "vegetarian burger",
+        "ru": "вегетарианский бургер",
+        "transcription": "/ˌvedʒəˈteəriən ˈbɜːɡə/",
+        "exampleEn": "A vegetarian burger is available.",
+        "exampleRu": "Вегетарианский бургер есть в наличии.",
+        "group": "menu"
+      },
+      {
+        "id": "l10-13",
+        "uniqueKey": "soup of the day",
+        "en": "soup of the day",
+        "ru": "суп дня",
+        "transcription": "/ˌsuːp əv ðə ˈdeɪ/",
+        "exampleEn": "What is the soup of the day?",
+        "exampleRu": "Какой сегодня суп дня?",
+        "group": "menu"
+      },
+      {
+        "id": "l10-14",
+        "uniqueKey": "sushi platter",
+        "en": "sushi platter",
+        "ru": "ассорти суши",
+        "transcription": "/ˈsuːʃi ˌplætə/",
+        "exampleEn": "The sushi platter is a starter.",
+        "exampleRu": "Ассорти суши — это закуска.",
+        "group": "menu"
+      },
+      {
+        "id": "l10-15",
+        "uniqueKey": "nut roast",
+        "en": "nut roast",
+        "ru": "ореховое жаркое",
+        "transcription": "/ˈnʌt rəʊst/",
+        "exampleEn": "The nut roast is vegetarian.",
+        "exampleRu": "Ореховое жаркое — вегетарианское блюдо.",
+        "group": "menu"
+      },
+      {
+        "id": "l10-16",
+        "uniqueKey": "reservation",
+        "en": "reservation",
+        "ru": "бронирование; бронь",
+        "transcription": "/ˌrezəˈveɪʃən/",
+        "exampleEn": "Do you have a reservation?",
+        "exampleRu": "У вас есть бронь?",
+        "group": "ordering"
+      },
+      {
+        "id": "l10-17",
+        "uniqueKey": "order",
+        "en": "order",
+        "ru": "заказывать; заказ",
+        "transcription": "/ˈɔːdə/",
+        "exampleEn": "Are you ready to order?",
+        "exampleRu": "Вы готовы сделать заказ?",
+        "group": "ordering"
+      },
+      {
+        "id": "l10-18",
+        "uniqueKey": "ready to order",
+        "en": "ready to order",
+        "ru": "готов сделать заказ",
+        "transcription": "/ˌredi tə ˈɔːdə/",
+        "exampleEn": "We’re ready to order now.",
+        "exampleRu": "Мы готовы сделать заказ.",
+        "group": "ordering"
+      },
+      {
+        "id": "l10-19",
+        "uniqueKey": "table for two",
+        "en": "table for two",
+        "ru": "столик на двоих",
+        "transcription": "/ˌteɪbəl fə ˈtuː/",
+        "exampleEn": "A table for two, please.",
+        "exampleRu": "Столик на двоих, пожалуйста.",
+        "group": "ordering"
+      },
+      {
+        "id": "l10-20",
+        "uniqueKey": "meal",
+        "en": "meal",
+        "ru": "приём пищи; еда",
+        "transcription": "/miːl/",
+        "exampleEn": "Enjoy your meal!",
+        "exampleRu": "Приятного аппетита!",
+        "group": "ordering"
+      },
+      {
+        "id": "l10-21",
+        "uniqueKey": "included",
+        "en": "included",
+        "ru": "включённый",
+        "transcription": "/ɪnˈkluːdɪd/",
+        "exampleEn": "Is the service charge included?",
+        "exampleRu": "Плата за обслуживание включена?",
+        "group": "ordering"
+      },
+      {
+        "id": "l10-22",
+        "uniqueKey": "i'd like ...",
+        "en": "I’d like …",
+        "ru": "Я бы хотел(а) …",
+        "transcription": "/aɪd ˈlaɪk/",
+        "exampleEn": "I’d like the lamb, please.",
+        "exampleRu": "Я бы хотела баранину, пожалуйста.",
+        "group": "ordering"
+      },
+      {
+        "id": "l10-23",
+        "uniqueKey": "would you like ...?",
+        "en": "Would you like …?",
+        "ru": "Хотите …?",
+        "transcription": "/wʊd ju ˈlaɪk/",
+        "exampleEn": "Would you like something to drink?",
+        "exampleRu": "Хотите что-нибудь выпить?",
+        "group": "ordering"
+      },
+      {
+        "id": "l10-24",
+        "uniqueKey": "something to drink",
+        "en": "something to drink",
+        "ru": "что-нибудь выпить",
+        "transcription": "/ˌsʌmθɪŋ tə ˈdrɪŋk/",
+        "exampleEn": "Would you like something to drink?",
+        "exampleRu": "Хотите что-нибудь выпить?",
+        "group": "ordering"
+      },
+      {
+        "id": "l10-25",
+        "uniqueKey": "for the starter",
+        "en": "for the starter",
+        "ru": "на первое; в качестве закуски",
+        "transcription": "/fə ðə ˈstɑːtə/",
+        "exampleEn": "For the starter, I’d like the soup.",
+        "exampleRu": "На первое я бы хотела суп.",
+        "group": "ordering"
+      }
     ],
     "groups": [
-      {"id":"restaurant-words","title":"Restaurant words","subtitle":"Основные слова о ресторане","icon":"🍴"},
-      {"id":"menu","title":"On the menu","subtitle":"Блюда и меню","icon":"📋"},
-      {"id":"ordering","title":"Ordering a meal","subtitle":"Полезные фразы для заказа","icon":"🗣️"}
+      {
+        "id": "restaurant-words",
+        "title": "Restaurant words",
+        "subtitle": "Основные слова о ресторане",
+        "icon": "🍴"
+      },
+      {
+        "id": "menu",
+        "title": "On the menu",
+        "subtitle": "Блюда и меню",
+        "icon": "📋"
+      },
+      {
+        "id": "ordering",
+        "title": "Ordering a meal",
+        "subtitle": "Полезные фразы для заказа",
+        "icon": "🗣️"
+      }
     ]
   },
   {
@@ -2254,28 +2494,192 @@ window.VOCABULARY_DATA = [
     "page": "vocabulary.html?id=vocab-lesson-11-polite-requests",
     "description": "New vocabulary for polite requests and a restaurant conversation.",
     "words": [
-      {"id":"l11-01","uniqueKey":"polite","en":"polite","ru":"вежливый","transcription":"/pəˈlaɪt/","exampleEn":"That request sounds polite.","exampleRu":"Эта просьба звучит вежливо.","group":"intonation"},
-      {"id":"l11-02","uniqueKey":"not polite","en":"not polite","ru":"невежливо","transcription":"/nɒt pəˈlaɪt/","exampleEn":"The second request does not sound polite.","exampleRu":"Вторая просьба звучит невежливо.","group":"intonation"},
-      {"id":"l11-03","uniqueKey":"a polite request","en":"a polite request","ru":"вежливая просьба","transcription":"/ə pəˌlaɪt rɪˈkwest/","exampleEn":"Could I have some water? is a polite request.","exampleRu":"Could I have some water? — это вежливая просьба.","group":"intonation"},
-      {"id":"l11-04","uniqueKey":"customer","en":"customer","ru":"клиент; посетитель","transcription":"/ˈkʌstəmə/","exampleEn":"The customer orders a main course.","exampleRu":"Посетитель заказывает основное блюдо.","group":"restaurant"},
-      {"id":"l11-05","uniqueKey":"salad","en":"salad","ru":"салат","transcription":"/ˈsæləd/","exampleEn":"Can I have the salad, please?","exampleRu":"Можно мне салат, пожалуйста?","group":"restaurant"},
-      {"id":"l11-06","uniqueKey":"chips","en":"chips","ru":"картофель фри","transcription":"/tʃɪps/","exampleEn":"Can I have some chips?","exampleRu":"Можно мне картофель фри?","group":"restaurant"},
-      {"id":"l11-07","uniqueKey":"at the same time","en":"at the same time","ru":"одновременно; в то же время","transcription":"/ət ðə ˌseɪm ˈtaɪm/","exampleEn":"Could we have the bill at the same time?","exampleRu":"Можно нам одновременно принести счёт?","group":"time"},
-      {"id":"l11-08","uniqueKey":"half past six","en":"half past six","ru":"половина седьмого","transcription":"/ˌhɑːf pɑːst ˈsɪks/","exampleEn":"We have a table for half past six.","exampleRu":"У нас столик на половину седьмого.","group":"time"},
-      {"id":"l11-09","uniqueKey":"look at the dessert menu","en":"look at the dessert menu","ru":"посмотреть меню десертов","transcription":"/lʊk ət ðə dɪˈzɜːt ˌmenjuː/","exampleEn":"Would you like to look at the dessert menu?","exampleRu":"Хотите посмотреть меню десертов?","group":"restaurant"},
-      {"id":"l11-10","uniqueKey":"no thanks","en":"No thanks.","ru":"Нет, спасибо.","transcription":"/nəʊ θæŋks/","exampleEn":"No thanks. Could we have the bill?","exampleRu":"Нет, спасибо. Можно нам счёт?","group":"requests"},
-      {"id":"l11-11","uniqueKey":"certainly","en":"certainly","ru":"конечно","transcription":"/ˈsɜːtənli/","exampleEn":"Yes, certainly.","exampleRu":"Да, конечно.","group":"requests"},
-      {"id":"l11-12","uniqueKey":"could i have ...?","en":"Could I have …?","ru":"Можно мне …?","transcription":"/kʊd aɪ hæv/","exampleEn":"Could I have some sparkling water, please?","exampleRu":"Можно мне газированную воду, пожалуйста?","group":"requests"},
-      {"id":"l11-13","uniqueKey":"can i have ...?","en":"Can I have …?","ru":"Можно мне …?","transcription":"/kæn aɪ hæv/","exampleEn":"Can I have the soup, please?","exampleRu":"Можно мне суп, пожалуйста?","group":"requests"},
-      {"id":"l11-14","uniqueKey":"can we have ...?","en":"Can we have …?","ru":"Можно нам …?","transcription":"/kæn wi hæv/","exampleEn":"Can we have some water, please?","exampleRu":"Можно нам воды, пожалуйста?","group":"requests"},
-      {"id":"l11-15","uniqueKey":"near the window","en":"near the window","ru":"у окна; рядом с окном","transcription":"/nɪə ðə ˈwɪndəʊ/","exampleEn":"Could we have a table near the window?","exampleRu":"Можно нам столик у окна?","group":"restaurant"},
-      {"id":"l11-16","uniqueKey":"for the main course","en":"for the main course","ru":"на основное блюдо","transcription":"/fə ðə ˌmeɪn ˈkɔːs/","exampleEn":"I’d like the chicken for the main course.","exampleRu":"На основное блюдо я бы хотела курицу.","group":"restaurant"}
+      {
+        "id": "l11-01",
+        "uniqueKey": "polite",
+        "en": "polite",
+        "ru": "вежливый",
+        "transcription": "/pəˈlaɪt/",
+        "exampleEn": "That request sounds polite.",
+        "exampleRu": "Эта просьба звучит вежливо.",
+        "group": "intonation"
+      },
+      {
+        "id": "l11-02",
+        "uniqueKey": "not polite",
+        "en": "not polite",
+        "ru": "невежливо",
+        "transcription": "/nɒt pəˈlaɪt/",
+        "exampleEn": "The second request does not sound polite.",
+        "exampleRu": "Вторая просьба звучит невежливо.",
+        "group": "intonation"
+      },
+      {
+        "id": "l11-03",
+        "uniqueKey": "a polite request",
+        "en": "a polite request",
+        "ru": "вежливая просьба",
+        "transcription": "/ə pəˌlaɪt rɪˈkwest/",
+        "exampleEn": "Could I have some water? is a polite request.",
+        "exampleRu": "Could I have some water? — это вежливая просьба.",
+        "group": "intonation"
+      },
+      {
+        "id": "l11-04",
+        "uniqueKey": "customer",
+        "en": "customer",
+        "ru": "клиент; посетитель",
+        "transcription": "/ˈkʌstəmə/",
+        "exampleEn": "The customer orders a main course.",
+        "exampleRu": "Посетитель заказывает основное блюдо.",
+        "group": "restaurant"
+      },
+      {
+        "id": "l11-05",
+        "uniqueKey": "salad",
+        "en": "salad",
+        "ru": "салат",
+        "transcription": "/ˈsæləd/",
+        "exampleEn": "Can I have the salad, please?",
+        "exampleRu": "Можно мне салат, пожалуйста?",
+        "group": "restaurant"
+      },
+      {
+        "id": "l11-06",
+        "uniqueKey": "chips",
+        "en": "chips",
+        "ru": "картофель фри",
+        "transcription": "/tʃɪps/",
+        "exampleEn": "Can I have some chips?",
+        "exampleRu": "Можно мне картофель фри?",
+        "group": "restaurant"
+      },
+      {
+        "id": "l11-07",
+        "uniqueKey": "at the same time",
+        "en": "at the same time",
+        "ru": "одновременно; в то же время",
+        "transcription": "/ət ðə ˌseɪm ˈtaɪm/",
+        "exampleEn": "Could we have the bill at the same time?",
+        "exampleRu": "Можно нам одновременно принести счёт?",
+        "group": "time"
+      },
+      {
+        "id": "l11-08",
+        "uniqueKey": "half past six",
+        "en": "half past six",
+        "ru": "половина седьмого",
+        "transcription": "/ˌhɑːf pɑːst ˈsɪks/",
+        "exampleEn": "We have a table for half past six.",
+        "exampleRu": "У нас столик на половину седьмого.",
+        "group": "time"
+      },
+      {
+        "id": "l11-09",
+        "uniqueKey": "look at the dessert menu",
+        "en": "look at the dessert menu",
+        "ru": "посмотреть меню десертов",
+        "transcription": "/lʊk ət ðə dɪˈzɜːt ˌmenjuː/",
+        "exampleEn": "Would you like to look at the dessert menu?",
+        "exampleRu": "Хотите посмотреть меню десертов?",
+        "group": "restaurant"
+      },
+      {
+        "id": "l11-10",
+        "uniqueKey": "no thanks",
+        "en": "No thanks.",
+        "ru": "Нет, спасибо.",
+        "transcription": "/nəʊ θæŋks/",
+        "exampleEn": "No thanks. Could we have the bill?",
+        "exampleRu": "Нет, спасибо. Можно нам счёт?",
+        "group": "requests"
+      },
+      {
+        "id": "l11-11",
+        "uniqueKey": "certainly",
+        "en": "certainly",
+        "ru": "конечно",
+        "transcription": "/ˈsɜːtənli/",
+        "exampleEn": "Yes, certainly.",
+        "exampleRu": "Да, конечно.",
+        "group": "requests"
+      },
+      {
+        "id": "l11-12",
+        "uniqueKey": "could i have ...?",
+        "en": "Could I have …?",
+        "ru": "Можно мне …?",
+        "transcription": "/kʊd aɪ hæv/",
+        "exampleEn": "Could I have some sparkling water, please?",
+        "exampleRu": "Можно мне газированную воду, пожалуйста?",
+        "group": "requests"
+      },
+      {
+        "id": "l11-13",
+        "uniqueKey": "can i have ...?",
+        "en": "Can I have …?",
+        "ru": "Можно мне …?",
+        "transcription": "/kæn aɪ hæv/",
+        "exampleEn": "Can I have the soup, please?",
+        "exampleRu": "Можно мне суп, пожалуйста?",
+        "group": "requests"
+      },
+      {
+        "id": "l11-14",
+        "uniqueKey": "can we have ...?",
+        "en": "Can we have …?",
+        "ru": "Можно нам …?",
+        "transcription": "/kæn wi hæv/",
+        "exampleEn": "Can we have some water, please?",
+        "exampleRu": "Можно нам воды, пожалуйста?",
+        "group": "requests"
+      },
+      {
+        "id": "l11-15",
+        "uniqueKey": "near the window",
+        "en": "near the window",
+        "ru": "у окна; рядом с окном",
+        "transcription": "/nɪə ðə ˈwɪndəʊ/",
+        "exampleEn": "Could we have a table near the window?",
+        "exampleRu": "Можно нам столик у окна?",
+        "group": "restaurant"
+      },
+      {
+        "id": "l11-16",
+        "uniqueKey": "for the main course",
+        "en": "for the main course",
+        "ru": "на основное блюдо",
+        "transcription": "/fə ðə ˌmeɪn ˈkɔːs/",
+        "exampleEn": "I’d like the chicken for the main course.",
+        "exampleRu": "На основное блюдо я бы хотела курицу.",
+        "group": "restaurant"
+      }
     ],
     "groups": [
-      {"id":"intonation","title":"Polite intonation","subtitle":"Вежливая интонация","icon":"🎵"},
-      {"id":"requests","title":"Polite requests","subtitle":"Фразы для вежливой просьбы","icon":"💬"},
-      {"id":"restaurant","title":"Restaurant conversation","subtitle":"Диалог в ресторане","icon":"🍽️"},
-      {"id":"time","title":"Time phrases","subtitle":"Фразы времени","icon":"🕡"}
+      {
+        "id": "intonation",
+        "title": "Polite intonation",
+        "subtitle": "Вежливая интонация",
+        "icon": "🎵"
+      },
+      {
+        "id": "requests",
+        "title": "Polite requests",
+        "subtitle": "Фразы для вежливой просьбы",
+        "icon": "💬"
+      },
+      {
+        "id": "restaurant",
+        "title": "Restaurant conversation",
+        "subtitle": "Диалог в ресторане",
+        "icon": "🍽️"
+      },
+      {
+        "id": "time",
+        "title": "Time phrases",
+        "subtitle": "Фразы времени",
+        "icon": "🕡"
+      }
     ]
   },
   {
@@ -2288,39 +2692,274 @@ window.VOCABULARY_DATA = [
     "page": "vocabulary.html?id=vocab-lesson-12-race",
     "description": "New vocabulary from the article about the 5,000 km race.",
     "words": [
-      {"id":"l12-01","uniqueKey":"special event","en":"special event","ru":"особое событие","transcription":"/ˌspeʃəl ɪˈvent/","exampleEn":"The race is a special event.","exampleRu":"Этот забег — особое событие.","group":"race"},
-      {"id":"l12-02","uniqueKey":"race","en":"race","ru":"гонка; забег","transcription":"/reɪs/","exampleEn":"This 5,000 km race happens every year.","exampleRu":"Этот забег на 5 000 км проходит каждый год.","group":"race"},
-      {"id":"l12-03","uniqueKey":"runner","en":"runner","ru":"бегун; участник забега","transcription":"/ˈrʌnə/","exampleEn":"Every runner visits the doctor before the race.","exampleRu":"Каждый бегун посещает врача перед забегом.","group":"race"},
-      {"id":"l12-04","uniqueKey":"happen","en":"happen","ru":"происходить; проходить","transcription":"/ˈhæpən/","exampleEn":"The race happens from June to August.","exampleRu":"Забег проходит с июня по август.","group":"race"},
-      {"id":"l12-05","uniqueKey":"distance","en":"distance","ru":"расстояние; дистанция","transcription":"/ˈdɪstəns/","exampleEn":"It is the same distance as eleven marathons.","exampleRu":"Это такое же расстояние, как одиннадцать марафонов.","group":"race"},
-      {"id":"l12-06","uniqueKey":"marathon","en":"marathon","ru":"марафон","transcription":"/ˈmærəθən/","exampleEn":"A marathon is 42.2 km.","exampleRu":"Длина марафона — 42,2 км.","group":"race"},
-      {"id":"l12-07","uniqueKey":"city block","en":"city block","ru":"городской квартал","transcription":"/ˈsɪti blɒk/","exampleEn":"They run around a single city block.","exampleRu":"Они бегут вокруг одного городского квартала.","group":"race"},
-      {"id":"l12-08","uniqueKey":"competition","en":"competition","ru":"соревнование","transcription":"/ˌkɒmpəˈtɪʃən/","exampleEn":"Most people in the competition run about 100 km a day.","exampleRu":"Большинство участников соревнования пробегают около 100 км в день.","group":"race"},
-      {"id":"l12-09","uniqueKey":"enter a competition","en":"enter a competition","ru":"принять участие в соревновании","transcription":"/ˌentər ə ˌkɒmpəˈtɪʃən/","exampleEn":"They visit a doctor before they enter the competition.","exampleRu":"Перед участием в соревновании они посещают врача.","group":"race"},
-      {"id":"l12-10","uniqueKey":"strong","en":"strong","ru":"сильный","transcription":"/strɒŋ/","exampleEn":"The doctor checks that they are strong and healthy.","exampleRu":"Врач проверяет, что они сильные и здоровые.","group":"people"},
-      {"id":"l12-11","uniqueKey":"vegetarian food","en":"vegetarian food","ru":"вегетарианская еда","transcription":"/ˌvedʒəˈteəriən fuːd/","exampleEn":"People give the runners vegetarian food.","exampleRu":"Бегунам дают вегетарианскую еду.","group":"people"},
-      {"id":"l12-12","uniqueKey":"energy","en":"energy","ru":"энергия","transcription":"/ˈenədʒi/","exampleEn":"They use a lot of energy when they run.","exampleRu":"Во время бега они тратят много энергии.","group":"people"},
-      {"id":"l12-13","uniqueKey":"carry an umbrella","en":"carry an umbrella","ru":"нести с собой зонт","transcription":"/ˌkæri ən ʌmˈbrelə/","exampleEn":"Runners often carry umbrellas while they run.","exampleRu":"Бегуны часто несут с собой зонты во время бега.","group":"actions"},
-      {"id":"l12-14","uniqueKey":"finish a race","en":"finish a race","ru":"закончить забег","transcription":"/ˌfɪnɪʃ ə ˈreɪs/","exampleEn":"Not everyone finishes the race.","exampleRu":"Не все заканчивают забег.","group":"actions"},
-      {"id":"l12-15","uniqueKey":"receive","en":"receive","ru":"получать","transcription":"/rɪˈsiːv/","exampleEn":"Runners receive a T-shirt if they finish.","exampleRu":"Закончившие бегуны получают футболку.","group":"actions"},
-      {"id":"l12-16","uniqueKey":"prize","en":"prize","ru":"приз","transcription":"/praɪz/","exampleEn":"People don’t do it for the prize.","exampleRu":"Люди участвуют не ради приза.","group":"actions"},
-      {"id":"l12-17","uniqueKey":"t-shirt","en":"T-shirt","ru":"футболка","transcription":"/ˈtiː ʃɜːt/","exampleEn":"All runners who finish get a T-shirt.","exampleRu":"Все финишировавшие бегуны получают футболку.","group":"actions"},
-      {"id":"l12-18","uniqueKey":"feel good","en":"feel good","ru":"хорошо себя чувствовать","transcription":"/ˌfiːl ˈɡʊd/","exampleEn":"They do it because it makes them feel good.","exampleRu":"Они делают это, потому что так чувствуют себя хорошо.","group":"people"},
-      {"id":"l12-19","uniqueKey":"from ... to ...","en":"from … to …","ru":"с … до …; от … до …","transcription":"/frəm ... tə/","exampleEn":"The race happens from June to August.","exampleRu":"Забег проходит с июня по август.","group":"time"},
-      {"id":"l12-20","uniqueKey":"all the time","en":"all the time","ru":"всё время","transcription":"/ˌɔːl ðə ˈtaɪm/","exampleEn":"They need to eat all the time.","exampleRu":"Им нужно всё время есть.","group":"time"},
-      {"id":"l12-21","uniqueKey":"while","en":"while","ru":"пока; во время того как","transcription":"/waɪl/","exampleEn":"They eat while they run.","exampleRu":"Они едят во время бега.","group":"time"},
-      {"id":"l12-22","uniqueKey":"wash","en":"wash","ru":"мыться; умываться","transcription":"/wɒʃ/","exampleEn":"They only have six hours to wash and sleep.","exampleRu":"У них есть всего шесть часов, чтобы помыться и поспать.","group":"actions"},
-      {"id":"l12-23","uniqueKey":"sleep","en":"sleep","ru":"спать","transcription":"/sliːp/","exampleEn":"The runners sleep for only a few hours.","exampleRu":"Бегуны спят всего несколько часов.","group":"actions"},
-      {"id":"l12-24","uniqueKey":"over and over again","en":"over and over again","ru":"снова и снова","transcription":"/ˌəʊvər ən ˌəʊvər əˈɡen/","exampleEn":"They run around the same block over and over again.","exampleRu":"Они снова и снова бегут вокруг одного и того же квартала.","group":"time"}
+      {
+        "id": "l12-01",
+        "uniqueKey": "special event",
+        "en": "special event",
+        "ru": "особое событие",
+        "transcription": "/ˌspeʃəl ɪˈvent/",
+        "exampleEn": "The race is a special event.",
+        "exampleRu": "Этот забег — особое событие.",
+        "group": "race"
+      },
+      {
+        "id": "l12-02",
+        "uniqueKey": "race",
+        "en": "race",
+        "ru": "гонка; забег",
+        "transcription": "/reɪs/",
+        "exampleEn": "This 5,000 km race happens every year.",
+        "exampleRu": "Этот забег на 5 000 км проходит каждый год.",
+        "group": "race"
+      },
+      {
+        "id": "l12-03",
+        "uniqueKey": "runner",
+        "en": "runner",
+        "ru": "бегун; участник забега",
+        "transcription": "/ˈrʌnə/",
+        "exampleEn": "Every runner visits the doctor before the race.",
+        "exampleRu": "Каждый бегун посещает врача перед забегом.",
+        "group": "race"
+      },
+      {
+        "id": "l12-04",
+        "uniqueKey": "happen",
+        "en": "happen",
+        "ru": "происходить; проходить",
+        "transcription": "/ˈhæpən/",
+        "exampleEn": "The race happens from June to August.",
+        "exampleRu": "Забег проходит с июня по август.",
+        "group": "race"
+      },
+      {
+        "id": "l12-05",
+        "uniqueKey": "distance",
+        "en": "distance",
+        "ru": "расстояние; дистанция",
+        "transcription": "/ˈdɪstəns/",
+        "exampleEn": "It is the same distance as eleven marathons.",
+        "exampleRu": "Это такое же расстояние, как одиннадцать марафонов.",
+        "group": "race"
+      },
+      {
+        "id": "l12-06",
+        "uniqueKey": "marathon",
+        "en": "marathon",
+        "ru": "марафон",
+        "transcription": "/ˈmærəθən/",
+        "exampleEn": "A marathon is 42.2 km.",
+        "exampleRu": "Длина марафона — 42,2 км.",
+        "group": "race"
+      },
+      {
+        "id": "l12-07",
+        "uniqueKey": "city block",
+        "en": "city block",
+        "ru": "городской квартал",
+        "transcription": "/ˈsɪti blɒk/",
+        "exampleEn": "They run around a single city block.",
+        "exampleRu": "Они бегут вокруг одного городского квартала.",
+        "group": "race"
+      },
+      {
+        "id": "l12-08",
+        "uniqueKey": "competition",
+        "en": "competition",
+        "ru": "соревнование",
+        "transcription": "/ˌkɒmpəˈtɪʃən/",
+        "exampleEn": "Most people in the competition run about 100 km a day.",
+        "exampleRu": "Большинство участников соревнования пробегают около 100 км в день.",
+        "group": "race"
+      },
+      {
+        "id": "l12-09",
+        "uniqueKey": "enter a competition",
+        "en": "enter a competition",
+        "ru": "принять участие в соревновании",
+        "transcription": "/ˌentər ə ˌkɒmpəˈtɪʃən/",
+        "exampleEn": "They visit a doctor before they enter the competition.",
+        "exampleRu": "Перед участием в соревновании они посещают врача.",
+        "group": "race"
+      },
+      {
+        "id": "l12-10",
+        "uniqueKey": "strong",
+        "en": "strong",
+        "ru": "сильный",
+        "transcription": "/strɒŋ/",
+        "exampleEn": "The doctor checks that they are strong and healthy.",
+        "exampleRu": "Врач проверяет, что они сильные и здоровые.",
+        "group": "people"
+      },
+      {
+        "id": "l12-11",
+        "uniqueKey": "vegetarian food",
+        "en": "vegetarian food",
+        "ru": "вегетарианская еда",
+        "transcription": "/ˌvedʒəˈteəriən fuːd/",
+        "exampleEn": "People give the runners vegetarian food.",
+        "exampleRu": "Бегунам дают вегетарианскую еду.",
+        "group": "people"
+      },
+      {
+        "id": "l12-12",
+        "uniqueKey": "energy",
+        "en": "energy",
+        "ru": "энергия",
+        "transcription": "/ˈenədʒi/",
+        "exampleEn": "They use a lot of energy when they run.",
+        "exampleRu": "Во время бега они тратят много энергии.",
+        "group": "people"
+      },
+      {
+        "id": "l12-13",
+        "uniqueKey": "carry an umbrella",
+        "en": "carry an umbrella",
+        "ru": "нести с собой зонт",
+        "transcription": "/ˌkæri ən ʌmˈbrelə/",
+        "exampleEn": "Runners often carry umbrellas while they run.",
+        "exampleRu": "Бегуны часто несут с собой зонты во время бега.",
+        "group": "actions"
+      },
+      {
+        "id": "l12-14",
+        "uniqueKey": "finish a race",
+        "en": "finish a race",
+        "ru": "закончить забег",
+        "transcription": "/ˌfɪnɪʃ ə ˈreɪs/",
+        "exampleEn": "Not everyone finishes the race.",
+        "exampleRu": "Не все заканчивают забег.",
+        "group": "actions"
+      },
+      {
+        "id": "l12-15",
+        "uniqueKey": "receive",
+        "en": "receive",
+        "ru": "получать",
+        "transcription": "/rɪˈsiːv/",
+        "exampleEn": "Runners receive a T-shirt if they finish.",
+        "exampleRu": "Закончившие бегуны получают футболку.",
+        "group": "actions"
+      },
+      {
+        "id": "l12-16",
+        "uniqueKey": "prize",
+        "en": "prize",
+        "ru": "приз",
+        "transcription": "/praɪz/",
+        "exampleEn": "People don’t do it for the prize.",
+        "exampleRu": "Люди участвуют не ради приза.",
+        "group": "actions"
+      },
+      {
+        "id": "l12-17",
+        "uniqueKey": "t-shirt",
+        "en": "T-shirt",
+        "ru": "футболка",
+        "transcription": "/ˈtiː ʃɜːt/",
+        "exampleEn": "All runners who finish get a T-shirt.",
+        "exampleRu": "Все финишировавшие бегуны получают футболку.",
+        "group": "actions"
+      },
+      {
+        "id": "l12-18",
+        "uniqueKey": "feel good",
+        "en": "feel good",
+        "ru": "хорошо себя чувствовать",
+        "transcription": "/ˌfiːl ˈɡʊd/",
+        "exampleEn": "They do it because it makes them feel good.",
+        "exampleRu": "Они делают это, потому что так чувствуют себя хорошо.",
+        "group": "people"
+      },
+      {
+        "id": "l12-19",
+        "uniqueKey": "from ... to ...",
+        "en": "from … to …",
+        "ru": "с … до …; от … до …",
+        "transcription": "/frəm ... tə/",
+        "exampleEn": "The race happens from June to August.",
+        "exampleRu": "Забег проходит с июня по август.",
+        "group": "time"
+      },
+      {
+        "id": "l12-20",
+        "uniqueKey": "all the time",
+        "en": "all the time",
+        "ru": "всё время",
+        "transcription": "/ˌɔːl ðə ˈtaɪm/",
+        "exampleEn": "They need to eat all the time.",
+        "exampleRu": "Им нужно всё время есть.",
+        "group": "time"
+      },
+      {
+        "id": "l12-21",
+        "uniqueKey": "while",
+        "en": "while",
+        "ru": "пока; во время того как",
+        "transcription": "/waɪl/",
+        "exampleEn": "They eat while they run.",
+        "exampleRu": "Они едят во время бега.",
+        "group": "time"
+      },
+      {
+        "id": "l12-22",
+        "uniqueKey": "wash",
+        "en": "wash",
+        "ru": "мыться; умываться",
+        "transcription": "/wɒʃ/",
+        "exampleEn": "They only have six hours to wash and sleep.",
+        "exampleRu": "У них есть всего шесть часов, чтобы помыться и поспать.",
+        "group": "actions"
+      },
+      {
+        "id": "l12-23",
+        "uniqueKey": "sleep",
+        "en": "sleep",
+        "ru": "спать",
+        "transcription": "/sliːp/",
+        "exampleEn": "The runners sleep for only a few hours.",
+        "exampleRu": "Бегуны спят всего несколько часов.",
+        "group": "actions"
+      },
+      {
+        "id": "l12-24",
+        "uniqueKey": "over and over again",
+        "en": "over and over again",
+        "ru": "снова и снова",
+        "transcription": "/ˌəʊvər ən ˌəʊvər əˈɡen/",
+        "exampleEn": "They run around the same block over and over again.",
+        "exampleRu": "Они снова и снова бегут вокруг одного и того же квартала.",
+        "group": "time"
+      }
     ],
     "groups": [
-      {"id":"race","title":"The race","subtitle":"Забег и соревнование","icon":"🏁"},
-      {"id":"people","title":"Runners","subtitle":"Люди и их состояние","icon":"🏃"},
-      {"id":"actions","title":"Actions and results","subtitle":"Действия и результат","icon":"🎽"},
-      {"id":"time","title":"Time and repetition","subtitle":"Время и повторение","icon":"🔁"}
+      {
+        "id": "race",
+        "title": "The race",
+        "subtitle": "Забег и соревнование",
+        "icon": "🏁"
+      },
+      {
+        "id": "people",
+        "title": "Runners",
+        "subtitle": "Люди и их состояние",
+        "icon": "🏃"
+      },
+      {
+        "id": "actions",
+        "title": "Actions and results",
+        "subtitle": "Действия и результат",
+        "icon": "🎽"
+      },
+      {
+        "id": "time",
+        "title": "Time and repetition",
+        "subtitle": "Время и повторение",
+        "icon": "🔁"
+      }
     ]
-  }
-,
+  },
   {
     "id": "vocab-lesson-13-review-1-2",
     "title": "Review 1–2",
@@ -2331,28 +2970,524 @@ window.VOCABULARY_DATA = [
     "page": "vocabulary.html?id=vocab-lesson-13-review-1-2",
     "description": "New vocabulary from the selected Review 1–2 exercises that is not already in the previous lesson dictionaries.",
     "words": [
-      {"id":"l13-01","uniqueKey":"work from home","en":"work from home","ru":"работать из дома","transcription":"/wɜːk frəm həʊm/","exampleEn":"I work from home.","exampleRu":"Я работаю из дома.","group":"work-routines"},
-      {"id":"l13-02","uniqueKey":"a lot of money","en":"a lot of money","ru":"много денег","transcription":"/ə ˌlɒt əv ˈmʌni/","exampleEn":"They don’t have a lot of money.","exampleRu":"У них нет много денег.","group":"work-routines"},
-      {"id":"l13-03","uniqueKey":"fridge","en":"fridge","ru":"холодильник","transcription":"/frɪdʒ/","exampleEn":"There’s a lot of food in my fridge.","exampleRu":"В моём холодильнике много еды.","group":"home-food"},
-      {"id":"l13-04","uniqueKey":"at the moment","en":"at the moment","ru":"в данный момент; сейчас","transcription":"/ət ðə ˈməʊmənt/","exampleEn":"There’s a lot of food in my fridge at the moment.","exampleRu":"Сейчас в моём холодильнике много еды.","group":"work-routines"},
-      {"id":"l13-05","uniqueKey":"take a break","en":"take a break","ru":"сделать перерыв","transcription":"/ˌteɪk ə ˈbreɪk/","exampleEn":"I love taking a break from work.","exampleRu":"Я люблю делать перерыв в работе.","group":"work-routines"},
-      {"id":"l13-06","uniqueKey":"short story","en":"short story","ru":"короткий рассказ","transcription":"/ˌʃɔːt ˈstɔːri/","exampleEn":"I enjoy writing short stories.","exampleRu":"Мне нравится писать короткие рассказы.","group":"activities"},
-      {"id":"l13-07","uniqueKey":"blog","en":"blog","ru":"блог","transcription":"/blɒɡ/","exampleEn":"I write short stories on my blog.","exampleRu":"Я пишу короткие рассказы в своём блоге.","group":"activities"},
-      {"id":"l13-08","uniqueKey":"hospital","en":"hospital","ru":"больница","transcription":"/ˈhɒspɪtəl/","exampleEn":"I work in a hospital at night.","exampleRu":"Я работаю в больнице ночью.","group":"work-routines"},
-      {"id":"l13-09","uniqueKey":"at night","en":"at night","ru":"ночью","transcription":"/ət ˈnaɪt/","exampleEn":"I like shopping at night because it’s quiet.","exampleRu":"Мне нравится ходить за покупками ночью, потому что тихо.","group":"work-routines"},
-      {"id":"l13-10","uniqueKey":"get home","en":"get home","ru":"добраться домой; прийти домой","transcription":"/ɡet həʊm/","exampleEn":"When I get home, I’m tired.","exampleRu":"Когда я прихожу домой, я устаю.","group":"work-routines"},
-      {"id":"l13-11","uniqueKey":"play in a band","en":"play in a band","ru":"играть в музыкальной группе","transcription":"/ˌpleɪ ɪn ə ˈbænd/","exampleEn":"At the weekend, I play in a band.","exampleRu":"По выходным я играю в музыкальной группе.","group":"activities"},
-      {"id":"l13-12","uniqueKey":"deep-fried","en":"deep-fried","ru":"жареный во фритюре","transcription":"/ˌdiːp ˈfraɪd/","exampleEn":"I’d like the deep-fried mushrooms.","exampleRu":"Я бы хотел жареные во фритюре грибы.","group":"restaurant-food"},
-      {"id":"l13-13","uniqueKey":"mushroom","en":"mushroom","ru":"гриб","transcription":"/ˈmʌʃruːm/","exampleEn":"I’d like the deep-fried mushrooms.","exampleRu":"Я бы хотел жареные во фритюре грибы.","group":"restaurant-food"},
-      {"id":"l13-14","uniqueKey":"green salad","en":"green salad","ru":"зелёный салат","transcription":"/ˌɡriːn ˈsæləd/","exampleEn":"I’d like a burger with a green salad.","exampleRu":"Я бы хотел бургер с зелёным салатом.","group":"restaurant-food"},
-      {"id":"l13-15","uniqueKey":"chocolate cake","en":"chocolate cake","ru":"шоколадный торт","transcription":"/ˌtʃɒklət ˈkeɪk/","exampleEn":"It’s a chocolate cake.","exampleRu":"Это шоколадный торт.","group":"restaurant-food"},
-      {"id":"l13-16","uniqueKey":"surprise","en":"surprise","ru":"сюрприз","transcription":"/səˈpraɪz/","exampleEn":"Surprise! Happy Birthday!","exampleRu":"Сюрприз! С днём рождения!","group":"restaurant-food"}
+      {
+        "id": "l13-01",
+        "uniqueKey": "work from home",
+        "en": "work from home",
+        "ru": "работать из дома",
+        "transcription": "/wɜːk frəm həʊm/",
+        "exampleEn": "I work from home.",
+        "exampleRu": "Я работаю из дома.",
+        "group": "work-routines"
+      },
+      {
+        "id": "l13-02",
+        "uniqueKey": "a lot of money",
+        "en": "a lot of money",
+        "ru": "много денег",
+        "transcription": "/ə ˌlɒt əv ˈmʌni/",
+        "exampleEn": "They don’t have a lot of money.",
+        "exampleRu": "У них нет много денег.",
+        "group": "work-routines"
+      },
+      {
+        "id": "l13-03",
+        "uniqueKey": "fridge",
+        "en": "fridge",
+        "ru": "холодильник",
+        "transcription": "/frɪdʒ/",
+        "exampleEn": "There’s a lot of food in my fridge.",
+        "exampleRu": "В моём холодильнике много еды.",
+        "group": "home-food"
+      },
+      {
+        "id": "l13-04",
+        "uniqueKey": "at the moment",
+        "en": "at the moment",
+        "ru": "в данный момент; сейчас",
+        "transcription": "/ət ðə ˈməʊmənt/",
+        "exampleEn": "There’s a lot of food in my fridge at the moment.",
+        "exampleRu": "Сейчас в моём холодильнике много еды.",
+        "group": "work-routines"
+      },
+      {
+        "id": "l13-05",
+        "uniqueKey": "take a break",
+        "en": "take a break",
+        "ru": "сделать перерыв",
+        "transcription": "/ˌteɪk ə ˈbreɪk/",
+        "exampleEn": "I love taking a break from work.",
+        "exampleRu": "Я люблю делать перерыв в работе.",
+        "group": "work-routines"
+      },
+      {
+        "id": "l13-06",
+        "uniqueKey": "short story",
+        "en": "short story",
+        "ru": "короткий рассказ",
+        "transcription": "/ˌʃɔːt ˈstɔːri/",
+        "exampleEn": "I enjoy writing short stories.",
+        "exampleRu": "Мне нравится писать короткие рассказы.",
+        "group": "activities"
+      },
+      {
+        "id": "l13-07",
+        "uniqueKey": "blog",
+        "en": "blog",
+        "ru": "блог",
+        "transcription": "/blɒɡ/",
+        "exampleEn": "I write short stories on my blog.",
+        "exampleRu": "Я пишу короткие рассказы в своём блоге.",
+        "group": "activities"
+      },
+      {
+        "id": "l13-08",
+        "uniqueKey": "hospital",
+        "en": "hospital",
+        "ru": "больница",
+        "transcription": "/ˈhɒspɪtəl/",
+        "exampleEn": "I work in a hospital at night.",
+        "exampleRu": "Я работаю в больнице ночью.",
+        "group": "work-routines"
+      },
+      {
+        "id": "l13-09",
+        "uniqueKey": "at night",
+        "en": "at night",
+        "ru": "ночью",
+        "transcription": "/ət ˈnaɪt/",
+        "exampleEn": "I like shopping at night because it’s quiet.",
+        "exampleRu": "Мне нравится ходить за покупками ночью, потому что тихо.",
+        "group": "work-routines"
+      },
+      {
+        "id": "l13-10",
+        "uniqueKey": "get home",
+        "en": "get home",
+        "ru": "добраться домой; прийти домой",
+        "transcription": "/ɡet həʊm/",
+        "exampleEn": "When I get home, I’m tired.",
+        "exampleRu": "Когда я прихожу домой, я устаю.",
+        "group": "work-routines"
+      },
+      {
+        "id": "l13-11",
+        "uniqueKey": "play in a band",
+        "en": "play in a band",
+        "ru": "играть в музыкальной группе",
+        "transcription": "/ˌpleɪ ɪn ə ˈbænd/",
+        "exampleEn": "At the weekend, I play in a band.",
+        "exampleRu": "По выходным я играю в музыкальной группе.",
+        "group": "activities"
+      },
+      {
+        "id": "l13-12",
+        "uniqueKey": "deep-fried",
+        "en": "deep-fried",
+        "ru": "жареный во фритюре",
+        "transcription": "/ˌdiːp ˈfraɪd/",
+        "exampleEn": "I’d like the deep-fried mushrooms.",
+        "exampleRu": "Я бы хотел жареные во фритюре грибы.",
+        "group": "restaurant-food"
+      },
+      {
+        "id": "l13-13",
+        "uniqueKey": "mushroom",
+        "en": "mushroom",
+        "ru": "гриб",
+        "transcription": "/ˈmʌʃruːm/",
+        "exampleEn": "I’d like the deep-fried mushrooms.",
+        "exampleRu": "Я бы хотел жареные во фритюре грибы.",
+        "group": "restaurant-food"
+      },
+      {
+        "id": "l13-14",
+        "uniqueKey": "green salad",
+        "en": "green salad",
+        "ru": "зелёный салат",
+        "transcription": "/ˌɡriːn ˈsæləd/",
+        "exampleEn": "I’d like a burger with a green salad.",
+        "exampleRu": "Я бы хотел бургер с зелёным салатом.",
+        "group": "restaurant-food"
+      },
+      {
+        "id": "l13-15",
+        "uniqueKey": "chocolate cake",
+        "en": "chocolate cake",
+        "ru": "шоколадный торт",
+        "transcription": "/ˌtʃɒklət ˈkeɪk/",
+        "exampleEn": "It’s a chocolate cake.",
+        "exampleRu": "Это шоколадный торт.",
+        "group": "restaurant-food"
+      },
+      {
+        "id": "l13-16",
+        "uniqueKey": "surprise",
+        "en": "surprise",
+        "ru": "сюрприз",
+        "transcription": "/səˈpraɪz/",
+        "exampleEn": "Surprise! Happy Birthday!",
+        "exampleRu": "Сюрприз! С днём рождения!",
+        "group": "restaurant-food"
+      }
     ],
     "groups": [
-      {"id":"work-routines","title":"Work and routines","subtitle":"Работа и повседневные действия","icon":"🗓️"},
-      {"id":"home-food","title":"Home and food","subtitle":"Дом и еда","icon":"🏠"},
-      {"id":"activities","title":"Activities","subtitle":"Занятия и интересы","icon":"🎸"},
-      {"id":"restaurant-food","title":"Restaurant food","subtitle":"Еда и ресторан","icon":"🍽️"}
+      {
+        "id": "work-routines",
+        "title": "Work and routines",
+        "subtitle": "Работа и повседневные действия",
+        "icon": "🗓️"
+      },
+      {
+        "id": "home-food",
+        "title": "Home and food",
+        "subtitle": "Дом и еда",
+        "icon": "🏠"
+      },
+      {
+        "id": "activities",
+        "title": "Activities",
+        "subtitle": "Занятия и интересы",
+        "icon": "🎸"
+      },
+      {
+        "id": "restaurant-food",
+        "title": "Restaurant food",
+        "subtitle": "Еда и ресторан",
+        "icon": "🍽️"
+      }
+    ]
+  },
+  {
+    "id": "vocab-lesson-14-rooms-furniture",
+    "title": "Rooms and furniture",
+    "label": "Lesson 14 · Unit 3A · 30 new words",
+    "icon": "🏠",
+    "type": "lesson",
+    "linkedLessonId": "lesson-14",
+    "page": "vocabulary.html?id=vocab-lesson-14-rooms-furniture",
+    "description": "New rooms, furniture and home vocabulary from Lesson 3A, excluding words already present in earlier dictionaries.",
+    "words": [
+      {
+        "id": "l14-01",
+        "uniqueKey": "hall",
+        "en": "hall",
+        "ru": "прихожая; холл",
+        "transcription": "/hɔːl/",
+        "exampleEn": "We leave our shoes in the hall.",
+        "exampleRu": "Мы оставляем обувь в прихожей.",
+        "group": "rooms"
+      },
+      {
+        "id": "l14-02",
+        "uniqueKey": "living room",
+        "en": "living room",
+        "ru": "гостиная",
+        "transcription": "/ˈlɪvɪŋ ruːm/",
+        "exampleEn": "We have a big living room.",
+        "exampleRu": "У нас большая гостиная.",
+        "group": "rooms"
+      },
+      {
+        "id": "l14-03",
+        "uniqueKey": "bedroom",
+        "en": "bedroom",
+        "ru": "спальня",
+        "transcription": "/ˈbedruːm/",
+        "exampleEn": "My desk is in my bedroom.",
+        "exampleRu": "Мой стол находится в спальне.",
+        "group": "rooms"
+      },
+      {
+        "id": "l14-04",
+        "uniqueKey": "home office",
+        "en": "home office",
+        "ru": "домашний кабинет",
+        "transcription": "/ˌhəʊm ˈɒfɪs/",
+        "exampleEn": "I sometimes work in my home office.",
+        "exampleRu": "Иногда я работаю в домашнем кабинете.",
+        "group": "rooms"
+      },
+      {
+        "id": "l14-05",
+        "uniqueKey": "kitchen",
+        "en": "kitchen",
+        "ru": "кухня",
+        "transcription": "/ˈkɪtʃɪn/",
+        "exampleEn": "The kitchen has a cooker and a fridge.",
+        "exampleRu": "На кухне есть плита и холодильник.",
+        "group": "rooms"
+      },
+      {
+        "id": "l14-06",
+        "uniqueKey": "bathroom",
+        "en": "bathroom",
+        "ru": "ванная комната",
+        "transcription": "/ˈbɑːθruːm/",
+        "exampleEn": "There is a shower in the bathroom.",
+        "exampleRu": "В ванной комнате есть душ.",
+        "group": "rooms"
+      },
+      {
+        "id": "l14-07",
+        "uniqueKey": "garage",
+        "en": "garage",
+        "ru": "гараж",
+        "transcription": "/ˈɡærɑːʒ/",
+        "exampleEn": "The bike is in the garage.",
+        "exampleRu": "Велосипед находится в гараже.",
+        "group": "rooms"
+      },
+      {
+        "id": "l14-08",
+        "uniqueKey": "garden",
+        "en": "garden",
+        "ru": "сад",
+        "transcription": "/ˈɡɑːdn/",
+        "exampleEn": "There is a big tree in the garden.",
+        "exampleRu": "В саду есть большое дерево.",
+        "group": "rooms"
+      },
+      {
+        "id": "l14-09",
+        "uniqueKey": "counter",
+        "en": "counter",
+        "ru": "кухонная стойка; рабочая поверхность",
+        "transcription": "/ˈkaʊntə/",
+        "exampleEn": "Put your cup on the kitchen counter.",
+        "exampleRu": "Поставь чашку на кухонную стойку.",
+        "group": "furniture"
+      },
+      {
+        "id": "l14-10",
+        "uniqueKey": "cupboard",
+        "en": "cupboard",
+        "ru": "шкафчик",
+        "transcription": "/ˈkʌbəd/",
+        "exampleEn": "The beans are in the cupboard.",
+        "exampleRu": "Фасоль находится в шкафчике.",
+        "group": "furniture"
+      },
+      {
+        "id": "l14-11",
+        "uniqueKey": "shelf",
+        "en": "shelf",
+        "ru": "полка",
+        "transcription": "/ʃelf/",
+        "exampleEn": "Your book is on that shelf.",
+        "exampleRu": "Твоя книга на той полке.",
+        "group": "furniture"
+      },
+      {
+        "id": "l14-12",
+        "uniqueKey": "wardrobe",
+        "en": "wardrobe",
+        "ru": "шкаф для одежды",
+        "transcription": "/ˈwɔːdrəʊb/",
+        "exampleEn": "Her clothes are in the wardrobe.",
+        "exampleRu": "Её одежда находится в шкафу.",
+        "group": "furniture"
+      },
+      {
+        "id": "l14-13",
+        "uniqueKey": "desk",
+        "en": "desk",
+        "ru": "письменный стол",
+        "transcription": "/desk/",
+        "exampleEn": "I do my homework at my desk.",
+        "exampleRu": "Я делаю домашнее задание за письменным столом.",
+        "group": "furniture"
+      },
+      {
+        "id": "l14-14",
+        "uniqueKey": "armchair",
+        "en": "armchair",
+        "ru": "кресло",
+        "transcription": "/ˈɑːmtʃeə/",
+        "exampleEn": "My dad sits in that armchair.",
+        "exampleRu": "Мой папа сидит в том кресле.",
+        "group": "furniture"
+      },
+      {
+        "id": "l14-15",
+        "uniqueKey": "carpet",
+        "en": "carpet",
+        "ru": "ковровое покрытие; ковёр",
+        "transcription": "/ˈkɑːpɪt/",
+        "exampleEn": "There is a carpet in the living room.",
+        "exampleRu": "В гостиной есть ковёр.",
+        "group": "furniture"
+      },
+      {
+        "id": "l14-16",
+        "uniqueKey": "rug",
+        "en": "rug",
+        "ru": "небольшой ковёр",
+        "transcription": "/rʌɡ/",
+        "exampleEn": "There is a rug next to the sofa.",
+        "exampleRu": "Рядом с диваном лежит ковёр.",
+        "group": "furniture"
+      },
+      {
+        "id": "l14-17",
+        "uniqueKey": "sofa",
+        "en": "sofa",
+        "ru": "диван",
+        "transcription": "/ˈsəʊfə/",
+        "exampleEn": "Come and sit on the sofa.",
+        "exampleRu": "Иди и садись на диван.",
+        "group": "furniture"
+      },
+      {
+        "id": "l14-18",
+        "uniqueKey": "stairs",
+        "en": "stairs",
+        "ru": "лестница; ступени",
+        "transcription": "/steəz/",
+        "exampleEn": "The bedrooms are upstairs.",
+        "exampleRu": "Спальни находятся наверху.",
+        "group": "furniture"
+      },
+      {
+        "id": "l14-19",
+        "uniqueKey": "shower",
+        "en": "shower",
+        "ru": "душ",
+        "transcription": "/ˈʃaʊə/",
+        "exampleEn": "I need to have a shower.",
+        "exampleRu": "Мне нужно принять душ.",
+        "group": "home-items"
+      },
+      {
+        "id": "l14-20",
+        "uniqueKey": "lamp",
+        "en": "lamp",
+        "ru": "лампа",
+        "transcription": "/læmp/",
+        "exampleEn": "There is a lamp on my desk.",
+        "exampleRu": "На моём столе стоит лампа.",
+        "group": "home-items"
+      },
+      {
+        "id": "l14-21",
+        "uniqueKey": "mirror",
+        "en": "mirror",
+        "ru": "зеркало",
+        "transcription": "/ˈmɪrə/",
+        "exampleEn": "There is a mirror in the bathroom.",
+        "exampleRu": "В ванной есть зеркало.",
+        "group": "home-items"
+      },
+      {
+        "id": "l14-22",
+        "uniqueKey": "oven",
+        "en": "oven",
+        "ru": "духовка",
+        "transcription": "/ˈʌvn/",
+        "exampleEn": "Cook the cake in the oven.",
+        "exampleRu": "Испеки торт в духовке.",
+        "group": "home-items"
+      },
+      {
+        "id": "l14-23",
+        "uniqueKey": "washbasin",
+        "en": "washbasin",
+        "ru": "раковина для умывания",
+        "transcription": "/ˈwɒʃbeɪsɪn/",
+        "exampleEn": "The washbasin is in the bathroom.",
+        "exampleRu": "Раковина находится в ванной.",
+        "group": "home-items"
+      },
+      {
+        "id": "l14-24",
+        "uniqueKey": "light",
+        "en": "light",
+        "ru": "свет; лампа",
+        "transcription": "/laɪt/",
+        "exampleEn": "Can you turn the light on?",
+        "exampleRu": "Можешь включить свет?",
+        "group": "home-items"
+      },
+      {
+        "id": "l14-25",
+        "uniqueKey": "plant",
+        "en": "plant",
+        "ru": "растение",
+        "transcription": "/plɑːnt/",
+        "exampleEn": "That plant needs some water.",
+        "exampleRu": "Тому растению нужна вода.",
+        "group": "home-items"
+      },
+      {
+        "id": "l14-26",
+        "uniqueKey": "towel",
+        "en": "towel",
+        "ru": "полотенце",
+        "transcription": "/ˈtaʊəl/",
+        "exampleEn": "Can you pass me those towels?",
+        "exampleRu": "Можешь передать мне те полотенца?",
+        "group": "home-items"
+      },
+      {
+        "id": "l14-27",
+        "uniqueKey": "front door",
+        "en": "front door",
+        "ru": "входная дверь",
+        "transcription": "/ˌfrʌnt ˈdɔː/",
+        "exampleEn": "This key is for the front door.",
+        "exampleRu": "Этот ключ от входной двери.",
+        "group": "home-items"
+      },
+      {
+        "id": "l14-28",
+        "uniqueKey": "back door",
+        "en": "back door",
+        "ru": "задняя дверь",
+        "transcription": "/ˌbæk ˈdɔː/",
+        "exampleEn": "That key is for the back door.",
+        "exampleRu": "Тот ключ от задней двери.",
+        "group": "home-items"
+      },
+      {
+        "id": "l14-29",
+        "uniqueKey": "tv remote",
+        "en": "TV remote",
+        "ru": "пульт от телевизора",
+        "transcription": "/ˌtiː ˈviː rɪˈməʊt/",
+        "exampleEn": "Where’s the TV remote?",
+        "exampleRu": "Где пульт от телевизора?",
+        "group": "home-items"
+      },
+      {
+        "id": "l14-30",
+        "uniqueKey": "window",
+        "en": "window",
+        "ru": "окно",
+        "transcription": "/ˈwɪndəʊ/",
+        "exampleEn": "The chair is by the window.",
+        "exampleRu": "Кресло стоит у окна.",
+        "group": "home-items"
+      }
+    ],
+    "groups": [
+      {
+        "id": "rooms",
+        "title": "Rooms and places",
+        "subtitle": "Комнаты и части дома",
+        "icon": "🏠"
+      },
+      {
+        "id": "furniture",
+        "title": "Furniture",
+        "subtitle": "Мебель и поверхности",
+        "icon": "🛋️"
+      },
+      {
+        "id": "home-items",
+        "title": "Home items",
+        "subtitle": "Предметы дома",
+        "icon": "💡"
+      }
     ]
   }
 ];

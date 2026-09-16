@@ -809,7 +809,12 @@ window.GRAMMAR_DATA = [
     "overview": {
       "lead": "После like, love, hate и enjoy, когда мы говорим о занятиях и предпочтениях, следующий глагол обычно получает окончание -ing.",
       "keyRule": "like / love / hate / enjoy + verb-ing",
-      "subjects": ["like doing", "love doing", "hate doing", "enjoy doing"],
+      "subjects": [
+        "like doing",
+        "love doing",
+        "hate doing",
+        "enjoy doing"
+      ],
       "example": "I love studying English. She hates getting up early."
     },
     "uses": [
@@ -898,7 +903,14 @@ window.GRAMMAR_DATA = [
     },
     "questionBuilder": {
       "title": "Порядок слов в вопросе",
-      "pattern": ["What", "do / does", "subject", "like", "doing", "...?"],
+      "pattern": [
+        "What",
+        "do / does",
+        "subject",
+        "like",
+        "doing",
+        "...?"
+      ],
       "example": "What do you like doing at the weekend?",
       "translation": "Что тебе нравится делать на выходных?",
       "note": "После like в таком вопросе используется doing."
@@ -940,10 +952,54 @@ window.GRAMMAR_DATA = [
         "title": "1. Выбери правильную форму",
         "instructions": "Choose the correct answer.",
         "items": [
-          {"type":"single","skill":"like + -ing","prompt":"I like ___ around the town centre.","options":["walking","walk","to walking"],"answer":0,"explanation":"Есть ошибка. После like используй форму -ing."},
-          {"type":"single","skill":"love + -ing","prompt":"We love ___ time with our friends.","options":["spend","spending","to spending"],"answer":1,"explanation":"Есть ошибка. После love используй spending."},
-          {"type":"single","skill":"hate + -ing","prompt":"She hates ___ early.","options":["getting up","get up","to getting up"],"answer":0,"explanation":"Есть ошибка. После hate используй getting up."},
-          {"type":"single","skill":"would like + to","prompt":"Would you like ___ football?","options":["playing","to play","play"],"answer":1,"explanation":"Есть ошибка. После would like используй to + глагол."}
+          {
+            "type": "single",
+            "skill": "like + -ing",
+            "prompt": "I like ___ around the town centre.",
+            "options": [
+              "walking",
+              "walk",
+              "to walking"
+            ],
+            "answer": 0,
+            "explanation": "Есть ошибка. После like используй форму -ing."
+          },
+          {
+            "type": "single",
+            "skill": "love + -ing",
+            "prompt": "We love ___ time with our friends.",
+            "options": [
+              "spend",
+              "spending",
+              "to spending"
+            ],
+            "answer": 1,
+            "explanation": "Есть ошибка. После love используй spending."
+          },
+          {
+            "type": "single",
+            "skill": "hate + -ing",
+            "prompt": "She hates ___ early.",
+            "options": [
+              "getting up",
+              "get up",
+              "to getting up"
+            ],
+            "answer": 0,
+            "explanation": "Есть ошибка. После hate используй getting up."
+          },
+          {
+            "type": "single",
+            "skill": "would like + to",
+            "prompt": "Would you like ___ football?",
+            "options": [
+              "playing",
+              "to play",
+              "play"
+            ],
+            "answer": 1,
+            "explanation": "Есть ошибка. После would like используй to + глагол."
+          }
         ]
       },
       {
@@ -951,10 +1007,50 @@ window.GRAMMAR_DATA = [
         "title": "2. Поставь глагол в форму -ing",
         "instructions": "Complete each sentence with the -ing form.",
         "items": [
-          {"type":"text","skill":"do → doing","prompt":"What do you like ___ at the weekend? (do)","answer":"doing","acceptedAnswers":["doing"],"placeholder":"One word","explanation":"Есть ошибка. do → doing."},
-          {"type":"text","skill":"swim → swimming","prompt":"I enjoy ___. (swim)","answer":"swimming","acceptedAnswers":["swimming"],"placeholder":"One word","explanation":"Есть ошибка. swim → swimming: удвой m."},
-          {"type":"text","skill":"meet → meeting","prompt":"We like ___ for coffee. (meet)","answer":"meeting","acceptedAnswers":["meeting"],"placeholder":"One word","explanation":"Есть ошибка. meet → meeting."},
-          {"type":"text","skill":"study → studying","prompt":"I hate ___ at the weekend. (study)","answer":"studying","acceptedAnswers":["studying"],"placeholder":"One word","explanation":"Есть ошибка. study → studying."}
+          {
+            "type": "text",
+            "skill": "do → doing",
+            "prompt": "What do you like ___ at the weekend? (do)",
+            "answer": "doing",
+            "acceptedAnswers": [
+              "doing"
+            ],
+            "placeholder": "One word",
+            "explanation": "Есть ошибка. do → doing."
+          },
+          {
+            "type": "text",
+            "skill": "swim → swimming",
+            "prompt": "I enjoy ___. (swim)",
+            "answer": "swimming",
+            "acceptedAnswers": [
+              "swimming"
+            ],
+            "placeholder": "One word",
+            "explanation": "Есть ошибка. swim → swimming: удвой m."
+          },
+          {
+            "type": "text",
+            "skill": "meet → meeting",
+            "prompt": "We like ___ for coffee. (meet)",
+            "answer": "meeting",
+            "acceptedAnswers": [
+              "meeting"
+            ],
+            "placeholder": "One word",
+            "explanation": "Есть ошибка. meet → meeting."
+          },
+          {
+            "type": "text",
+            "skill": "study → studying",
+            "prompt": "I hate ___ at the weekend. (study)",
+            "answer": "studying",
+            "acceptedAnswers": [
+              "studying"
+            ],
+            "placeholder": "One word",
+            "explanation": "Есть ошибка. study → studying."
+          }
         ]
       },
       {
@@ -962,10 +1058,81 @@ window.GRAMMAR_DATA = [
         "title": "3. Собери полное предложение",
         "instructions": "Put the words in the correct order and write the complete sentence.",
         "items": [
-          {"type":"reorder","skill":"love + -ing","prompt":"I / love / study / English.","tokens":["I","love","studying","English"],"answer":"I love studying English.","acceptedAnswers":["I love studying English.","I love studying English"],"placeholder":"Write the sentence","explanation":"Есть ошибка. После love используй studying."},
-          {"type":"reorder","skill":"вопрос","prompt":"What / do / you / like / do / at the weekend?","tokens":["What","do","you","like","doing","at the weekend"],"answer":"What do you like doing at the weekend?","acceptedAnswers":["What do you like doing at the weekend?","What do you like doing at the weekend"],"placeholder":"Write the question","explanation":"Есть ошибка. Проверь порядок слов и форму doing."},
-          {"type":"reorder","skill":"hate + -ing","prompt":"She / hate / get up / early.","tokens":["She","hates","getting up","early"],"answer":"She hates getting up early.","acceptedAnswers":["She hates getting up early.","She hates getting up early"],"placeholder":"Write the sentence","explanation":"Есть ошибка. С she используй hates; get up → getting up."},
-          {"type":"reorder","skill":"would like + to","prompt":"Would / you / like / play / football?","tokens":["Would","you","like","to play","football"],"answer":"Would you like to play football?","acceptedAnswers":["Would you like to play football?","Would you like to play football"],"placeholder":"Write the question","explanation":"Есть ошибка. После would like используй to play."}
+          {
+            "type": "reorder",
+            "skill": "love + -ing",
+            "prompt": "I / love / study / English.",
+            "tokens": [
+              "I",
+              "love",
+              "studying",
+              "English"
+            ],
+            "answer": "I love studying English.",
+            "acceptedAnswers": [
+              "I love studying English.",
+              "I love studying English"
+            ],
+            "placeholder": "Write the sentence",
+            "explanation": "Есть ошибка. После love используй studying."
+          },
+          {
+            "type": "reorder",
+            "skill": "вопрос",
+            "prompt": "What / do / you / like / do / at the weekend?",
+            "tokens": [
+              "What",
+              "do",
+              "you",
+              "like",
+              "doing",
+              "at the weekend"
+            ],
+            "answer": "What do you like doing at the weekend?",
+            "acceptedAnswers": [
+              "What do you like doing at the weekend?",
+              "What do you like doing at the weekend"
+            ],
+            "placeholder": "Write the question",
+            "explanation": "Есть ошибка. Проверь порядок слов и форму doing."
+          },
+          {
+            "type": "reorder",
+            "skill": "hate + -ing",
+            "prompt": "She / hate / get up / early.",
+            "tokens": [
+              "She",
+              "hates",
+              "getting up",
+              "early"
+            ],
+            "answer": "She hates getting up early.",
+            "acceptedAnswers": [
+              "She hates getting up early.",
+              "She hates getting up early"
+            ],
+            "placeholder": "Write the sentence",
+            "explanation": "Есть ошибка. С she используй hates; get up → getting up."
+          },
+          {
+            "type": "reorder",
+            "skill": "would like + to",
+            "prompt": "Would / you / like / play / football?",
+            "tokens": [
+              "Would",
+              "you",
+              "like",
+              "to play",
+              "football"
+            ],
+            "answer": "Would you like to play football?",
+            "acceptedAnswers": [
+              "Would you like to play football?",
+              "Would you like to play football"
+            ],
+            "placeholder": "Write the question",
+            "explanation": "Есть ошибка. После would like используй to play."
+          }
         ]
       },
       {
@@ -973,13 +1140,455 @@ window.GRAMMAR_DATA = [
         "title": "4. Закрепи формы из диалога",
         "instructions": "Write the correct -ing form.",
         "items": [
-          {"type":"text","skill":"get up","prompt":"I don’t like ___ early. (get up)","answer":"getting up","acceptedAnswers":["getting up"],"placeholder":"Two words","explanation":"Есть ошибка. get up → getting up."},
-          {"type":"text","skill":"spend","prompt":"I love ___ time with my friends. (spend)","answer":"spending","acceptedAnswers":["spending"],"placeholder":"One word","explanation":"Есть ошибка. spend → spending."},
-          {"type":"text","skill":"shop","prompt":"I like ___ for clothes. (shop)","answer":"shopping","acceptedAnswers":["shopping"],"placeholder":"One word","explanation":"Есть ошибка. shop → shopping: удвой p."},
-          {"type":"text","skill":"walk","prompt":"I hate ___ around the town centre. (walk)","answer":"walking","acceptedAnswers":["walking"],"placeholder":"One word","explanation":"Есть ошибка. walk → walking."}
+          {
+            "type": "text",
+            "skill": "get up",
+            "prompt": "I don’t like ___ early. (get up)",
+            "answer": "getting up",
+            "acceptedAnswers": [
+              "getting up"
+            ],
+            "placeholder": "Two words",
+            "explanation": "Есть ошибка. get up → getting up."
+          },
+          {
+            "type": "text",
+            "skill": "spend",
+            "prompt": "I love ___ time with my friends. (spend)",
+            "answer": "spending",
+            "acceptedAnswers": [
+              "spending"
+            ],
+            "placeholder": "One word",
+            "explanation": "Есть ошибка. spend → spending."
+          },
+          {
+            "type": "text",
+            "skill": "shop",
+            "prompt": "I like ___ for clothes. (shop)",
+            "answer": "shopping",
+            "acceptedAnswers": [
+              "shopping"
+            ],
+            "placeholder": "One word",
+            "explanation": "Есть ошибка. shop → shopping: удвой p."
+          },
+          {
+            "type": "text",
+            "skill": "walk",
+            "prompt": "I hate ___ around the town centre. (walk)",
+            "answer": "walking",
+            "acceptedAnswers": [
+              "walking"
+            ],
+            "placeholder": "One word",
+            "explanation": "Есть ошибка. walk → walking."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "grammar-lesson-14-demonstratives-here-there",
+    "order": 5,
+    "title": "This, that, these, those; here, there",
+    "level": "A2.2",
+    "status": "available",
+    "linkedLessonId": "lesson-14",
+    "page": "grammar-topic.html?id=grammar-lesson-14-demonstratives-here-there",
+    "passScore": 100,
+    "showCorrectAnswerOnError": false,
+    "overview": {
+      "lead": "This, that, these и those помогают указать на предметы и людей. Выбор зависит от двух вещей: один предмет или несколько, и находится он близко или дальше от говорящего. Here и there показывают место.",
+      "keyRule": "near + singular = this · far + singular = that · near + plural = these · far + plural = those; here = здесь, there = там",
+      "subjects": [
+        "this",
+        "that",
+        "these",
+        "those",
+        "here",
+        "there"
+      ],
+      "example": "This key here. · Those towels over there."
+    },
+    "uses": [
+      {
+        "icon": "📍",
+        "title": "Близко: this / these",
+        "text": "Используй this с одним предметом рядом и these с несколькими предметами рядом.",
+        "example": "this plant · these chairs"
+      },
+      {
+        "icon": "↗️",
+        "title": "Дальше: that / those",
+        "text": "Используй that с одним предметом дальше и those с несколькими предметами дальше.",
+        "example": "that shelf · those people"
+      },
+      {
+        "icon": "👇",
+        "title": "Here",
+        "text": "Here означает «здесь», рядом с говорящим.",
+        "example": "Come and sit here."
+      },
+      {
+        "icon": "👉",
+        "title": "There",
+        "text": "There означает «там», в месте дальше от говорящего.",
+        "example": "The chair is over there."
+      }
+    ],
+    "forms": [
+      {
+        "id": "this",
+        "icon": "1",
+        "title": "This",
+        "formula": "this + singular noun · near",
+        "example": "This key is for the front door.",
+        "translation": "Этот ключ от входной двери.",
+        "note": "This относится к одному предмету рядом."
+      },
+      {
+        "id": "that",
+        "icon": "1→",
+        "title": "That",
+        "formula": "that + singular noun · far",
+        "example": "Put the book on that shelf.",
+        "translation": "Положи книгу на ту полку.",
+        "note": "That относится к одному предмету дальше."
+      },
+      {
+        "id": "these",
+        "icon": "2+",
+        "title": "These",
+        "formula": "these + plural noun · near",
+        "example": "These prawns are delicious.",
+        "translation": "Эти креветки очень вкусные.",
+        "note": "These относится к нескольким предметам рядом."
+      },
+      {
+        "id": "those",
+        "icon": "2+→",
+        "title": "Those",
+        "formula": "those + plural noun · far",
+        "example": "Who are those people over there?",
+        "translation": "Кто те люди вон там?",
+        "note": "Those относится к нескольким предметам дальше."
+      }
+    ],
+    "contrast": {
+      "title": "Here или there?",
+      "intro": "Слова here и there описывают место и часто помогают понять, какой указатель выбрать.",
+      "ordinary": {
+        "label": "Near · here",
+        "verbs": "this · these · here",
+        "affirmative": "This plant is here.",
+        "negative": "These chairs are here.",
+        "question": "Are these your keys here?",
+        "rule": "Если предметы находятся рядом с говорящим, обычно используй this / these и here."
+      },
+      "be": {
+        "label": "Far · there",
+        "verbs": "that · those · there",
+        "affirmative": "That shelf is over there.",
+        "negative": "Those towels are over there.",
+        "question": "Who are those people over there?",
+        "rule": "Если предметы находятся дальше, обычно используй that / those и there."
+      }
+    },
+    "questionBuilder": {
+      "title": "Как быстро выбрать правильное слово",
+      "pattern": [
+        "near / far",
+        "singular / plural",
+        "this / that / these / those"
+      ],
+      "example": "far + plural → those",
+      "translation": "далеко + множественное число → those",
+      "note": "Сначала определи расстояние, затем число существительного. Here / there выбирай только по месту."
+    },
+    "memoryRule": {
+      "title": "Быстрая проверка",
+      "steps": [
+        "Один предмет рядом → this; один предмет дальше → that.",
+        "Несколько предметов рядом → these; несколько предметов дальше → those.",
+        "После this / that ставь существительное в единственном числе; после these / those — во множественном.",
+        "Here = здесь, there = там. Фразы here / over there часто подсказывают расстояние."
+      ]
+    },
+    "commonMistakes": [
+      {
+        "wrong": "This chairs are comfortable.",
+        "right": "These chairs are comfortable.",
+        "reason": "Chairs — множественное число, поэтому нужен these или those."
+      },
+      {
+        "wrong": "Those plant over there needs water.",
+        "right": "That plant over there needs water.",
+        "reason": "Plant — один предмет, поэтому нужен this или that."
+      },
+      {
+        "wrong": "Can you bring those bottles over there, to me?",
+        "right": "Can you bring those bottles over here, to me?",
+        "reason": "Если нужно принести предметы к говорящему, место назначения — here."
+      },
+      {
+        "wrong": "It’s over here, on that shelf near the window.",
+        "right": "It’s over there, on that shelf near the window.",
+        "reason": "That shelf указывает на более удалённое место, поэтому обычно нужен there."
+      }
+    ],
+    "quizExercises": [
+      {
+        "id": "demonstratives-basic-choice",
+        "title": "1. Выбери this, that, these или those",
+        "instructions": "Choose the correct answer.",
+        "items": [
+          {
+            "type": "single",
+            "skill": "near / far + number",
+            "prompt": "___ chair here is comfortable.",
+            "options": [
+              "This",
+              "That",
+              "These",
+              "Those"
+            ],
+            "answer": 0,
+            "explanation": "Есть ошибка. Проверь: один предмет или несколько, рядом он или дальше."
+          },
+          {
+            "type": "single",
+            "skill": "near / far + number",
+            "prompt": "___ towels over there are clean.",
+            "options": [
+              "This",
+              "That",
+              "These",
+              "Those"
+            ],
+            "answer": 3,
+            "explanation": "Есть ошибка. Проверь число существительного и подсказку over there."
+          },
+          {
+            "type": "single",
+            "skill": "near / far + number",
+            "prompt": "___ books here are mine.",
+            "options": [
+              "This",
+              "That",
+              "These",
+              "Those"
+            ],
+            "answer": 2,
+            "explanation": "Есть ошибка. Сначала определи число, затем расстояние."
+          },
+          {
+            "type": "single",
+            "skill": "near / far + number",
+            "prompt": "___ lamp over there is new.",
+            "options": [
+              "This",
+              "That",
+              "These",
+              "Those"
+            ],
+            "answer": 1,
+            "explanation": "Есть ошибка. Проверь: singular + far."
+          }
+        ]
+      },
+      {
+        "id": "here-there-context",
+        "title": "2. Заполни пропуск подходящим словом",
+        "instructions": "Write one word: this, that, these, those, here or there.",
+        "items": [
+          {
+            "type": "text",
+            "skill": "place",
+            "prompt": "Come and put the bags ___, next to me.",
+            "answer": "here",
+            "acceptedAnswers": [
+              "here"
+            ],
+            "placeholder": "One word",
+            "explanation": "Есть ошибка. Определи, находится ли место рядом с говорящим или дальше."
+          },
+          {
+            "type": "text",
+            "skill": "place",
+            "prompt": "The bike is over ___, next to the garage.",
+            "answer": "there",
+            "acceptedAnswers": [
+              "there"
+            ],
+            "placeholder": "One word",
+            "explanation": "Есть ошибка. Проверь значение места: здесь или там."
+          },
+          {
+            "type": "text",
+            "skill": "demonstrative",
+            "prompt": "___ keys in my hand are for the front door.",
+            "answer": "These",
+            "acceptedAnswers": [
+              "These",
+              "these"
+            ],
+            "placeholder": "One word",
+            "explanation": "Есть ошибка. Проверь число существительного и расстояние."
+          },
+          {
+            "type": "text",
+            "skill": "demonstrative",
+            "prompt": "I like ___ sofa by the window over there.",
+            "answer": "that",
+            "acceptedAnswers": [
+              "that"
+            ],
+            "placeholder": "One word",
+            "explanation": "Есть ошибка. Проверь число существительного и подсказку over there."
+          }
+        ]
+      },
+      {
+        "id": "demonstratives-correction",
+        "title": "3. Исправь одну ошибку в каждом предложении",
+        "instructions": "Write the complete corrected sentence.",
+        "items": [
+          {
+            "type": "text",
+            "skill": "correction",
+            "prompt": "This chairs here are very comfortable.",
+            "answer": "These chairs here are very comfortable.",
+            "acceptedAnswers": [
+              "These chairs here are very comfortable.",
+              "These chairs here are very comfortable"
+            ],
+            "placeholder": "Write the corrected sentence",
+            "explanation": "Есть ошибка. Проверь число существительного и указательное слово."
+          },
+          {
+            "type": "text",
+            "skill": "correction",
+            "prompt": "These plant here needs some water.",
+            "answer": "This plant here needs some water.",
+            "acceptedAnswers": [
+              "This plant here needs some water.",
+              "This plant here needs some water"
+            ],
+            "placeholder": "Write the corrected sentence",
+            "explanation": "Есть ошибка. Проверь: plant — единственное или множественное число?"
+          },
+          {
+            "type": "text",
+            "skill": "correction",
+            "prompt": "Can you pass me that towels over there?",
+            "answer": "Can you pass me those towels over there?",
+            "acceptedAnswers": [
+              "Can you pass me those towels over there?",
+              "Can you pass me those towels over there"
+            ],
+            "placeholder": "Write the corrected sentence",
+            "explanation": "Есть ошибка. Проверь число towels."
+          },
+          {
+            "type": "text",
+            "skill": "correction",
+            "prompt": "The TV remote is over here, on that shelf across the room.",
+            "answer": "The TV remote is over there, on that shelf across the room.",
+            "acceptedAnswers": [
+              "The TV remote is over there, on that shelf across the room.",
+              "The TV remote is over there, on that shelf across the room"
+            ],
+            "placeholder": "Write the corrected sentence",
+            "explanation": "Есть ошибка. Проверь подсказки that shelf и across the room."
+          }
+        ]
+      },
+      {
+        "id": "demonstratives-build",
+        "title": "4. Собери полное предложение или вопрос",
+        "instructions": "Put the words in the correct order and write the complete sentence or question.",
+        "items": [
+          {
+            "type": "reorder",
+            "skill": "word order",
+            "prompt": "Are / those / your / keys / over there ?",
+            "tokens": [
+              "Are",
+              "those",
+              "your",
+              "keys",
+              "over there"
+            ],
+            "answer": "Are those your keys over there?",
+            "acceptedAnswers": [
+              "Are those your keys over there?",
+              "Are those your keys over there"
+            ],
+            "placeholder": "Write the question",
+            "explanation": "Есть ошибка. Проверь порядок слов и указательное слово."
+          },
+          {
+            "type": "reorder",
+            "skill": "word order",
+            "prompt": "Can / you / put / this / book / here ?",
+            "tokens": [
+              "Can",
+              "you",
+              "put",
+              "this",
+              "book",
+              "here"
+            ],
+            "answer": "Can you put this book here?",
+            "acceptedAnswers": [
+              "Can you put this book here?",
+              "Can you put this book here"
+            ],
+            "placeholder": "Write the question",
+            "explanation": "Есть ошибка. Проверь порядок слов."
+          },
+          {
+            "type": "reorder",
+            "skill": "word order",
+            "prompt": "Who / are / those / people / over there ?",
+            "tokens": [
+              "Who",
+              "are",
+              "those",
+              "people",
+              "over there"
+            ],
+            "answer": "Who are those people over there?",
+            "acceptedAnswers": [
+              "Who are those people over there?",
+              "Who are those people over there"
+            ],
+            "placeholder": "Write the question",
+            "explanation": "Есть ошибка. Проверь порядок слов и форму people."
+          },
+          {
+            "type": "reorder",
+            "skill": "word order",
+            "prompt": "These / plants / here / need / water / every day .",
+            "tokens": [
+              "These",
+              "plants",
+              "here",
+              "need",
+              "water",
+              "every day"
+            ],
+            "answer": "These plants here need water every day.",
+            "acceptedAnswers": [
+              "These plants here need water every day.",
+              "These plants here need water every day"
+            ],
+            "placeholder": "Write the sentence",
+            "explanation": "Есть ошибка. Проверь порядок слов."
+          }
         ]
       }
     ]
   }
-
 ];
