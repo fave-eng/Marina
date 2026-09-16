@@ -2,33 +2,7 @@
   'use strict';
 
   const config = window.APP_CONFIG || {};
-  const configuredStudents = Array.isArray(config.students) && config.students.length
-    ? config.students
-    : [config.student || {}];
-  const activeStudentStorageKey = 'english_space_active_student';
-
-  function normalizeStudentId(value) {
-    return String(value ?? '')
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9-]+/g, '-')
-      .replace(/^-+|-+$/g, '');
-  }
-
-  function resolveActiveStudent() {
-    const params = new URLSearchParams(window.location.search);
-    const requestedId = normalizeStudentId(params.get('student'));
-    let storedId = '';
-    try { storedId = normalizeStudentId(window.localStorage.getItem(activeStudentStorageKey)); } catch {}
-    const fallback = configuredStudents[0] || {};
-    const selected = configuredStudents.find((item) => normalizeStudentId(item?.id) === requestedId)
-      || configuredStudents.find((item) => normalizeStudentId(item?.id) === storedId)
-      || fallback;
-    try { window.localStorage.setItem(activeStudentStorageKey, normalizeStudentId(selected?.id)); } catch {}
-    return selected;
-  }
-
-  const student = resolveActiveStudent();
+  const student = config.student || {};
   let HOMEWORK_DATA = [];
   const RAW_VOCABULARY_DATA = Array.isArray(window.VOCABULARY_DATA) ? window.VOCABULARY_DATA : [];
   const GRAMMAR_DATA = Array.isArray(window.GRAMMAR_DATA) ? window.GRAMMAR_DATA : [];
@@ -36,6 +10,8 @@
   const lessonsPath = 'data/lessons';
   const maxLessonNumber = 200;
   const maxConsecutiveMissingLessons = 3;
+  const MANUAL_LESSON_TYPES = ['family-tree', 'guided-writing', 'word-groups', 'mini-interview'];
+  const LESSON_TASK_TYPES = ['text', 'textarea', 'single', 'multiple', 'select', 'match', 'reorder', 'translate', 'audio', 'exercise', 'reading-quiz', ...MANUAL_LESSON_TYPES];
 
   const safeText = (value, fallback = '') => value === undefined || value === null ? fallback : String(value);
   const escapeHtml = (value) => safeText(value)
@@ -71,11 +47,9 @@
     return {
       ...rawLesson,
       id,
-      // The homework number is always derived from the lesson-N.json file name.
-      // This keeps homework numbering sequential when vocabulary or grammar materials are added.
-      number: inferredNumber,
+      number: Number(rawLesson.number || inferredNumber),
       title: safeText(rawLesson.title, `Lesson ${inferredNumber}`),
-      subtitle: safeText(rawLesson.subtitle, 'Interactive homework assignment'),
+      subtitle: safeText(rawLesson.subtitle, 'Интерактивное домашнее задание'),
       status: safeText(rawLesson.status, 'available'),
       page: `lesson.html?id=${encodeURIComponent(id)}`,
       blocks: Array.isArray(rawLesson.blocks) ? rawLesson.blocks : []
@@ -89,17 +63,21 @@
 
     const promise = (async () => {
       const url = new URL(`${lessonsPath}/${cleanId}.json`, document.baseURI);
+      url.searchParams.set('_', Date.now().toString());
       const response = await fetch(url, { cache: 'no-store' });
       if (response.status === 404) return null;
-      if (!response.ok) throw new Error(`Could not load ${cleanId}.json: ${response.status}`);
+      if (!response.ok) throw new Error(`Не удалось загрузить ${cleanId}.json: ${response.status}`);
       const lesson = normalizeLesson(await response.json(), cleanId);
-      if (!lesson) throw new Error(`File ${cleanId}.json has an invalid structure.`);
+      if (!lesson) throw new Error(`Файл ${cleanId}.json имеет неверную структуру.`);
       return lesson;
     })();
 
     lessonCache.set(cleanId, promise);
     try {
-      return await promise;
+      const lesson = await promise;
+      // Не запоминаем отсутствующий файл навсегда: он может быть опубликован позже.
+      if (!lesson) lessonCache.delete(cleanId);
+      return lesson;
     } catch (error) {
       lessonCache.delete(cleanId);
       throw error;
@@ -107,21 +85,45 @@
   }
 
   async function discoverHomeworkData() {
-    const lessons = [];
-    let consecutiveMissing = 0;
+    const lessonsById = new Map();
+    let highestKnownLessonNumber = 0;
 
+    try {
+      const indexUrl = new URL(`${lessonsPath}/index.json`, document.baseURI);
+      indexUrl.searchParams.set('_', Date.now().toString());
+      const response = await fetch(indexUrl, { cache: 'no-store' });
+      if (response.ok) {
+        const payload = await response.json();
+        const ids = Array.isArray(payload) ? payload : payload.lessons;
+        if (Array.isArray(ids)) {
+          const indexedLessons = (await Promise.all(ids.map((id) => fetchLessonFile(id)))).filter(Boolean);
+          indexedLessons.forEach((lesson) => {
+            lessonsById.set(lesson.id, lesson);
+            highestKnownLessonNumber = Math.max(highestKnownLessonNumber, Number(lesson.number || 0));
+          });
+        }
+      }
+    } catch (error) {
+      console.warn('Не удалось загрузить индекс уроков, используется автоматический поиск:', error);
+    }
+
+    // Даже если index.json устарел, автоматически ищем lesson-1.json, lesson-2.json и далее.
+    // Поиск заканчивается после трёх отсутствующих файлов подряд за последним найденным уроком.
+    let consecutiveMissing = 0;
     for (let number = 1; number <= maxLessonNumber; number += 1) {
       const lesson = await fetchLessonFile(`lesson-${number}`);
       if (lesson) {
-        lessons.push(lesson);
+        lessonsById.set(lesson.id, lesson);
+        highestKnownLessonNumber = Math.max(highestKnownLessonNumber, Number(lesson.number || number));
         consecutiveMissing = 0;
       } else {
         consecutiveMissing += 1;
-        if (consecutiveMissing >= maxConsecutiveMissingLessons) break;
+        if (number > highestKnownLessonNumber && consecutiveMissing >= maxConsecutiveMissingLessons) break;
       }
     }
 
-    return lessons.sort((a, b) => Number(a.number || 0) - Number(b.number || 0));
+    return [...lessonsById.values()]
+      .sort((a, b) => Number(a.number || 0) - Number(b.number || 0));
   }
 
   async function loadHomeworkData() {
@@ -177,7 +179,7 @@
       return { ...topic, words };
     });
     if (duplicates.length) {
-      console.info('Duplicate words were excluded from the vocabulary:', duplicates);
+      console.info('Повторяющиеся слова исключены из словаря:', duplicates);
     }
     return {
       topics: preparedTopics.filter((topic) => topic.words.length > 0),
@@ -207,7 +209,7 @@
         const raw = window.localStorage.getItem(key);
         return raw ? JSON.parse(raw) : fallback;
       } catch (error) {
-        console.warn('Could not read local progress:', error);
+        console.warn('Не удалось прочитать локальный прогресс:', error);
         return fallback;
       }
     },
@@ -216,13 +218,13 @@
         window.localStorage.setItem(key, JSON.stringify(value));
         return true;
       } catch (error) {
-        console.warn('Could not save local progress:', error);
+        console.warn('Не удалось сохранить локальный прогресс:', error);
         return false;
       }
     }
   };
 
-  const studentId = normalizeStudentId(student.id) || 'student';
+  const studentId = safeText(student.id, 'student').toLowerCase().trim().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '') || 'student';
   const key = (section) => `english_space_${studentId}_${section}`;
   const tables = {
     homework: config.supabase?.tables?.homework || 'homework_progress',
@@ -246,14 +248,14 @@
     async init() {
       if (!this.isConfigured()) return null;
       if (!this.client) {
-        // Remove the stored session from the previous site version.
-        // Otherwise Supabase may send requests as authenticated,
-        // although the current setup expects the anon role.
+        // Удаляем сохранённую сессию старой версии сайта.
+        // Иначе Supabase может отправлять запросы как authenticated,
+        // хотя новая схема рассчитана на роль anon.
         try {
           const projectRef = new URL(config.supabase.url).hostname.split('.')[0];
           window.localStorage.removeItem(`sb-${projectRef}-auth-token`);
         } catch (error) {
-          console.warn('Could not clear the old Supabase session:', error);
+          console.warn('Не удалось очистить старую Supabase-сессию:', error);
         }
 
         const emptyAuthStorage = {
@@ -277,78 +279,399 @@
       }
       return this.client;
     },
-    queue(section) {
-      if (!this.isConfigured() || !this.client || this.syncing) return;
-      window.clearTimeout(this.timers[section]);
-      this.timers[section] = window.setTimeout(() => {
-        window.ProgressService.syncToCloud(section).catch((error) => {
-          console.error('Cloud save error:', error);
-          showToast('Could not save progress to Supabase');
-        });
-      }, 450);
-    }
-  };
-
-
-  const HomeworkReportService = {
-    isConfigured() {
-      return Boolean(
-        config.features?.telegramNotifications &&
-        CloudService.isConfigured()
-      );
-    },
-    async send(lessonId) {
-      if (!this.isConfigured()) {
-        return { ok: false, skipped: true, reason: 'not_configured' };
+    async invokePublicFunction(payload) {
+      const base = safeText(config.supabase?.url).replace(/\/+$/, '');
+      const apiKey = safeText(config.supabase?.anonKey).trim();
+      if (!base || !apiKey) throw new Error('Supabase function URL или public key не настроены');
+      const response = await fetch(`${base}/functions/v1/notify-telegram`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'apikey': apiKey
+        },
+        body: JSON.stringify(payload || {})
+      });
+      const text = await response.text();
+      let data = null;
+      try { data = text ? JSON.parse(text) : null; } catch { data = { raw: text }; }
+      if (!response.ok || !data?.ok) {
+        const error = new Error(data?.error || data?.message || `Edge Function HTTP ${response.status}`);
+        error.status = response.status;
+        error.data = data;
+        throw error;
       }
+      return data;
+    },
+    async sendHomeworkReport(lessonId) {
+      const normalizedLessonId = safeText(lessonId).trim();
+      if (!/^lesson-\d+$/.test(normalizedLessonId)) return null;
 
-      const baseUrl = safeText(config.supabase?.url).replace(/\/+$/, '');
-      const anonKey = safeText(config.supabase?.anonKey).trim();
-      const endpoint = `${baseUrl}/functions/v1/notify-anastasia-rozalina`;
-      const lesson = HOMEWORK_DATA.find((item) => item.id === lessonId) || {};
+      const lesson = HOMEWORK_DATA.find((item) => item.id === normalizedLessonId) || {};
       let homeworkUrl = '';
       let resultUrl = '';
       try {
-        const target = new URL(lesson.page || `lesson.html?id=${encodeURIComponent(lessonId)}`, document.baseURI);
-        target.searchParams.set('student', studentId);
+        const target = new URL(
+          lesson.page || `lesson.html?id=${encodeURIComponent(normalizedLessonId)}`,
+          document.baseURI
+        );
         target.hash = '';
         homeworkUrl = target.toString();
         target.hash = 'lesson-result';
         resultUrl = target.toString();
       } catch (error) {
-        console.warn('Could not build homework report links:', error);
+        console.warn('Не удалось сформировать ссылки на ДЗ и результат:', error);
       }
 
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-          apikey: anonKey,
-          authorization: `Bearer ${anonKey}`
-        },
-        body: JSON.stringify({
-          kind: 'homework_submit_report',
-          studentId,
-          lessonId,
-          lessonTitle: safeText(lesson.title, lessonId),
-          homeworkUrl,
-          resultUrl
-        })
+      const result = await this.invokePublicFunction({
+        kind: 'homework_submit_report',
+        studentId,
+        lessonId: normalizedLessonId,
+        lessonTitle: safeText(lesson.title, normalizedLessonId),
+        homeworkUrl,
+        resultUrl
       });
 
-      const result = await response.json().catch(() => null);
-      if (!response.ok || !result?.ok) {
-        throw new Error(result?.error || `Homework report error: HTTP ${response.status}`);
+      if (result.sent || result.reason === 'already_sent') {
+        const progress = window.ProgressService.loadHomeworkProgress();
+        const submission = progress.submissions[normalizedLessonId];
+        if (submission) {
+          progress.submissions[normalizedLessonId] = {
+            ...submission,
+            status: 'cloud',
+            cloudStatus: 'submitted',
+            reportStatus: 'sent',
+            reportSentAt: result.reportSentAt || submission.reportSentAt || new Date().toISOString(),
+            reportError: null
+          };
+          storage.write(key('homework'), progress);
+        }
       }
       return result;
+    },
+    async retryHomeworkReports(lessonIds) {
+      for (const lessonId of unique(lessonIds)) {
+        try {
+          await this.sendHomeworkReport(lessonId);
+        } catch (error) {
+          console.warn(`Не удалось отправить Telegram-отчёт для ${lessonId}:`, error);
+          const progress = window.ProgressService.loadHomeworkProgress();
+          const submission = progress.submissions[lessonId];
+          if (submission) {
+            progress.submissions[lessonId] = {
+              ...submission,
+              cloudStatus: 'submitted_pending_report',
+              reportStatus: 'failed',
+              reportError: error?.message || String(error)
+            };
+            storage.write(key('homework'), progress);
+          }
+        }
+      }
+    },
+    queue(section) {
+      if (!this.isConfigured() || !this.client || this.syncing) return;
+      window.clearTimeout(this.timers[section]);
+      this.timers[section] = window.setTimeout(() => {
+        window.ProgressService.syncToCloud(section).catch((error) => {
+          console.error('Ошибка облачного сохранения:', error);
+          showToast('Не удалось сохранить прогресс в Supabase');
+        });
+      }, 450);
     }
   };
+
+  function migrateLegacyMarinaProgress() {
+    const marker = key('legacy_migration_v2');
+    if (window.localStorage.getItem(marker)) return;
+
+    const now = new Date().toISOString();
+    const readRawJson = (storageKey, fallback = null) => {
+      try {
+        const raw = window.localStorage.getItem(storageKey);
+        return raw ? JSON.parse(raw) : fallback;
+      } catch (error) {
+        console.warn(`Не удалось прочитать старый ключ ${storageKey}:`, error);
+        return fallback;
+      }
+    };
+    const firstNumber = (keys) => {
+      for (const storageKey of keys) {
+        const value = Number(window.localStorage.getItem(storageKey));
+        if (Number.isFinite(value) && value >= 0) return value;
+      }
+      return 0;
+    };
+
+    try {
+      // Домашние задания: старые баллы и, если они есть в браузере, старые ответы.
+      const oldScores = readRawJson('marina_hw_scores', {}) || {};
+      const oldAnswers = readRawJson('marina_hw_answers', {}) || {};
+      const direct = {
+        4: window.localStorage.getItem('marina_hw4_score'),
+        5: window.localStorage.getItem('marina_hw5_score'),
+        6: window.localStorage.getItem('marina_hw6_score')
+      };
+      const merged = { ...oldScores };
+      Object.entries(direct).forEach(([number, score]) => {
+        if (score && !merged[number]) merged[number] = score;
+      });
+
+      const homework = storage.read(key('homework'), { completedIds: [], results: {}, submissions: {} });
+      homework.completedIds = unique(homework.completedIds);
+      homework.results = homework.results && typeof homework.results === 'object' ? homework.results : {};
+      homework.submissions = homework.submissions && typeof homework.submissions === 'object' ? homework.submissions : {};
+      Object.entries(merged).forEach(([number, score]) => {
+        const match = safeText(score).match(/(\d+)\s*\/\s*(\d+)/);
+        if (!match) return;
+        const lessonId = `lesson-${number}`;
+        const correct = Number(match[1]);
+        const total = Number(match[2]);
+        const previous = homework.results[lessonId] || {};
+        homework.results[lessonId] = {
+          ...previous,
+          correct,
+          total,
+          percent: safePercent(correct, total),
+          checkedAt: previous.checkedAt || now,
+          legacyAnswers: oldAnswers[number] || oldAnswers[String(number)] || previous.legacyAnswers || null,
+          migratedAt: previous.migratedAt || now
+        };
+        if (!homework.completedIds.includes(lessonId)) homework.completedIds.push(lessonId);
+        homework.submissions[lessonId] = homework.submissions[lessonId] || { savedAt: now, status: 'migrated-local' };
+      });
+      storage.write(key('homework'), homework);
+
+      // Словарь: переносим точные отметки из старого localStorage, когда они доступны.
+      const vocabulary = normalizeVocabularyProgress(storage.read(key('vocabulary'), {}));
+      const topicById = new Map(VOCABULARY_CATALOG.allTopics.map((topic) => [topic.id, topic]));
+      const ensureTopic = (topicId) => {
+        if (!vocabulary.topics[topicId]) vocabulary.topics[topicId] = { tests: [] };
+        if (!Array.isArray(vocabulary.topics[topicId].tests)) vocabulary.topics[topicId].tests = [];
+        return vocabulary.topics[topicId];
+      };
+      const setLegacyBaseline = (topicId, learnedCount, total, source) => {
+        const topic = ensureTopic(topicId);
+        const count = Math.max(0, Number(learnedCount || 0));
+        if (!count) return;
+        topic.legacyLearnedCount = Math.max(Number(topic.legacyLearnedCount || 0), count);
+        topic.legacyTotal = Math.max(Number(topic.legacyTotal || 0), Number(total || 0));
+        topic.legacySource = topic.legacySource || source;
+        topic.legacyUpdatedAt = topic.legacyUpdatedAt || now;
+      };
+      const setLegacyWord = (topicId, wordId, status) => {
+        const topic = topicById.get(topicId);
+        const word = topic?.words?.find((item) => safeText(item.id) === safeText(wordId));
+        if (!word?.__wordKey) return;
+        const previous = vocabulary.words[word.__wordKey];
+        if (previous?.status === 'known' && status === 'difficult') return;
+        vocabulary.words[word.__wordKey] = {
+          status,
+          topicId,
+          learnedAt: status === 'known' ? (previous?.learnedAt || now) : null,
+          updatedAt: previous?.updatedAt || now
+        };
+      };
+      const importNumericTopicState = (topicId, prefix, storageKeys) => {
+        let state = null;
+        for (const storageKey of storageKeys) {
+          state = readRawJson(storageKey, null);
+          if (state) break;
+        }
+        if (!state || typeof state !== 'object') return;
+        unique(state.learned).forEach((legacyId) => setLegacyWord(topicId, `${prefix}${legacyId}`, 'known'));
+        unique(state.hard).forEach((legacyId) => setLegacyWord(topicId, `${prefix}${legacyId}`, 'difficult'));
+      };
+
+      importNumericTopicState('vocab-lesson-4', 'l4-', [
+        'marina_vocab_everyday_state',
+        'marina_vocab_everyday_problems_state',
+        'marina_vocab_problems_state'
+      ]);
+      importNumericTopicState('vocab-lesson-5', 'l5-', ['marina_vocab_languages_state']);
+      importNumericTopicState('vocab-lesson-6', 'l6-', ['marina_vocab_language_classes_state']);
+
+      const feelings = readRawJson('marina_vocab_feelings_state', null);
+      if (feelings && typeof feelings === 'object') {
+        const feelingsWordId = (legacyId) => String(legacyId).startsWith('p')
+          ? `l7p-${String(legacyId).slice(1)}`
+          : `l7-${legacyId}`;
+        unique(feelings.learned).forEach((legacyId) => setLegacyWord('vocab-lesson-7', feelingsWordId(legacyId), 'known'));
+        unique(feelings.hard).forEach((legacyId) => setLegacyWord('vocab-lesson-7', feelingsWordId(legacyId), 'difficult'));
+      }
+
+      const hugsLearned = readRawJson('homework_vocab_only_v1', []);
+      if (Array.isArray(hugsLearned)) {
+        hugsLearned.forEach((legacyId) => setLegacyWord('vocab-lesson-8', `l8-${legacyId}`, 'known'));
+        setLegacyBaseline('vocab-lesson-8', hugsLearned.length, 26, 'legacy-local:hugs');
+      }
+
+      const verbState = readRawJson('marina_verb_state', null);
+      if (verbState && typeof verbState === 'object') {
+        const learnedRu = new Set(unique(verbState.learnedRu).map((item) => safeText(item).toLowerCase()));
+        const learnedForms = new Set(unique(verbState.learnedForms).map((item) => safeText(item).toLowerCase()));
+        const hard = new Set(unique(verbState.hard).map((item) => safeText(item).toLowerCase()));
+        const topic = topicById.get('vocab-irregular-verbs');
+        (topic?.words || []).forEach((word) => {
+          const base = safeText(word.en).split('—')[0].trim().toLowerCase();
+          if (learnedRu.has(base) && learnedForms.has(base)) setLegacyWord(topic.id, word.id, 'known');
+          else if (hard.has(base)) setLegacyWord(topic.id, word.id, 'difficult');
+        });
+      }
+
+      setLegacyBaseline('vocab-lesson-4', firstNumber(['marina_words_learned', 'marina_vocab_everyday']), 30, 'legacy-local:everyday');
+      setLegacyBaseline('vocab-lesson-5', firstNumber(['marina_vocab_languages']), 36, 'legacy-local:languages');
+      setLegacyBaseline('vocab-lesson-6', firstNumber(['marina_vocab_language_classes']), 20, 'legacy-local:language-classes');
+      setLegacyBaseline('vocab-lesson-7', firstNumber(['marina_vocab_feelings']), 46, 'legacy-local:feelings');
+      setLegacyBaseline('vocab-irregular-verbs', firstNumber(['marina_vocab_verbs']), 49, 'legacy-local:irregular-verbs');
+      storage.write(key('vocabulary'), normalizeVocabularyProgress(vocabulary));
+
+      window.localStorage.setItem(marker, 'done');
+    } catch (error) {
+      console.warn('Не удалось полностью перенести старый локальный прогресс Полины:', error);
+    }
+  }
+
+
+  function archiveLegacyLesson8LocalProgress() {
+    const marker = key('lesson8_slot_archive_v1');
+    if (window.localStorage.getItem(marker)) return;
+
+    try {
+      const homework = storage.read(key('homework'), { completedIds: [], results: {}, submissions: {} });
+      homework.completedIds = unique(homework.completedIds);
+      homework.results = homework.results && typeof homework.results === 'object' ? homework.results : {};
+      homework.submissions = homework.submissions && typeof homework.submissions === 'object' ? homework.submissions : {};
+
+      const oldResult = homework.results['lesson-8'];
+      const oldSubmission = homework.submissions['lesson-8'];
+      const isLegacyResult = Boolean(oldResult?.migratedAt || oldResult?.legacyAnswers);
+      const isLegacySubmission = safeText(oldSubmission?.status).startsWith('migrated');
+
+      if (isLegacyResult || isLegacySubmission) {
+        const archiveId = 'legacy-lesson-8';
+        if (!homework.results[archiveId] && oldResult) homework.results[archiveId] = oldResult;
+        if (!homework.submissions[archiveId] && oldSubmission) homework.submissions[archiveId] = oldSubmission;
+        delete homework.results['lesson-8'];
+        delete homework.submissions['lesson-8'];
+        homework.completedIds = unique(homework.completedIds.map((id) => id === 'lesson-8' ? archiveId : id));
+        storage.write(key('homework'), homework);
+      }
+
+      window.localStorage.setItem(marker, 'done');
+    } catch (error) {
+      console.warn('Не удалось освободить локальный ID lesson-8 после legacy-миграции:', error);
+    }
+  }
+
+  function findLegacyLessonTarget(lessonId, legacyKey) {
+    const keyText = safeText(legacyKey);
+    let match;
+    if (lessonId === 'lesson-4') {
+      if ((match = keyText.match(/^1\.(\d+)$/))) return ['l4-key-vocab', match[1]];
+      if ((match = keyText.match(/^12\.1\.(\d+)$/))) return ['l4-12-1', String(Number(match[1]) - 1)];
+      if ((match = keyText.match(/^12\.2\.(\d+)$/))) return ['l4-12-2', String(Number(match[1]) - 1)];
+      if ((match = keyText.match(/^12\.4\.(\d+)$/))) return ['l4-12-4', String(Number(match[1]) - 1)];
+      if ((match = keyText.match(/^free_(\d+)$/))) return ['l4-over-to-you', match[1]];
+      if (keyText === 'matrix') return ['l4-collocations', 'matrix'];
+    }
+    if (lessonId === 'lesson-5') {
+      if ((match = keyText.match(/^q1_(.+)$/))) return ['l5-ex1', match[1]];
+      if ((match = keyText.match(/^q2_(\d+)$/))) return ['l5-ex2', match[1]];
+      if ((match = keyText.match(/^q3_1_(\d+)$/))) return ['l5-ex31', match[1]];
+      if ((match = keyText.match(/^q3_2_(\d+)$/))) return ['l5-ex32', match[1]];
+      if ((match = keyText.match(/^q3_3_(\d+)$/))) return ['l5-ex33', match[1]];
+    }
+    if (lessonId === 'lesson-6') {
+      if (keyText === 'q7') return ['l6-ex7', '1'];
+      if ((match = keyText.match(/^q8_(\d+)$/))) return ['l6-ex8', match[1]];
+      if ((match = keyText.match(/^q9_(\d+)$/))) return ['l6-ex9', match[1]];
+    }
+    if (lessonId === 'lesson-7') {
+      if ((match = keyText.match(/^q1_(\d+)$/))) return ['l7-ex1', match[1]];
+      if ((match = keyText.match(/^q2_(.+)$/))) return ['l7-ex2', match[1]];
+      if ((match = keyText.match(/^q43_1_(\d+)$/))) return ['l7-ex431', match[1]];
+      if ((match = keyText.match(/^q43_2_(\d+)$/))) return ['l7-ex432', String(Number(match[1]) - 1)];
+    }
+    if (lessonId === 'lesson-8') {
+      if ((match = keyText.match(/^q3_(\d+)$/))) return ['l8-ex3', match[1]];
+      if ((match = keyText.match(/^q99_(\d+)$/))) return ['l8-ex992', match[1]];
+      if ((match = keyText.match(/^q4_(\d+)$/))) return ['l8-ex4', match[1]];
+      if ((match = keyText.match(/^pred_(\d+)$/))) return ['l8-predictions', match[1]];
+      if (keyText === 'q5') return ['l8-ex5', '1'];
+      if ((match = keyText.match(/^listen_(\d+)$/))) return ['l8-listening', match[1]];
+    }
+    return null;
+  }
+
+  function convertLegacyChoiceValue(item, value) {
+    if (!item || !['single', 'select'].includes(item.input)) return value;
+    if (value === undefined || value === null || value === '') return '';
+    const options = Array.isArray(item.options) ? item.options : [];
+    if (Number.isInteger(value) && value >= 0 && value < options.length) return value;
+    const raw = safeText(value).trim();
+    if (/^[a-z]$/i.test(raw)) {
+      const index = raw.toLowerCase().charCodeAt(0) - 97;
+      if (index >= 0 && index < options.length) return index;
+    }
+    if (/^[tf]$/i.test(raw) && options.length === 2) return raw.toUpperCase() === 'T' ? 0 : 1;
+    if (/^\d+$/.test(raw)) {
+      const index = Number(raw);
+      if (index >= 0 && index < options.length) return index;
+    }
+    const normalized = normalizeAnswer(raw);
+    const index = options.findIndex((option) => {
+      const optionNormalized = normalizeAnswer(option);
+      return optionNormalized === normalized || optionNormalized.includes(normalized) || normalized.includes(optionNormalized);
+    });
+    return index >= 0 ? index : value;
+  }
+
+  function convertLegacyHomeworkAnswers(lessonId, legacyAnswers, lesson) {
+    if (!legacyAnswers || typeof legacyAnswers !== 'object' || !lesson) return {};
+    const converted = {};
+    const blocks = Array.isArray(lesson.blocks) ? lesson.blocks : [];
+    Object.entries(legacyAnswers).forEach(([legacyKey, rawValue]) => {
+      const alreadyNewBlock = blocks.find((block) => block.id === legacyKey);
+      if (alreadyNewBlock) {
+        converted[legacyKey] = rawValue;
+        return;
+      }
+      const target = findLegacyLessonTarget(lessonId, legacyKey);
+      if (!target) return;
+      const [blockId, itemId] = target;
+      const block = blocks.find((item) => item.id === blockId);
+      const item = block?.items?.find((entry) => safeText(entry.id) === safeText(itemId));
+      if (!block || !item) return;
+      if (!converted[blockId] || typeof converted[blockId] !== 'object') converted[blockId] = {};
+      if (item.input === 'multiple' && !Array.isArray(rawValue)) return;
+      converted[blockId][itemId] = convertLegacyChoiceValue(item, rawValue);
+    });
+    return converted;
+  }
+
+  function mergeLessonAnswers(legacyAnswers, currentAnswers) {
+    const merged = { ...(legacyAnswers && typeof legacyAnswers === 'object' ? legacyAnswers : {}) };
+    Object.entries(currentAnswers && typeof currentAnswers === 'object' ? currentAnswers : {}).forEach(([blockId, value]) => {
+      if (value && typeof value === 'object' && !Array.isArray(value) && merged[blockId] && typeof merged[blockId] === 'object' && !Array.isArray(merged[blockId])) {
+        merged[blockId] = { ...merged[blockId], ...value };
+      } else {
+        merged[blockId] = value;
+      }
+    });
+    return merged;
+  }
 
   function normalizeVocabularyProgress(value) {
     const words = value?.words && typeof value.words === 'object' ? { ...value.words } : {};
     const topics = {};
     Object.entries(value?.topics && typeof value.topics === 'object' ? value.topics : {}).forEach(([topicId, topic]) => {
-      topics[topicId] = { tests: Array.isArray(topic?.tests) ? topic.tests : [] };
+      topics[topicId] = {
+        tests: Array.isArray(topic?.tests) ? topic.tests : [],
+        legacyLearnedCount: Math.max(0, Number(topic?.legacyLearnedCount || 0)),
+        legacyTotal: Math.max(0, Number(topic?.legacyTotal || 0)),
+        legacySource: safeText(topic?.legacySource),
+        legacyUpdatedAt: topic?.legacyUpdatedAt || null
+      };
       unique(topic?.known).forEach((legacyId) => {
         const wordKey = VOCABULARY_CATALOG.idToKey.get(safeText(legacyId));
         if (wordKey) words[wordKey] = { status: 'known', topicId, learnedAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
@@ -418,26 +741,38 @@
 
         const homework = this.loadHomeworkProgress();
         (homeworkResponse.data || []).forEach((row) => {
-          const localResult = homework.results[row.lesson_id];
-          if (!localResult || dateMs(row.updated_at) >= dateMs(localResult.checkedAt)) {
+          const localResult = homework.results[row.lesson_id] || {};
+          const cloudLegacyAnswers = row.legacy_answers && typeof row.legacy_answers === 'object' ? row.legacy_answers : null;
+          if (!Object.keys(localResult).length || dateMs(row.updated_at) >= dateMs(localResult.checkedAt)) {
             homework.results[row.lesson_id] = {
+              ...localResult,
               correct: Number(row.score_correct || 0),
               total: Number(row.score_total || 0),
               percent: Number(row.score_percent || 0),
               answers: row.answers && typeof row.answers === 'object' ? row.answers : {},
-              checkedAt: row.checked_at || row.updated_at
+              legacyAnswers: cloudLegacyAnswers || localResult.legacyAnswers || null,
+              checkedAt: row.checked_at || row.updated_at,
+              migratedAt: row.migrated_from_legacy ? (localResult.migratedAt || row.updated_at) : localResult.migratedAt
             };
+          } else if (cloudLegacyAnswers && !localResult.legacyAnswers) {
+            homework.results[row.lesson_id] = { ...localResult, legacyAnswers: cloudLegacyAnswers };
           }
-          const cloudSubmitted = ['submitted_pending_report', 'submitted'].includes(String(row.status || ''));
-          if (cloudSubmitted) {
+          const cloudSubmitted = ['submitted_pending_report', 'submitted'].includes(row.status);
+          if (cloudSubmitted || row.migrated_from_legacy) {
             homework.submissions[row.lesson_id] = {
               savedAt: row.submitted_at || row.updated_at,
-              status: row.status === 'submitted' ? 'cloud' : 'cloud-pending-report',
+              status: row.migrated_from_legacy
+                ? 'migrated-cloud'
+                : row.status === 'submitted'
+                  ? 'cloud'
+                  : 'cloud-pending-report',
               cloudStatus: row.status || null,
               reportStatus: row.report_status || null,
               reportSentAt: row.report_sent_at || null,
               reportError: row.report_error || null
             };
+          }
+          if (cloudSubmitted || row.migrated_from_legacy) {
             homework.completedIds.push(row.lesson_id);
           }
         });
@@ -448,27 +783,29 @@
         (vocabularyResponse.data || []).forEach((row) => {
           const local = vocabulary.words[row.word_key];
           if (!local || dateMs(row.updated_at) >= dateMs(local.updatedAt)) {
-            const isIrregularVerb = safeText(row.source_topic_id) === 'irregular-verbs' || safeText(row.word_key).startsWith('irregular:');
             vocabulary.words[row.word_key] = {
               status: row.status,
               topicId: row.source_topic_id || '',
               learnedAt: row.learned_at || null,
-              updatedAt: row.updated_at,
-              ...(isIrregularVerb ? {
-                kind: 'irregular-verb',
-                wordId: row.word_id || safeText(row.word_key).replace(/^irregular:/, ''),
-                en: row.en || safeText(row.word_key).replace(/^irregular:/, ''),
-                ru: row.ru || ''
-              } : {})
+              updatedAt: row.updated_at
             };
           }
         });
         (vocabularyTopicsResponse.data || []).forEach((row) => {
-          const localTests = vocabulary.topics[row.topic_id]?.tests || [];
+          const localTopic = vocabulary.topics[row.topic_id] || {};
+          const localTests = localTopic.tests || [];
           const cloudTests = Array.isArray(row.tests) ? row.tests : [];
           const merged = new Map();
           [...localTests, ...cloudTests].forEach((test) => merged.set(test.completedAt || JSON.stringify(test), test));
-          vocabulary.topics[row.topic_id] = { tests: [...merged.values()] };
+          vocabulary.topics[row.topic_id] = {
+            tests: [...merged.values()],
+            legacyLearnedCount: Math.max(Number(localTopic.legacyLearnedCount || 0), Number(row.legacy_learned_count || 0)),
+            legacyTotal: Math.max(Number(localTopic.legacyTotal || 0), Number(row.legacy_total || 0)),
+            legacySource: localTopic.legacySource || row.legacy_source || '',
+            legacyUpdatedAt: dateMs(row.legacy_updated_at) >= dateMs(localTopic.legacyUpdatedAt)
+              ? row.legacy_updated_at
+              : localTopic.legacyUpdatedAt
+          };
         });
         storage.write(key('vocabulary'), normalizeVocabularyProgress(vocabulary));
 
@@ -477,9 +814,10 @@
           const local = grammar.topics[row.topic_id] || {};
           grammar.topics[row.topic_id] = {
             passed: Boolean(local.passed || row.passed),
+            passedAt: local.passedAt || row.passed_at || null,
             attempts: Math.max(Number(local.attempts || 0), Number(row.attempts || 0)),
             bestScore: Math.max(Number(local.bestScore || 0), Number(row.best_score || 0)),
-            answers: local.answers && typeof local.answers === 'object' ? local.answers : {},
+            answers: Array.isArray(local.answers) ? local.answers : [],
             updatedAt: dateMs(row.updated_at) >= dateMs(local.updatedAt) ? row.updated_at : local.updatedAt
           };
         });
@@ -498,6 +836,11 @@
 
       if (sections.includes('homework')) {
         const progress = this.loadHomeworkProgress();
+
+        // Final submissions are maintained by the server-side Telegram function.
+        // Do not send them back through a client-side upsert: PostgreSQL validates
+        // the proposed INSERT row before resolving ON CONFLICT, which can reject
+        // an otherwise existing final row when local report metadata is incomplete.
         const { data: cloudHomeworkRows, error: cloudHomeworkReadError } = await client
           .from(tables.homework)
           .select('lesson_id,status,report_status')
@@ -509,9 +852,9 @@
             .filter((row) => row.status === 'submitted' && row.report_status === 'sent')
             .map((row) => row.lesson_id)
         );
+
         const lessonIds = unique([...Object.keys(progress.results), ...Object.keys(progress.submissions)])
           .filter((lessonId) => !finalCloudLessonIds.has(lessonId));
-
         const rows = lessonIds.map((lessonId) => {
           const result = progress.results[lessonId] || {};
           const submission = progress.submissions[lessonId];
@@ -520,8 +863,8 @@
           const correct = Number(result.correct || 0);
           const hasSubmission = Boolean(submission);
           const isFinalCloudSubmission = submission?.cloudStatus === 'submitted' && submission?.reportStatus === 'sent';
-          const pendingReportStatus = submission?.reportStatus === 'failed' || submission?.status === 'report-failed'
-            ? 'failed'
+          const pendingReportStatus = ['pending', 'failed'].includes(submission?.reportStatus)
+            ? submission.reportStatus
             : 'pending';
           return {
             student_id: studentId,
@@ -532,6 +875,8 @@
               ? (isFinalCloudSubmission ? 'submitted' : 'submitted_pending_report')
               : 'draft',
             answers: result.answers && typeof result.answers === 'object' ? result.answers : {},
+            legacy_answers: result.legacyAnswers && typeof result.legacyAnswers === 'object' ? result.legacyAnswers : null,
+            migrated_from_legacy: Boolean(result.migratedAt || result.legacyAnswers),
             score_correct: total > 0 ? correct : null,
             score_total: total > 0 ? total : null,
             score_percent: total > 0 ? safePercent(correct, total) : null,
@@ -539,52 +884,57 @@
             submitted_at: submission?.savedAt || null,
             locked_at: submission?.savedAt || null,
             report_status: hasSubmission
-              ? (isFinalCloudSubmission ? 'sent' : pendingReportStatus)
+              ? (isFinalCloudSubmission ? (submission.reportStatus || 'sent') : pendingReportStatus)
               : 'not_sent',
-            report_sent_at: isFinalCloudSubmission ? (submission?.reportSentAt || submission?.savedAt || null) : null,
-            report_error: isFinalCloudSubmission ? null : (submission?.reportError || null)
+            report_sent_at: isFinalCloudSubmission
+              ? (submission.reportSentAt || submission.savedAt || null)
+              : null,
+            report_error: isFinalCloudSubmission ? (submission.reportError || null) : (submission?.reportError || null)
           };
         });
         if (rows.length) {
           const { error } = await client.from(tables.homework).upsert(rows, { onConflict: 'student_id,lesson_id' });
           if (error) throw error;
+
+          const pendingReportLessonIds = rows
+            .filter((row) => row.status === 'submitted_pending_report' && ['pending', 'failed'].includes(row.report_status))
+            .map((row) => row.lesson_id);
+          if (pendingReportLessonIds.length) {
+            await CloudService.retryHomeworkReports(pendingReportLessonIds);
+          }
         }
       }
 
       if (sections.includes('vocabulary')) {
         const progress = this.loadVocabularyProgress();
-        const wordRows = Object.entries(progress.words)
-          .filter(([wordKey, state]) => {
-            if (VOCABULARY_CATALOG.byKey.has(wordKey)) return true;
-            return state?.kind === 'irregular-verb' || state?.topicId === 'irregular-verbs' || safeText(wordKey).startsWith('irregular:');
-          })
-          .map(([wordKey, state]) => {
-            const record = VOCABULARY_CATALOG.byKey.get(wordKey);
-            const isIrregularVerb = state?.kind === 'irregular-verb' || state?.topicId === 'irregular-verbs' || safeText(wordKey).startsWith('irregular:');
-            return {
-              student_id: studentId,
-              word_key: wordKey,
-              word_id: isIrregularVerb
-                ? safeText(state?.wordId || wordKey.replace(/^irregular:/, ''), wordKey)
-                : safeText(record?.word?.id, wordKey),
-              en: isIrregularVerb
-                ? safeText(state?.en || wordKey.replace(/^irregular:/, ''), wordKey)
-                : safeText(record?.word?.en, wordKey),
-              ru: isIrregularVerb
-                ? safeText(state?.ru)
-                : safeText(record?.word?.ru),
-              source_topic_id: state.topicId || record?.topicId || null,
-              status: state.status,
-              learned_at: state.status === 'known' ? (state.learnedAt || new Date().toISOString()) : null
-            };
-          });
+        const wordRows = Object.entries(progress.words).filter(([wordKey]) => VOCABULARY_CATALOG.byKey.has(wordKey)).map(([wordKey, state]) => {
+          const record = VOCABULARY_CATALOG.byKey.get(wordKey);
+          return {
+            student_id: studentId,
+            word_key: wordKey,
+            word_id: safeText(record?.word?.id, wordKey),
+            en: safeText(record?.word?.en, wordKey),
+            ru: safeText(record?.word?.ru),
+            source_topic_id: state.topicId || record?.topicId || null,
+            status: state.status,
+            learned_at: state.status === 'known' ? (state.learnedAt || new Date().toISOString()) : null
+          };
+        });
         if (wordRows.length) {
           const { error } = await client.from(tables.vocabulary).upsert(wordRows, { onConflict: 'student_id,word_key' });
           if (error) throw error;
         }
         const topicRows = Object.entries(progress.topics)
-          .filter(([, topic]) => Array.isArray(topic.tests) && topic.tests.length)
-          .map(([topicId, topic]) => ({ student_id: studentId, topic_id: topicId, tests: topic.tests }));
+          .filter(([, topic]) => (Array.isArray(topic.tests) && topic.tests.length) || Number(topic.legacyLearnedCount || 0) > 0)
+          .map(([topicId, topic]) => ({
+            student_id: studentId,
+            topic_id: topicId,
+            tests: Array.isArray(topic.tests) ? topic.tests : [],
+            legacy_learned_count: Math.max(0, Number(topic.legacyLearnedCount || 0)),
+            legacy_total: Math.max(0, Number(topic.legacyTotal || 0)),
+            legacy_source: safeText(topic.legacySource) || null,
+            legacy_updated_at: topic.legacyUpdatedAt || null
+          }));
         if (topicRows.length) {
           const { error } = await client.from(tables.vocabularyTopics).upsert(topicRows, { onConflict: 'student_id,topic_id' });
           if (error) throw error;
@@ -598,7 +948,8 @@
           topic_id: topicId,
           passed: Boolean(state.passed),
           attempts: Number(state.attempts || 0),
-          best_score: Number(state.bestScore || 0)
+          best_score: Number(state.bestScore || 0),
+          passed_at: state.passed ? (state.passedAt || state.updatedAt || new Date().toISOString()) : null
         }));
         if (rows.length) {
           const { error } = await client.from(tables.grammar).upsert(rows, { onConflict: 'student_id,topic_id' });
@@ -613,81 +964,14 @@
     const values = {
       nameRu: student.nameRu,
       nameEn: student.nameEn,
-      level: student.level || config.course?.level,
+      level: student.level,
       textbook: student.textbook,
-      textbookEdition: student.textbookEdition,
-      courseNameRu: config.course?.nameRu || configuredStudents.map((item) => item.nameRu).filter(Boolean).join(' и '),
-      courseNameEn: config.course?.nameEn || configuredStudents.map((item) => item.nameEn).filter(Boolean).join(' & ')
+      textbookEdition: student.textbookEdition
     };
     document.querySelectorAll('[data-config]').forEach((node) => {
       node.textContent = safeText(values[node.dataset.config]);
     });
     if (student.nameEn) document.title = `${document.title} · ${student.nameEn}`;
-  }
-
-  function studentHref(href) {
-    try {
-      const url = new URL(href, window.location.href);
-      if (url.origin !== window.location.origin) return href;
-      if (!url.pathname.endsWith('.html') && !url.pathname.endsWith('/')) return href;
-      url.searchParams.set('student', studentId);
-      return `${url.pathname.split('/').pop() || 'index.html'}${url.search}${url.hash}`;
-    } catch {
-      return href;
-    }
-  }
-
-  function preserveStudentInLinks(root = document) {
-    root.querySelectorAll('a[href]').forEach((link) => {
-      const href = link.getAttribute('href') || '';
-      if (!href || href.startsWith('#') || /^(mailto:|tel:|javascript:)/i.test(href)) return;
-      try {
-        const url = new URL(href, window.location.href);
-        if (url.origin !== window.location.origin) return;
-        if (!url.pathname.endsWith('.html') && !url.pathname.endsWith('/')) return;
-        url.searchParams.set('student', studentId);
-        const filename = url.pathname.split('/').pop() || 'index.html';
-        link.setAttribute('href', `${filename}${url.search}${url.hash}`);
-      } catch {}
-    });
-  }
-
-  function setupStudentSwitcher() {
-    if (configuredStudents.length < 2 || document.querySelector('[data-student-switcher]')) return;
-    const main = document.querySelector('main');
-    if (!main) return;
-
-    const section = document.createElement('section');
-    section.className = 'student-switcher-section reveal';
-    section.dataset.studentSwitcher = 'true';
-    section.setAttribute('aria-label', 'Choose student');
-    section.innerHTML = `<div class="student-switcher-card">
-      <div class="student-switcher-copy">
-        <span class="eyebrow">Personal progress</span>
-        <strong>${escapeHtml(safeText(student.nameRu || student.nameEn, 'Student'))}</strong>
-        <span>Choose whose progress you want to see.</span>
-      </div>
-      <div class="student-switcher" role="group" aria-label="Students">
-        ${configuredStudents.map((item) => {
-          const id = normalizeStudentId(item?.id);
-          const active = id === studentId;
-          return `<button class="student-switcher-btn${active ? ' active' : ''}" type="button" data-student-id="${escapeHtml(id)}" aria-pressed="${active ? 'true' : 'false'}"><span class="student-avatar" aria-hidden="true">${escapeHtml(safeText(item?.nameRu || item?.nameEn, '?').slice(0, 1).toUpperCase())}</span><span>${escapeHtml(item?.nameRu || item?.nameEn || id)}</span></button>`;
-        }).join('')}
-      </div>
-    </div>`;
-
-    section.addEventListener('click', (event) => {
-      const button = event.target.closest('[data-student-id]');
-      if (!button || button.dataset.studentId === studentId) return;
-      const nextId = normalizeStudentId(button.dataset.studentId);
-      if (!configuredStudents.some((item) => normalizeStudentId(item?.id) === nextId)) return;
-      try { window.localStorage.setItem(activeStudentStorageKey, nextId); } catch {}
-      const url = new URL(window.location.href);
-      url.searchParams.set('student', nextId);
-      window.location.href = url.toString();
-    });
-
-    main.prepend(section);
   }
 
   function markNavigation() {
@@ -702,11 +986,25 @@
   function progressMarkup(label, value, total, tone = '') {
     const percent = safePercent(value, total);
     return `<div class="progress-row">
-      <div class="progress-row-head"><strong>${escapeHtml(label)}</strong><span>${Number(value) || 0} of ${Number(total) || 0}</span></div>
+      <div class="progress-row-head"><strong>${escapeHtml(label)}</strong><span>${Number(value) || 0} из ${Number(total) || 0}</span></div>
       <div class="progress-track" role="progressbar" aria-label="${escapeHtml(label)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percent}">
         <div class="progress-fill ${tone}" style="width:${percent}%"></div>
       </div>
     </div>`;
+  }
+
+  function exactKnownCountForTopic(progress, topic) {
+    return (topic?.words || []).filter((word) => progress.words[word.__wordKey]?.status === 'known').length;
+  }
+
+  function effectiveKnownCountForTopic(progress, topic) {
+    const exact = exactKnownCountForTopic(progress, topic);
+    const legacy = Math.max(0, Number(progress.topics[topic?.id]?.legacyLearnedCount || 0));
+    return Math.min(Number(topic?.words?.length || 0), Math.max(exact, legacy));
+  }
+
+  function effectiveKnownTotal(progress) {
+    return VOCABULARY_DATA.reduce((sum, topic) => sum + effectiveKnownCountForTopic(progress, topic), 0);
   }
 
   function totals() {
@@ -714,14 +1012,14 @@
     const vocabProgress = window.ProgressService.loadVocabularyProgress();
     const grammarProgress = window.ProgressService.loadGrammarProgress();
     const publishedHomework = HOMEWORK_DATA.filter((item) => ['available', 'completed', 'locked'].includes(item.status));
-    const completedHomework = publishedHomework.filter((item) => hwProgress.completedIds.includes(item.id)).length;
-    const knownWordKeys = Object.entries(vocabProgress.words).filter(([wordKey, item]) => VOCABULARY_CATALOG.byKey.has(wordKey) && item.status === 'known').map(([wordKey]) => wordKey);
-    const passedGrammar = GRAMMAR_DATA.filter((topic) => grammarProgress.topics[topic.id]?.passed === true).length;
+    const completedHomework = publishedHomework.filter((item) => hwProgress.completedIds.includes(item.id) || Boolean(hwProgress.submissions[item.id]) || item.status === 'completed').length;
+    const knownWordCount = effectiveKnownTotal(vocabProgress);
+    const passedGrammar = GRAMMAR_DATA.filter((topic) => grammarProgress.topics[topic.id]?.passed === true || topic.passed === true).length;
     return {
       homeworkTotal: publishedHomework.length,
       homeworkCompleted: completedHomework,
       vocabularyTotal: VOCABULARY_CATALOG.allWords.length,
-      vocabularyKnown: knownWordKeys.length,
+      vocabularyKnown: knownWordCount,
       vocabularyTopics: VOCABULARY_DATA.length,
       grammarTotal: GRAMMAR_DATA.filter((topic) => topic.status !== 'draft').length,
       grammarPassed: passedGrammar
@@ -732,27 +1030,6 @@
     return `<div class="card empty-state"><div class="empty-state-icon">${icon}</div><h3>${escapeHtml(title)}</h3><p>${escapeHtml(text)}</p></div>`;
   }
 
-  function materialGroupMarkup(title, description, items, options = {}) {
-    const list = Array.isArray(items) ? items.filter(Boolean) : [];
-    const tone = options.tone === 'completed' ? 'completed' : 'new';
-    const emptyText = safeText(options.emptyText).trim();
-    const body = list.length
-      ? `<div class="list material-group-list">${list.join('')}</div>`
-      : `<div class="material-group-empty">${escapeHtml(emptyText || 'Nothing here yet.')}</div>`;
-    return `<section class="material-group material-group-${tone}" aria-label="${escapeHtml(title)}">
-      <div class="material-group-heading">
-        <div><h2>${escapeHtml(title)}</h2><p>${escapeHtml(description)}</p></div>
-        <span class="material-group-count">${list.length}</span>
-      </div>
-      ${body}
-    </section>`;
-  }
-
-  function numericSuffix(value) {
-    const match = safeText(value).match(/(\d+)(?!.*\d)/);
-    return match ? Number(match[1]) || 0 : 0;
-  }
-
   function renderHome() {
     const t = totals();
     if (byId('home-stat-completed')) byId('home-stat-completed').textContent = t.homeworkCompleted;
@@ -760,279 +1037,197 @@
     if (byId('grammar-stat-passed')) byId('grammar-stat-passed').textContent = t.grammarPassed;
     const list = byId('home-progress-list');
     if (list) list.innerHTML = [
-      progressMarkup('Homework', t.homeworkCompleted, t.homeworkTotal),
-      progressMarkup('Vocabulary', t.vocabularyKnown, t.vocabularyTotal, 'rose'),
-      progressMarkup('Grammar', t.grammarPassed, t.grammarTotal, 'green')
+      progressMarkup('Домашние задания', t.homeworkCompleted, t.homeworkTotal),
+      progressMarkup('Словарный запас', t.vocabularyKnown, t.vocabularyTotal, 'rose'),
+      progressMarkup('Грамматика', t.grammarPassed, t.grammarTotal, 'green')
     ].join('');
     const current = byId('current-material');
     if (current) {
       const homeworkProgress = window.ProgressService.loadHomeworkProgress();
       const currentHomework = HOMEWORK_DATA
-        .filter((item) => item.status === 'available' && !homeworkProgress.completedIds.includes(item.id))
-        .sort((a, b) => dateMs(b.publishedAt) - dateMs(a.publishedAt) || Number(b.number || 0) - Number(a.number || 0))[0];
+        .filter((item) => item.status === 'available' && !homeworkProgress.completedIds.includes(item.id) && !homeworkProgress.submissions[item.id])
+        .sort((a, b) => Number(b.number || 0) - Number(a.number || 0) || dateMs(b.publishedAt) - dateMs(a.publishedAt))[0];
 
       if (currentHomework) {
         const href = currentHomework.page || `lesson.html?id=${encodeURIComponent(currentHomework.id)}`;
         current.innerHTML = `<a class="card interactive item-card current-material-card" href="${escapeHtml(href)}">
           <div class="item-icon">✨</div>
-          <div class="item-main"><span class="homework-number">Homework #${Number(currentHomework.number || 0)}</span><h3>${escapeHtml(safeText(currentHomework.title, 'Current assignment'))}</h3><p>${escapeHtml(safeText(currentHomework.subtitle, 'Continue working with the published material.'))}</p></div>
-          <span class="status-badge status-available">Continue</span>
+          <div class="item-main"><h3>${escapeHtml(safeText(currentHomework.title, 'Текущее задание'))}</h3><p>${escapeHtml(safeText(currentHomework.subtitle, 'Продолжить работу с опубликованным материалом.'))}</p></div>
+          <span class="status-badge status-available">Продолжить</span>
         </a>`;
       } else {
         const publishedHomework = HOMEWORK_DATA.filter((item) => ['available', 'completed'].includes(item.status));
-        const everythingCompleted = publishedHomework.length > 0 && publishedHomework.every((item) => homeworkProgress.completedIds.includes(item.id));
+        const everythingCompleted = publishedHomework.length > 0 && publishedHomework.every((item) => item.status === 'completed' || homeworkProgress.completedIds.includes(item.id) || Boolean(homeworkProgress.submissions[item.id]));
         current.innerHTML = everythingCompleted
-          ? '<a class="card interactive item-card current-material-card" href="homework.html"><div class="item-icon">✅</div><div class="item-main"><h3>All published materials are complete</h3><p>New material will appear after the teacher publishes it.</p></div><span class="arrow" aria-hidden="true">→</span></a>'
-          : '<div class="card disabled empty-state"><div class="empty-state-icon">✨</div><h3>No current material has been published yet</h3><p>The latest available homework assignment will appear here automatically.</p></div>';
+          ? '<a class="card interactive item-card current-material-card" href="homework.html"><div class="item-icon">✅</div><div class="item-main"><h3>Все опубликованные материалы выполнены</h3><p>Новый материал появится после следующей публикации преподавателя.</p></div><span class="arrow" aria-hidden="true">→</span></a>'
+          : '<div class="card disabled empty-state"><div class="empty-state-icon">✨</div><h3>Текущий материал пока не опубликован</h3><p>Здесь автоматически появится последнее доступное домашнее задание.</p></div>';
       }
     }
-  }
-
-
-  function getLessonVocabularyTopic(lesson) {
-    const vocabularyId = safeText(lesson?.vocabularyId).trim();
-    return VOCABULARY_CATALOG.allTopics.find((topic) => topic.id === vocabularyId)
-      || VOCABULARY_CATALOG.allTopics.find((topic) => topic.linkedLessonId === lesson?.id)
-      || null;
-  }
-
-  function getLessonGrammarTopics(lesson) {
-    const ids = Array.isArray(lesson?.grammarIds) ? lesson.grammarIds.map((id) => safeText(id).trim()).filter(Boolean) : [];
-    const topics = ids.map((id) => GRAMMAR_DATA.find((topic) => topic.id === id)).filter(Boolean);
-    GRAMMAR_DATA.filter((topic) => topic.linkedLessonId === lesson?.id).forEach((topic) => topics.push(topic));
-    return [...new Map(topics.map((topic) => [topic.id, topic])).values()];
-  }
-
-  function compactGrammarTitle(topic) {
-    const id = safeText(topic?.id).toLowerCase();
-    if (id.includes('suffix')) return 'Suffixes';
-    if (id.includes('pronoun')) return 'Pronouns';
-    const title = safeText(topic?.title, 'Grammar').split(':')[0].trim();
-    return title.length > 22 ? `${title.slice(0, 20).trim()}…` : title;
-  }
-
-  function lessonMaterialLinks(lesson, mode = 'hub') {
-    const vocabulary = getLessonVocabularyTopic(lesson);
-    const grammarTopics = getLessonGrammarTopics(lesson);
-    if (!vocabulary && !grammarTopics.length) return '';
-
-    const entries = [];
-    const seen = new Set();
-
-    if (vocabulary) {
-      const href = vocabulary.page || `vocabulary.html?id=${encodeURIComponent(vocabulary.id)}`;
-      const key = `vocab:${href}`;
-      if (!seen.has(key)) {
-        seen.add(key);
-        entries.push({
-          type: 'vocab',
-          icon: '💥',
-          label: 'Vocabulary',
-          shortLabel: 'Vocab',
-          title: safeText(vocabulary.title, 'Vocabulary'),
-          href
-        });
-      }
-    }
-
-    grammarTopics.forEach((topic) => {
-      if (topic.status === 'locked' || topic.status === 'draft') return;
-      const href = topic.page || `grammar-topic.html?id=${encodeURIComponent(topic.id)}`;
-      const key = `grammar:${href}`;
-      if (seen.has(key)) return;
-      seen.add(key);
-      entries.push({
-        type: 'grammar',
-        icon: '📐',
-        label: 'Grammar',
-        shortLabel: compactGrammarTitle(topic),
-        title: safeText(topic.title, 'Grammar'),
-        href
-      });
-    });
-
-    if (!entries.length) return '';
-
-    if (mode === 'hub') {
-      const links = entries.map((entry) => `<a class="lesson-material-chip ${escapeHtml(entry.type)}" href="${escapeHtml(entry.href)}" aria-label="Open: ${escapeHtml(entry.label)} — ${escapeHtml(entry.title)}" title="${escapeHtml(entry.title)}"><span class="lesson-material-chip-icon" aria-hidden="true">${escapeHtml(entry.icon)}</span><span class="lesson-material-chip-label">${escapeHtml(entry.shortLabel)}</span><span class="lesson-material-chip-arrow" aria-hidden="true">→</span></a>`).join('');
-      return `<div class="lesson-materials lesson-materials-hub"><span class="lesson-materials-compact-label">Materials</span><div class="lesson-material-links">${links}</div></div>`;
-    }
-
-    const links = entries.map((entry) => `<a class="lesson-material-link ${escapeHtml(entry.type)}" href="${escapeHtml(entry.href)}"><span class="lesson-material-link-main"><span class="lesson-material-icon" aria-hidden="true">${escapeHtml(entry.icon)}</span><span class="lesson-material-text"><strong>${escapeHtml(entry.label)}</strong><small>${escapeHtml(entry.title)}</small></span></span><span class="lesson-material-arrow" aria-hidden="true">→</span></a>`).join('');
-    return `<div class="lesson-materials lesson-materials-lesson"><div class="lesson-materials-heading"><span class="eyebrow">Open lesson materials</span><p>Vocabulary and grammar for this homework assignment.</p></div><div class="lesson-material-links">${links}</div></div>`;
   }
 
   function renderHomework() {
     const progress = window.ProgressService.loadHomeworkProgress();
     const published = HOMEWORK_DATA.filter((item) => item.status !== 'draft');
-    const completed = published.filter((item) => progress.completedIds.includes(item.id)).length;
+
+    const isComplete = (item) => progress.completedIds.includes(item.id)
+      || Boolean(progress.submissions[item.id])
+      || item.status === 'completed';
+
+    const completionTime = (item) => {
+      const submission = progress.submissions[item.id] || {};
+      const result = progress.results[item.id] || {};
+      const candidates = [
+        submission.savedAt,
+        submission.submittedAt,
+        result.submittedAt,
+        result.updatedAt,
+        item.completedAt
+      ];
+      for (const value of candidates) {
+        const timestamp = dateMs(value);
+        if (timestamp) return timestamp;
+      }
+      return 0;
+    };
+
+    const newestLessonFirst = (a, b) => Number(b.number || 0) - Number(a.number || 0)
+      || dateMs(b.publishedAt) - dateMs(a.publishedAt);
+
+    const completedNewestFirst = (a, b) => completionTime(b) - completionTime(a)
+      || Number(b.number || 0) - Number(a.number || 0);
+
+    const completed = published.filter(isComplete).length;
     const percent = safePercent(completed, published.length);
     byId('hw-completed').textContent = completed;
     byId('hw-total').textContent = published.length;
     byId('hw-percent').textContent = `${percent}%`;
-    byId('hw-overall-progress').innerHTML = progressMarkup('Overall progress', completed, published.length);
+    byId('hw-overall-progress').innerHTML = progressMarkup('Общий прогресс', completed, published.length);
+
     const root = byId('homework-list');
     if (!published.length) {
-      root.innerHTML = emptyState('📝', 'No homework assignments yet', 'The teacher will add an interactive assignment here after the first lesson.');
+      root.innerHTML = emptyState('📝', 'Домашних заданий пока нет', 'После первого урока преподаватель добавит сюда интерактивное задание.');
       return;
     }
 
-    const homeworkCard = (item) => {
+    const renderCard = (item) => {
       const locked = item.status === 'locked';
-      const complete = progress.completedIds.includes(item.id);
-      const title = locked ? '🔒 Coming soon' : safeText(item.title, 'Assignment');
-      const subtitle = locked ? 'The material will open after the teacher publishes it.' : safeText(item.subtitle, 'Interactive assignment');
+      const complete = isComplete(item);
+      const lessonNumber = Number(item.number || 0);
+      const numberPrefix = lessonNumber > 0 ? `Lesson ${lessonNumber} · ` : '';
+      const title = locked
+        ? `🔒 ${numberPrefix}Coming soon`
+        : `${numberPrefix}${safeText(item.title, 'Задание')}`;
+      const savedResult = progress.results[item.id];
+      const scoreSuffix = savedResult && Number(savedResult.total || 0) > 0
+        ? ` · Результат ${Number(savedResult.correct || 0)}/${Number(savedResult.total || 0)}`
+        : '';
+      const subtitle = locked
+        ? 'Материал откроется после публикации преподавателем.'
+        : `${safeText(item.subtitle, 'Интерактивное задание')}${scoreSuffix}`;
       const status = complete ? 'completed' : safeText(item.status, 'available');
-      const label = complete ? 'Completed' : status === 'available' ? 'Available' : status === 'locked' ? 'Locked' : 'Draft';
-      if (locked) {
-        return `<article class="card lesson-hub-card disabled"><div class="lesson-hub-main"><div class="item-icon">🔒</div><div class="item-main"><span class="homework-number">Homework #${Number(item.number || 0)}</span><h3>${escapeHtml(title)}</h3><p>${escapeHtml(subtitle)}</p></div><span class="status-badge status-locked">${escapeHtml(label)}</span></div></article>`;
-      }
-      const href = item.page || `lesson.html?id=${encodeURIComponent(item.id)}`;
-      return `<article class="card lesson-hub-card">
-        <a class="lesson-hub-main interactive" href="${escapeHtml(href)}">
-          <div class="item-icon">${complete ? '✅' : '📝'}</div>
-          <div class="item-main"><span class="homework-number">Homework #${Number(item.number || 0)}</span><h3>${escapeHtml(title)}</h3><p>${escapeHtml(subtitle)}</p></div>
-          <span class="status-badge status-${escapeHtml(status)}">${escapeHtml(label)}</span>
-        </a>
-        ${lessonMaterialLinks(item, 'hub')}
-      </article>`;
+      const label = complete ? 'Выполнено' : status === 'available' ? 'Доступно' : status === 'locked' ? 'Закрыто' : 'Черновик';
+      const tag = locked ? 'div' : 'a';
+      const href = locked ? '' : ` href="${escapeHtml(item.page || `lesson.html?id=${encodeURIComponent(item.id)}`)}"`;
+      return `<${tag} class="card item-card ${locked ? 'disabled' : 'interactive'}"${href}>
+        <div class="item-icon">${complete ? '✅' : locked ? '🔒' : '📝'}</div>
+        <div class="item-main"><h3>${escapeHtml(title)}</h3><p>${escapeHtml(subtitle)}</p></div>
+        <span class="status-badge status-${escapeHtml(status)}">${escapeHtml(label)}</span>
+      </${tag}>`;
     };
 
-    const newestFirst = [...published].sort((a, b) => {
-      const aLocked = a.status === 'locked' ? 1 : 0;
-      const bLocked = b.status === 'locked' ? 1 : 0;
-      return aLocked - bLocked
-        || dateMs(b.publishedAt) - dateMs(a.publishedAt)
-        || Number(b.number || 0) - Number(a.number || 0);
-    });
-    const newHomework = newestFirst.filter((item) => !progress.completedIds.includes(item.id));
-    const finishedHomework = newestFirst.filter((item) => progress.completedIds.includes(item.id));
+    const renderGroup = (title, items, tone = '') => {
+      if (!items.length) return '';
+      return `<section class="homework-group ${tone}" aria-label="${escapeHtml(title)}">
+        <div class="homework-group-heading">
+          <h3>${escapeHtml(title)}</h3>
+          <span>${items.length}</span>
+        </div>
+        <div class="homework-group-list">${items.map(renderCard).join('')}</div>
+      </section>`;
+    };
+
+    const toDo = published
+      .filter((item) => !isComplete(item) && item.status !== 'locked')
+      .sort(newestLessonFirst);
+    const done = published
+      .filter(isComplete)
+      .sort(completedNewestFirst);
+    const comingSoon = published
+      .filter((item) => !isComplete(item) && item.status === 'locked')
+      .sort((a, b) => Number(a.number || 0) - Number(b.number || 0));
 
     root.innerHTML = [
-      materialGroupMarkup('New', 'Start with the latest homework assignment.', newHomework.map(homeworkCard), {
-        emptyText: 'No new homework assignments. Everything published has been completed.'
-      }),
-      materialGroupMarkup('Completed', 'Finished homework is kept below for review.', finishedHomework.map(homeworkCard), {
-        tone: 'completed',
-        emptyText: 'Completed homework will appear here.'
-      })
+      renderGroup('Нужно выполнить', toDo, 'homework-group-todo'),
+      renderGroup('Выполненные', done, 'homework-group-done'),
+      renderGroup('Скоро', comingSoon, 'homework-group-locked')
     ].join('');
   }
 
   function renderGrammar() {
     const progress = window.ProgressService.loadGrammarProgress();
     const published = GRAMMAR_DATA.filter((topic) => topic.status !== 'draft');
-    const passed = published.filter((topic) => progress.topics[topic.id]?.passed).length;
+    const passed = published.filter((topic) => progress.topics[topic.id]?.passed || topic.passed).length;
     byId('grammar-passed').textContent = passed;
     byId('grammar-total').textContent = published.length;
-    byId('grammar-overall-progress').innerHTML = progressMarkup('Overall progress', passed, published.length, 'green');
+    byId('grammar-overall-progress').innerHTML = progressMarkup('Общий прогресс', passed, published.length, 'green');
     const root = byId('grammar-list');
     if (!published.length) {
-      root.innerHTML = emptyState('📐', 'No grammar topics have been published yet', `Materials will be added in line with the lessons and the coursebook “${safeText(student.textbook)}”.`);
+      root.innerHTML = emptyState('📐', 'Грамматические темы пока не опубликованы', `Материалы будут добавляться в соответствии с уроками и учебником «${safeText(student.textbook)}».`);
       return;
     }
-
-    const grammarCard = (topic) => {
+    root.innerHTML = [...published].sort((a,b) => Number(b.order || 0) - Number(a.order || 0)).map((topic) => {
       const locked = topic.status === 'locked';
-      const isPassed = progress.topics[topic.id]?.passed;
-      const title = locked ? '🔒 Coming soon' : safeText(topic.title, 'Grammar topic');
+      const isPassed = progress.topics[topic.id]?.passed || topic.passed;
+      const title = locked ? '🔒 Coming soon' : safeText(topic.title, 'Грамматическая тема');
       const tag = locked ? 'div' : 'a';
       const href = locked ? '' : ` href="${escapeHtml(topic.page || `grammar-topic.html?id=${encodeURIComponent(topic.id)}`)}"`;
       return `<${tag} class="card item-card ${locked ? 'disabled' : 'interactive'}"${href}>
         <div class="item-icon">${isPassed ? '✅' : locked ? '🔒' : '📐'}</div>
-        <div class="item-main"><h3>${escapeHtml(title)}</h3><p>${locked ? 'The material has not been published yet.' : `${escapeHtml(topic.level || student.level)} · ${Number(progress.topics[topic.id]?.attempts || 0)} attempts`}</p></div>
-        <span class="status-badge status-${isPassed ? 'completed' : locked ? 'locked' : 'available'}">${isPassed ? 'Completed' : locked ? 'Locked' : 'Open'}</span>
+        <div class="item-main"><h3>${escapeHtml(title)}</h3><p>${locked ? 'Материал ещё не опубликован.' : `${escapeHtml(topic.level || student.level)} · ${Number(progress.topics[topic.id]?.attempts || topic.attempts || 0)} попыток`}</p></div>
+        <span class="status-badge status-${isPassed ? 'completed' : locked ? 'locked' : 'available'}">${isPassed ? 'Пройдено' : locked ? 'Закрыто' : 'Открыть'}</span>
       </${tag}>`;
-    };
-
-    const newestFirst = [...published].sort((a, b) => {
-      const aLocked = a.status === 'locked' ? 1 : 0;
-      const bLocked = b.status === 'locked' ? 1 : 0;
-      return aLocked - bLocked
-        || dateMs(b.publishedAt) - dateMs(a.publishedAt)
-        || Number(b.order || numericSuffix(b.linkedLessonId || b.id)) - Number(a.order || numericSuffix(a.linkedLessonId || a.id));
-    });
-    const newTopics = newestFirst.filter((topic) => !(progress.topics[topic.id]?.passed));
-    const completedTopics = newestFirst.filter((topic) => progress.topics[topic.id]?.passed);
-
-    root.innerHTML = [
-      materialGroupMarkup('New', 'Open grammar topics, newest first.', newTopics.map(grammarCard), {
-        emptyText: 'No new grammar topics. All published topics are completed.'
-      }),
-      materialGroupMarkup('Completed', 'Completed grammar topics are kept below for review.', completedTopics.map(grammarCard), {
-        tone: 'completed',
-        emptyText: 'Completed grammar topics will appear here.'
-      })
-    ].join('');
+    }).join('');
   }
 
   function renderVocabularyHub() {
     const progress = window.ProgressService.loadVocabularyProgress();
     const totalWords = VOCABULARY_CATALOG.allWords.length;
-    const knownCount = Object.entries(progress.words).filter(([wordKey, item]) => VOCABULARY_CATALOG.byKey.has(wordKey) && item.status === 'known').length;
+    const knownCount = effectiveKnownTotal(progress);
     byId('vocab-known').textContent = knownCount;
     byId('vocab-total').textContent = totalWords;
     byId('vocab-topics').textContent = VOCABULARY_DATA.length;
     byId('vocab-percent').textContent = `${safePercent(knownCount, totalWords)}%`;
-    byId('vocab-overall-progress').innerHTML = progressMarkup('Overall progress', knownCount, totalWords, 'rose');
+    byId('vocab-overall-progress').innerHTML = progressMarkup('Общий прогресс', knownCount, totalWords, 'rose');
     const root = byId('vocabulary-list');
     const filters = byId('vocab-filters');
-    const sourceOrder = new Map(VOCABULARY_DATA.map((topic, index) => [topic.id, index]));
-
-    const topicIsComplete = (topic) => {
-      const topicKnown = topic.words.filter((word) => progress.words[word.__wordKey]?.status === 'known').length;
-      return topic.words.length > 0 && topicKnown >= topic.words.length;
-    };
-
-    const vocabularyCard = (topic) => {
-      const wordCount = topic.words.length;
-      const topicKnown = topic.words.filter((word) => progress.words[word.__wordKey]?.status === 'known').length;
-      const complete = wordCount > 0 && topicKnown >= wordCount;
-      return `<a class="card item-card interactive" href="${escapeHtml(topic.page || `vocabulary.html?id=${encodeURIComponent(topic.id)}`)}">
-        <div class="item-icon">${escapeHtml(topic.icon || '💬')}</div>
-        <div class="item-main"><h3>${escapeHtml(topic.title || 'Vocabulary topic')}</h3><p>${escapeHtml(topic.label || '')} · ${topicKnown} of ${wordCount} words</p></div>
-        <span class="status-badge status-${complete ? 'completed' : 'available'}">${complete ? 'Completed' : 'Open'}</span>
-      </a>`;
-    };
 
     const draw = (filter = 'all') => {
       const filtered = VOCABULARY_DATA.filter((topic) => {
-        const complete = topicIsComplete(topic);
+        const topicKnown = effectiveKnownCountForTopic(progress, topic);
+        const complete = topic.words.length > 0 && topicKnown >= topic.words.length;
         if (filter === 'completed') return complete;
         if (filter === 'lesson') return topic.type === 'lesson';
         if (filter === 'extra') return topic.type === 'extra';
         return true;
       });
       if (!filtered.length) {
-        root.innerHTML = emptyState('💥', 'No vocabulary practice topics yet', 'New topics will appear after lessons. Duplicate words are excluded automatically.');
+        root.innerHTML = emptyState('💥', 'Словарных тренажёров пока нет', 'Новые темы появятся после уроков. Повторяющиеся слова автоматически исключаются.');
         return;
       }
-
-      const newestFirst = [...filtered].sort((a, b) => {
-        return dateMs(b.publishedAt) - dateMs(a.publishedAt)
-          || Number(b.order || numericSuffix(b.linkedLessonId || b.id)) - Number(a.order || numericSuffix(a.linkedLessonId || a.id))
-          || Number(sourceOrder.get(b.id) || 0) - Number(sourceOrder.get(a.id) || 0);
+      const newestTopics = [...filtered].sort((a, b) => {
+        const lessonNumber = (topic) => Number(String(topic.linkedLessonId || '').match(/(\d+)(?!.*\d)/)?.[1] || topic.order || 0);
+        return lessonNumber(b) - lessonNumber(a);
       });
-      const newTopics = newestFirst.filter((topic) => !topicIsComplete(topic));
-      const completedTopics = newestFirst.filter(topicIsComplete);
-
-      if (filter === 'completed') {
-        root.innerHTML = materialGroupMarkup('Completed', 'Vocabulary topics where all words are learned.', completedTopics.map(vocabularyCard), {
-          tone: 'completed',
-          emptyText: 'Completed vocabulary topics will appear here.'
-        });
-        return;
-      }
-
-      root.innerHTML = [
-        materialGroupMarkup('New', 'Vocabulary topics still in progress, newest first.', newTopics.map(vocabularyCard), {
-          emptyText: 'No new vocabulary topics. All visible topics are completed.'
-        }),
-        materialGroupMarkup('Completed', 'Topics where all words are learned are kept below.', completedTopics.map(vocabularyCard), {
-          tone: 'completed',
-          emptyText: 'Completed vocabulary topics will appear here.'
-        })
-      ].join('');
+      root.innerHTML = newestTopics.map((topic) => {
+        const wordCount = topic.words.length;
+        const topicKnown = effectiveKnownCountForTopic(progress, topic);
+        const complete = wordCount > 0 && topicKnown >= wordCount;
+        return `<a class="card item-card interactive" href="${escapeHtml(topic.page || `vocabulary.html?id=${encodeURIComponent(topic.id)}`)}">
+          <div class="item-icon">${escapeHtml(topic.icon || '💬')}</div>
+          <div class="item-main"><h3>${escapeHtml(topic.title || 'Словарная тема')}</h3><p>${escapeHtml(topic.label || '')} · ${topicKnown} из ${wordCount} слов</p></div>
+          <span class="status-badge status-${complete ? 'completed' : 'available'}">${complete ? 'Завершено' : 'Открыть'}</span>
+        </a>`;
+      }).join('');
     };
     if (filters) {
       filters.onclick = (event) => {
@@ -1057,622 +1252,670 @@
     </section>`).join('')}</div>`;
   }
 
-  function renderExerciseContext(item) {
-    const parts = Array.isArray(item.contextParts) ? item.contextParts : [];
-    if (!parts.length) return '';
-    const content = parts.map((part) => {
-      if (typeof part === 'string') return escapeHtml(part);
-      const className = part?.highlight ? ' class="exercise-source-highlight"' : '';
-      return `<span${className}>${escapeHtml(part?.text || '')}</span>`;
-    }).join('');
-    return `<div class="exercise-source-line">${content}</div>`;
+
+  function renderMarkedDialogueLine(value) {
+    const text = safeText(value);
+    const pattern = /\[\[(\d+)\|([^\]]+)\]\]/g;
+    let cursor = 0;
+    let markup = '';
+    let match;
+    while ((match = pattern.exec(text))) {
+      markup += escapeHtml(text.slice(cursor, match.index));
+      markup += `<span class="dialogue-mistake"><sup>${escapeHtml(match[1])}</sup><u>${escapeHtml(match[2])}</u></span>`;
+      cursor = pattern.lastIndex;
+    }
+    return markup + escapeHtml(text.slice(cursor));
   }
 
-  function renderRSelection(text, inputName, selectedIndexes = [], interactive = true) {
-    let occurrence = 0;
-    const selected = new Set((Array.isArray(selectedIndexes) ? selectedIndexes : []).map(Number));
-    return [...safeText(text)].map((char) => {
-      if (char.toLocaleLowerCase('en') !== 'r') return escapeHtml(char);
-      const current = occurrence;
-      occurrence += 1;
-      if (!interactive) {
-        return `<span class="r-letter${selected.has(current) ? ' is-pronounced' : ''}">${escapeHtml(char)}</span>`;
-      }
-      return `<label class="r-choice${selected.has(current) ? ' is-restored' : ''}"><input type="checkbox" name="${escapeHtml(inputName)}" value="${current}" data-r-index="${current}"${selected.has(current) ? ' checked' : ''}><span>${escapeHtml(char)}</span></label>`;
-    }).join('');
+  function renderExerciseDialogue(block) {
+    const lines = Array.isArray(block.dialogue) ? block.dialogue : [];
+    if (!lines.length) return '';
+    const dialogue = `<div class="exercise-dialogue" aria-label="Conversation">${lines.map((line) => `<p>${renderMarkedDialogueLine(line)}</p>`).join('')}</div>`;
+    if (!block.dialogueCollapsible) return dialogue;
+    const summary = safeText(block.dialogueSummary, 'Показать транскрипцию');
+    return `<details class="exercise-transcript"><summary>${escapeHtml(summary)}</summary>${dialogue}</details>`;
   }
 
-  function updatePronunciationPreview(itemNode, selectedIndexes = null) {
-    if (!itemNode) return;
-    const input = itemNode.querySelector('[data-pronunciation-input]');
-    const preview = itemNode.querySelector('[data-pronunciation-preview]');
-    if (!input || !preview) return;
-    const selected = selectedIndexes === null
-      ? [...preview.querySelectorAll('[data-r-index]:checked')].map((control) => Number(control.value))
-      : (Array.isArray(selectedIndexes) ? selectedIndexes.map(Number) : []);
-    const inputName = safeText(preview.dataset.rInputName, `pronunciation-r-${Date.now()}`);
-    preview.innerHTML = renderRSelection(input.value, inputName, selected, true);
+  function renderExerciseContentCards(block) {
+    const cards = Array.isArray(block.contentCards) ? block.contentCards : [];
+    if (!cards.length) return '';
+    return `<section class="social-reading" aria-label="${escapeHtml(block.contentTitle || 'Reading text')}">
+      ${block.contentTitle ? `<h4>${escapeHtml(block.contentTitle)}</h4>` : ''}
+      <div class="social-reading-list">${cards.map((card) => {
+        const image = card?.image || {};
+        const source = typeof image === 'string' ? image : image.src;
+        const alt = typeof image === 'string' ? '' : image.alt;
+        return `<article class="social-reading-card">
+          ${source ? `<img src="${escapeHtml(source)}" alt="${escapeHtml(alt || '')}" loading="lazy">` : ''}
+          <p>${escapeHtml(card.text || '')}</p>
+          ${card.author ? `<strong>${escapeHtml(card.author)}</strong>` : ''}
+        </article>`;
+      }).join('')}</div>
+    </section>`;
   }
 
-  function crosswordLetters(value) {
-    return [...safeText(value).normalize('NFKC')].filter((char) => /[a-z]/i.test(char));
-  }
-
-  function renderCrosswordRow(item, blockId, index) {
+  function renderExerciseItem(item, blockId, index) {
     const itemId = safeText(item.id, `${index + 1}`);
     const number = item.number === undefined ? index + 1 : item.number;
-    const letters = crosswordLetters(item.answer);
-    const hiddenIndex = Math.max(1, Number(item.hiddenLetterIndex) || 1);
-    const hiddenColumn = 8;
-    const startColumn = hiddenColumn - (hiddenIndex - 1);
-    const separators = new Map((Array.isArray(item.separators) ? item.separators : []).map((entry) => [Number(entry.after), safeText(entry.text)]));
-    const wordBreaks = new Set((Array.isArray(item.wordBreaks) ? item.wordBreaks : []).map(Number));
-    const rowCells = letters.map((letter, letterIndex) => {
-      const letterNumber = letterIndex + 1;
-      const isHidden = letterNumber === hiddenIndex;
-      const separator = separators.get(letterNumber) || '';
-      const separatorClass = separator === '-' ? ' has-hyphen-after' : separator ? ' has-apostrophe-after' : '';
-      const breakClass = wordBreaks.has(letterNumber) ? ' has-word-break-after' : '';
-      const value = item.example ? letter.toUpperCase() : '';
-      const disabled = item.example ? ' disabled' : '';
-      const numberMarkup = letterIndex === 0 ? `<span class="crossword-cell-number">${escapeHtml(number)}</span>` : '';
-      return `<span class="crossword-cell-wrap${isHidden ? ' is-hidden-letter' : ''}${separatorClass}${breakClass}" style="grid-column:${startColumn + letterIndex};grid-row:${index + 1}">${numberMarkup}<input class="crossword-cell" data-crossword-letter data-letter-index="${letterIndex}"${isHidden ? ' data-crossword-hidden' : ''} maxlength="1" inputmode="text" autocomplete="off" autocapitalize="characters" aria-label="${escapeHtml(`Clue ${number}, letter ${letterNumber}`)}" value="${escapeHtml(value)}"${disabled}></span>`;
-    }).join('');
-    return `<div class="crossword-row${item.example ? ' exercise-example' : ''}" data-exercise-item="${escapeHtml(itemId)}" data-input-type="crossword-word" data-crossword-row="${escapeHtml(itemId)}">${rowCells}</div>`;
-  }
-
-  function renderCrosswordExercise(block, blockId) {
-    const items = Array.isArray(block.items) ? block.items : [];
-    const crosswordItems = items.filter((item) => item.input === 'crossword-word');
-    const followUpItems = items.filter((item) => item.input !== 'crossword-word');
-    const rows = crosswordItems.map((item, itemIndex) => renderCrosswordRow(item, blockId, itemIndex)).join('');
-    const clues = crosswordItems.map((item) => `<button class="crossword-clue${item.example ? ' is-example' : ''}" type="button" data-crossword-clue-for="${escapeHtml(safeText(item.id))}"><span class="crossword-clue-number">${escapeHtml(item.number)}</span><span>${escapeHtml(item.clue || '')}</span></button>`).join('');
-    const followUp = followUpItems.length
-      ? `<div class="crossword-follow-up exercise-items">${followUpItems.map((item, itemIndex) => renderExerciseItem(item, blockId, crosswordItems.length + itemIndex, true)).join('')}</div>`
-      : '';
-    return `<div class="crossword-workspace" data-crossword-workspace>
-      <div class="crossword-grid-panel"><div class="crossword-grid" role="group" aria-label="Interactive crossword">${rows}</div><div class="crossword-hidden-answer"><span class="eyebrow">Hidden kind of shop</span><strong data-crossword-hidden-preview aria-live="polite"></strong></div></div>
-      <div class="crossword-clues" aria-label="Crossword clues">${clues}</div>
-    </div>${followUp}`;
-  }
-
-  function updateCrosswordHiddenAnswer(workspace) {
-    if (!workspace) return;
-    const preview = workspace.querySelector('[data-crossword-hidden-preview]');
-    if (!preview) return;
-    const letters = [...workspace.querySelectorAll('[data-crossword-hidden]')].map((input) => safeText(input.value).trim().toUpperCase() || '_');
-    const chunks = [letters.slice(0, 6), letters.slice(6, 10), letters.slice(10, 15)].filter((chunk) => chunk.length);
-    preview.textContent = chunks.map((chunk) => chunk.join('')).join(' ');
-  }
-
-  function wireLessonInteractiveInputs(root) {
-    root.querySelectorAll('[data-pronunciation-input]').forEach((input) => {
-      const itemNode = input.closest('[data-exercise-item]');
-      updatePronunciationPreview(itemNode);
-      input.addEventListener('input', () => updatePronunciationPreview(itemNode));
-    });
-
-    root.querySelectorAll('[data-crossword-workspace]').forEach((workspace) => {
-      const rows = [...workspace.querySelectorAll('[data-crossword-row]')];
-      const rowInputs = (row) => [...row.querySelectorAll('[data-crossword-letter]:not(:disabled)')];
-      const focusRelative = (row, input, delta) => {
-        const inputs = rowInputs(row);
-        const index = inputs.indexOf(input);
-        const target = inputs[index + delta];
-        if (target) target.focus();
-      };
-
-      rows.forEach((row) => {
-        row.addEventListener('input', (event) => {
-          const input = event.target.closest('[data-crossword-letter]');
-          if (!input) return;
-          const letters = crosswordLetters(input.value);
-          input.value = safeText(letters[0]).toUpperCase();
-          if (input.value) focusRelative(row, input, 1);
-          updateCrosswordHiddenAnswer(workspace);
-        });
-        row.addEventListener('keydown', (event) => {
-          const input = event.target.closest('[data-crossword-letter]');
-          if (!input) return;
-          if (event.key === 'ArrowRight') { event.preventDefault(); focusRelative(row, input, 1); }
-          if (event.key === 'ArrowLeft') { event.preventDefault(); focusRelative(row, input, -1); }
-          if (event.key === 'Backspace' && !input.value) { event.preventDefault(); focusRelative(row, input, -1); }
-        });
-        row.addEventListener('paste', (event) => {
-          const input = event.target.closest('[data-crossword-letter]');
-          if (!input) return;
-          const pasted = crosswordLetters(event.clipboardData?.getData('text') || '');
-          if (pasted.length <= 1) return;
-          event.preventDefault();
-          const inputs = rowInputs(row);
-          const start = inputs.indexOf(input);
-          pasted.forEach((letter, offset) => {
-            const target = inputs[start + offset];
-            if (target) target.value = letter.toUpperCase();
-          });
-          const finalTarget = inputs[Math.min(start + pasted.length, inputs.length - 1)];
-          if (finalTarget) finalTarget.focus();
-          updateCrosswordHiddenAnswer(workspace);
-        });
-      });
-
-      workspace.querySelectorAll('[data-crossword-clue-for]').forEach((clue) => {
-        clue.addEventListener('click', () => {
-          const row = workspace.querySelector(`[data-crossword-row="${CSS.escape(safeText(clue.dataset.crosswordClueFor))}"]`);
-          if (!row) return;
-          const inputs = rowInputs(row);
-          const target = inputs.find((input) => !input.value) || inputs[0];
-          if (target) target.focus();
-        });
-      });
-      updateCrosswordHiddenAnswer(workspace);
-    });
-
-    const sourceAnswerValues = (sourceItem) => {
-      if (!sourceItem) return [];
-      const inputType = safeText(sourceItem.dataset.inputType);
-      if (inputType === 'gaps') {
-        return [...sourceItem.querySelectorAll('[data-gap-index]')]
-          .map((input) => safeText(input.value).trim());
-      }
-      if (inputType === 'single' || inputType === 'multiple' || inputType === 'select' || inputType === 'select-gap') return [];
-      return [safeText(sourceItem.querySelector('input, textarea')?.value).trim()];
-    };
-
-    root.querySelectorAll('[data-dependent-prompt]').forEach((target) => {
-      const blockId = safeText(target.dataset.responseFromBlock).trim();
-      const itemId = safeText(target.dataset.responseFromItem).trim();
-      const template = safeText(target.dataset.responseTemplate, '{answer}');
-      const waitingText = safeText(target.dataset.responseWaitingText);
-      const sourceBlock = blockId ? root.querySelector(`[data-task="${CSS.escape(blockId)}"]`) : null;
-      const sourceItem = sourceBlock && itemId
-        ? sourceBlock.querySelector(`[data-exercise-item="${CSS.escape(itemId)}"]`)
-        : null;
-      const dependentItem = target.closest('[data-exercise-item]');
-      const dependentControls = dependentItem ? [...dependentItem.querySelectorAll('input, textarea, select')] : [];
-
-      const update = () => {
-        const answerValues = sourceAnswerValues(sourceItem);
-        const isComplete = answerValues.length > 0 && answerValues.every(Boolean);
-        let completedPrompt = template.replaceAll('{answer}', answerValues.join(' '));
-        answerValues.forEach((answer, index) => {
-          completedPrompt = completedPrompt.replaceAll(`{answer${index + 1}}`, answer);
-        });
-        target.textContent = isComplete ? completedPrompt : waitingText;
-        dependentControls.forEach((control) => { control.disabled = !isComplete; });
-      };
-
-      sourceItem?.querySelectorAll('input, textarea, select').forEach((control) => {
-        control.addEventListener('input', update);
-        control.addEventListener('change', update);
-      });
-      update();
-    });
-  }
-
-  function exerciseItemIsComplete(itemNode) {
-      if (!itemNode || itemNode.classList.contains('exercise-example')) return true;
-      const inputType = safeText(itemNode.dataset.inputType);
-      if (inputType === 'gaps') {
-        const gaps = [...itemNode.querySelectorAll('[data-gap-index]')];
-        return gaps.length > 0 && gaps.every((input) => safeText(input.value).trim());
-      }
-      if (inputType === 'multiple') {
-        return Boolean(itemNode.querySelector('input[type="checkbox"]:checked'));
-      }
-      if (inputType === 'single' || inputType === 'circle-or-tick') {
-        return Boolean(itemNode.querySelector('input[type="radio"]:checked'));
-      }
-      if (inputType === 'select' || inputType === 'select-gap') {
-        return Boolean(safeText(itemNode.querySelector('select')?.value).trim());
-      }
-      if (inputType === 'odd-one-out') {
-        const selected = itemNode.querySelector('input[type="radio"]:checked');
-        const reason = itemNode.querySelector('[data-odd-reason]');
-        return Boolean(selected && safeText(reason?.value).trim());
-      }
-      if (inputType === 'crossword-word') {
-        const letters = [...itemNode.querySelectorAll('[data-crossword-letter]')];
-        return letters.length > 0 && letters.every((input) => safeText(input.value).trim());
-      }
-      const control = itemNode.querySelector('input, textarea, select');
-      return Boolean(control && safeText(control.value).trim());
-  }
-
-  function exerciseBlockIsComplete(blockNode) {
-    if (!blockNode) return false;
-    const items = [...blockNode.querySelectorAll('[data-exercise-item]')]
-      .filter((itemNode) => !itemNode.classList.contains('exercise-example'));
-    return items.length > 0 && items.every(exerciseItemIsComplete);
-  }
-
-  function wireConditionalLessonBlocks(root) {
-    const gatedBlocks = [...root.querySelectorAll('[data-reveal-after-complete], [data-reveal-after-items]')];
-    if (!gatedBlocks.length) return;
-
-    const update = () => {
-      gatedBlocks.forEach((blockNode) => {
-        const requiredItems = safeText(blockNode.dataset.revealAfterItems)
-          .split(',')
-          .map((itemId) => itemId.trim())
-          .filter(Boolean);
-        if (requiredItems.length) {
-          const sourceBlock = blockNode.closest('[data-task]');
-          blockNode.hidden = !requiredItems.every((itemId) => {
-            const itemNode = sourceBlock?.querySelector(`[data-exercise-item="${CSS.escape(itemId)}"]`);
-            return exerciseItemIsComplete(itemNode);
-          });
-          return;
-        }
-        const sourceId = safeText(blockNode.dataset.revealAfterComplete).trim();
-        const sourceBlock = sourceId ? root.querySelector(`[data-task="${CSS.escape(sourceId)}"]`) : null;
-        blockNode.hidden = !exerciseBlockIsComplete(sourceBlock);
-      });
-    };
-
-    root.addEventListener('input', update);
-    root.addEventListener('change', update);
-    update();
-  }
-
-  function renderPastColumnsExercise(block, blockId) {
-    const items = Array.isArray(block.items) ? block.items : [];
-    const byId = new Map(items.map((item) => [safeText(item.id), item]));
-    const columns = Array.isArray(block.columns) ? block.columns : [];
-    return `<div class="past-columns-workspace">${columns.map((column) => {
-      const columnItems = (column.itemIds || []).map((itemId) => byId.get(safeText(itemId))).filter(Boolean);
-      return `<section class="past-column"><h4>${escapeHtml(column.label || '')}</h4>${column.example ? `<div class="past-column-example"><span>Example</span><strong>${escapeHtml(column.example)}</strong></div>` : ''}<div class="past-column-fields">${columnItems.map((item, itemIndex) => renderExerciseItem(item, blockId, itemIndex, false)).join('')}</div></section>`;
-    }).join('')}</div>`;
-  }
-
-  function renderExerciseItem(item, blockId, index, inlineNumberedItems = false) {
-    const itemId = safeText(item.id, `${index + 1}`);
-    const number = item.number === undefined ? index + 1 : item.number;
-    const promptFrom = item.promptFrom && typeof item.promptFrom === 'object' ? item.promptFrom : null;
-    const prompt = promptFrom
-      ? `<span data-dependent-prompt data-response-from-block="${escapeHtml(promptFrom.blockId || '')}" data-response-from-item="${escapeHtml(promptFrom.itemId || '')}" data-response-template="${escapeHtml(promptFrom.template || '{answer}')}" data-response-waiting-text="${escapeHtml(promptFrom.waitingText || '')}"></span>`
-      : escapeHtml(item.prompt || '');
+    const prompt = escapeHtml(item.prompt || '').replaceAll('\n', '<br>');
     const inputId = `exercise-${blockId}-${itemId}`.replace(/[^a-zA-Z0-9_-]/g, '-');
     const numberMarkup = number === '' || number === null ? '' : `<span class="exercise-number">${escapeHtml(number)}</span>`;
-    const context = renderExerciseContext(item);
-    const optionStyle = ['circle', 'cross-out'].includes(safeText(item.optionStyle)) ? safeText(item.optionStyle) : '';
-    const itemWordBank = Array.isArray(item.wordBank) && item.wordBank.length
-      ? `<div class="word-bank exercise-item-word-bank" aria-label="Слова для задания"><strong class="word-bank-label">Слова</strong>${item.wordBank.map((word) => `<span>${escapeHtml(word)}</span>`).join('')}</div>`
-      : '';
-    const afterText = item.afterText ? `<div class="exercise-source-line exercise-source-after">${escapeHtml(item.afterText)}</div>` : '';
-    const itemImageSrc = safeText(item.image).trim();
-    const itemMedia = itemImageSrc
-      ? `<div class="exercise-item-media" role="img" aria-label="${escapeHtml(item.imageAlt || '')}" style="background-image:url('${escapeHtml(itemImageSrc)}')"></div>`
-      : '';
-    const itemMediaClass = itemMedia ? ' has-item-media' : '';
-
-    if (item.displayOnly) {
-      const className = item.displayStyle === 'heading' ? 'exercise-display-heading' : 'exercise-display-copy';
-      return `<div class="${className}" data-exercise-item="${escapeHtml(itemId)}">${prompt}</div>`;
-    }
-
-    if (item.input === 'r-circle') {
-      const textValue = safeText(item.text || item.prompt);
-      const content = `<div class="pronunciation-r-line">${renderRSelection(textValue, inputId, item.example ? item.answer : [], !item.example)}</div>`;
-      return `<div class="exercise-item${item.example ? ' exercise-example' : ''}" data-exercise-item="${escapeHtml(itemId)}" data-input-type="r-circle">
-        <div class="exercise-item-inline-row">${numberMarkup}<div class="exercise-item-inline-content">${content}</div></div>
-        ${item.example ? '' : '<div class="feedback" aria-live="polite"></div>'}
-      </div>`;
-    }
-
-    if (item.input === 'pronunciation-sentence') {
-      if (item.example) {
-        const sentence = safeText(item.exampleAnswer || item.answer);
-        const content = `<div class="pronunciation-r-line">${renderRSelection(sentence, inputId, item.rAnswer || [], false)}</div>`;
-        return `<div class="exercise-item exercise-example" data-exercise-item="${escapeHtml(itemId)}" data-input-type="pronunciation-sentence"><div class="exercise-item-inline-row">${numberMarkup}<div class="exercise-item-inline-content">${content}</div></div></div>`;
-      }
-      const rInputName = `${inputId}-r`;
-      return `<div class="exercise-item" data-exercise-item="${escapeHtml(itemId)}" data-input-type="pronunciation-sentence">
-        <div class="exercise-item-inline-row">${numberMarkup}<div class="exercise-item-inline-content pronunciation-sentence-control"><input class="text-field" data-pronunciation-input autocomplete="off" aria-label="Sentence ${escapeHtml(number)}"><div class="pronunciation-r-preview" data-pronunciation-preview data-r-input-name="${escapeHtml(rInputName)}" aria-label="Circle r where it is pronounced"></div></div></div>
-        <div class="feedback" aria-live="polite"></div>
-      </div>`;
-    }
-
-    if (item.example && item.input === 'circle-or-tick') {
-      const selected = safeText(item.answer);
-      const segments = Array.isArray(item.segments) ? item.segments : [];
-      const options = Array.isArray(item.options) ? item.options : [];
-      const sentence = `<div class="circle-or-tick-sentence"><span>${escapeHtml(segments[0] || '')}</span>${options.map((option, optionIndex) => `<span class="circle-choice ${selected === String(optionIndex) ? 'selected' : ''}">${escapeHtml(option)}</span>${optionIndex === 0 ? '<span class="choice-slash"> / </span>' : ''}`).join('')}<span>${escapeHtml(segments[1] || '')}</span>${selected === 'both' ? '<span class="circle-tick example-tick" aria-label="Both are correct">✓</span>' : ''}</div>`;
-      if (inlineNumberedItems && !prompt) {
-        return `<div class="exercise-item exercise-example" data-exercise-item="${escapeHtml(itemId)}">
-          <div class="exercise-item-inline-row">${numberMarkup}<div class="exercise-item-inline-content">${sentence}</div></div>
-        </div>`;
-      }
-      return `<div class="exercise-item exercise-example" data-exercise-item="${escapeHtml(itemId)}">
-        <div class="exercise-item-header">${numberMarkup}<div class="exercise-prompt">${prompt}</div></div>
-        <div class="exercise-control">${sentence}</div>
-      </div>`;
-    }
-
-    if (item.example && item.exampleTarget) {
-      if (inlineNumberedItems && !prompt) {
-        return `<div class="exercise-item exercise-example" data-exercise-item="${escapeHtml(itemId)}">
-          <div class="exercise-item-inline-row">${numberMarkup}<div class="exercise-item-inline-content">${context}<div class="exercise-example-target">${escapeHtml(item.exampleTarget)}</div></div></div>
-        </div>`;
-      }
-      return `<div class="exercise-item exercise-example" data-exercise-item="${escapeHtml(itemId)}">
-        <div class="exercise-item-header">${numberMarkup}<div class="exercise-prompt">${prompt}</div></div>
-        <div class="exercise-control">${context}<div class="exercise-example-target">${escapeHtml(item.exampleTarget)}</div></div>
-      </div>`;
-    }
-
-    if (item.example && item.input === 'single' && optionStyle && Array.isArray(item.options) && item.options.length) {
-      const selectedIndex = Number(item.answer);
-      const options = item.options.map((option, optionIndex) => `<span class="workbook-example-option${optionIndex === selectedIndex ? ' is-example-selected' : ''}">${escapeHtml(option)}</span>`).join('');
-      return `<div class="exercise-item exercise-example" data-exercise-item="${escapeHtml(itemId)}" data-input-type="single">
-        <div class="exercise-item-header">${numberMarkup}<div class="exercise-prompt">${prompt}</div></div>
-        <div class="exercise-control"><div class="workbook-example-options option-style-${escapeHtml(optionStyle)}">${options}</div></div>
-      </div>`;
-    }
-
-    if (item.example && item.exampleLayout === 'inline') {
-      return `<div class="exercise-item exercise-example${itemMediaClass}" data-exercise-item="${escapeHtml(itemId)}">
-        ${itemMedia}
-        <div class="exercise-item-inline-row">${numberMarkup}<div class="exercise-item-inline-content workbook-inline-example"><span>${prompt}</span><strong>${escapeHtml(item.exampleAnswer || '')}</strong></div></div>
-      </div>`;
-    }
-
-    if (item.example && item.input === 'odd-one-out') {
-      const selectedIndex = Number(item.answer);
-      const options = (item.options || []).map((option, optionIndex) => `<span class="odd-option ${optionIndex === selectedIndex ? 'selected' : ''}">${escapeHtml(option)}</span>`).join('');
-      return `<div class="exercise-item exercise-example" data-exercise-item="${escapeHtml(itemId)}">
-        <div class="exercise-item-header">${numberMarkup}<div class="exercise-prompt">${prompt}</div></div>
-        <div class="exercise-control"><div class="odd-options">${options}</div><div class="odd-reason">The others are all <strong>${escapeHtml(item.reasonAnswer || '')}</strong>.</div></div>
-      </div>`;
-    }
-
-    if (item.example && item.input === 'gaps' && Array.isArray(item.segments)) {
-      const exampleAnswers = Array.isArray(item.exampleAnswers) && item.exampleAnswers.length
-        ? item.exampleAnswers
-        : [item.exampleAnswer || ''];
-      const exampleSentence = exampleAnswers.map((answer, gapIndex) => {
-        const before = gapIndex < item.segments.length ? `<span>${escapeHtml(item.segments[gapIndex])}</span>` : '';
-        return `${before}<span class="inline-example-answer">${escapeHtml(Array.isArray(answer) ? answer[0] : answer)}</span>`;
-      }).join('');
-      const tail = item.segments.length > exampleAnswers.length
-        ? `<span>${escapeHtml(item.segments[item.segments.length - 1])}</span>`
-        : '';
-      return `<div class="exercise-item exercise-example" data-exercise-item="${escapeHtml(itemId)}" data-input-type="gaps">
-        <div class="exercise-item-inline-row">${numberMarkup}<div class="exercise-item-inline-content">${prompt ? `<div class="exercise-answer-question">${prompt}</div>` : ''}<div class="sentence-gaps example-sentence-gaps">${exampleSentence}${tail}</div></div></div>
-      </div>`;
-    }
 
     if (item.example) {
-      return `<div class="exercise-item exercise-example${itemMediaClass}" data-exercise-item="${escapeHtml(itemId)}">
-        ${itemMedia}
+      return `<div class="exercise-item exercise-example" data-exercise-item="${escapeHtml(itemId)}">
         <div class="exercise-item-header">${numberMarkup}<div class="exercise-prompt">${prompt}</div></div>
-        ${item.exampleTextOnly ? '' : `<div class="example-answer"><span>Example</span><strong>${escapeHtml(item.exampleAnswer || '')}</strong></div>`}
+        <div class="example-answer"><span>Example</span><strong>${escapeHtml(item.exampleAnswer || '')}</strong></div>
       </div>`;
     }
 
     let control = '';
-    if (item.input === 'example-gap') {
-      const segments = Array.isArray(item.segments) ? item.segments : [];
-      control = `<div class="sentence-gaps numbered-example-gap"><span>${escapeHtml(segments[0] || '')}</span><span class="inline-example-answer"><b>${escapeHtml(item.exampleNumber || 1)}</b> ${escapeHtml(item.exampleAnswer || '')}</span><span>${escapeHtml(segments[1] || '')}</span><span class="inline-gap-number">${escapeHtml(item.gapNumber || 2)}</span><input class="gap-input" data-example-gap autocomplete="off"><span>${escapeHtml(segments[2] || '')}</span></div>`;
-    } else if (item.input === 'odd-one-out') {
-      control = `<div class="odd-one-out-control"><div class="odd-options">${(item.options || []).map((option, optionIndex) => `<label class="odd-option"><input type="radio" name="${escapeHtml(inputId)}" value="${optionIndex}"><span>${escapeHtml(option)}</span></label>`).join('')}</div><label class="odd-reason" for="${escapeHtml(inputId)}-reason">The others are all <input class="gap-input odd-reason-input" id="${escapeHtml(inputId)}-reason" data-odd-reason autocomplete="off">.</label></div>`;
-    } else if (item.input === 'circle-or-tick') {
-      const segments = Array.isArray(item.segments) ? item.segments : [];
-      const options = Array.isArray(item.options) ? item.options : [];
-      control = `<div class="circle-or-tick-sentence"><span>${escapeHtml(segments[0] || '')}</span>${options.map((option, optionIndex) => `<label class="circle-choice"><input type="radio" name="${escapeHtml(inputId)}" value="${optionIndex}"><span>${escapeHtml(option)}</span></label>${optionIndex === 0 ? '<span class="choice-slash"> / </span>' : ''}`).join('')}<span>${escapeHtml(segments[1] || '')}</span><label class="circle-tick" title="Both are correct"><input type="radio" name="${escapeHtml(inputId)}" value="both"><span aria-hidden="true">✓</span><span class="sr-only">Both are correct</span></label></div>`;
-    } else if (item.input === 'multiple' || item.input === 'single') {
+    if (item.input === 'multiple' || item.input === 'single') {
       const inputType = item.input === 'multiple' ? 'checkbox' : 'radio';
-      const workbookClass = optionStyle ? ` workbook-option-list option-style-${escapeHtml(optionStyle)}` : '';
-      control = `<div class="option-list compact-options${workbookClass}">${(item.options || []).map((option, optionIndex) => `<label class="option"><input type="${inputType}" name="${escapeHtml(inputId)}" value="${optionIndex}"><span>${escapeHtml(option)}</span></label>`).join('')}</div>`;
-    } else if (item.input === 'select-gap') {
-      const segments = Array.isArray(item.segments) ? item.segments : [];
-      control = `<div class="sentence-gaps" aria-label="${prompt}"><span>${escapeHtml(segments[0] || '')}</span><select class="inline-select-gap" id="${escapeHtml(inputId)}" aria-label="Choose the missing word"><option value="">Choose</option>${(item.options || []).map((option, optionIndex) => `<option value="${optionIndex}">${escapeHtml(option)}</option>`).join('')}</select><span>${escapeHtml(segments[1] || '')}</span></div>`;
+      control = `<div class="option-list compact-options">${(item.options || []).map((option, optionIndex) => `<label class="option"><input type="${inputType}" name="${escapeHtml(inputId)}" value="${optionIndex}"><span>${escapeHtml(option)}</span></label>`).join('')}</div>`;
     } else if (item.input === 'select') {
       control = `<select id="${escapeHtml(inputId)}"><option value="">Choose an answer</option>${(item.options || []).map((option, optionIndex) => `<option value="${optionIndex}">${escapeHtml(option)}</option>`).join('')}</select>`;
     } else if (item.input === 'textarea') {
       control = `<textarea id="${escapeHtml(inputId)}" placeholder="${escapeHtml(item.placeholder || '')}"></textarea>`;
+    } else if (item.input === 'inline-single') {
+      const choices = Array.isArray(item.choices) ? item.choices : [];
+      const segments = Array.isArray(item.segments) ? item.segments : [];
+      const segmentMarkup = (segment) => escapeHtml(segment).replaceAll('\n', '<br>');
+      control = `<div class="inline-choice-text">${choices.map((choice, choiceIndex) => `${choiceIndex < segments.length ? `<span>${segmentMarkup(segments[choiceIndex])}</span>` : ''}<span class="inline-choice-group" role="group" aria-label="Choice ${choice.number || choiceIndex + 1}">${choice.number ? `<sup>${escapeHtml(choice.number)}</sup>` : ''}${(choice.options || []).map((option, optionIndex) => `${optionIndex ? '<span class="inline-choice-slash">/</span>' : ''}<label><input type="radio" data-inline-choice="${choiceIndex}" name="${escapeHtml(inputId)}-choice-${choiceIndex}" value="${optionIndex}"><span>${escapeHtml(option)}</span></label>`).join('')}</span>`).join('')}${segments.length > choices.length ? `<span>${segmentMarkup(segments[segments.length - 1])}</span>` : ''}</div>`;
     } else if (item.input === 'gaps') {
       const answers = Array.isArray(item.answers) ? item.answers : [];
       const segments = Array.isArray(item.segments) ? item.segments : [];
-      const gapClass = item.inputSize === 'wide'
-        ? 'gap-input gap-input-wide'
-        : item.inputSize === 'letter' ? 'gap-input gap-input-letter' : 'gap-input';
-      control = `<div class="sentence-gaps${item.inputSize === 'letter' ? ' letter-gaps' : ''}" aria-label="${prompt}">${answers.map((answer, gapIndex) => {
-        const accepted = Array.isArray(answer) ? answer : [answer];
-        const gapChars = Math.max(1, ...accepted.map((value) => safeText(value).trim().length));
-        const letterAttributes = item.inputSize === 'letter'
-          ? ` style="--gap-chars:${Math.min(gapChars, 8)}" maxlength="${Math.min(gapChars, 24)}"`
-          : '';
-        return `${gapIndex < segments.length ? `<span>${escapeHtml(segments[gapIndex])}</span>` : ''}<input class="${gapClass}"${letterAttributes} data-gap-index="${gapIndex}" aria-label="Gap ${gapIndex + 1}" autocomplete="off">`;
-      }).join('')}${segments.length > answers.length ? `<span>${escapeHtml(segments[segments.length - 1])}</span>` : ''}</div>`;
+      const gapClass = `${item.layout === 'dialogue' ? 'sentence-gaps is-dialogue' : 'sentence-gaps'}${item.wideGaps ? ' has-wide-gaps' : ''}`;
+      const segmentMarkup = (segment) => escapeHtml(segment).replaceAll('\n', '<br>');
+      control = `<div class="${gapClass}" aria-label="${prompt}">${answers.map((answer, gapIndex) => `${gapIndex < segments.length ? `<span>${segmentMarkup(segments[gapIndex])}</span>` : ''}<input class="gap-input" data-gap-index="${gapIndex}" aria-label="Gap ${gapIndex + 1}" autocomplete="off">`).join('')}${segments.length > answers.length ? `<span>${segmentMarkup(segments[segments.length - 1])}</span>` : ''}</div>`;
+    } else if (item.input === 'select-gaps') {
+      const answers = Array.isArray(item.answers) ? item.answers : [];
+      const segments = Array.isArray(item.segments) ? item.segments : [];
+      const options = Array.isArray(item.options) ? item.options : [];
+      const gapClass = item.layout === 'dialogue' ? 'sentence-gaps is-dialogue has-select-gaps' : 'sentence-gaps has-select-gaps';
+      const segmentMarkup = (segment) => escapeHtml(segment).replaceAll('\n', '<br>');
+      const optionMarkup = options.map((option, optionIndex) => `<option value="${optionIndex}">${escapeHtml(option)}</option>`).join('');
+      control = `<div class="${gapClass}" aria-label="${prompt}">${answers.map((answer, gapIndex) => `${gapIndex < segments.length ? `<span>${segmentMarkup(segments[gapIndex])}</span>` : ''}<select class="dialogue-answer-select" data-gap-index="${gapIndex}" aria-label="Response ${gapIndex + 1}"><option value="">Выберите полный ответ</option>${optionMarkup}</select>`).join('')}${segments.length > answers.length ? `<span>${segmentMarkup(segments[segments.length - 1])}</span>` : ''}</div>`;
+    } else if (item.input === 'mark') {
+      let markIndex = 0;
+      const paragraphs = Array.isArray(item.paragraphs) ? item.paragraphs : [];
+      control = `<div class="mark-text">${paragraphs.map((paragraph) => {
+        const segments = Array.isArray(paragraph) ? paragraph : [paragraph];
+        return `<p>${segments.map((segment) => {
+          if (segment && typeof segment === 'object' && segment.word) {
+            const currentIndex = markIndex;
+            markIndex += 1;
+            return `<button class="mark-word" type="button" data-mark-index="${currentIndex}" aria-pressed="false">${escapeHtml(segment.word)}</button>`;
+          }
+          return escapeHtml(segment || '');
+        }).join('')}</p>`;
+      }).join('')}</div>`;
     } else {
       control = `<input class="text-field" id="${escapeHtml(inputId)}" autocomplete="off" placeholder="${escapeHtml(item.placeholder || '')}">`;
     }
 
-    if (inlineNumberedItems && numberMarkup && (item.input === 'gaps' || item.input === 'select-gap' || (!prompt && item.input === 'circle-or-tick'))) {
-      return `<div class="exercise-item${itemMediaClass}" data-exercise-item="${escapeHtml(itemId)}" data-input-type="${escapeHtml(item.input || 'text')}">
-        ${itemMedia}
-        <div class="exercise-item-inline-row">${numberMarkup}<div class="exercise-item-inline-content">${prompt ? `<div class="exercise-answer-question">${prompt}</div>` : ''}${context}${control}${afterText}</div></div>
-        <div class="feedback" aria-live="polite"></div>
-      </div>`;
-    }
-
-    const itemHeader = numberMarkup || prompt
-      ? `<div class="exercise-item-header">${numberMarkup}<label class="exercise-prompt" for="${escapeHtml(inputId)}">${prompt}</label></div>`
-      : '';
-    return `<div class="exercise-item${itemMediaClass}" data-exercise-item="${escapeHtml(itemId)}" data-input-type="${escapeHtml(item.input || 'text')}">
-      ${itemMedia}
-      ${itemHeader}
-      <div class="exercise-control">${itemWordBank}${context}${control}${afterText}</div>
+    return `<div class="exercise-item" data-exercise-item="${escapeHtml(itemId)}" data-input-type="${escapeHtml(item.input || 'text')}">
+      <div class="exercise-item-header">${numberMarkup}<label class="exercise-prompt" for="${escapeHtml(inputId)}">${prompt}</label></div>
+      <div class="exercise-control">${control}</div>
       <div class="feedback" aria-live="polite"></div>
     </div>`;
   }
 
 
-  function renderDialogueItem(item, blockId, index) {
-    const itemId = safeText(item.id, `${index + 1}`);
-    const number = item.number === undefined ? index + 1 : item.number;
-    const segments = Array.isArray(item.segments) ? item.segments : [];
-    const inputId = `dialogue-${blockId}-${itemId}`.replace(/[^a-zA-Z0-9_-]/g, '-');
-    const gapNumber = number === '' || number === null
-      ? ''
-      : `<sup class="dialogue-gap-number">${escapeHtml(number)}</sup>`;
+  function clientGeneratedId(prefix = 'item') {
+    if (window.crypto?.randomUUID) return `${prefix}-${window.crypto.randomUUID()}`;
+    return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  }
 
-    if (item.example) {
-      if (segments.length >= 2) {
-        return `<span class="dialogue-item dialogue-example" data-exercise-item="${escapeHtml(itemId)}"><span>${escapeHtml(segments[0])}</span>${gapNumber}<span class="dialogue-example-answer">${escapeHtml(item.exampleAnswer || '')}</span><span>${escapeHtml(segments[1])}</span></span>`;
+  const FAMILY_RELATIONS = {
+    extended: ['grandmother', 'grandfather', 'grandparent', 'aunt', 'uncle', 'cousin', 'nephew', 'niece', 'grandson', 'granddaughter', 'relative'],
+    parents: ['mother', 'father', 'parent', 'stepmother', 'stepfather', 'guardian'],
+    siblings: ['me', 'brother', 'sister', 'sibling', 'son', 'daughter', 'child', 'partner', 'husband', 'wife']
+  };
+
+  function familyRelationOptions(group, selected = '') {
+    const values = [...(FAMILY_RELATIONS[group] || FAMILY_RELATIONS.extended)];
+    if (selected && !values.includes(selected)) values.push(selected);
+    return values.map((value) => `<option value="${escapeHtml(value)}" ${value === selected ? 'selected' : ''}>${escapeHtml(value)}</option>`).join('');
+  }
+
+  function renderFamilyMemberCard(member = {}, group = 'extended') {
+    const memberId = safeText(member.id, clientGeneratedId('family'));
+    const removable = member.removable !== false;
+    const showDetails = group !== 'extended' || member.showDetails === true;
+    const compactClass = showDetails ? '' : ' is-compact';
+    return `<article class="family-member-card${compactClass}" data-family-member data-member-id="${escapeHtml(memberId)}" data-family-group="${escapeHtml(group)}" data-member-fixed="${removable ? 'false' : 'true'}">
+      <div class="family-member-topline">
+        <label class="family-relation-field"><span>Relationship</span><select data-family-field="relation">${familyRelationOptions(group, safeText(member.relation, group === 'parents' ? 'parent' : group === 'siblings' ? 'sibling' : 'relative'))}</select></label>
+        ${removable ? '<button class="family-icon-button" type="button" data-family-remove aria-label="Удалить карточку" title="Удалить карточку">×</button>' : '<span class="family-fixed-badge">You</span>'}
+      </div>
+      <label class="family-field"><span>Name</span><input type="text" data-family-field="name" value="${escapeHtml(member.name || '')}" placeholder="Name or initials" autocomplete="off"></label>
+      <div class="family-extra-fields">
+        <label class="family-field"><span>Age <small>optional</small></span><input type="text" inputmode="numeric" data-family-field="age" value="${escapeHtml(member.age || '')}" placeholder="Age" autocomplete="off"></label>
+        <label class="family-field"><span>City <small>optional</small></span><input type="text" data-family-field="city" value="${escapeHtml(member.city || '')}" placeholder="City" autocomplete="off"></label>
+        <label class="family-field family-field-wide"><span>Work or study <small>optional</small></span><input type="text" data-family-field="occupation" value="${escapeHtml(member.occupation || '')}" placeholder="She works ... / He studies ..." autocomplete="off"></label>
+        <label class="family-field family-field-wide"><span>Hobby <small>optional</small></span><input type="text" data-family-field="hobby" value="${escapeHtml(member.hobby || '')}" placeholder="She likes ... / He likes ..." autocomplete="off"></label>
+      </div>
+      ${group === 'extended' ? `<button class="family-details-toggle" type="button" data-family-details aria-expanded="${showDetails ? 'true' : 'false'}">${showDetails ? 'Скрыть подробности' : 'Добавить подробности'}</button>` : ''}
+    </article>`;
+  }
+
+  function renderFamilyTier(group, title, subtitle, members) {
+    return `<section class="family-tree-tier" data-family-tier="${escapeHtml(group)}">
+      <div class="family-tier-heading"><div><strong>${escapeHtml(title)}</strong><span>${escapeHtml(subtitle)}</span></div></div>
+      <div class="family-tier-cards" data-family-cards="${escapeHtml(group)}">${members.map((member) => renderFamilyMemberCard(member, group)).join('')}</div>
+    </section>`;
+  }
+
+  function renderFamilyTreeBlock(block, id, title) {
+    const members = Array.isArray(block.initialMembers) ? block.initialMembers : [];
+    const byGroup = (group) => members.filter((member) => safeText(member.group) === group);
+    return `<article class="card lesson-block family-tree-card" data-task="${escapeHtml(id)}" data-type="family-tree">
+      <div class="manual-task-heading"><span class="eyebrow">Personal project</span><h3>${title}</h3>${block.instructions ? `<p class="muted">${escapeHtml(block.instructions)}</p>` : ''}</div>
+      <div class="family-tree-editor" data-family-tree>
+        ${renderFamilyTier('extended', 'Grandparents and other relatives', 'Имя и родственная связь обязательны только по желанию', byGroup('extended'))}
+        <div class="family-tree-connector" aria-hidden="true"></div>
+        ${renderFamilyTier('parents', 'Parents or guardians', 'Здесь можно указать больше подробностей', byGroup('parents'))}
+        <div class="family-tree-connector" aria-hidden="true"></div>
+        ${renderFamilyTier('siblings', 'You, brothers and sisters', 'Карточку You удалить нельзя, остальные можно менять', byGroup('siblings'))}
+        <div class="family-tree-add-row" aria-label="Добавить карточку">
+          <button class="btn btn-secondary btn-small" type="button" data-family-add="parents">+ Parent</button>
+          <button class="btn btn-secondary btn-small" type="button" data-family-add="siblings">+ Brother / sister</button>
+          <button class="btn btn-secondary btn-small" type="button" data-family-add="extended">+ Other relative</button>
+        </div>
+        <p class="family-tree-privacy">🔒 Необязательно указывать фамилии, точный возраст или место жительства. Инициалы и вымышленные данные тоже подходят.</p>
+      </div>
+      <div class="feedback" aria-live="polite"></div>
+    </article>`;
+  }
+
+  function renderGuidedWritingBlock(block, id, title) {
+    const starters = Array.isArray(block.starters) ? block.starters : [];
+    return `<article class="card lesson-block guided-writing-card" data-task="${escapeHtml(id)}" data-type="guided-writing" data-min-sentences="${Number(block.minSentences || 0)}" data-max-sentences="${Number(block.maxSentences || 0)}">
+      <div class="manual-task-heading"><span class="eyebrow">Writing</span><h3>${title}</h3>${block.instructions ? `<p class="muted">${escapeHtml(block.instructions)}</p>` : ''}</div>
+      ${starters.length ? `<div class="sentence-starters" aria-label="Начала предложений"><span>Нажми, чтобы добавить:</span>${starters.map((starter) => `<button type="button" data-writing-starter="${escapeHtml(starter)}">${escapeHtml(starter)}</button>`).join('')}</div>` : ''}
+      <textarea data-guided-writing placeholder="${escapeHtml(block.placeholder || '')}"></textarea>
+      <div class="writing-counter"><span data-sentence-counter>0 предложений</span><span>Рекомендуемый объём: ${Number(block.minSentences || 6)}–${Number(block.maxSentences || 8)}</span></div>
+      <div class="feedback" aria-live="polite"></div>
+    </article>`;
+  }
+
+  function renderWordGroupsBlock(block, id, title) {
+    return `<article class="card lesson-block optional-task-card" data-task="${escapeHtml(id)}" data-type="word-groups">
+      <details>
+        <summary><span><strong>${title}</strong><small>Optional · необязательное задание</small></span><span class="optional-chevron" aria-hidden="true">⌄</span></summary>
+        <div class="optional-task-body">
+          ${block.instructions ? `<p class="muted">${escapeHtml(block.instructions)}</p>` : ''}
+          <div class="family-word-groups">
+            <label><span>Female</span><textarea data-word-group="female" placeholder="mother, sister, ..."></textarea></label>
+            <label><span>Male</span><textarea data-word-group="male" placeholder="father, brother, ..."></textarea></label>
+            <label><span>Both</span><textarea data-word-group="both" placeholder="parent, cousin, ..."></textarea></label>
+          </div>
+        </div>
+      </details>
+      <div class="feedback" aria-live="polite"></div>
+    </article>`;
+  }
+
+  function renderMiniInterviewBlock(block, id, title) {
+    const questions = Array.isArray(block.questions) ? block.questions : [];
+    return `<article class="card lesson-block optional-task-card" data-task="${escapeHtml(id)}" data-type="mini-interview">
+      <details>
+        <summary><span><strong>${title}</strong><small>Optional · можно провести настоящее или вымышленное интервью</small></span><span class="optional-chevron" aria-hidden="true">⌄</span></summary>
+        <div class="optional-task-body">
+          ${block.instructions ? `<p class="muted">${escapeHtml(block.instructions)}</p>` : ''}
+          <div class="interview-person-row">
+            <label class="family-field"><span>Person</span><input type="text" data-interview-person placeholder="my mother / my cousin" autocomplete="off"></label>
+          </div>
+          <div class="interview-questions">${questions.map((question, index) => `<label class="interview-question"><span><strong>${index + 1}</strong>${escapeHtml(question)}</span><input type="text" data-interview-answer="${index}" placeholder="Short answer" autocomplete="off"></label>`).join('')}</div>
+          <label class="interview-summary"><span>Optional mini-story</span><textarea data-interview-summary placeholder="I interviewed my ... Her/His name is ..."></textarea></label>
+        </div>
+      </details>
+      <div class="feedback" aria-live="polite"></div>
+    </article>`;
+  }
+
+  function collectFamilyTree(node) {
+    return {
+      members: [...node.querySelectorAll('[data-family-member]')].map((card) => ({
+        id: safeText(card.dataset.memberId, clientGeneratedId('family')),
+        group: safeText(card.dataset.familyGroup, 'extended'),
+        relation: card.querySelector('[data-family-field="relation"]')?.value || '',
+        name: card.querySelector('[data-family-field="name"]')?.value || '',
+        age: card.querySelector('[data-family-field="age"]')?.value || '',
+        city: card.querySelector('[data-family-field="city"]')?.value || '',
+        occupation: card.querySelector('[data-family-field="occupation"]')?.value || '',
+        hobby: card.querySelector('[data-family-field="hobby"]')?.value || '',
+        showDetails: !card.classList.contains('is-compact'),
+        removable: card.dataset.memberFixed !== 'true'
+      }))
+    };
+  }
+
+  function collectWordGroups(node) {
+    return {
+      female: node.querySelector('[data-word-group="female"]')?.value || '',
+      male: node.querySelector('[data-word-group="male"]')?.value || '',
+      both: node.querySelector('[data-word-group="both"]')?.value || ''
+    };
+  }
+
+  function collectMiniInterview(node) {
+    return {
+      person: node.querySelector('[data-interview-person]')?.value || '',
+      answers: [...node.querySelectorAll('[data-interview-answer]')].map((input) => input.value || ''),
+      summary: node.querySelector('[data-interview-summary]')?.value || ''
+    };
+  }
+
+  function restoreFamilyTree(node, saved) {
+    const members = Array.isArray(saved?.members) ? saved.members : null;
+    if (!members) return;
+    ['extended', 'parents', 'siblings'].forEach((group) => {
+      const container = node.querySelector(`[data-family-cards="${group}"]`);
+      if (!container) return;
+      container.innerHTML = members.filter((member) => safeText(member.group) === group).map((member) => renderFamilyMemberCard(member, group)).join('');
+    });
+  }
+
+  function updateSentenceCounter(node) {
+    const textarea = node.querySelector('[data-guided-writing]');
+    const counter = node.querySelector('[data-sentence-counter]');
+    if (!textarea || !counter) return;
+    const text = textarea.value.trim();
+    const count = text ? text.split(/[.!?]+|\n+/).map((part) => part.trim()).filter(Boolean).length : 0;
+    const min = Number(node.dataset.minSentences || 0);
+    const max = Number(node.dataset.maxSentences || 0);
+    counter.textContent = `${count} ${count === 1 ? 'предложение' : count > 1 && count < 5 ? 'предложения' : 'предложений'}`;
+    counter.classList.toggle('is-ready', min > 0 && count >= min && (!max || count <= max));
+  }
+
+  function setupManualLessonWidgets(root) {
+    root.querySelectorAll('[data-type="guided-writing"]').forEach(updateSentenceCounter);
+
+    root.addEventListener('input', (event) => {
+      const writing = event.target.closest('[data-type="guided-writing"]');
+      if (writing) updateSentenceCounter(writing);
+    });
+
+    root.addEventListener('click', (event) => {
+      const addButton = event.target.closest('[data-family-add]');
+      if (addButton) {
+        const task = addButton.closest('[data-type="family-tree"]');
+        const group = safeText(addButton.dataset.familyAdd, 'extended');
+        const container = task?.querySelector(`[data-family-cards="${CSS.escape(group)}"]`);
+        if (!container) return;
+        const count = task.querySelectorAll('[data-family-member]').length;
+        if (count >= 24) {
+          showToast('В древе уже 24 карточки — этого должно хватить даже очень дружной семье.');
+          return;
+        }
+        const relation = group === 'parents' ? 'parent' : group === 'siblings' ? 'sibling' : 'relative';
+        container.insertAdjacentHTML('beforeend', renderFamilyMemberCard({ id: clientGeneratedId('family'), relation, showDetails: group !== 'extended', removable: true }, group));
+        container.lastElementChild?.querySelector('[data-family-field="name"]')?.focus();
+        task.dispatchEvent(new Event('input', { bubbles: true }));
+        return;
       }
-      return `<span class="dialogue-item dialogue-example" data-exercise-item="${escapeHtml(itemId)}">${gapNumber}<span>${escapeHtml(item.prompt || '')}</span></span>`;
-    }
 
-    if (item.input !== 'gaps') {
-      return `<span class="dialogue-item" data-exercise-item="${escapeHtml(itemId)}" data-input-type="${escapeHtml(item.input || 'text')}">${gapNumber}<input class="text-field dialogue-text-input" id="${escapeHtml(inputId)}" autocomplete="off" placeholder="${escapeHtml(item.placeholder || '')}"><span class="feedback" aria-live="polite"></span></span>`;
-    }
+      const removeButton = event.target.closest('[data-family-remove]');
+      if (removeButton) {
+        const card = removeButton.closest('[data-family-member]');
+        const hasText = [...card.querySelectorAll('input')].some((input) => input.value.trim());
+        if (hasText && !window.confirm('Удалить заполненную карточку?')) return;
+        const task = card.closest('[data-type="family-tree"]');
+        card.remove();
+        task?.dispatchEvent(new Event('input', { bubbles: true }));
+        return;
+      }
 
-    const answers = Array.isArray(item.answers) ? item.answers : [];
-    const content = answers.map((answer, gapIndex) => {
-      const before = gapIndex < segments.length ? `<span>${escapeHtml(segments[gapIndex])}</span>` : '';
-      const numberBeforeFirstGap = gapIndex === 0 ? gapNumber : '';
-      return `${before}${numberBeforeFirstGap}<input class="gap-input dialogue-gap-input" data-gap-index="${gapIndex}" aria-label="Gap ${escapeHtml(number || gapIndex + 1)}${answers.length > 1 ? `, part ${gapIndex + 1}` : ''}" autocomplete="off">`;
-    }).join('');
-    const tail = segments.length > answers.length ? `<span>${escapeHtml(segments[segments.length - 1])}</span>` : '';
+      const detailsButton = event.target.closest('[data-family-details]');
+      if (detailsButton) {
+        const card = detailsButton.closest('[data-family-member]');
+        const willShow = card.classList.contains('is-compact');
+        card.classList.toggle('is-compact', !willShow);
+        detailsButton.setAttribute('aria-expanded', willShow ? 'true' : 'false');
+        detailsButton.textContent = willShow ? 'Скрыть подробности' : 'Добавить подробности';
+        card.closest('[data-type="family-tree"]')?.dispatchEvent(new Event('input', { bubbles: true }));
+        return;
+      }
 
-    return `<span class="dialogue-item" data-exercise-item="${escapeHtml(itemId)}" data-input-type="gaps">${content}${tail}<span class="feedback" aria-live="polite"></span></span>`;
+      const starterButton = event.target.closest('[data-writing-starter]');
+      if (starterButton) {
+        const task = starterButton.closest('[data-type="guided-writing"]');
+        const textarea = task?.querySelector('[data-guided-writing]');
+        if (!textarea) return;
+        const starter = safeText(starterButton.dataset.writingStarter);
+        const separator = textarea.value.trim() ? (textarea.value.endsWith('\n') ? '' : '\n') : '';
+        const start = textarea.selectionStart ?? textarea.value.length;
+        const before = textarea.value.slice(0, start);
+        const after = textarea.value.slice(textarea.selectionEnd ?? start);
+        textarea.value = `${before}${separator}${starter}${after}`;
+        textarea.focus();
+        textarea.setSelectionRange((before + separator + starter).length, (before + separator + starter).length);
+        textarea.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+    });
   }
 
-  function renderDialogueExercise(block, blockId) {
-    const items = Array.isArray(block.items) ? block.items : [];
-    const itemMap = new Map(items.map((item, index) => [safeText(item.id, `${index + 1}`), { item, index }]));
-    const lines = Array.isArray(block.dialogueLines) ? block.dialogueLines : [];
+  function renderLessonAudio(block) {
+    const speech = block?.speech && typeof block.speech === 'object' ? block.speech : null;
+    if (!speech) return block.audio ? `<audio class="audio-player" controls preload="none" src="${escapeHtml(block.audio)}"></audio>` : '';
 
-    if (!lines.length) {
-      return `<div class="exercise-items">${items.map((item, itemIndex) => renderExerciseItem(item, blockId, itemIndex)).join('')}</div>`;
+    const lines = Array.isArray(speech.lines) ? speech.lines.map((line) => {
+      if (line && typeof line === 'object') {
+        return { text: safeText(line.text), voice: safeText(line.voice) };
+      }
+      return { text: safeText(line), voice: '' };
+    }).filter((line) => line.text) : [];
+    const speechText = lines.map((line) => line.text).join(' ');
+    if (!speechText) return block.audio ? `<audio class="audio-player" controls preload="none" src="${escapeHtml(block.audio)}"></audio>` : '';
+
+    const lang = safeText(speech.lang, 'en-GB');
+    const rate = Math.min(1.35, Math.max(0.7, Number(speech.rate || 1)));
+    const label = safeText(speech.label, 'Natural voice · conversational speed');
+    const fallback = block.audio ? `<audio class="audio-player" controls preload="none" src="${escapeHtml(block.audio)}" data-speech-fallback hidden></audio>` : '';
+    return `<div class="speech-player" data-speech-player data-speech-text="${escapeHtml(speechText)}" data-speech-lines="${escapeHtml(JSON.stringify(lines))}" data-speech-lang="${escapeHtml(lang)}" data-speech-rate="${rate}">
+      <div class="button-row">
+        <button class="btn btn-secondary" type="button" data-speech-play>▶ Listen</button>
+        <button class="btn btn-secondary" type="button" data-speech-stop hidden>■ Stop</button>
+      </div>
+      <p class="muted">${escapeHtml(label)}</p>
+      ${fallback}
+    </div>`;
+  }
+
+  function setupSpeechPlayers(root) {
+    const players = [...root.querySelectorAll('[data-speech-player]')];
+    if (!players.length) return;
+
+    const synthesisAvailable = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+    if (!synthesisAvailable) {
+      players.forEach((player) => {
+        player.querySelector('[data-speech-play]')?.setAttribute('hidden', '');
+        player.querySelector('[data-speech-stop]')?.setAttribute('hidden', '');
+        player.querySelector('[data-speech-fallback]')?.removeAttribute('hidden');
+      });
+      return;
     }
 
-    return `<div class="dialogue-exercise" role="group" aria-label="Conversation exercise">${lines.map((line) => {
-      const speaker = escapeHtml(line.speaker || '');
-      const text = line.text ? `<span class="dialogue-plain-text">${escapeHtml(line.text)}</span>` : '';
-      const lineItems = (Array.isArray(line.itemIds) ? line.itemIds : []).map((itemId) => {
-        const entry = itemMap.get(safeText(itemId));
-        return entry ? renderDialogueItem(entry.item, blockId, entry.index) : '';
-      }).filter(Boolean).join(' ');
-      return `<div class="dialogue-line"><span class="dialogue-speaker" aria-label="Speaker ${speaker}">${speaker}</span><div class="dialogue-utterance">${text}${text && lineItems ? ' ' : ''}${lineItems}</div></div>`;
-    }).join('')}</div>`;
-  }
-
-  function renderExerciseItemGroups(block, blockId) {
-    const items = Array.isArray(block.items) ? block.items : [];
-    const itemMap = new Map(items.map((item, index) => [safeText(item.id, `${index + 1}`), { item, index }]));
-    const groups = Array.isArray(block.itemGroups) ? block.itemGroups : [];
-
-    return `<div class="exercise-item-groups">${groups.map((group) => {
-      const groupItems = (group.itemIds || []).map((itemId) => {
-        const entry = itemMap.get(safeText(itemId));
-        return entry ? renderExerciseItem(entry.item, blockId, entry.index, group.inlineNumberedItems === true) : '';
-      }).join('');
-      const revealItems = Array.isArray(group.revealAfterItems) ? group.revealAfterItems.join(',') : '';
-      const revealAttr = revealItems ? ` data-reveal-after-items="${escapeHtml(revealItems)}" hidden` : '';
-      return `<section class="exercise-item-group"${revealAttr}>${group.title ? `<div class="exercise-subheading"><h4>${escapeHtml(group.title)}</h4></div>` : ''}<div class="exercise-items">${groupItems}</div></section>`;
-    }).join('')}</div>`;
-  }
-
-  function renderClozeReading(block, blockId) {
-    const items = Array.isArray(block.items) ? block.items : [];
-    const itemMap = new Map(items.map((item, index) => [safeText(item.id, `${index + 1}`), { item, index }]));
-    const paragraphs = Array.isArray(block.readingParagraphs) ? block.readingParagraphs : [];
-
-    const renderPart = (part) => {
-      if (typeof part === 'string') return escapeHtml(part);
-      const itemId = safeText(part?.itemId).trim();
-      const entry = itemMap.get(itemId);
-      if (!entry) return '';
-      const { item, index } = entry;
-      const inputId = `cloze-${blockId}-${itemId || index + 1}`.replace(/[^a-zA-Z0-9_-]/g, '-');
-      const number = item.number === undefined ? index + 1 : item.number;
-      return `<span class="cloze-reading-gap" data-exercise-item="${escapeHtml(itemId)}" data-input-type="select"><sup>${escapeHtml(number)}</sup><select id="${escapeHtml(inputId)}" aria-label="Choose answer ${escapeHtml(number)}"><option value="">Choose</option>${(item.options || []).map((option, optionIndex) => `<option value="${optionIndex}">${escapeHtml(option)}</option>`).join('')}</select><span class="feedback" aria-live="polite"></span></span>`;
+    let activePlayer = null;
+    const resetPlayer = (player) => {
+      if (!player) return;
+      const play = player.querySelector('[data-speech-play]');
+      const stop = player.querySelector('[data-speech-stop]');
+      if (play) {
+        play.removeAttribute('hidden');
+        play.textContent = '▶ Listen';
+      }
+      if (stop) stop.setAttribute('hidden', '');
+      player.classList.remove('is-speaking');
     };
 
-    return `<article class="cloze-reading-article" aria-label="${escapeHtml(block.readingTitle || 'Article')}">
-      ${block.readingTitle ? `<h4>${escapeHtml(block.readingTitle)}</h4>` : ''}
-      ${paragraphs.map((paragraph) => `<p>${(Array.isArray(paragraph) ? paragraph : [paragraph]).map(renderPart).join('')}</p>`).join('')}
+    const stopSpeech = () => {
+      window.speechSynthesis.cancel();
+      resetPlayer(activePlayer);
+      activePlayer = null;
+    };
+
+    players.forEach((player) => {
+      const playButton = player.querySelector('[data-speech-play]');
+      const stopButton = player.querySelector('[data-speech-stop]');
+      if (!playButton) return;
+
+      playButton.addEventListener('click', () => {
+        stopSpeech();
+        let lines = [];
+        try {
+          const storedLines = JSON.parse(player.dataset.speechLines || '[]');
+          if (Array.isArray(storedLines)) {
+            lines = storedLines.map((line) => {
+              if (line && typeof line === 'object') return { text: safeText(line.text), voice: safeText(line.voice) };
+              return { text: safeText(line), voice: '' };
+            }).filter((line) => line.text);
+          }
+        } catch (error) {
+          lines = [];
+        }
+        if (!lines.length) {
+          const text = safeText(player.dataset.speechText);
+          if (text) lines = [{ text, voice: '' }];
+        }
+        if (!lines.length) return;
+        const lang = safeText(player.dataset.speechLang, 'en-GB');
+        const rate = Math.min(1.35, Math.max(0.7, Number(player.dataset.speechRate || 1)));
+        const languagePrefix = lang.toLowerCase().split('-')[0];
+        const matchingVoices = window.speechSynthesis.getVoices().filter((voice) => voice.lang.toLowerCase().startsWith(languagePrefix));
+        // The waiter deliberately uses the device's standard en-GB voice,
+        // exactly like the pronunciation buttons in Vocabulary.
+        const vocabularyVoice = matchingVoices.find((item) => item.default)
+          || matchingVoices.find((item) => item.lang.toLowerCase() === lang.toLowerCase())
+          || matchingVoices[0]
+          || null;
+        const customerVoice = matchingVoices.find((item) => /samantha/i.test(item.name))
+          || matchingVoices.find((item) => /serena|sonia|kate|google uk english female/i.test(item.name))
+          || vocabularyVoice;
+
+        activePlayer = player;
+        player.classList.add('is-speaking');
+        playButton.setAttribute('hidden', '');
+        stopButton?.removeAttribute('hidden');
+
+        const speakLine = (lineIndex) => {
+          if (activePlayer !== player) return;
+          if (lineIndex >= lines.length) {
+            activePlayer = null;
+            resetPlayer(player);
+            return;
+          }
+          const line = lines[lineIndex];
+          const utterance = new SpeechSynthesisUtterance(line.text);
+          utterance.lang = lang;
+          utterance.rate = rate;
+          utterance.pitch = 1;
+          utterance.volume = 1;
+          const voice = line.voice === 'customer' ? customerVoice : null;
+          if (voice) utterance.voice = voice;
+          utterance.onend = () => {
+            if (activePlayer !== player) return;
+            window.setTimeout(() => speakLine(lineIndex + 1), 220);
+          };
+          utterance.onerror = () => {
+            if (activePlayer === player) activePlayer = null;
+            resetPlayer(player);
+            const fallback = player.querySelector('[data-speech-fallback]');
+            if (fallback) fallback.removeAttribute('hidden');
+          };
+          window.speechSynthesis.speak(utterance);
+        };
+        speakLine(0);
+      });
+
+      stopButton?.addEventListener('click', stopSpeech);
+    });
+
+    window.addEventListener('pagehide', stopSpeech, { once: true });
+  }
+
+  function readingQuizPartsMarkup(parts, mode = 'fill') {
+    const values = Array.isArray(parts) ? parts : [parts];
+    return values.map((part) => {
+      if (part && typeof part === 'object' && part.gap) {
+        const gapId = safeText(part.gap);
+        if (mode === 'inject') return `<span class="reading-injected-gap" data-inject-gap="${escapeHtml(gapId)}"></span>`;
+        const options = (window.__readingQuizWordBank || []).map((word) => `<option value="${escapeHtml(word)}">${escapeHtml(word)}</option>`).join('');
+        return `<span class="reading-gap-wrap" data-reading-gap-wrap="${escapeHtml(gapId)}"><sup>${escapeHtml(gapId)}</sup><select class="reading-gap-select" data-quiz-gap="${escapeHtml(gapId)}" aria-label="Gap ${escapeHtml(gapId)}"><option value="">Choose</option>${options}</select><span class="reading-gap-feedback" aria-live="polite"></span></span>`;
+      }
+      return escapeHtml(part || '');
+    }).join('');
+  }
+
+  function readingQuizQuestionsMarkup(block, mode = 'fill', taskId = '') {
+    const questions = Array.isArray(block?.quiz?.questions) ? block.quiz.questions : [];
+    const personal = mode === 'personal';
+    return `<div class="reading-quiz-questions ${personal ? 'is-personal' : 'is-fill'}">${questions.map((question) => {
+      const number = safeText(question.number);
+      const questionText = readingQuizPartsMarkup(question.question, personal ? 'inject' : 'fill');
+      const options = (Array.isArray(question.options) ? question.options : []).map((option) => {
+        const letter = safeText(option.letter);
+        const optionText = readingQuizPartsMarkup(option.text, personal ? 'inject' : 'fill');
+        const control = personal
+          ? `<input type="radio" name="${escapeHtml(taskId)}-personal-${escapeHtml(number)}" value="${escapeHtml(letter)}" data-personal-question="${escapeHtml(number)}">`
+          : '';
+        const tag = personal ? 'label' : 'div';
+        return `<${tag} class="reading-quiz-option${personal ? ' is-selectable' : ''}">${control}<strong>${escapeHtml(letter)}</strong><span>${optionText}</span></${tag}>`;
+      }).join('');
+      return `<section class="reading-quiz-question" data-reading-question="${escapeHtml(number)}"><h4><span>${escapeHtml(number)}</span>${questionText}</h4><div class="reading-quiz-options">${options}</div></section>`;
+    }).join('')}</div>`;
+  }
+
+  function readingQuizKeyMarkup(block) {
+    const entries = Array.isArray(block?.partB?.key) ? block.partB.key : [];
+    return `<aside class="reading-key-card"><strong class="reading-key-label">Key</strong>${entries.map((entry) => `<p><b>${escapeHtml(entry.title || `Mostly ${entry.letter}:`)}</b> ${escapeHtml(entry.text || '')}</p>`).join('')}</aside>`;
+  }
+
+  function renderReadingQuizBlock(block, id, title) {
+    const partA = block.partA || {};
+    const partB = block.partB || {};
+    const partC = block.partC || {};
+    const wordBank = Array.isArray(partA.wordBank) ? partA.wordBank : [];
+    const people = Array.isArray(partC.people) ? partC.people : [];
+    const matchOptions = ['a', 'b', 'c'];
+    const quiz = block.quiz || {};
+    window.__readingQuizWordBank = wordBank;
+    return `<article class="card lesson-block reading-quiz-block" data-task="${escapeHtml(id)}" data-type="reading-quiz">
+      <div class="reading-quiz-section-head"><span class="eyebrow">${escapeHtml(title || 'READING')}</span></div>
+      <section class="reading-part reading-part-a">
+        <div class="reading-part-heading"><strong>${escapeHtml(partA.label || '4A')}</strong><p>${escapeHtml(partA.instructions || '')}</p></div>
+        ${wordBank.length ? `<div class="reading-word-bank" aria-label="Words in the box">${wordBank.map((word) => `<span>${escapeHtml(word)}</span>`).join('')}</div>` : ''}
+        <div class="reading-quiz-layout">
+          <div class="reading-quiz-reference">
+            <div class="reading-quiz-banner" aria-label="Alone or together quiz illustration">
+              <div class="reading-banner-copy"><span>${escapeHtml(quiz.title || 'QUIZ')}</span><h3>${escapeHtml(quiz.headline || '')}</h3><p>${escapeHtml(quiz.intro || '')}</p></div>
+              <div class="reading-cafe-illustration" aria-hidden="true"><span class="person p1"></span><span class="person p2"></span><span class="person p3"></span><span class="person p4"></span><span class="cafe-table"></span><span class="cup c1"></span><span class="cup c2"></span></div>
+            </div>
+          </div>
+          <div class="reading-quiz-work">${readingQuizQuestionsMarkup(block, 'fill', id)}</div>
+        </div>
+      </section>
+      <section class="reading-bc-grid">
+        <div class="reading-key-sticky">${readingQuizKeyMarkup(block)}</div>
+        <div class="reading-bc-work">
+          <section class="reading-part reading-part-b">
+            <div class="reading-part-heading"><strong>${escapeHtml(partB.label || 'B')}</strong><p>${escapeHtml(partB.instructions || '')}</p></div>
+            <div class="reading-personal-lock" data-personal-lock>Сначала заполни все пропуски в 4A.</div>
+            <div class="reading-personal-quiz" data-personal-quiz hidden>${readingQuizQuestionsMarkup(block, 'personal', id)}</div>
+          </section>
+          <section class="reading-part reading-part-c">
+            <div class="reading-part-heading"><strong>${escapeHtml(partC.label || 'C')}</strong><p>${escapeHtml(partC.instructions || '')}</p></div>
+            <div class="reading-person-list">${people.map((person) => `<article class="reading-person-row" data-reading-person="${escapeHtml(person.number)}"><div class="reading-person-copy"><strong>${escapeHtml(person.number)}</strong><p>${escapeHtml(person.text || '')}</p></div><div class="reading-match-control"><select data-reading-match="${escapeHtml(person.number)}" aria-label="Match person ${escapeHtml(person.number)}"><option value="">Choose</option>${matchOptions.map((option) => `<option value="${option}">${option}</option>`).join('')}</select><span class="reading-match-feedback feedback" aria-live="polite"></span></div></article>`).join('')}</div>
+          </section>
+        </div>
+      </section>
+      <div class="reading-quiz-summary feedback" aria-live="polite"></div>
     </article>`;
+  }
+
+  function collectReadingQuizAnswers(node) {
+    const gaps = {};
+    node.querySelectorAll('[data-quiz-gap]').forEach((input) => { gaps[safeText(input.dataset.quizGap)] = input.value; });
+    const personal = {};
+    node.querySelectorAll('[data-personal-question]:checked').forEach((input) => { personal[safeText(input.dataset.personalQuestion)] = safeText(input.value); });
+    const matches = {};
+    node.querySelectorAll('[data-reading-match]').forEach((select) => { matches[safeText(select.dataset.readingMatch)] = safeText(select.value); });
+    return { gaps, personal, matches };
+  }
+
+  function updateReadingQuizDependency(node, block) {
+    const answers = block?.partA?.answers && typeof block.partA.answers === 'object' ? block.partA.answers : {};
+    const gapIds = Object.keys(answers);
+    const inputs = gapIds.map((gapId) => node.querySelector(`[data-quiz-gap="${CSS.escape(gapId)}"]`));
+    const complete = inputs.length === gapIds.length && inputs.every((input) => safeText(input?.value).trim() !== '');
+    const personalQuiz = node.querySelector('[data-personal-quiz]');
+    const lock = node.querySelector('[data-personal-lock]');
+    if (personalQuiz) personalQuiz.hidden = !complete;
+    if (lock) lock.hidden = complete;
+    node.querySelectorAll('[data-personal-question]').forEach((input) => { input.disabled = !complete; });
+    if (!complete) return;
+    gapIds.forEach((gapId) => {
+      const value = safeText(node.querySelector(`[data-quiz-gap="${CSS.escape(gapId)}"]`)?.value).trim();
+      node.querySelectorAll(`[data-inject-gap="${CSS.escape(gapId)}"]`).forEach((target) => { target.textContent = value; });
+    });
+  }
+
+  function restoreReadingQuizAnswers(node, block, value) {
+    const gaps = value?.gaps && typeof value.gaps === 'object' ? value.gaps : {};
+    Object.entries(gaps).forEach(([gapId, answer]) => {
+      const input = node.querySelector(`[data-quiz-gap="${CSS.escape(safeText(gapId))}"]`);
+      if (input) input.value = safeText(answer);
+    });
+    const personal = value?.personal && typeof value.personal === 'object' ? value.personal : {};
+    Object.entries(personal).forEach(([questionId, answer]) => {
+      const input = node.querySelector(`[data-personal-question="${CSS.escape(safeText(questionId))}"][value="${CSS.escape(safeText(answer))}"]`);
+      if (input) input.checked = true;
+    });
+    const matches = value?.matches && typeof value.matches === 'object' ? value.matches : {};
+    Object.entries(matches).forEach(([personId, answer]) => {
+      const select = node.querySelector(`[data-reading-match="${CSS.escape(safeText(personId))}"]`);
+      if (select) select.value = safeText(answer);
+    });
+    updateReadingQuizDependency(node, block);
+  }
+
+  function setupReadingQuizBlocks(root, blocks) {
+    blocks.filter((block) => block.type === 'reading-quiz').forEach((block, index) => {
+      const taskId = safeText(block.id, `task-${index}`);
+      const node = root.querySelector(`[data-task="${CSS.escape(taskId)}"]`);
+      if (!node) return;
+      node.querySelectorAll('[data-quiz-gap]').forEach((input) => input.addEventListener('input', () => updateReadingQuizDependency(node, block)));
+      updateReadingQuizDependency(node, block);
+    });
   }
 
   function renderLessonBlock(block, index) {
     const id = safeText(block.id, `task-${index}`);
-    const title = escapeHtml(block.title || block.prompt || `Task ${index + 1}`);
+    const title = escapeHtml(block.title || block.prompt || `Задание ${index + 1}`);
     const text = escapeHtml(block.text || '').replaceAll('\n', '<br>');
 
     if (block.type === 'section') {
-      const sectionEyebrow = Object.prototype.hasOwnProperty.call(block, 'eyebrow')
-        ? safeText(block.eyebrow)
-        : 'Material';
-      const explicitSectionNumber = block.sectionNumber === undefined || block.sectionNumber === null || block.sectionNumber === ''
-        ? null
-        : block.sectionNumber;
-      const sectionNumber = explicitSectionNumber ?? block.__sectionNumber ?? index + 1;
-      const titleLead = safeText(block.titleLead);
-      const titleTail = safeText(block.titleTail);
-      const sectionTitle = titleLead
-        ? `<span class="lesson-section-title-main">${escapeHtml(titleLead)}</span>${titleTail ? `<span class="lesson-section-title-tail">${escapeHtml(titleTail)}</span>` : ''}`
-        : title;
-      const sectionTitleClass = titleLead ? ' class="lesson-section-title-composite"' : '';
-      return `<header id="lesson-section-${index}" class="lesson-section-title lesson-block" data-lesson-section><span class="lesson-section-step">${escapeHtml(sectionNumber)}</span><div>${sectionEyebrow ? `<span class="eyebrow">${escapeHtml(sectionEyebrow)}</span>` : ''}<h2${sectionTitleClass}>${sectionTitle}</h2>${text ? `<p class="muted">${text}</p>` : ''}</div></header>`;
+      return `<header id="lesson-section-${index}" class="lesson-section-title lesson-block" data-lesson-section><span class="lesson-section-step">${escapeHtml(block.__sectionNumber || index + 1)}</span><div><span class="eyebrow">${escapeHtml(block.eyebrow || 'Материал')}</span><h2>${title}</h2>${text ? `<p class="muted">${text}</p>` : ''}</div></header>`;
     }
     if (block.type === 'info') return `<article class="card info-card lesson-block"><h3>${title}</h3><p>${text}</p></article>`;
     if (block.type === 'tip') return `<article class="card tip-card lesson-block"><h3>${title}</h3><p>${text}</p></article>`;
+    if (block.type === 'grammar-link') {
+      const grammarId = safeText(block.grammarId);
+      const href = grammarId ? `grammar-topic.html?id=${encodeURIComponent(grammarId)}` : 'grammar.html';
+      return `<article class="card lesson-block grammar-link-card"><div class="grammar-link-icon" aria-hidden="true">∑</div><div><span class="eyebrow">Grammar</span><h3>${title}</h3>${text ? `<p>${text}</p>` : ''}</div><a class="btn btn-primary" href="${escapeHtml(href)}">${escapeHtml(block.buttonLabel || 'Открыть тему')}</a></article>`;
+    }
     if (block.type === 'reading') {
       const sectionCount = Array.isArray(block.sections) ? block.sections.length : 0;
       return `<article class="card lesson-block reading-card"><div class="reading-title"><div><span class="eyebrow">Reading</span><h3>${title}</h3></div>${sectionCount ? `<span class="reading-count">${sectionCount} sections</span>` : ''}</div>${renderReadingSections(block)}</article>`;
     }
+    if (block.type === 'reading-quiz') return renderReadingQuizBlock(block, id, title);
     if (block.type === 'exercise') {
       const items = Array.isArray(block.items) ? block.items : [];
       const wordBank = Array.isArray(block.wordBank) && block.wordBank.length
         ? `<div class="word-bank" aria-label="Word bank"><strong class="word-bank-label">Word bank</strong>${block.wordBank.map((word) => `<span>${escapeHtml(word)}</span>`).join('')}</div>`
         : '';
-      const wordBanks = Array.isArray(block.wordBanks) && block.wordBanks.length
-        ? `<div class="word-bank-groups">${block.wordBanks.map((group) => `<div class="word-bank" aria-label="${escapeHtml(group.label || 'Word bank')}"><strong class="word-bank-label">${escapeHtml(group.label || 'Word bank')}</strong>${(group.words || []).map((word) => `<span>${escapeHtml(word)}</span>`).join('')}</div>`).join('')}</div>`
-        : '';
-      const player = block.audio ? `<audio class="audio-player" controls preload="none" src="${escapeHtml(block.audio)}"></audio>` : '';
-      const imageEntries = Array.isArray(block.images) && block.images.length
-        ? block.images
-        : block.image
-          ? [{ src: block.image, alt: block.imageAlt || '', label: '' }]
-          : [];
-      const image = imageEntries.length
-        ? `<div class="exercise-images${imageEntries.length > 1 ? ' exercise-images-multiple' : ''}">${imageEntries.map((entry) => {
-            const src = typeof entry === 'string' ? entry : entry?.src;
-            const alt = typeof entry === 'string' ? '' : entry?.alt || '';
-            const label = typeof entry === 'string' ? '' : entry?.label || '';
-            if (!src) return '';
-            return `<figure class="exercise-image-figure"><a class="exercise-image-link" href="${escapeHtml(src)}" target="_blank" rel="noopener"><img class="exercise-image" src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" loading="lazy"></a>${label ? `<figcaption>${escapeHtml(label)}</figcaption>` : ''}</figure>`;
-          }).join('')}</div>`
-        : '';
-      const intro = block.introTitle || block.introText ? `<div class="exercise-source"><h4>${escapeHtml(block.introTitle || '')}</h4>${block.introText ? `<p>${escapeHtml(block.introText)}</p>` : ''}</div>` : '';
-      const exerciseContent = block.layout === 'cloze-reading'
-        ? renderClozeReading(block, id)
-        : block.layout === 'item-groups'
-        ? renderExerciseItemGroups(block, id)
-        : block.layout === 'dialogue'
-        ? renderDialogueExercise(block, id)
-        : block.layout === 'crossword'
-          ? renderCrosswordExercise(block, id)
-          : block.layout === 'past-columns'
-            ? renderPastColumnsExercise(block, id)
-            : `<div class="exercise-items${block.visualGrid === true ? ' exercise-visual-grid' : ''}">${items.map((item, itemIndex) => renderExerciseItem(item, id, itemIndex, block.inlineNumberedItems === true)).join('')}</div>`;
-      const hasStickyImage = block.stickyImage === true && imageEntries.length === 1;
-      const exerciseBody = hasStickyImage
-        ? `<div class="exercise-sticky-layout"><div class="exercise-sticky-media">${image}</div><div class="exercise-sticky-content">${intro}${exerciseContent}</div></div>`
-        : `${image}${intro}${exerciseContent}`;
-      const revealAfterComplete = safeText(block.revealAfterComplete).trim();
-      const revealAttrs = revealAfterComplete
-        ? ` data-reveal-after-complete="${escapeHtml(revealAfterComplete)}" hidden`
-        : '';
-      return `<article class="card lesson-block exercise-card${block.layout === 'dialogue' ? ' dialogue-card' : ''}${hasStickyImage ? ' has-sticky-image' : ''}${block.visualGrid === true ? ' visual-grid-card' : ''}" data-task="${escapeHtml(id)}" data-type="exercise"${revealAttrs}>
-        <div class="exercise-heading"><span class="eyebrow">Exercise</span><h3>${title}</h3>${block.instructions ? `<p class="muted exercise-instructions">${escapeHtml(block.instructions)}</p>` : ''}${player}${wordBank}${wordBanks}</div>
-        ${exerciseBody}
+      const player = renderLessonAudio(block);
+      const mediaItems = Array.isArray(block.images) ? block.images : block.image ? [block.image] : [];
+      const media = mediaItems.length ? `<div class="exercise-media-grid">${mediaItems.map((image) => {
+        const source = typeof image === 'string' ? image : image?.src;
+        const alt = typeof image === 'string' ? '' : image?.alt;
+        const caption = typeof image === 'string' ? '' : image?.caption;
+        const compact = typeof image === 'string' ? false : Boolean(image?.compact);
+        if (!source) return '';
+        return `<figure class="exercise-media${compact ? ' is-compact' : ''}"><img src="${escapeHtml(source)}" alt="${escapeHtml(alt || '')}" loading="lazy">${caption ? `<figcaption>${escapeHtml(caption)}</figcaption>` : ''}</figure>`;
+      }).join('')}</div>` : '';
+      const dialogue = renderExerciseDialogue(block);
+      const contentCards = renderExerciseContentCards(block);
+      return `<article class="card lesson-block exercise-card" data-task="${escapeHtml(id)}" data-type="exercise">
+        <div class="exercise-heading"><span class="eyebrow">Exercise</span><h3>${title}</h3>${block.instructions ? `<p class="muted exercise-instructions">${escapeHtml(block.instructions)}</p>` : ''}${player}${wordBank}${media}${dialogue}${contentCards}</div>
+        <div class="exercise-items">${items.map((item, itemIndex) => renderExerciseItem(item, id, itemIndex)).join('')}</div>
       </article>`;
     }
+    if (block.type === 'family-tree') return renderFamilyTreeBlock(block, id, title);
+    if (block.type === 'guided-writing') return renderGuidedWritingBlock(block, id, title);
+    if (block.type === 'word-groups') return renderWordGroupsBlock(block, id, title);
+    if (block.type === 'mini-interview') return renderMiniInterviewBlock(block, id, title);
     if (block.type === 'text' || block.type === 'translate') return `<article class="card lesson-block" data-task="${escapeHtml(id)}" data-type="${escapeHtml(block.type)}"><label class="field-label" for="${escapeHtml(id)}">${title}</label>${block.source ? `<p class="muted">${escapeHtml(block.source)}</p>` : ''}<input class="text-field" id="${escapeHtml(id)}" name="${escapeHtml(id)}" autocomplete="off"><div class="feedback"></div></article>`;
     if (block.type === 'textarea') return `<article class="card lesson-block" data-task="${escapeHtml(id)}" data-type="textarea"><label class="field-label" for="${escapeHtml(id)}">${title}</label><textarea id="${escapeHtml(id)}" name="${escapeHtml(id)}"></textarea><div class="feedback"></div></article>`;
     if (block.type === 'single' || block.type === 'multiple') {
@@ -1682,20 +1925,20 @@
     }
     if (block.type === 'select') {
       const options = (block.options || []).map((option, optionIndex) => `<option value="${optionIndex}">${escapeHtml(option)}</option>`).join('');
-      return `<article class="card lesson-block" data-task="${escapeHtml(id)}" data-type="select"><label class="field-label" for="${escapeHtml(id)}">${title}</label><select id="${escapeHtml(id)}"><option value="">Choose an answer</option>${options}</select><div class="feedback"></div></article>`;
+      return `<article class="card lesson-block" data-task="${escapeHtml(id)}" data-type="select"><label class="field-label" for="${escapeHtml(id)}">${title}</label><select id="${escapeHtml(id)}"><option value="">Выберите ответ</option>${options}</select><div class="feedback"></div></article>`;
     }
     if (block.type === 'match') {
       const rights = (block.pairs || []).map((pair) => pair.right);
-      const rows = (block.pairs || []).map((pair, pairIndex) => `<div>${escapeHtml(pair.left)}</div><select data-match-index="${pairIndex}"><option value="">Choose a match</option>${rights.map((right, rightIndex) => `<option value="${rightIndex}">${escapeHtml(right)}</option>`).join('')}</select>`).join('');
+      const rows = (block.pairs || []).map((pair, pairIndex) => `<div>${escapeHtml(pair.left)}</div><select data-match-index="${pairIndex}"><option value="">Выберите пару</option>${rights.map((right, rightIndex) => `<option value="${rightIndex}">${escapeHtml(right)}</option>`).join('')}</select>`).join('');
       return `<article class="card lesson-block" data-task="${escapeHtml(id)}" data-type="match"><h3>${title}</h3><div class="match-grid">${rows}</div><div class="feedback"></div></article>`;
     }
     if (block.type === 'reorder') {
       const chips = shuffled(block.words || []).map((word) => `<button class="word-chip" type="button" data-word="${escapeHtml(word)}">${escapeHtml(word)}</button>`).join('');
-      return `<article class="card lesson-block" data-task="${escapeHtml(id)}" data-type="reorder"><h3>${title}</h3><div class="word-chips" data-reorder-source>${chips}</div><label class="field-label" for="${escapeHtml(id)}">Your sentence</label><input class="text-field" id="${escapeHtml(id)}" readonly><div class="feedback"></div></article>`;
+      return `<article class="card lesson-block" data-task="${escapeHtml(id)}" data-type="reorder"><h3>${title}</h3><div class="word-chips" data-reorder-source>${chips}</div><label class="field-label" for="${escapeHtml(id)}">Собранный ответ</label><input class="text-field" id="${escapeHtml(id)}" readonly><div class="feedback"></div></article>`;
     }
     if (block.type === 'audio') {
-      const player = block.audio ? `<audio class="audio-player" controls preload="none" src="${escapeHtml(block.audio)}"></audio>` : '<p class="muted">The audio file has not been added yet.</p>';
-      const response = block.response === false ? '' : `<input class="text-field" id="${escapeHtml(id)}" aria-label="Audio task answer"><div class="feedback"></div>`;
+      const player = renderLessonAudio(block) || '<p class="muted">Аудиофайл ещё не прикреплён.</p>';
+      const response = block.response === false ? '' : `<input class="text-field" id="${escapeHtml(id)}" aria-label="Ответ на аудиозадание"><div class="feedback"></div>`;
       const taskAttrs = block.response === false ? '' : ` data-task="${escapeHtml(id)}" data-type="audio"`;
       return `<article class="card lesson-block audio-card"${taskAttrs}><div class="audio-icon" aria-hidden="true">🎧</div><div class="audio-content"><h3>${title}</h3>${text ? `<p class="muted">${text}</p>` : ''}${player}${response}</div></article>`;
     }
@@ -1724,49 +1967,45 @@
     let actual;
     let correct = false;
 
-    if (inputType === 'example-gap') {
-      actual = itemNode.querySelector('[data-example-gap]')?.value ?? '';
-      correct = textAnswerMatches(item, actual);
-    } else if (inputType === 'r-circle') {
-      actual = [...itemNode.querySelectorAll('[data-r-index]:checked')].map((input) => Number(input.value)).sort((a, b) => a - b);
-      const expected = [...(Array.isArray(item.answer) ? item.answer : [])].map(Number).sort((a, b) => a - b);
-      correct = JSON.stringify(actual) === JSON.stringify(expected);
-    } else if (inputType === 'pronunciation-sentence') {
-      const text = itemNode.querySelector('[data-pronunciation-input]')?.value ?? '';
-      const r = [...itemNode.querySelectorAll('[data-r-index]:checked')].map((input) => Number(input.value)).sort((a, b) => a - b);
-      const expectedR = [...(Array.isArray(item.rAnswer) ? item.rAnswer : [])].map(Number).sort((a, b) => a - b);
-      actual = { text, r };
-      correct = textAnswerMatches(item, text) && JSON.stringify(r) === JSON.stringify(expectedR);
-    } else if (inputType === 'crossword-word') {
-      actual = [...itemNode.querySelectorAll('[data-crossword-letter]')].map((input) => safeText(input.value)).join('');
-      correct = textAnswerMatches(item, actual);
-    } else if (inputType === 'odd-one-out') {
-      const selected = itemNode.querySelector('input[type="radio"]:checked')?.value ?? '';
-      const reason = itemNode.querySelector('[data-odd-reason]')?.value ?? '';
-      actual = { selected, reason };
-      correct = selected !== ''
-        && Number(selected) === Number(item.answer)
-        && normalizeAnswer(reason) === normalizeAnswer(item.reasonAnswer);
-    } else if (inputType === 'circle-or-tick') {
-      actual = itemNode.querySelector('input:checked')?.value ?? '';
-      correct = safeText(actual) === safeText(item.answer);
-    } else if (inputType === 'multiple') {
+    if (inputType === 'multiple') {
       actual = [...itemNode.querySelectorAll('input:checked')].map((input) => Number(input.value)).sort((a, b) => a - b);
       const expected = [...(item.answer || [])].map(Number).sort((a, b) => a - b);
       correct = JSON.stringify(actual) === JSON.stringify(expected);
     } else if (inputType === 'single') {
       actual = itemNode.querySelector('input:checked')?.value ?? '';
       correct = Number(actual) === Number(item.answer);
-    } else if (inputType === 'select' || inputType === 'select-gap') {
+    } else if (inputType === 'select') {
       actual = itemNode.querySelector('select')?.value ?? '';
       correct = actual !== '' && Number(actual) === Number(item.answer);
+    } else if (inputType === 'inline-single') {
+      const choices = Array.isArray(item.choices) ? item.choices : [];
+      actual = choices.map((_, choiceIndex) => itemNode.querySelector(`input[data-inline-choice="${choiceIndex}"]:checked`)?.value ?? '');
+      const choiceResults = choices.map((choice, choiceIndex) => actual[choiceIndex] !== '' && Number(actual[choiceIndex]) === Number(choice.answer));
+      correct = choices.length > 0 && choiceResults.every(Boolean);
+      return { actual, correct, scoreCorrect: choiceResults.filter(Boolean).length, scoreTotal: choices.length };
     } else if (inputType === 'gaps') {
       actual = [...itemNode.querySelectorAll('[data-gap-index]')].map((input) => input.value);
       const expected = Array.isArray(item.answers) ? item.answers : [];
-      correct = expected.length > 0 && expected.every((answer, index) => {
+      const gapResults = expected.map((answer, index) => {
         const accepted = Array.isArray(answer) ? answer : [answer];
         return accepted.some((variant) => normalizeAnswer(variant) === normalizeAnswer(actual[index]));
       });
+      correct = expected.length > 0 && gapResults.every(Boolean);
+      return { actual, correct, scoreCorrect: gapResults.filter(Boolean).length, scoreTotal: expected.length };
+    } else if (inputType === 'select-gaps') {
+      actual = [...itemNode.querySelectorAll('[data-gap-index]')].map((select) => select.value);
+      const expected = Array.isArray(item.answers) ? item.answers : [];
+      const gapResults = expected.map((answer, index) => actual[index] !== '' && Number(actual[index]) === Number(answer));
+      correct = expected.length > 0 && gapResults.every(Boolean);
+      return { actual, correct, scoreCorrect: gapResults.filter(Boolean).length, scoreTotal: expected.length };
+    } else if (inputType === 'mark') {
+      actual = [...itemNode.querySelectorAll('[data-mark-index].is-selected')].map((button) => Number(button.dataset.markIndex)).sort((a, b) => a - b);
+      const expected = [...(item.answer || [])].map(Number).sort((a, b) => a - b);
+      const expectedSet = new Set(expected);
+      const selectedSet = new Set(actual);
+      const scoreCorrect = expected.filter((value) => selectedSet.has(value)).length;
+      correct = actual.length === expected.length && actual.every((value) => expectedSet.has(value));
+      return { actual, correct, scoreCorrect, scoreTotal: expected.length };
     } else {
       actual = itemNode.querySelector('input, textarea')?.value || '';
       correct = textAnswerMatches(item, actual);
@@ -1775,13 +2014,13 @@
     return { actual, correct };
   }
 
-  function checkExerciseBlock(block, node, options = {}) {
+  function checkExerciseBlock(block, node) {
     const actual = {};
     let correctCount = 0;
     let total = 0;
 
     (Array.isArray(block.items) ? block.items : []).forEach((item, index) => {
-      if (item.example || item.displayOnly) return;
+      if (item.example) return;
       const itemId = safeText(item.id, `${index + 1}`);
       const itemNode = node.querySelector(`[data-exercise-item="${CSS.escape(itemId)}"]`);
       if (!itemNode) return;
@@ -1794,32 +2033,81 @@
         itemNode.classList.add('is-saved');
         if (feedback) {
           feedback.className = 'feedback show neutral';
-          feedback.textContent = 'Your answer has been saved for the teacher.';
+          feedback.textContent = 'Ответ сохранён для преподавателя.';
         }
         return;
       }
 
-      total += 1;
-      if (result.correct) correctCount += 1;
+      const itemTotal = Number.isFinite(Number(result.scoreTotal)) && Number(result.scoreTotal) > 0 ? Number(result.scoreTotal) : 1;
+      const itemCorrect = Number.isFinite(Number(result.scoreCorrect)) ? Number(result.scoreCorrect) : result.correct ? 1 : 0;
+      total += itemTotal;
+      correctCount += itemCorrect;
       itemNode.classList.toggle('is-correct', result.correct);
       itemNode.classList.toggle('is-wrong', !result.correct);
       itemNode.classList.remove('is-saved');
       if (feedback) {
         feedback.className = `feedback show ${result.correct ? 'good' : 'bad'}`;
-        const hideAnswerOnError = options.hideAnswersOnError === true || block.hideAnswersOnError === true || item.hideAnswersOnError === true;
-        feedback.textContent = result.correct
-          ? 'Correct!'
-          : hideAnswerOnError
-            ? 'Incorrect. Check your answer and try again.'
-            : safeText(item.explanation, 'Check the answer and try again.');
+        feedback.textContent = result.correct ? 'Верно!' : safeText(item.explanation, 'Проверь ответ и попробуй ещё раз.');
       }
     });
 
     return { actual, correctCount, total };
   }
 
+  function checkReadingQuizBlock(block, node) {
+    const actual = collectReadingQuizAnswers(node);
+    const gapAnswers = block?.partA?.answers && typeof block.partA.answers === 'object' ? block.partA.answers : {};
+    const matchAnswers = block?.partC?.answers && typeof block.partC.answers === 'object' ? block.partC.answers : {};
+    let correctCount = 0;
+    let total = 0;
+
+    Object.entries(gapAnswers).forEach(([gapId, expected]) => {
+      total += 1;
+      const input = node.querySelector(`[data-quiz-gap="${CSS.escape(safeText(gapId))}"]`);
+      const wrap = node.querySelector(`[data-reading-gap-wrap="${CSS.escape(safeText(gapId))}"]`);
+      const feedback = wrap?.querySelector('.reading-gap-feedback');
+      const correct = normalizeAnswer(input?.value) === normalizeAnswer(expected);
+      if (correct) correctCount += 1;
+      wrap?.classList.toggle('is-correct', correct);
+      wrap?.classList.toggle('is-wrong', !correct);
+      if (feedback) feedback.textContent = '';
+    });
+
+    Object.entries(matchAnswers).forEach(([personId, expected]) => {
+      total += 1;
+      const row = node.querySelector(`[data-reading-person="${CSS.escape(safeText(personId))}"]`);
+      const select = node.querySelector(`[data-reading-match="${CSS.escape(safeText(personId))}"]`);
+      const feedback = row?.querySelector('.reading-match-feedback');
+      const correct = safeText(select?.value) === safeText(expected);
+      if (correct) correctCount += 1;
+      row?.classList.toggle('is-correct', correct);
+      row?.classList.toggle('is-wrong', !correct);
+      if (feedback) {
+        feedback.className = 'reading-match-feedback feedback';
+        feedback.textContent = '';
+      }
+    });
+
+    const personalCount = Object.keys(actual.personal || {}).length;
+    const requiredPersonalCount = Array.isArray(block?.quiz?.questions) ? block.quiz.questions.length : 0;
+    const requiredComplete = requiredPersonalCount === 0 || personalCount >= requiredPersonalCount;
+    const summary = node.querySelector('.reading-quiz-summary');
+    if (summary) {
+      summary.className = 'reading-quiz-summary feedback show neutral';
+      summary.textContent = requiredComplete
+        ? 'Личные ответы из части B сохранены и не входят в балл.'
+        : 'Заполни все личные ответы в части B. Они не входят в балл.';
+    }
+    return { actual, correctCount, total, requiredComplete };
+  }
+
   function checkLessonTask(block, node) {
+    if (block.type === 'reading-quiz') return checkReadingQuizBlock(block, node);
     if (block.type === 'exercise') return checkExerciseBlock(block, node);
+    if (block.type === 'family-tree') return { actual: collectFamilyTree(node), correctCount: 0, total: 0, manual: true };
+    if (block.type === 'guided-writing') return { actual: node.querySelector('[data-guided-writing]')?.value || '', correctCount: 0, total: 0, manual: true };
+    if (block.type === 'word-groups') return { actual: collectWordGroups(node), correctCount: 0, total: 0, manual: true };
+    if (block.type === 'mini-interview') return { actual: collectMiniInterview(node), correctCount: 0, total: 0, manual: true };
     let actual;
     let correct = false;
     if (block.type === 'single') {
@@ -1846,47 +2134,38 @@
   function restoreExerciseAnswers(block, node, saved) {
     if (!saved || typeof saved !== 'object') return;
     (Array.isArray(block.items) ? block.items : []).forEach((item, index) => {
-      if (item.example || item.displayOnly) return;
+      if (item.example) return;
       const itemId = safeText(item.id, `${index + 1}`);
       const value = saved[itemId];
       if (value === undefined) return;
       const itemNode = node.querySelector(`[data-exercise-item="${CSS.escape(itemId)}"]`);
       if (!itemNode) return;
       const inputType = item.input || 'text';
-      if (inputType === 'example-gap') {
-        const input = itemNode.querySelector('[data-example-gap]');
-        if (input) input.value = safeText(value);
-      } else if (inputType === 'r-circle') {
-        const selected = new Set(Array.isArray(value) ? value.map(Number) : []);
-        itemNode.querySelectorAll('[data-r-index]').forEach((input) => { input.checked = selected.has(Number(input.value)); });
-      } else if (inputType === 'pronunciation-sentence') {
-        const input = itemNode.querySelector('[data-pronunciation-input]');
-        if (input) input.value = safeText(value?.text);
-        updatePronunciationPreview(itemNode, Array.isArray(value?.r) ? value.r : []);
-      } else if (inputType === 'crossword-word') {
-        const letters = crosswordLetters(value);
-        itemNode.querySelectorAll('[data-crossword-letter]').forEach((input, letterIndex) => { input.value = safeText(letters[letterIndex]).toUpperCase(); });
-      } else if (inputType === 'odd-one-out') {
-        const selected = safeText(value?.selected);
-        const input = itemNode.querySelector(`input[type="radio"][value="${CSS.escape(selected)}"]`);
-        if (input) input.checked = true;
-        const reason = itemNode.querySelector('[data-odd-reason]');
-        if (reason) reason.value = safeText(value?.reason);
-      } else if (inputType === 'circle-or-tick') {
-        const input = itemNode.querySelector(`input[value="${CSS.escape(safeText(value))}"]`);
-        if (input) input.checked = true;
-      } else if (inputType === 'multiple') {
+      if (inputType === 'multiple') {
         const selected = new Set(Array.isArray(value) ? value.map(Number) : []);
         itemNode.querySelectorAll('input[type="checkbox"]').forEach((input) => { input.checked = selected.has(Number(input.value)); });
       } else if (inputType === 'single') {
         const input = itemNode.querySelector(`input[value="${CSS.escape(safeText(value))}"]`);
         if (input) input.checked = true;
-      } else if (inputType === 'select' || inputType === 'select-gap') {
+      } else if (inputType === 'select') {
         const select = itemNode.querySelector('select');
         if (select) select.value = safeText(value);
-      } else if (inputType === 'gaps') {
+      } else if (inputType === 'inline-single') {
+        const values = Array.isArray(value) ? value : [];
+        itemNode.querySelectorAll('[data-inline-choice]').forEach((input) => {
+          const choiceIndex = Number(input.dataset.inlineChoice);
+          input.checked = safeText(values[choiceIndex]) === input.value;
+        });
+      } else if (inputType === 'gaps' || inputType === 'select-gaps') {
         const values = Array.isArray(value) ? value : [];
         itemNode.querySelectorAll('[data-gap-index]').forEach((input, gapIndex) => { input.value = safeText(values[gapIndex]); });
+      } else if (inputType === 'mark') {
+        const selected = new Set(Array.isArray(value) ? value.map(Number) : []);
+        itemNode.querySelectorAll('[data-mark-index]').forEach((button) => {
+          const active = selected.has(Number(button.dataset.markIndex));
+          button.classList.toggle('is-selected', active);
+          button.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
       } else {
         const input = itemNode.querySelector('input, textarea');
         if (input) input.value = safeText(value);
@@ -1902,8 +2181,30 @@
       if (value === undefined) return;
       const node = root.querySelector(`[data-task="${CSS.escape(taskId)}"]`);
       if (!node) return;
-      if (block.type === 'exercise') {
+      if (block.type === 'reading-quiz') {
+        restoreReadingQuizAnswers(node, block, value);
+      } else if (block.type === 'exercise') {
         restoreExerciseAnswers(block, node, value);
+      } else if (block.type === 'family-tree') {
+        restoreFamilyTree(node, value);
+      } else if (block.type === 'guided-writing') {
+        const textarea = node.querySelector('[data-guided-writing]');
+        if (textarea) textarea.value = safeText(value);
+        updateSentenceCounter(node);
+      } else if (block.type === 'word-groups') {
+        ['female', 'male', 'both'].forEach((group) => {
+          const textarea = node.querySelector(`[data-word-group="${group}"]`);
+          if (textarea) textarea.value = safeText(value?.[group]);
+        });
+        if (Object.values(value || {}).some((item) => safeText(item).trim())) node.querySelector('details')?.setAttribute('open', '');
+      } else if (block.type === 'mini-interview') {
+        const person = node.querySelector('[data-interview-person]');
+        if (person) person.value = safeText(value?.person);
+        const answers = Array.isArray(value?.answers) ? value.answers : [];
+        node.querySelectorAll('[data-interview-answer]').forEach((input, answerIndex) => { input.value = safeText(answers[answerIndex]); });
+        const summary = node.querySelector('[data-interview-summary]');
+        if (summary) summary.value = safeText(value?.summary);
+        if (safeText(value?.person).trim() || answers.some((item) => safeText(item).trim()) || safeText(value?.summary).trim()) node.querySelector('details')?.setAttribute('open', '');
       } else if (block.type === 'single') {
         const input = node.querySelector(`input[value="${CSS.escape(safeText(value))}"]`);
         if (input) input.checked = true;
@@ -1923,59 +2224,149 @@
     });
   }
 
+  function showLessonTaskResult(block, node, result) {
+    if (block.type === 'exercise' || block.type === 'reading-quiz') return;
+    const total = Number(result.total || 0);
+    const correctCount = Number(result.correctCount || 0);
+    if (result.manual || MANUAL_LESSON_TYPES.includes(block.type) || total === 0) {
+      node.classList.remove('is-correct', 'is-wrong');
+      node.classList.add('is-saved');
+      const feedback = node.querySelector('.feedback');
+      if (feedback) {
+        feedback.className = 'feedback show neutral';
+        feedback.textContent = 'Ответ сохранён для проверки преподавателем.';
+      }
+      return;
+    }
+    const isCorrect = total > 0 && correctCount === total;
+    node.classList.toggle('is-correct', isCorrect);
+    node.classList.toggle('is-wrong', !isCorrect);
+    const feedback = node.querySelector('.feedback');
+    if (feedback) {
+      feedback.className = `feedback show ${isCorrect ? 'good' : 'bad'}`;
+      feedback.textContent = isCorrect ? 'Верно!' : safeText(block.explanation, 'В ответе есть ошибка.');
+    }
+  }
+
+  function reviewRestoredLesson(root, blocks) {
+    const checkableTypes = LESSON_TASK_TYPES;
+    blocks
+      .filter((block) => checkableTypes.includes(block.type) && !(block.type === 'audio' && block.response === false))
+      .forEach((block, index) => {
+        const taskId = safeText(block.id, `task-${index}`);
+        const node = root.querySelector(`[data-task="${CSS.escape(taskId)}"]`);
+        if (!node) return;
+        const result = checkLessonTask(block, node);
+        showLessonTaskResult(block, node, result);
+      });
+  }
+
+  function lockCompletedLesson(root) {
+    root.classList.add('lesson-is-locked');
+    root.querySelectorAll('input, textarea').forEach((control) => {
+      if (control.type === 'radio' || control.type === 'checkbox') {
+        control.disabled = true;
+      } else {
+        control.readOnly = true;
+        control.setAttribute('aria-readonly', 'true');
+      }
+    });
+    root.querySelectorAll('select, button[data-word], [data-task] button').forEach((control) => {
+      control.disabled = true;
+    });
+  }
+
   async function renderLesson() {
     const id = queryParam('id');
     const lessonRecord = HOMEWORK_DATA.find((item) => item.id === id && item.status !== 'draft');
     const root = byId('lesson-root');
     if (!lessonRecord || lessonRecord.status === 'locked') {
-      root.innerHTML = emptyState('📝', 'The assignment has not been published yet', 'The teacher will add the material after the lesson.');
+      root.innerHTML = emptyState('📝', 'Задание ещё не опубликовано', 'Преподаватель добавит материал после урока.');
       return;
     }
 
-    byId('lesson-hero-title').textContent = safeText(lessonRecord.title, 'Assignment');
-    byId('lesson-hero-subtitle').textContent = `Homework #${Number(lessonRecord.number || 0)} · ${safeText(lessonRecord.subtitle, 'Interactive practice')}`;
-    root.innerHTML = '<div class="card empty-state compact-empty"><div class="empty-state-icon">⏳</div><h3>Loading the assignment…</h3></div>';
+    byId('lesson-hero-title').textContent = safeText(lessonRecord.title, 'Задание');
+    byId('lesson-hero-subtitle').textContent = safeText(lessonRecord.subtitle, 'Интерактивная практика');
+    root.innerHTML = '<div class="card empty-state compact-empty"><div class="empty-state-icon">⏳</div><h3>Загружаем задание…</h3></div>';
 
     let lesson;
     try {
       lesson = await resolveLessonContent(lessonRecord);
     } catch (error) {
-      console.error('Lesson content loading error:', error);
-      root.innerHTML = emptyState('⚠️', 'Could not load the assignment', 'Check that the lesson JSON file exists in data/lessons and has the correct structure.');
+      console.error('Ошибка загрузки содержимого урока:', error);
+      root.innerHTML = emptyState('⚠️', 'Не удалось загрузить задание', 'Проверьте наличие JSON-файла урока в папке data/lessons и корректность его структуры.');
       return;
     }
 
     const blocks = Array.isArray(lesson?.blocks) ? lesson.blocks : [];
     if (!blocks.length) {
-      root.innerHTML = emptyState('📝', 'The assignment has not been published yet', 'The content will appear after the teacher prepares it.');
+      root.innerHTML = emptyState('📝', 'Задание ещё не опубликовано', 'Содержание появится после подготовки преподавателем.');
       return;
     }
 
     const progress = window.ProgressService.loadHomeworkProgress();
     const savedResult = progress.results[lesson.id];
-    const pointsLabel = Number(lesson.totalPoints || 0) > 0 ? `${escapeHtml(lesson.totalPoints)} checked answers` : 'No automatic score';
-    const hasManualResponses = blocks.some((block) => block.type === 'exercise' && (block.items || []).some((item) => item.scored === false));
+    const savedRequiredComplete = blocks.every((block) => {
+      if (block.type !== 'reading-quiz' || block.manualResponses !== true) return true;
+      const personal = savedResult?.answers?.[safeText(block.id)]?.personal;
+      const required = Array.isArray(block?.quiz?.questions) ? block.quiz.questions.length : 0;
+      return required === 0 || Object.keys(personal && typeof personal === 'object' ? personal : {}).length >= required;
+    });
+    const hasCheckedResult = Boolean(savedResult && Number(savedResult.total || 0) > 0 && savedRequiredComplete);
+    const isCompleted = progress.completedIds.includes(lesson.id)
+      || Boolean(progress.submissions[lesson.id])
+      || lessonRecord.status === 'completed';
+    const isManualOnly = Number(lesson.totalPoints || 0) <= 0;
+    const pointsLabel = isManualOnly ? 'Проверяет преподаватель' : `${escapeHtml(lesson.totalPoints)} проверяемых ответов`;
+    const hasManualResponses = isManualOnly || blocks.some((block) => block.manualResponses === true || MANUAL_LESSON_TYPES.includes(block.type) || (block.type === 'exercise' && (block.items || []).some((item) => item.scored === false)));
     const lessonSections = blocks
       .map((block, blockIndex) => block.type === 'section' ? { block, blockIndex } : null)
       .filter(Boolean);
     const roadmap = lessonSections.length
-      ? `<nav class="card lesson-roadmap" aria-label="Homework plan"><div class="lesson-roadmap-heading"><span class="eyebrow">Assignment plan</span><p>Complete the sections in order — your answers will be saved after checking.</p></div><ol>${lessonSections.map(({ block, blockIndex }, sectionIndex) => `<li><a href="#lesson-section-${blockIndex}"><span>${sectionIndex + 1}</span><strong>${escapeHtml(block.title || `Part ${sectionIndex + 1}`)}</strong></a></li>`).join('')}</ol></nav>`
+      ? `<nav class="card lesson-roadmap" aria-label="План домашнего задания"><div class="lesson-roadmap-heading"><span class="eyebrow">План задания</span><p>${isManualOnly ? 'Проходи блоки в удобном темпе — черновик сохраняется автоматически.' : 'Проходи блоки по порядку — ответы сохранятся после проверки.'}</p></div><ol>${lessonSections.map(({ block, blockIndex }, sectionIndex) => `<li><a href="#lesson-section-${blockIndex}"><span>${sectionIndex + 1}</span><strong>${escapeHtml(block.title || `Часть ${sectionIndex + 1}`)}</strong></a></li>`).join('')}</ol></nav>`
       : '';
     let sectionNumber = 0;
     const renderedBlocks = blocks.map((block, blockIndex) => {
       if (block.type === 'section') sectionNumber += 1;
       return renderLessonBlock(block.type === 'section' ? { ...block, __sectionNumber: sectionNumber } : block, blockIndex);
     }).join('');
-    const linkedMaterials = lessonMaterialLinks(lesson, 'lesson');
-    root.innerHTML = `<div class="card lesson-intro"><div><span class="eyebrow">Homework #${Number(lesson.number || 0)}</span><p>${escapeHtml(lesson.subtitle || '')}</p></div><span class="lesson-points">${pointsLabel}</span></div>
-      ${linkedMaterials}
+    const actionsMarkup = isCompleted
+      ? `<div class="card section lesson-actions lesson-completed-panel"><div id="lesson-result" aria-live="polite"></div><div class="completed-lock-message"><span class="completed-lock-icon" aria-hidden="true">🔒</span><div><h3>Работа отправлена</h3><p class="muted">Ответы сохранены и переданы преподавателю. Изменить их после отправки нельзя.</p></div></div></div>`
+      : isManualOnly
+        ? `<div class="card section lesson-actions manual-lesson-actions"><div id="lesson-result" aria-live="polite"><p class="muted" data-draft-status>Черновик сохраняется автоматически на этом устройстве и синхронизируется с Supabase.</p></div><div class="button-row"><button class="btn btn-secondary" id="check-lesson" type="button">Сохранить черновик</button><button class="btn btn-primary" id="submit-lesson" type="button">Отправить преподавателю</button></div><p class="muted save-note">Сайт не выставляет баллы. Перед отправкой проверь семейное древо и текст из 6–8 предложений; дополнительные задания можно оставить пустыми.</p></div>`
+        : `<div class="card section lesson-actions"><div id="lesson-result" aria-live="polite"></div><div class="button-row"><button class="btn btn-primary" id="check-lesson" type="button">Проверить ответы</button><button class="btn btn-secondary" id="submit-lesson" type="button" ${hasCheckedResult ? '' : 'disabled'}>Отправить преподавателю</button></div><p class="muted save-note">После проверки ответы сохраняются на устройстве и сразу синхронизируются с Supabase.</p></div>`;
+    root.innerHTML = `<div class="card lesson-intro"><div><span class="eyebrow">Домашнее задание</span><p>${escapeHtml(lesson.subtitle || '')}</p></div><span class="lesson-points">${pointsLabel}</span></div>
       ${roadmap}
       <div id="lesson-blocks">${renderedBlocks}</div>
-      <div class="card section lesson-actions"><div id="lesson-result" aria-live="polite"></div><div class="button-row"><button class="btn btn-primary" id="check-lesson" type="button">Check answers</button><button class="btn btn-secondary" id="submit-lesson" type="button" ${savedResult ? '' : 'disabled'}>Submit to teacher</button></div><p class="muted save-note">After checking, your answers are saved on this device and synced with Supabase.</p></div>`;
+      ${actionsMarkup}`;
 
-    restoreLessonAnswers(root, blocks, savedResult?.answers);
-    wireLessonInteractiveInputs(root);
-    wireConditionalLessonBlocks(root);
+    const restoredAnswers = mergeLessonAnswers(
+      convertLegacyHomeworkAnswers(lesson.id, savedResult?.legacyAnswers, lesson),
+      savedResult?.answers
+    );
+    restoreLessonAnswers(root, blocks, restoredAnswers);
+    setupReadingQuizBlocks(root, blocks);
+    setupManualLessonWidgets(root);
+    setupSpeechPlayers(root);
+    root.querySelectorAll('[data-mark-index]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const active = !button.classList.contains('is-selected');
+        button.classList.toggle('is-selected', active);
+        button.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+    });
+    if (savedResult && Number(savedResult.total) > 0) {
+      byId('lesson-result').innerHTML = `<h3>Сохранённый результат: ${Number(savedResult.correct || 0)} из ${Number(savedResult.total || 0)}</h3><p class="muted">${Number(savedResult.percent || 0)}% правильных ответов</p>`;
+    } else if (savedResult && isManualOnly && !isCompleted) {
+      byId('lesson-result').innerHTML = '<p class="muted" data-draft-status>Сохранённый черновик восстановлен. Можно продолжить с того же места.</p>';
+    }
+    if (savedResult && (isManualOnly || Number(savedResult.total || 0) > 0)) reviewRestoredLesson(root, blocks);
+    if (isCompleted) lockCompletedLesson(root);
+    if (window.location.hash === '#lesson-result') {
+      window.requestAnimationFrame(() => {
+        byId('lesson-result')?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      });
+    }
 
     root.querySelectorAll('[data-reorder-source]').forEach((source) => {
       source.addEventListener('click', (event) => {
@@ -1989,285 +2380,556 @@
       });
     });
 
-    const evaluateLesson = () => {
-      const checkableTypes = ['text','textarea','single','multiple','select','match','reorder','translate','audio','exercise'];
-      const checkable = blocks
-        .map((block, blockIndex) => ({ block, blockIndex }))
-        .filter(({ block }) => checkableTypes.includes(block.type) && !(block.type === 'audio' && block.response === false));
+    const collectCurrentLessonAnswers = () => {
+      const answers = {};
+      const checkable = blocks.filter((block) => LESSON_TASK_TYPES.includes(block.type) && !(block.type === 'audio' && block.response === false));
+      checkable.forEach((block, index) => {
+        const taskId = safeText(block.id, `task-${index}`);
+        const node = root.querySelector(`[data-task="${CSS.escape(taskId)}"]`);
+        if (!node) return;
+        answers[taskId] = block.type === 'reading-quiz'
+          ? collectReadingQuizAnswers(node)
+          : checkLessonTask(block, node).actual;
+      });
+      return answers;
+    };
+
+    const hasInteractiveAutosave = !isManualOnly && blocks.some((block) => block.autosaveDraft === true);
+    const saveInteractiveDraft = () => {
+      const updatedProgress = window.ProgressService.loadHomeworkProgress();
+      const previous = updatedProgress.results[lesson.id] || {};
+      updatedProgress.results[lesson.id] = {
+        ...previous,
+        correct: 0,
+        total: 0,
+        percent: 0,
+        answers: collectCurrentLessonAnswers(),
+        checkedAt: null,
+        draftUpdatedAt: new Date().toISOString()
+      };
+      window.ProgressService.saveHomeworkProgress(updatedProgress);
+      const submit = byId('submit-lesson');
+      if (submit) submit.disabled = true;
+    };
+
+    let interactiveDraftTimer = 0;
+    if (hasInteractiveAutosave && !isCompleted) {
+      const queueInteractiveDraftSave = () => {
+        window.clearTimeout(interactiveDraftTimer);
+        interactiveDraftTimer = window.setTimeout(saveInteractiveDraft, 500);
+      };
+      const lessonBlocksRoot = byId('lesson-blocks');
+      lessonBlocksRoot?.addEventListener('input', queueInteractiveDraftSave);
+      lessonBlocksRoot?.addEventListener('change', queueInteractiveDraftSave);
+    }
+
+    const saveManualDraft = (announce = false) => {
+      const updatedProgress = window.ProgressService.loadHomeworkProgress();
+      updatedProgress.results[lesson.id] = {
+        correct: 0,
+        total: 0,
+        percent: 0,
+        answers: collectCurrentLessonAnswers(),
+        legacyAnswers: savedResult?.legacyAnswers || null,
+        migratedAt: savedResult?.migratedAt || null,
+        checkedAt: new Date().toISOString()
+      };
+      window.ProgressService.saveHomeworkProgress(updatedProgress);
+      const status = root.querySelector('[data-draft-status]');
+      if (status) status.textContent = announce ? 'Черновик сохранён. Автоматической оценки нет — работу проверит преподаватель.' : 'Черновик сохранён автоматически.';
+      if (announce) showToast('Черновик сохранён.');
+      return updatedProgress.results[lesson.id].answers;
+    };
+
+    if (isManualOnly && !isCompleted) {
+      let draftTimer = 0;
+      const queueDraftSave = () => {
+        const status = root.querySelector('[data-draft-status]');
+        if (status) status.textContent = 'Сохраняем изменения…';
+        window.clearTimeout(draftTimer);
+        draftTimer = window.setTimeout(() => saveManualDraft(false), 700);
+      };
+      const lessonBlocksRoot = byId('lesson-blocks');
+      lessonBlocksRoot?.addEventListener('input', queueDraftSave);
+      lessonBlocksRoot?.addEventListener('change', queueDraftSave);
+    }
+
+    const checkLessonButton = byId('check-lesson');
+    if (checkLessonButton) checkLessonButton.addEventListener('click', () => {
+      window.clearTimeout(interactiveDraftTimer);
+      if (isManualOnly) {
+        saveManualDraft(true);
+        return;
+      }
+      const checkableTypes = LESSON_TASK_TYPES;
+      const checkable = blocks.filter((block) => checkableTypes.includes(block.type) && !(block.type === 'audio' && block.response === false));
       let correct = 0;
       let total = 0;
+      let requiredComplete = true;
       const answers = {};
-
-      checkable.forEach(({ block, blockIndex }) => {
-        const taskId = safeText(block.id, `task-${blockIndex}`);
+      checkable.forEach((block, index) => {
+        const taskId = safeText(block.id, `task-${index}`);
         const node = root.querySelector(`[data-task="${CSS.escape(taskId)}"]`);
         if (!node) return;
         const result = checkLessonTask(block, node);
         answers[taskId] = result.actual;
         correct += Number(result.correctCount || 0);
         total += Number(result.total || 0);
-
+        if (result.requiredComplete === false) requiredComplete = false;
         if (block.type !== 'exercise') {
-          const feedback = node.querySelector('.feedback');
-          const isCorrect = Number(result.correctCount || 0) === Number(result.total || 0);
-          if (feedback) {
-            feedback.className = `feedback show ${isCorrect ? 'good' : 'bad'}`;
-            feedback.textContent = isCorrect ? 'Correct!' : safeText(block.explanation, 'Check the answer and try again.');
-          }
+          showLessonTaskResult(block, node, result);
         }
       });
-
-      return { correct, total, percent: safePercent(correct, total), answers };
-    };
-
-    // Restore not only the values, but also the green/red review state after reload.
-    if (savedResult && Number(savedResult.total) > 0) {
-      evaluateLesson();
-      byId('lesson-result').innerHTML = `<h3>Saved score: ${Number(savedResult.correct || 0)} of ${Number(savedResult.total || 0)}</h3><p class="muted">${Number(savedResult.percent || 0)}% correct</p>`;
-    }
-
-    byId('check-lesson').addEventListener('click', () => {
-      const result = evaluateLesson();
-      const manualNote = hasManualResponses ? ' · the extended answer is saved separately and is not included in the score' : '';
-      byId('lesson-result').innerHTML = `<h3>Score: ${result.correct} of ${result.total}</h3><p class="muted">${result.percent}% correct${manualNote}</p>`;
+      const percent = safePercent(correct, total);
+      const hasPersonalResponses = blocks.some((block) => block.manualResponses === true);
+      const manualNote = hasManualResponses
+        ? (hasPersonalResponses ? ' · личные ответы сохранены и не входят в балл' : ' · развёрнутый ответ сохранён отдельно и не входит в балл')
+        : '';
+      const completionNote = requiredComplete ? '' : ' · заполни часть B полностью перед отправкой';
+      byId('lesson-result').innerHTML = `<h3>Результат: ${correct} из ${total}</h3><p class="muted">${percent}% правильных ответов${manualNote}${completionNote}</p>`;
       const updatedProgress = window.ProgressService.loadHomeworkProgress();
       updatedProgress.results[lesson.id] = {
-        correct: result.correct,
-        total: result.total,
-        percent: result.percent,
-        answers: result.answers,
+        correct,
+        total,
+        percent,
+        answers,
+        legacyAnswers: savedResult?.legacyAnswers || null,
+        migratedAt: savedResult?.migratedAt || null,
         checkedAt: new Date().toISOString()
       };
       window.ProgressService.saveHomeworkProgress(updatedProgress);
-      byId('submit-lesson').disabled = false;
+      byId('submit-lesson').disabled = !requiredComplete;
     });
-
-    byId('submit-lesson').addEventListener('click', async () => {
-      const button = byId('submit-lesson');
-      const updatedProgress = window.ProgressService.loadHomeworkProgress();
-      const result = updatedProgress.results[lesson.id];
-      if (!result || Number(result.total || 0) <= 0) {
-        showToast('Check the answers before submitting the homework.');
-        return;
+    const submitLessonButton = byId('submit-lesson');
+    if (submitLessonButton) submitLessonButton.addEventListener('click', () => {
+      window.clearTimeout(interactiveDraftTimer);
+      if (isManualOnly) {
+        saveManualDraft(false);
+        const confirmed = window.confirm('Отправить работу преподавателю? После отправки ответы будут заблокированы для редактирования.');
+        if (!confirmed) return;
       }
-
-      const submittedAt = new Date().toISOString();
-      updatedProgress.submissions[lesson.id] = {
-        savedAt: submittedAt,
-        status: CloudService.isConfigured() ? 'pending-cloud' : 'local',
-        cloudStatus: CloudService.isConfigured() ? 'submitted_pending_report' : null,
-        reportStatus: CloudService.isConfigured() ? 'pending' : null,
-        reportSentAt: null,
-        reportError: null
-      };
-      // Submission, not a perfect score, marks the homework as completed.
+      const updatedProgress = window.ProgressService.loadHomeworkProgress();
+      updatedProgress.submissions[lesson.id] = { savedAt: new Date().toISOString(), status: CloudService.isConfigured() ? 'pending-cloud' : 'local' };
       if (!updatedProgress.completedIds.includes(lesson.id)) updatedProgress.completedIds.push(lesson.id);
       window.ProgressService.saveHomeworkProgress(updatedProgress);
-
-      button.disabled = true;
-      const originalText = button.textContent;
-      button.textContent = 'Sending…';
-
-      try {
-        if (CloudService.isConfigured()) {
-          // Wait until the submitted row is really written before the report function reads it.
-          await window.ProgressService.syncToCloud('homework');
-          const report = await HomeworkReportService.send(lesson.id);
-          const latest = window.ProgressService.loadHomeworkProgress();
-          latest.submissions[lesson.id] = {
-            savedAt: submittedAt,
-            status: 'report-sent',
-            cloudStatus: 'submitted',
-            reportStatus: 'sent',
-            reportSentAt: report?.reportSentAt || new Date().toISOString(),
-            reportError: null
-          };
-          window.ProgressService.saveHomeworkProgress(latest);
-          showToast(report?.skipped ? 'Homework saved in Supabase.' : 'Homework submitted. The teacher received the Telegram report.');
-        } else {
-          showToast('Homework saved on this device. Supabase is not configured.');
-        }
-      } catch (error) {
-        console.error('Homework submission/report error:', error);
-        const latest = window.ProgressService.loadHomeworkProgress();
-        latest.submissions[lesson.id] = {
-          savedAt: submittedAt,
-          status: 'report-failed',
-          cloudStatus: 'submitted_pending_report',
-          reportStatus: 'failed',
-          reportSentAt: null,
-          reportError: safeText(error?.message, 'unknown error')
-        };
-        window.ProgressService.saveHomeworkProgress(latest);
-        showToast(`Homework saved, but the Telegram report was not sent: ${safeText(error?.message, 'unknown error')}`);
-      } finally {
-        button.disabled = false;
-        button.textContent = originalText;
+      showToast(CloudService.isConfigured() ? 'Ответы сохранены. После синхронизации отчёт автоматически уйдёт преподавателю.' : 'Ответы сохранены на устройстве.');
+      lockCompletedLesson(root);
+      const actions = root.querySelector('.lesson-actions');
+      if (actions) {
+        actions.classList.add('lesson-completed-panel');
+        actions.innerHTML = `<div id="lesson-result" aria-live="polite"><h3>Работа отправлена</h3><p class="muted">Ответы сохранены и переданы преподавателю для личной проверки.</p></div><div class="completed-lock-message"><span class="completed-lock-icon" aria-hidden="true">🔒</span><div><h3>Готово</h3><p class="muted">После отправки ответы заблокированы. Преподаватель проверит работу без автоматической оценки.</p></div></div>`;
       }
     });
   }
 
-  
   function grammarTable(table) {
     if (!table || !Array.isArray(table.headers) || !Array.isArray(table.rows)) return '';
     return `<div class="table-wrap"><table><thead><tr>${table.headers.map((header) => `<th>${escapeHtml(header)}</th>`).join('')}</tr></thead><tbody>${table.rows.map((row) => `<tr>${row.map((cell) => `<td>${escapeHtml(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
   }
 
-
-  function grammarQuestionSchemeMarkup(scheme) {
-    if (!scheme) return '';
-    const rowMarkup = (row) => {
-      if (!row || !Array.isArray(row.parts) || !row.parts.length) return '';
-      return `<div class="grammar-scheme-row">
-        <div class="grammar-scheme-row-label">${escapeHtml(row.label || '')}</div>
-        <div class="grammar-scheme-flow">${row.parts.map((part, index) => `${index ? '<span class="grammar-scheme-arrow" aria-hidden="true">→</span>' : ''}<div class="grammar-scheme-part grammar-scheme-${escapeHtml(part.kind || 'default')}"><span class="grammar-scheme-word">${escapeHtml(part.word || '')}</span><span class="grammar-scheme-translation">${escapeHtml(part.translation || '')}</span><span class="grammar-scheme-role">${escapeHtml(part.role || '')}</span></div>`).join('')}</div>
-      </div>`;
+  function grammarProgressState(topic) {
+    const progress = window.ProgressService.loadGrammarProgress();
+    return {
+      progress,
+      state: progress.topics[topic.id] || {}
     };
-    return `<article class="card grammar-scheme-card">
-      <div class="grammar-scheme-heading"><span class="eyebrow">Схема вопроса</span><h2>${escapeHtml(scheme.title || 'Как строится вопрос')}</h2>${scheme.subtitle ? `<p>${escapeHtml(scheme.subtitle)}</p>` : ''}</div>
-      <div class="grammar-scheme-board">${rowMarkup(scheme.withQuestionWord)}${rowMarkup(scheme.withoutQuestionWord)}</div>
-      ${scheme.memoryTip ? `<div class="grammar-memory-tip"><span aria-hidden="true">💡</span><strong>Запомни:</strong> ${escapeHtml(scheme.memoryTip)}</div>` : ''}
-    </article>`;
   }
 
-  function renderGrammarExercise(block, index) {
-    const id = safeText(block.id, `grammar-exercise-${index + 1}`);
-    const title = escapeHtml(block.title || `Exercise ${index + 1}`);
-    const difficulty = safeText(block.difficulty, 'Practice');
-    const wordBank = Array.isArray(block.wordBank) && block.wordBank.length
-      ? `<div class="word-bank" aria-label="Word bank"><strong class="word-bank-label">Word bank</strong>${block.wordBank.map((word) => `<span>${escapeHtml(word)}</span>`).join('')}</div>`
-      : '';
-    return `<article class="card lesson-block exercise-card grammar-exercise-card" data-task="${escapeHtml(id)}" data-type="exercise" data-grammar-exercise="${index}">
-      <div class="exercise-heading grammar-exercise-heading">
-        <div class="grammar-step-row"><span class="grammar-step-badge">Шаг ${index + 1}</span><span class="grammar-difficulty">${escapeHtml(difficulty)}</span></div>
-        <h3>${title}</h3>
-        ${block.instructions ? `<p class="muted exercise-instructions">${escapeHtml(block.instructions)}</p>` : ''}
-        ${wordBank}
+  function grammarTaskCount(topic) {
+    const exercises = Array.isArray(topic.quizExercises) ? topic.quizExercises : [];
+    if (exercises.length) return exercises.reduce((total, exercise) => total + (Array.isArray(exercise.items) ? exercise.items.length : 0), 0);
+    return Array.isArray(topic.quiz) ? topic.quiz.length : 0;
+  }
+
+  function grammarStatusMarkup(topic, state) {
+    const passed = Boolean(state.passed || topic.passed);
+    const attempts = Math.max(0, Number(state.attempts || 0));
+    const bestScore = Math.max(0, Number(state.bestScore || 0));
+    const taskCount = grammarTaskCount(topic);
+
+    return `<div class="grammar-status-card ${passed ? 'is-passed' : ''}" id="grammar-topic-status">
+      <div class="grammar-status-icon" aria-hidden="true">${passed ? '✓' : '◎'}</div>
+      <div class="grammar-status-copy">
+        <strong>${passed ? 'Тема пройдена' : 'Тема ещё не пройдена'}</strong>
+        <span>${passed
+          ? `Лучший результат: ${bestScore}% · попыток: ${attempts}`
+          : attempts
+            ? `Лучший результат: ${bestScore}% · попыток: ${attempts}`
+            : `Изучи схему и сдай мини-тест из ${taskCount} заданий.`}</span>
       </div>
-      <div class="exercise-items">${(Array.isArray(block.items) ? block.items : []).map((item, itemIndex) => renderExerciseItem(item, id, itemIndex)).join('')}</div>
-    </article>`;
-  }
-
-  function setGrammarPracticeLocked(root, locked) {
-    root.classList.toggle('grammar-practice-locked', locked);
-    root.querySelectorAll('[data-grammar-exercise] input, [data-grammar-exercise] textarea, [data-grammar-exercise] select').forEach((control) => {
-      control.disabled = locked;
-    });
-  }
-
-  function renderGrammarPractice(topic, root) {
-    const exercises = Array.isArray(topic.exercises) ? topic.exercises : [];
-    if (!exercises.length) {
-      root.innerHTML = emptyState('🧩', 'Practice has not been added yet', 'Exercises will appear with the teacher’s material.');
-      return;
-    }
-
-    const renderPractice = () => {
-      const progress = window.ProgressService.loadGrammarProgress();
-      const savedTopic = progress.topics[topic.id] || {};
-      root.innerHTML = `${exercises.map((block, index) => renderGrammarExercise(block, index)).join('')}
-        <div class="card grammar-practice-actions">
-          <div id="grammar-result"><h3>Выполняй по шагам</h3><p class="muted">Начни с простых заданий и переходи к более сложным.</p></div>
-          <div class="button-row"><button class="btn btn-primary" type="button" id="check-grammar">Проверить</button><button class="btn btn-secondary" type="button" id="retry-grammar">Начать заново</button></div>
-        </div>`;
-
-      exercises.forEach((block, index) => {
-        const blockId = safeText(block.id, `grammar-exercise-${index + 1}`);
-        const node = root.querySelector(`[data-grammar-exercise="${index}"]`);
-        if (node) restoreExerciseAnswers(block, node, savedTopic.answers?.[blockId]);
-      });
-
-      const checkButton = byId('check-grammar');
-      const retryButton = byId('retry-grammar');
-      const lockPassedTopic = Boolean(savedTopic.passed && topic.lockOnPass === true);
-      if (lockPassedTopic) {
-        setGrammarPracticeLocked(root, true);
-        checkButton.disabled = true;
-        retryButton.disabled = true;
-        retryButton.hidden = true;
-        byId('grammar-result').innerHTML = '<h3>Тема пройдена</h3><p class="grammar-success-note">Все ответы правильные. Тема отмечена как изученная.</p>';
-        return;
-      }
-
-      checkButton.addEventListener('click', () => {
-        let correct = 0;
-        let total = 0;
-        const answers = {};
-        exercises.forEach((block, index) => {
-          const node = root.querySelector(`[data-grammar-exercise="${index}"]`);
-          if (!node) return;
-          const blockId = safeText(block.id, `grammar-exercise-${index + 1}`);
-          const result = checkExerciseBlock(block, node, { hideAnswersOnError: topic.revealAnswersOnError === false });
-          answers[blockId] = result.actual;
-          correct += Number(result.correctCount || 0);
-          total += Number(result.total || 0);
-        });
-        const percent = safePercent(correct, total);
-        byId('grammar-result').innerHTML = `<h3>Результат: ${correct} из ${total}</h3><p class="muted">${percent}% правильно</p>${percent === 100 ? '<p class="grammar-success-note">Отлично! Все ответы правильные. Тема отмечена как изученная.</p>' : '<p class="grammar-success-note">Есть ошибки. Исправь их и проверь задания ещё раз.</p>'}`;
-        const latestProgress = window.ProgressService.loadGrammarProgress();
-        const previous = latestProgress.topics[topic.id] || {};
-        latestProgress.topics[topic.id] = {
-          passed: Boolean(previous.passed || percent === 100),
-          attempts: Number(previous.attempts || 0) + 1,
-          bestScore: Math.max(Number(previous.bestScore || 0), percent),
-          answers,
-          updatedAt: new Date().toISOString()
-        };
-        window.ProgressService.saveGrammarProgress(latestProgress);
-
-        if (percent === 100 && topic.lockOnPass === true) {
-          setGrammarPracticeLocked(root, true);
-          checkButton.disabled = true;
-          retryButton.disabled = true;
-          retryButton.hidden = true;
-        }
-      });
-
-      retryButton.addEventListener('click', renderPractice);
-    };
-
-    renderPractice();
+      <span class="grammar-status-badge">${passed ? 'Засчитано' : `Нужно ${taskCount} / ${taskCount}`}</span>
+    </div>`;
   }
 
   function renderGrammarTopic() {
     const id = queryParam('id');
     const topic = GRAMMAR_DATA.find((item) => item.id === id && item.status !== 'draft');
     const root = byId('grammar-topic-root');
+
     if (!topic || topic.status === 'locked') {
-      root.innerHTML = emptyState('📐', 'This grammar topic has not been published yet', 'The material will appear after the teacher publishes it.');
+      root.innerHTML = emptyState('📐', 'Грамматическая тема ещё не опубликована', 'Материал появится после публикации преподавателем.');
       return;
     }
 
-    byId('grammar-hero-title').textContent = safeText(topic.title, 'Grammar');
-    byId('grammar-hero-subtitle').textContent = `${safeText(topic.level, student.level)} · объяснение и практика`;
+    byId('grammar-hero-title').textContent = safeText(topic.title, 'Грамматика');
+    byId('grammar-hero-subtitle').textContent = `${safeText(topic.level, student.level)} Level · понятная схема и мини-тест`;
 
-    const glanceCards = Array.isArray(topic.glanceCards) ? topic.glanceCards : [];
-    const anchorLinks = Array.isArray(topic.anchorLinks) ? topic.anchorLinks : [];
-    const miniRules = Array.isArray(topic.miniRules) ? topic.miniRules : [];
-    const tables = Array.isArray(topic.tables) ? topic.tables : (topic.table ? [topic.table] : []);
-    const exampleGroups = Array.isArray(topic.exampleGroups) ? topic.exampleGroups : [];
-    const examples = Array.isArray(topic.examples) ? topic.examples : [];
+    const overview = topic.overview || {};
+    const uses = Array.isArray(topic.uses) ? topic.uses : [];
+    const forms = Array.isArray(topic.forms) ? topic.forms : [];
     const mistakes = Array.isArray(topic.commonMistakes) ? topic.commonMistakes : [];
+    const quizExercises = Array.isArray(topic.quizExercises)
+      ? topic.quizExercises.filter((exercise) => Array.isArray(exercise.items) && exercise.items.length)
+      : [];
+    let flatQuizIndex = 0;
+    const quiz = quizExercises.length
+      ? quizExercises.flatMap((exercise, exerciseIndex) => exercise.items.map((question, itemIndex) => ({
+          ...question,
+          __exerciseIndex: exerciseIndex,
+          __itemIndex: itemIndex,
+          __flatIndex: flatQuizIndex++
+        })))
+      : (Array.isArray(topic.quiz) ? topic.quiz : []);
+    const contrast = topic.contrast || {};
+    const builder = topic.questionBuilder || {};
+    const memoryRule = topic.memoryRule || {};
+    const { state } = grammarProgressState(topic);
 
-    root.innerHTML = `
-      ${grammarQuestionSchemeMarkup(topic.questionScheme)}
+    const subjects = Array.isArray(overview.subjects) ? overview.subjects : [];
+    const pattern = Array.isArray(builder.pattern) ? builder.pattern : [];
+    const memorySteps = Array.isArray(memoryRule.steps) ? memoryRule.steps : [];
 
-      ${glanceCards.length ? `<section class="section" id="grammar-at-a-glance" aria-labelledby="grammar-at-a-glance-title"><div class="section-heading"><div><span class="eyebrow">Разбираем схему</span><h2 id="grammar-at-a-glance-title">Что означает каждый цветной блок</h2></div></div><div class="grammar-glance-grid">${glanceCards.map((card) => `<article class="card grammar-glance-card"><div class="grammar-glance-head"><span class="grammar-glance-icon">${escapeHtml(card.icon || '✦')}</span><div><h3>${escapeHtml(card.label || '')}</h3><p class="muted">${escapeHtml(card.hint || '')}</p></div></div><div class="grammar-pattern">${escapeHtml(card.pattern || '')}</div><p class="grammar-example-sentence">${escapeHtml(card.example || '')}</p></article>`).join('')}</div></section>` : ''}
+    root.innerHTML = `<div class="grammar-topic-shell">
+      ${grammarStatusMarkup(topic, state)}
 
-      ${miniRules.length ? `<section class="section" id="grammar-rule-map" aria-labelledby="grammar-rule-map-title"><div class="section-heading"><div><span class="eyebrow">Правила</span><h2 id="grammar-rule-map-title">Как поставить слова в правильном порядке</h2></div></div><div class="grammar-mini-grid">${miniRules.map((rule) => `<article class="card grammar-mini-card"><h3>${escapeHtml(rule.title || '')}</h3><p>${escapeHtml(rule.text || '')}</p>${rule.example ? `<div class="grammar-mini-example">${escapeHtml(rule.example)}</div>` : ''}</article>`).join('')}</div></section>` : ''}
+      <article class="card grammar-lead-card">
+        <div class="grammar-lead-head">
+          <div>
+            <span class="eyebrow">Главная идея</span>
+            <h2>${escapeHtml(topic.title)}</h2>
+          </div>
+          <span class="grammar-level-badge">${escapeHtml(topic.level || student.level)}</span>
+        </div>
+        <p class="grammar-lead-text">${escapeHtml(overview.lead || '')}</p>
+        <div class="grammar-core-rule">
+          <div class="grammar-core-rule-icon" aria-hidden="true">!</div>
+          <div>
+            <strong>${escapeHtml(overview.keyRule || '')}</strong>
+            ${overview.example ? `<span>${escapeHtml(overview.example)}</span>` : ''}
+          </div>
+        </div>
+        ${subjects.length ? `<div class="grammar-subject-row" aria-label="Подлежащие">${subjects.map((subject) => `<span>${escapeHtml(subject)}</span>`).join('')}</div>` : ''}
+      </article>
 
-      ${tables.length ? `<section class="section" id="grammar-tables" aria-labelledby="grammar-tables-title"><div class="section-heading"><div><span class="eyebrow">Таблицы</span><h2 id="grammar-tables-title">Короткая памятка</h2></div></div><div class="list">${tables.map((table) => `<article class="card lesson-block"><h3>${escapeHtml(table.title || 'Таблица')}</h3>${grammarTable(table)}</article>`).join('')}</div></section>` : ''}
+      ${uses.length ? `<section class="grammar-content-section" aria-labelledby="grammar-use-title">
+        <div class="grammar-section-heading">
+          <span class="grammar-section-number">1</span>
+          <div><h2 id="grammar-use-title">Когда используем</h2><p>Основные случаи для уровня A2.2</p></div>
+        </div>
+        <div class="grammar-use-grid">${uses.map((item) => `<article class="grammar-use-card">
+          <span class="grammar-use-icon" aria-hidden="true">${escapeHtml(item.icon || '•')}</span>
+          <h3>${escapeHtml(item.title || '')}</h3>
+          <p>${escapeHtml(item.text || '')}</p>
+          <code>${escapeHtml(item.example || '')}</code>
+        </article>`).join('')}</div>
+      </section>` : ''}
 
-      ${exampleGroups.length || examples.length ? `<section class="section" id="grammar-examples" aria-labelledby="grammar-examples-title"><div class="section-heading"><div><span class="eyebrow">Примеры</span><h2 id="grammar-examples-title">Посмотри на порядок слов</h2></div></div><div class="list">${exampleGroups.map((group) => `<article class="card lesson-block grammar-example-group"><h3>${escapeHtml(group.title || 'Примеры')}</h3><div class="list">${(group.items || []).map((item) => `<p class="grammar-example-item">• ${escapeHtml(item)}</p>`).join('')}</div></article>`).join('')}${examples.length ? `<article class="card lesson-block grammar-example-group"><h3>Ещё примеры</h3><div class="list">${examples.map((example) => `<p class="grammar-example-item">• ${escapeHtml(example)}</p>`).join('')}</div></article>` : ''}</div></section>` : ''}
+      ${forms.length ? `<section class="grammar-content-section" aria-labelledby="grammar-forms-title">
+        <div class="grammar-section-heading">
+          <span class="grammar-section-number">2</span>
+          <div><h2 id="grammar-forms-title">Четыре формы</h2><p>Сначала запомни структуру, затем смотри на пример</p></div>
+        </div>
+        <div class="grammar-form-grid">${forms.map((form) => `<article class="grammar-form-card grammar-form-${escapeHtml(form.id || 'default')}">
+          <div class="grammar-form-head">
+            <span class="grammar-form-icon" aria-hidden="true">${escapeHtml(form.icon || '•')}</span>
+            <h3>${escapeHtml(form.title || '')}</h3>
+          </div>
+          <div class="grammar-formula">${escapeHtml(form.formula || '')}</div>
+          <div class="grammar-example">
+            <strong>${escapeHtml(form.example || '')}</strong>
+            <span>${escapeHtml(form.translation || '')}</span>
+          </div>
+          <p>${escapeHtml(form.note || '')}</p>
+        </article>`).join('')}</div>
+      </section>` : ''}
 
-      ${mistakes.length ? `<section class="section" id="grammar-mistakes" aria-labelledby="grammar-mistakes-title"><div class="section-heading"><div><span class="eyebrow">Обрати внимание</span><h2 id="grammar-mistakes-title">Частые ошибки</h2></div></div><article class="card info-card lesson-block"><div class="list">${mistakes.map((mistake) => `<p>• ${escapeHtml(mistake)}</p>`).join('')}</div></article></section>` : ''}
+      ${contrast.ordinary && contrast.be ? `<section class="grammar-content-section" aria-labelledby="grammar-contrast-title">
+        <div class="grammar-section-heading">
+          <span class="grammar-section-number">3</span>
+          <div><h2 id="grammar-contrast-title">${escapeHtml(contrast.title || 'Обычный глагол или be?')}</h2><p>${escapeHtml(contrast.intro || '')}</p></div>
+        </div>
+        <div class="grammar-contrast-grid">
+          <article class="grammar-contrast-card ordinary">
+            <span class="grammar-contrast-label">A</span>
+            <h3>${escapeHtml(contrast.ordinary.label || '')}</h3>
+            <p class="grammar-verb-list">${escapeHtml(contrast.ordinary.verbs || '')}</p>
+            <div class="grammar-pattern-list">
+              <span><b>+</b> ${escapeHtml(contrast.ordinary.affirmative || '')}</span>
+              <span><b>−</b> ${escapeHtml(contrast.ordinary.negative || '')}</span>
+              <span><b>?</b> ${escapeHtml(contrast.ordinary.question || '')}</span>
+            </div>
+            <p class="grammar-contrast-rule">${escapeHtml(contrast.ordinary.rule || '')}</p>
+          </article>
+          <article class="grammar-contrast-card be">
+            <span class="grammar-contrast-label">B</span>
+            <h3>${escapeHtml(contrast.be.label || '')}</h3>
+            <p class="grammar-verb-list">${escapeHtml(contrast.be.verbs || '')}</p>
+            <div class="grammar-pattern-list">
+              <span><b>+</b> ${escapeHtml(contrast.be.affirmative || '')}</span>
+              <span><b>−</b> ${escapeHtml(contrast.be.negative || '')}</span>
+              <span><b>?</b> ${escapeHtml(contrast.be.question || '')}</span>
+            </div>
+            <p class="grammar-contrast-rule">${escapeHtml(contrast.be.rule || '')}</p>
+          </article>
+        </div>
+      </section>` : ''}
 
-      <section class="section" id="grammar-practice-section" aria-labelledby="grammar-practice-title"><div class="section-heading"><div><span class="eyebrow">Практика</span><h2 id="grammar-practice-title">${Array.isArray(topic.exercises) ? topic.exercises.length : 0} упражнения: от простого к сложному</h2></div></div><div id="grammar-quiz"></div></section>
-    `;
+      ${pattern.length ? `<section class="grammar-content-section" aria-labelledby="grammar-question-title">
+        <div class="grammar-section-heading">
+          <span class="grammar-section-number">4</span>
+          <div><h2 id="grammar-question-title">${escapeHtml(builder.title || 'Порядок слов')}</h2><p>${escapeHtml(builder.note || '')}</p></div>
+        </div>
+        <article class="card grammar-builder-card">
+          <div class="grammar-token-row">${pattern.map((token, index) => `<span class="grammar-token grammar-token-${index + 1}">${escapeHtml(token)}</span>${index < pattern.length - 1 ? '<span class="grammar-token-arrow" aria-hidden="true">→</span>' : ''}`).join('')}</div>
+          <div class="grammar-builder-example">
+            <strong>${escapeHtml(builder.example || '')}</strong>
+            <span>${escapeHtml(builder.translation || '')}</span>
+          </div>
+        </article>
+      </section>` : ''}
 
-    renderGrammarPractice(topic, byId('grammar-quiz'));
+      ${memorySteps.length ? `<article class="card grammar-memory-card">
+        <div class="grammar-memory-icon" aria-hidden="true">⚡</div>
+        <div>
+          <span class="eyebrow">Алгоритм</span>
+          <h2>${escapeHtml(memoryRule.title || 'Быстрая проверка')}</h2>
+          <ol>${memorySteps.map((step) => `<li>${escapeHtml(step)}</li>`).join('')}</ol>
+        </div>
+      </article>` : ''}
+
+      ${mistakes.length ? `<section class="grammar-content-section" aria-labelledby="grammar-mistakes-title">
+        <div class="grammar-section-heading">
+          <span class="grammar-section-number">5</span>
+          <div><h2 id="grammar-mistakes-title">Частые ошибки</h2><p>Сравни неправильный и правильный вариант</p></div>
+        </div>
+        <div class="grammar-mistake-list">${mistakes.map((mistake) => `<article class="grammar-mistake-row">
+          <div class="grammar-mistake-wrong"><span>✕</span><s>${escapeHtml(mistake.wrong || '')}</s></div>
+          <div class="grammar-mistake-right"><span>✓</span><strong>${escapeHtml(mistake.right || '')}</strong></div>
+          <p>${escapeHtml(mistake.reason || '')}</p>
+        </article>`).join('')}</div>
+      </section>` : ''}
+
+      <section class="grammar-content-section grammar-test-section" aria-labelledby="mini-test-title">
+        <div class="grammar-test-intro">
+          <div>
+            <span class="eyebrow">Мини-тест</span>
+            <h2 id="mini-test-title">${quizExercises.length ? '4 упражнения × 4 задания' : `${quiz.length} задания: от лёгкого к сложному`}</h2>
+            <p>Ответь на все вопросы. Для зачёта нужно ${quiz.length} из ${quiz.length}. После успешной проверки ответы блокируются.</p>
+          </div>
+          <span class="grammar-test-goal">${quiz.length} / ${quiz.length}</span>
+        </div>
+        <div id="grammar-quiz"></div>
+      </section>
+    </div>`;
+
+    const quizRoot = byId('grammar-quiz');
+
+    if (!quiz.length) {
+      quizRoot.innerHTML = emptyState('🧩', 'Мини-тест ещё не добавлен', 'Вопросы появятся вместе с материалом преподавателя.');
+      return;
+    }
+
+    const renderQuiz = () => {
+      const { state: currentState } = grammarProgressState(topic);
+      const savedAnswers = Array.isArray(currentState.answers) ? currentState.answers : [];
+      const locked = Boolean(currentState.passed && savedAnswers.length === quiz.length);
+
+      const renderQuestionControl = (question, index, savedValue) => {
+        const type = safeText(question.type, 'single');
+        if (type === 'select') {
+          return `<select class="grammar-select" data-grammar-control>
+            <option value="">Choose an answer</option>
+            ${(question.options || []).map((option, optionIndex) => `<option value="${optionIndex}" ${Number(savedValue) === optionIndex ? 'selected' : ''}>${escapeHtml(option)}</option>`).join('')}
+          </select>`;
+        }
+        if (type === 'text') {
+          return `<input class="text-field grammar-text-answer" data-grammar-control type="text" value="${escapeHtml(savedValue || '')}" placeholder="${escapeHtml(question.placeholder || '')}" autocomplete="off">`;
+        }
+        if (type === 'reorder') {
+          const tokens = Array.isArray(question.tokens) ? question.tokens : [];
+          return `${tokens.length ? `<div class="grammar-reorder-tokens">${tokens.map((token) => `<span>${escapeHtml(token)}</span>`).join('')}</div>` : ''}<input class="text-field grammar-text-answer" data-grammar-control type="text" value="${escapeHtml(savedValue || '')}" placeholder="${escapeHtml(question.placeholder || 'Write the complete sentence')}" autocomplete="off">`;
+        }
+        if (type === 'gaps') {
+          const answers = Array.isArray(question.answers) ? question.answers : [];
+          const segments = Array.isArray(question.segments) ? question.segments : [];
+          const values = Array.isArray(savedValue) ? savedValue : [];
+          return `<div class="grammar-gaps">${answers.map((_, gapIndex) => `${gapIndex < segments.length ? `<span>${escapeHtml(segments[gapIndex])}</span>` : ''}<input class="gap-input" data-grammar-gap="${gapIndex}" value="${escapeHtml(values[gapIndex] || '')}" aria-label="Gap ${gapIndex + 1}" autocomplete="off">`).join('')}${segments.length > answers.length ? `<span>${escapeHtml(segments[segments.length - 1])}</span>` : ''}</div>`;
+        }
+        return `<div class="option-list">${(question.options || []).map((option, optionIndex) => `<label class="option grammar-option">
+          <input type="radio" name="grammar-${index}" value="${optionIndex}" ${Number(savedValue) === optionIndex ? 'checked' : ''}>
+          <span>${escapeHtml(option)}</span>
+        </label>`).join('')}</div>`;
+      };
+
+      const readAnswer = (question, node) => {
+        const type = safeText(question.type, 'single');
+        if (type === 'select') return node.querySelector('select')?.value ?? '';
+        if (type === 'text' || type === 'reorder') return node.querySelector('input[type="text"]')?.value || '';
+        if (type === 'gaps') return [...node.querySelectorAll('[data-grammar-gap]')].map((input) => input.value);
+        return node.querySelector('input[type="radio"]:checked')?.value ?? '';
+      };
+
+      const isAnswered = (question, value) => {
+        const type = safeText(question.type, 'single');
+        if (type === 'gaps') return Array.isArray(value) && value.length === (question.answers || []).length && value.every((item) => normalizeAnswer(item) !== '');
+        return normalizeAnswer(value) !== '';
+      };
+
+      const isCorrectAnswer = (question, value) => {
+        const type = safeText(question.type, 'single');
+        if (type === 'select' || type === 'single') return value !== '' && Number(value) === Number(question.answer);
+        if (type === 'gaps') {
+          const expected = Array.isArray(question.answers) ? question.answers : [];
+          return expected.length > 0 && expected.every((answer, gapIndex) => {
+            const variants = Array.isArray(answer) ? answer : [answer];
+            return variants.some((variant) => normalizeAnswer(variant) === normalizeAnswer(value?.[gapIndex]));
+          });
+        }
+        const accepted = Array.isArray(question.acceptedAnswers) && question.acceptedAnswers.length
+          ? question.acceptedAnswers
+          : [question.answer];
+        return accepted.some((answer) => normalizeAnswer(answer) !== '' && normalizeAnswer(answer) === normalizeAnswer(value));
+      };
+
+      const questionCard = (question, index, displayNumber) => `<article class="card grammar-question-card" data-grammar-question="${index}">
+        <div class="grammar-question-meta">
+          <span class="grammar-difficulty">${escapeHtml(question.difficulty || `${displayNumber}`)}</span>
+          <span>${escapeHtml(question.skill || '')}</span>
+        </div>
+        <h3>${displayNumber}. ${escapeHtml(question.prompt)}</h3>
+        ${renderQuestionControl(question, index, savedAnswers[index])}
+        <div class="feedback"></div>
+      </article>`;
+
+      const questionsMarkup = quizExercises.length
+        ? quizExercises.map((exercise, exerciseIndex) => {
+            const exerciseQuestions = quiz.filter((question) => question.__exerciseIndex === exerciseIndex);
+            return `<section class="grammar-practice-group">
+              <div class="grammar-practice-heading">
+                <span class="eyebrow">Упражнение ${exerciseIndex + 1}</span>
+                <h3>${escapeHtml(exercise.title || `Упражнение ${exerciseIndex + 1}`)}</h3>
+                ${exercise.instructions ? `<p>${escapeHtml(exercise.instructions)}</p>` : ''}
+              </div>
+              ${exerciseQuestions.map((question) => questionCard(question, question.__flatIndex, question.__itemIndex + 1)).join('')}
+            </section>`;
+          }).join('')
+        : quiz.map((question, index) => questionCard(question, index, index + 1)).join('');
+
+      quizRoot.innerHTML = `${questionsMarkup}
+      <article class="card grammar-test-actions">
+        <div id="grammar-result" aria-live="polite">
+          <strong>${locked ? 'Тема засчитана. Ответы заблокированы.' : quizExercises.length ? `Заполни все ${quiz.length} заданий.` : 'Заполни все четыре задания.'}</strong>
+          <span>${locked ? `Лучший результат: ${Number(currentState.bestScore || 0)}%` : 'Кнопка проверки станет активной после заполнения теста.'}</span>
+        </div>
+        ${locked ? '' : `<div class="button-row">
+          <button class="btn btn-primary" type="button" id="check-grammar" disabled>Проверить задания</button>
+          <button class="btn btn-secondary" type="button" id="retry-grammar">${quizExercises.length ? 'Исправить ответы' : 'Очистить ответы'}</button>
+        </div>`}
+      </article>`;
+
+      if (locked) {
+        quizRoot.querySelectorAll('input, select').forEach((control) => { control.disabled = true; });
+        quizRoot.querySelectorAll('[data-grammar-question]').forEach((node) => node.classList.add('is-correct'));
+        return;
+      }
+
+      const checkButton = byId('check-grammar');
+      const retryButton = byId('retry-grammar');
+
+      const collectAnswers = () => quiz.map((question, index) => {
+        const node = quizRoot.querySelector(`[data-grammar-question="${index}"]`);
+        return readAnswer(question, node);
+      });
+
+      const updateCheckState = () => {
+        const answers = collectAnswers();
+        const answered = answers.filter((value, index) => isAnswered(quiz[index], value)).length;
+        checkButton.disabled = answered !== quiz.length;
+        checkButton.textContent = answered === quiz.length
+          ? 'Проверить задания'
+          : `Ответы: ${answered} / ${quiz.length}`;
+      };
+
+      quizRoot.querySelectorAll('input, select').forEach((control) => {
+        control.addEventListener('input', updateCheckState);
+        control.addEventListener('change', updateCheckState);
+      });
+      updateCheckState();
+
+      checkButton.addEventListener('click', () => {
+        let correct = 0;
+        const actualAnswers = collectAnswers();
+
+        quiz.forEach((question, index) => {
+          const node = quizRoot.querySelector(`[data-grammar-question="${index}"]`);
+          const isCorrect = isCorrectAnswer(question, actualAnswers[index]);
+          if (isCorrect) correct += 1;
+
+          node.classList.toggle('is-correct', isCorrect);
+          node.classList.toggle('is-wrong', !isCorrect);
+          node.querySelectorAll('input, select').forEach((control) => { control.disabled = true; });
+
+          const feedback = node.querySelector('.feedback');
+          feedback.className = `feedback show ${isCorrect ? 'good' : 'bad'}`;
+          feedback.textContent = isCorrect
+            ? 'Верно.'
+            : safeText(question.explanation, 'Есть ошибка. Проверь правило и попробуй ещё раз.');
+        });
+
+        const percent = safePercent(correct, quiz.length);
+        const passScore = Number(topic.passScore || 100);
+        const passedNow = percent >= passScore;
+        const progress = window.ProgressService.loadGrammarProgress();
+        const previous = progress.topics[topic.id] || {};
+        const passed = Boolean(previous.passed || passedNow);
+        const passedAt = previous.passedAt || (passedNow ? new Date().toISOString() : null);
+
+        progress.topics[topic.id] = {
+          passed,
+          passedAt,
+          attempts: Number(previous.attempts || 0) + 1,
+          bestScore: Math.max(Number(previous.bestScore || 0), percent),
+          answers: (passedNow || quizExercises.length) ? actualAnswers : (Array.isArray(previous.answers) ? previous.answers : []),
+          updatedAt: new Date().toISOString()
+        };
+        window.ProgressService.saveGrammarProgress(progress);
+
+        const result = byId('grammar-result');
+        result.className = `grammar-result-box ${passedNow ? 'is-passed' : 'is-retry'}`;
+        result.innerHTML = passedNow
+          ? `<strong>Тема засчитана ✓</strong><span>${correct} из ${quiz.length} · ${percent}%. Ответы заблокированы.</span>`
+          : `<strong>${correct} из ${quiz.length} · ${percent}%</strong><span>Есть ошибки. Правильные ответы не показаны — проверь правило и исправь задания.</span>`;
+
+        checkButton.disabled = true;
+        checkButton.textContent = passedNow ? 'Тема выучена' : 'Проверено';
+        retryButton.disabled = passedNow;
+        retryButton.hidden = passedNow;
+        retryButton.textContent = 'Исправить ответы';
+
+        const statusNode = byId('grammar-topic-status');
+        if (statusNode) statusNode.outerHTML = grammarStatusMarkup(topic, progress.topics[topic.id]);
+
+        showToast(passedNow ? 'Тема засчитана.' : 'В заданиях есть ошибки.');
+      });
+
+      retryButton.addEventListener('click', () => {
+        renderQuiz();
+        byId('mini-test-title')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    };
+
+    renderQuiz();
   }
-
 
   function getTopicProgress(progress, topicId) {
     if (!progress.topics[topicId]) progress.topics[topicId] = { tests: [] };
@@ -2291,22 +2953,28 @@
     const topic = VOCABULARY_CATALOG.allTopics.find((item) => item.id === id);
     const root = byId('vocabulary-root');
     if (!topic || !Array.isArray(topic.words) || !topic.words.length) {
-      root.innerHTML = emptyState('💥', 'No words have been added to this topic yet', 'The teacher will add the word list after the lesson. Words from earlier topics are not repeated here.');
+      root.innerHTML = emptyState('💥', 'Слова для этой темы ещё не добавлены', 'Преподаватель добавит список слов после урока. Повторы из предыдущих тем здесь не показываются.');
       return;
     }
     byId('vocab-hero-title').textContent = safeText(topic.title, 'Vocabulary');
-    byId('vocab-hero-subtitle').textContent = `${safeText(topic.label, 'Vocabulary topic')} · ${topic.words.length} unique words`;
+    byId('vocab-hero-subtitle').textContent = `${safeText(topic.label, 'Словарная тема')} · ${topic.words.length} уникальных слов`;
     const progress = window.ProgressService.loadVocabularyProgress();
     const topicProgress = getTopicProgress(progress, topic.id);
     let mode = 'cards';
     let cardQueue = [];
     let testState = null;
+    let activeWordGroupIndex = 0;
+    const exactKnown = exactKnownCountForTopic(progress, topic);
+    const legacyKnown = Math.min(topic.words.length, Math.max(0, Number(topicProgress.legacyLearnedCount || 0)));
+    const legacyNotice = legacyKnown > exactKnown
+      ? `<div class="card info-card legacy-progress-note"><strong>Старый прогресс сохранён: ${legacyKnown} из ${topic.words.length}.</strong><p class="muted">В старой базе хранилось только количество выученных слов, без списка конкретных карточек. Поэтому общий результат сохранён, а отдельные слова будут уточняться по мере повторения.</p></div>`
+      : '';
 
-    root.innerHTML = `<div class="mode-tabs" id="vocab-modes" aria-label="Practice mode">
-      <button class="mode-btn active" type="button" data-mode="cards">New words</button>
-      <button class="mode-btn" type="button" data-mode="test">Test</button>
-      <button class="mode-btn" type="button" data-mode="all">All words</button>
-      <button class="mode-btn" type="button" data-mode="difficult">Difficult words</button>
+    root.innerHTML = `${legacyNotice}<div class="card info-card vocab-test-rule"><strong>Как слово становится выученным</strong><p class="muted">Карточки помогают познакомиться со словами. Статус «выучено» слово получает только после завершённого теста и правильного ответа.</p></div><div class="mode-tabs" id="vocab-modes" aria-label="Режим тренировки">
+      <button class="mode-btn active" type="button" data-mode="cards">Новые слова</button>
+      <button class="mode-btn" type="button" data-mode="test">Тест</button>
+      <button class="mode-btn" type="button" data-mode="all">Все слова</button>
+      <button class="mode-btn" type="button" data-mode="difficult">Сложные слова</button>
     </div><div id="vocab-mode-root" class="section"></div>`;
     const modeRoot = byId('vocab-mode-root');
 
@@ -2314,9 +2982,7 @@
     const resetCardQueue = () => {
       cardQueue = shuffled(topic.words.filter((word) => {
         const status = progress.words[word.__wordKey]?.status;
-        return mode === 'difficult'
-          ? status === 'difficult'
-          : !['known', 'reviewed', 'difficult'].includes(status);
+        return mode === 'difficult' ? status === 'difficult' : status !== 'known';
       }));
     };
 
@@ -2325,25 +2991,23 @@
         const isDifficult = mode === 'difficult';
         modeRoot.innerHTML = emptyState(
           isDifficult ? '🌟' : '🎉',
-          isDifficult ? 'No difficult words yet' : 'You have reviewed all new words in this topic',
-          isDifficult ? 'Mark a word as “Difficult” and it will appear here.' : 'A word is marked as learned only after a correct answer in the test.'
+          isDifficult ? 'Сложных слов пока нет' : 'Новые слова в этой теме закончились',
+          isDifficult ? 'Отметьте слово кнопкой «Трудно», и оно появится здесь.' : 'Карточки просмотрены. Теперь пройди тест: только после завершённого теста правильные слова получат статус «выучено».'
         );
         return;
       }
       const word = cardQueue[0];
       const remaining = cardQueue.length;
-      modeRoot.innerHTML = `<div class="flash-counter">Remaining: ${remaining}</div><div class="flashcard-stage"><div class="flashcard" id="flashcard" tabindex="0" role="button" aria-label="Flip the card">
-        <div class="flash-face flash-front"><div class="flash-word">${escapeHtml(word.en)}</div>${word.transcription ? `<div class="flash-transcription">${escapeHtml(word.transcription)}</div>` : ''}<p class="muted">Tap to see the translation</p></div>
-        <div class="flash-face flash-back"><div class="flash-word">${escapeHtml(word.ru)}</div>${word.exampleEn ? `<p class="flash-example">${escapeHtml(word.exampleEn)}${word.exampleRu ? `<br>${escapeHtml(word.exampleRu)}` : ''}</p>` : ''}</div>
-      </div></div><div class="trainer-actions"><button class="btn btn-danger" id="word-difficult" type="button">Difficult</button><button class="btn btn-success" id="word-known" type="button">Reviewed</button></div>`;
+      modeRoot.innerHTML = `<div class="flash-counter">Осталось: ${remaining}</div><div class="flashcard-stage"><div class="flashcard" id="flashcard" tabindex="0" role="button" aria-label="Перевернуть карточку">
+        <div class="flash-face flash-front"><div class="flash-word">${escapeHtml(word.en)}</div>${word.transcription ? `<div class="flash-transcription">${escapeHtml(word.transcription)}</div>` : ''}<p class="muted">Нажми, чтобы увидеть перевод</p></div>
+        <div class="flash-face flash-back"><div class="flash-word">${escapeHtml(word.ru)}</div>${word.exampleEn ? `<p class="flash-example">${escapeHtml(word.exampleEn)}${word.exampleRu ? `<br>${escapeHtml(word.exampleRu)}` : ''}</p>` : ''}${word.audio ? `<audio class="audio-player" controls preload="none" src="${escapeHtml(word.audio)}"></audio>` : ''}</div>
+      </div></div><div class="trainer-actions"><button class="btn btn-danger" id="word-difficult" type="button">Трудно</button><button class="btn btn-success" id="word-known" type="button">Понятно — к тесту</button></div>`;
       const flashcard = byId('flashcard');
       const flip = () => flashcard.classList.toggle('flipped');
       flashcard.addEventListener('click', flip);
       flashcard.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); flip(); } });
       byId('word-known').addEventListener('click', () => {
-        setWordStatus(progress, word, topic.id, 'reviewed');
         cardQueue.shift();
-        save();
         drawCard();
       });
       byId('word-difficult').addEventListener('click', () => {
@@ -2356,7 +3020,7 @@
 
     const startTest = () => {
       if (topic.words.length < 4) {
-        modeRoot.innerHTML = emptyState('🧩', 'At least 4 words are needed for the test', 'Add more unique words to the topic to create four answer options.');
+        modeRoot.innerHTML = emptyState('🧩', 'Для теста нужно минимум 4 слова', 'Добавьте ещё уникальные слова в тему, чтобы сформировать четыре варианта ответа без выдуманных данных.');
         return;
       }
       testState = { words: shuffled(topic.words), index: 0, firstTryCorrect: 0, answered: false, firstAnswers: {} };
@@ -2364,16 +3028,21 @@
     };
 
     const finishTest = () => {
+      const completedAt = new Date().toISOString();
+      testState.words.forEach((word) => {
+        const answer = testState.firstAnswers[word.__wordKey];
+        setWordStatus(progress, word, topic.id, answer?.correct ? 'known' : 'difficult');
+      });
       const result = {
         score: testState.firstTryCorrect,
         total: testState.words.length,
         percent: safePercent(testState.firstTryCorrect, testState.words.length),
         answers: testState.firstAnswers,
-        completedAt: new Date().toISOString()
+        completedAt
       };
       topicProgress.tests.push(result);
       save();
-      modeRoot.innerHTML = `<div class="card empty-state"><div class="empty-state-icon">🏁</div><h3>Test complete</h3><p>First-try score: ${result.score} of ${result.total}</p><div class="button-row" style="justify-content:center"><button class="btn btn-primary" id="restart-vocab-test" type="button">Try again</button></div></div>`;
+      modeRoot.innerHTML = `<div class="card empty-state"><div class="empty-state-icon">🏁</div><h3>Тест завершён</h3><p>Выучено после теста: ${result.score} из ${result.total}. Слова с ошибками добавлены в сложные.</p><div class="button-row" style="justify-content:center"><button class="btn btn-primary" id="restart-vocab-test" type="button">Пройти ещё раз</button></div></div>`;
       byId('restart-vocab-test').addEventListener('click', startTest);
     };
 
@@ -2383,19 +3052,14 @@
       const distractors = shuffled(topic.words.filter((item) => item.__wordKey !== word.__wordKey)).slice(0, 3);
       const options = shuffled([word, ...distractors]);
       testState.answered = false;
-      modeRoot.innerHTML = `<div class="flash-counter">Question ${testState.index + 1} of ${testState.words.length}</div><article class="card"><span class="eyebrow">Choose the translation</span><h2 class="flash-word">${escapeHtml(word.en)}</h2>${word.transcription ? `<p class="muted">${escapeHtml(word.transcription)}</p>` : ''}<div class="option-list section">${options.map((option) => `<button class="quiz-option" type="button" data-answer-key="${escapeHtml(option.__wordKey)}">${escapeHtml(option.ru)}</button>`).join('')}</div><div id="vocab-test-feedback" class="feedback"></div><div class="button-row"><button class="btn btn-primary" id="next-vocab-question" type="button" disabled>Next word</button></div></article>`;
+      modeRoot.innerHTML = `<div class="flash-counter">Вопрос ${testState.index + 1} из ${testState.words.length}</div><article class="card"><span class="eyebrow">Выбери перевод</span><h2 class="flash-word">${escapeHtml(word.en)}</h2>${word.transcription ? `<p class="muted">${escapeHtml(word.transcription)}</p>` : ''}<div class="option-list section">${options.map((option) => `<button class="quiz-option" type="button" data-answer-key="${escapeHtml(option.__wordKey)}">${escapeHtml(option.ru)}</button>`).join('')}</div><div id="vocab-test-feedback" class="feedback"></div><div class="button-row"><button class="btn btn-primary" id="next-vocab-question" type="button" disabled>Следующее слово</button></div></article>`;
       modeRoot.querySelectorAll('[data-answer-key]').forEach((button) => {
         button.addEventListener('click', () => {
           if (testState.answered) return;
           testState.answered = true;
           const correct = button.dataset.answerKey === word.__wordKey;
           testState.firstAnswers[word.__wordKey] = { correct, selected: button.dataset.answerKey };
-          if (correct) {
-            testState.firstTryCorrect += 1;
-            setWordStatus(progress, word, topic.id, 'known');
-          } else {
-            setWordStatus(progress, word, topic.id, 'difficult');
-          }
+          if (correct) testState.firstTryCorrect += 1;
           save();
           modeRoot.querySelectorAll('[data-answer-key]').forEach((optionButton) => {
             optionButton.disabled = true;
@@ -2404,18 +3068,190 @@
           if (!correct) button.classList.add('wrong');
           const feedback = byId('vocab-test-feedback');
           feedback.className = `feedback show ${correct ? 'good' : 'bad'}`;
-          feedback.textContent = correct ? 'Correct on the first try!' : `Correct answer: ${word.ru}`;
+          feedback.textContent = correct ? 'Верно с первого раза!' : `Правильный ответ: ${word.ru}`;
           byId('next-vocab-question').disabled = false;
         });
       });
       byId('next-vocab-question').addEventListener('click', () => { testState.index += 1; drawQuestion(); });
     };
 
+    const renderWordCard = (word) => {
+      const status = progress.words[word.__wordKey]?.status;
+      return `<article class="card word-card ${status === 'known' ? 'known' : ''} ${status === 'difficult' ? 'difficult' : ''}">
+        <strong>${escapeHtml(word.en)}</strong>
+        <span>${escapeHtml(word.ru)}</span>
+        ${word.transcription ? `<span>${escapeHtml(word.transcription)}</span>` : ''}
+      </article>`;
+    };
+
     const drawAllWords = () => {
-      modeRoot.innerHTML = `<div class="words-grid">${topic.words.map((word) => {
-        const status = progress.words[word.__wordKey]?.status;
-        return `<article class="card word-card ${status === 'known' ? 'known' : ''} ${status === 'difficult' ? 'difficult' : ''}"><strong>${escapeHtml(word.en)}</strong><span>${escapeHtml(word.ru)}</span>${word.transcription ? `<span>${escapeHtml(word.transcription)}</span>` : ''}</article>`;
-      }).join('')}</div>`;
+      const configuredGroups = (Array.isArray(topic.groups) ? topic.groups : [])
+        .map((group) => ({
+          ...group,
+          words: topic.words.filter((word) => word.group === group.id)
+        }))
+        .filter((group) => group.words.length);
+
+      const groupedKeys = new Set(
+        configuredGroups.flatMap((group) =>
+          group.words.map((word) => word.__wordKey)
+        )
+      );
+
+      const ungroupedWords = topic.words.filter(
+        (word) => !groupedKeys.has(word.__wordKey)
+      );
+
+      const sections = [
+        ...configuredGroups,
+        ...(ungroupedWords.length
+          ? [{
+              id: 'other',
+              title: 'Other words',
+              subtitle: 'Другие слова',
+              icon: '📚',
+              words: ungroupedWords
+            }]
+          : [])
+      ];
+
+      if (!sections.length) {
+        modeRoot.innerHTML = emptyState(
+          '📚',
+          'Слова ещё не распределены по разделам',
+          'Преподаватель добавит категории к этой теме.'
+        );
+        return;
+      }
+
+      activeWordGroupIndex = Math.min(
+        Math.max(0, activeWordGroupIndex),
+        sections.length - 1
+      );
+      const activeGroup = sections[activeWordGroupIndex];
+      const knownInGroup = activeGroup.words.filter(
+        (word) => progress.words[word.__wordKey]?.status === 'known'
+      ).length;
+
+      modeRoot.innerHTML = `<div class="vocab-section-browser">
+        <div class="vocab-section-tabs" role="tablist" aria-label="Разделы словаря">
+          ${sections.map((group, index) => `
+            <button
+              class="vocab-section-tab ${index === activeWordGroupIndex ? 'active' : ''}"
+              type="button"
+              role="tab"
+              aria-selected="${index === activeWordGroupIndex ? 'true' : 'false'}"
+              aria-controls="vocab-section-panel"
+              tabindex="${index === activeWordGroupIndex ? '0' : '-1'}"
+              data-vocab-group-index="${index}"
+            >
+              <span class="vocab-section-tab-icon" aria-hidden="true">${escapeHtml(group.icon || '📚')}</span>
+              <span class="vocab-section-tab-copy">
+                <strong>${escapeHtml(group.title || group.id)}</strong>
+                <small>${escapeHtml(group.subtitle || '')}</small>
+              </span>
+              <span class="vocab-section-tab-count">${group.words.length}</span>
+            </button>
+          `).join('')}
+        </div>
+
+        <section
+          class="vocab-section-panel"
+          id="vocab-section-panel"
+          role="tabpanel"
+          tabindex="0"
+          aria-label="${escapeHtml(activeGroup.title || activeGroup.id)}"
+        >
+          <header class="vocab-section-panel-heading">
+            <div class="vocab-section-panel-title">
+              <span class="vocab-section-panel-icon" aria-hidden="true">${escapeHtml(activeGroup.icon || '📚')}</span>
+              <div>
+                <span class="eyebrow">Раздел ${activeWordGroupIndex + 1} из ${sections.length}</span>
+                <h3>${escapeHtml(activeGroup.title || activeGroup.id)}</h3>
+                ${activeGroup.subtitle ? `<p>${escapeHtml(activeGroup.subtitle)}</p>` : ''}
+              </div>
+            </div>
+            <div class="vocab-section-progress" aria-label="Прогресс раздела">
+              <strong>${knownInGroup} / ${activeGroup.words.length}</strong>
+              <span>изучено</span>
+            </div>
+          </header>
+
+          <div class="words-grid">${activeGroup.words.map(renderWordCard).join('')}</div>
+
+          <footer class="vocab-section-navigation" aria-label="Переход между разделами">
+            <button
+              class="btn btn-secondary"
+              type="button"
+              data-vocab-group-prev
+              ${activeWordGroupIndex === 0 ? 'disabled' : ''}
+            >
+              ← Предыдущий
+            </button>
+            <span>${activeWordGroupIndex + 1} / ${sections.length}</span>
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-vocab-group-next
+              ${activeWordGroupIndex === sections.length - 1 ? 'disabled' : ''}
+            >
+              Следующий →
+            </button>
+          </footer>
+        </section>
+      </div>`;
+
+      const selectGroup = (index, focusPanel = true) => {
+        activeWordGroupIndex = Math.min(
+          Math.max(0, Number(index) || 0),
+          sections.length - 1
+        );
+        drawAllWords();
+        if (focusPanel) {
+          byId('vocab-section-panel')?.focus({ preventScroll: true });
+        }
+      };
+
+      const tabs = [...modeRoot.querySelectorAll('[data-vocab-group-index]')];
+
+      tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => selectGroup(index));
+
+        tab.addEventListener('keydown', (event) => {
+          if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
+            return;
+          }
+
+          event.preventDefault();
+
+          let nextIndex = index;
+          if (event.key === 'ArrowRight') {
+            nextIndex = (index + 1) % sections.length;
+          } else if (event.key === 'ArrowLeft') {
+            nextIndex = (index - 1 + sections.length) % sections.length;
+          } else if (event.key === 'Home') {
+            nextIndex = 0;
+          } else if (event.key === 'End') {
+            nextIndex = sections.length - 1;
+          }
+
+          activeWordGroupIndex = nextIndex;
+          drawAllWords();
+          modeRoot
+            .querySelector(`[data-vocab-group-index="${nextIndex}"]`)
+            ?.focus();
+        });
+      });
+
+      modeRoot.querySelector('[data-vocab-group-prev]')?.addEventListener(
+        'click',
+        () => selectGroup(activeWordGroupIndex - 1)
+      );
+
+      modeRoot.querySelector('[data-vocab-group-next]')?.addEventListener(
+        'click',
+        () => selectGroup(activeWordGroupIndex + 1)
+      );
     };
 
     const drawMode = () => {
@@ -2444,47 +3280,81 @@
       'vocabulary-hub': renderVocabularyHub,
       lesson: renderLesson,
       'grammar-topic': renderGrammarTopic,
-      vocabulary: renderVocabulary,
-      'irregular-verbs': () => window.renderIrregularVerbsPage?.()
+      vocabulary: renderVocabulary
     };
     try {
       await renderers[view]?.();
-      preserveStudentInLinks();
     } catch (error) {
-      console.error('Page rendering error:', error);
+      console.error('Ошибка отображения страницы:', error);
       const main = document.querySelector('main');
-      if (main) main.innerHTML = emptyState('⚠️', 'Could not open the page', 'Check the data structure and refresh the page.');
+      if (main) main.innerHTML = emptyState('⚠️', 'Не удалось открыть страницу', 'Проверьте структуру данных и попробуйте обновить страницу.');
     }
   }
 
-  async function init() {
-    fillConfig();
-    setupStudentSwitcher();
-    markNavigation();
+  function homeworkCatalogSignature(items = HOMEWORK_DATA) {
+    return JSON.stringify((Array.isArray(items) ? items : []).map((item) => ({
+      id: item.id,
+      number: item.number,
+      title: item.title,
+      subtitle: item.subtitle,
+      status: item.status,
+      publishedAt: item.publishedAt,
+      notificationVersion: item.notification?.version || 0
+    })));
+  }
+
+  async function refreshHomeworkCatalogIfChanged() {
+    const view = document.body?.dataset?.view || '';
+    if (!['home', 'homework'].includes(view)) return;
+
+    const before = homeworkCatalogSignature();
+    lessonCache.clear();
+
     try {
-      const url = new URL(window.location.href);
-      if (normalizeStudentId(url.searchParams.get('student')) !== studentId) {
-        url.searchParams.set('student', studentId);
-        window.history.replaceState({}, '', url);
+      await loadHomeworkData();
+      const after = homeworkCatalogSignature();
+      if (after !== before) {
+        await refreshCurrentView();
+        showToast('Список домашних заданий обновлён.');
       }
-    } catch {}
+    } catch (error) {
+      console.warn('Не удалось автоматически обновить список домашних заданий:', error);
+    }
+  }
+
+  function startHomeworkAutoRefresh() {
+    const view = document.body?.dataset?.view || '';
+    if (!['home', 'homework'].includes(view)) return;
+
+    window.setInterval(refreshHomeworkCatalogIfChanged, 60_000);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) refreshHomeworkCatalogIfChanged();
+    });
+  }
+
+  async function init() {
+    migrateLegacyMarinaProgress();
+    archiveLegacyLesson8LocalProgress();
+    fillConfig();
+    markNavigation();
     try {
       await loadHomeworkData();
     } catch (error) {
-      console.error('Lesson catalogue loading error:', error);
+      console.error('Ошибка загрузки каталога уроков:', error);
       HOMEWORK_DATA = [];
       window.HOMEWORK_DATA = HOMEWORK_DATA;
     }
     await refreshCurrentView();
+    startHomeworkAutoRefresh();
     if (!CloudService.isConfigured()) return;
     try {
       await CloudService.init();
       await window.ProgressService.syncFromCloud();
       await refreshCurrentView();
     } catch (error) {
-      console.error('Supabase connection error:', error);
+      console.error('Ошибка подключения к Supabase:', error);
       const detail = safeText(error?.message || error?.details || error?.hint);
-      showToast(detail ? `Supabase error: ${detail}` : 'Supabase is temporarily unavailable.');
+      showToast(detail ? `Ошибка Supabase: ${detail}` : 'Supabase временно недоступен.');
     }
   }
 
