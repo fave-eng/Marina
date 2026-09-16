@@ -3489,5 +3489,147 @@ window.VOCABULARY_DATA = [
         "icon": "💡"
       }
     ]
+  },
+  {
+    "id": "vocab-lesson-15-home-writing",
+    "title": "Describing a home",
+    "label": "Lesson 15 · 13 new words and phrases",
+    "icon": "🏠",
+    "type": "lesson",
+    "linkedLessonId": "lesson-15",
+    "page": "vocabulary.html?id=vocab-lesson-15-home-writing",
+    "description": "Полезная лексика из listening и writing: комнаты, описание дома, район и язык travel reviews.",
+    "words": [
+      {
+        "id": "l15-01",
+        "uniqueKey": "dining room",
+        "en": "dining room",
+        "ru": "столовая",
+        "transcription": "/ˈdaɪnɪŋ ruːm/",
+        "exampleEn": "We have a dining room with a table and six chairs.",
+        "exampleRu": "У нас есть столовая со столом и шестью стульями.",
+        "group": "rooms"
+      },
+      {
+        "id": "l15-02",
+        "uniqueKey": "dishwasher",
+        "en": "dishwasher",
+        "ru": "посудомоечная машина",
+        "transcription": "/ˈdɪʃˌwɒʃə/",
+        "exampleEn": "The kitchen has a washing machine and a dishwasher.",
+        "exampleRu": "На кухне есть стиральная и посудомоечная машины.",
+        "group": "home"
+      },
+      {
+        "id": "l15-03",
+        "uniqueKey": "well-equipped",
+        "en": "well-equipped",
+        "ru": "хорошо оборудованный",
+        "transcription": "/ˌwel ɪˈkwɪpt/",
+        "exampleEn": "The kitchen is large and well-equipped.",
+        "exampleRu": "Кухня большая и хорошо оборудованная.",
+        "group": "description"
+      },
+      {
+        "id": "l15-04",
+        "uniqueKey": "close by",
+        "en": "close by",
+        "ru": "рядом, неподалёку",
+        "transcription": "/ˌkləʊs ˈbaɪ/",
+        "exampleEn": "The shops are close by.",
+        "exampleRu": "Магазины находятся рядом.",
+        "group": "location"
+      },
+      {
+        "id": "l15-05",
+        "uniqueKey": "beautiful view",
+        "en": "beautiful view",
+        "ru": "красивый вид",
+        "transcription": "/ˌbjuːtəfəl ˈvjuː/",
+        "exampleEn": "There’s a beautiful view over the park.",
+        "exampleRu": "Отсюда открывается красивый вид на парк.",
+        "group": "description"
+      },
+      {
+        "id": "l15-06",
+        "uniqueKey": "stay",
+        "en": "stay",
+        "ru": "пребывание; остановиться",
+        "transcription": "/steɪ/",
+        "exampleEn": "Enjoy your stay in this modern house.",
+        "exampleRu": "Приятного пребывания в этом современном доме.",
+        "group": "travel"
+      },
+      {
+        "id": "l15-07",
+        "uniqueKey": "short break",
+        "en": "short break",
+        "ru": "короткий отдых, короткая поездка",
+        "transcription": "/ˌʃɔːt ˈbreɪk/",
+        "exampleEn": "It’s perfect for a short break in the city.",
+        "exampleRu": "Это идеально подходит для короткой поездки в город.",
+        "group": "travel"
+      },
+      {
+        "id": "l15-08",
+        "uniqueKey": "modern house",
+        "en": "modern house",
+        "ru": "современный дом",
+        "transcription": "/ˌmɒdən ˈhaʊs/",
+        "exampleEn": "Enjoy your stay in this modern house.",
+        "exampleRu": "Приятного пребывания в этом современном доме.",
+        "group": "description"
+      },
+      {
+        "id": "l15-09",
+        "uniqueKey": "museum",
+        "en": "museum",
+        "ru": "музей",
+        "transcription": "/mjuˈziːəm/",
+        "exampleEn": "There are museums in the town centre.",
+        "exampleRu": "В центре города есть музеи.",
+        "group": "places"
+      },
+      {
+        "id": "l15-10",
+        "uniqueKey": "market",
+        "en": "market",
+        "ru": "рынок",
+        "transcription": "/ˈmɑːkɪt/",
+        "exampleEn": "There is a market in the town centre.",
+        "exampleRu": "В центре города есть рынок.",
+        "group": "places"
+      },
+      {
+        "id": "l15-11",
+        "uniqueKey": "town centre",
+        "en": "town centre",
+        "ru": "центр города",
+        "transcription": "/ˌtaʊn ˈsentə/",
+        "exampleEn": "The market is in the town centre.",
+        "exampleRu": "Рынок находится в центре города.",
+        "group": "location"
+      },
+      {
+        "id": "l15-12",
+        "uniqueKey": "wi-fi",
+        "en": "wi-fi",
+        "ru": "Wi‑Fi, беспроводной интернет",
+        "transcription": "/ˈwaɪ faɪ/",
+        "exampleEn": "The apartment has good wi-fi.",
+        "exampleRu": "В квартире хороший Wi‑Fi.",
+        "group": "home"
+      },
+      {
+        "id": "l15-13",
+        "uniqueKey": "travel review website",
+        "en": "travel review website",
+        "ru": "сайт с отзывами о путешествиях",
+        "transcription": "/ˈtrævəl rɪˌvjuː ˈwebsaɪt/",
+        "exampleEn": "Write a description for a travel review website.",
+        "exampleRu": "Напишите описание для сайта с отзывами о путешествиях.",
+        "group": "travel"
+      }
+    ]
   }
 ];

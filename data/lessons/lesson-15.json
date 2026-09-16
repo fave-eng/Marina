@@ -1,0 +1,337 @@
+{
+  "id": "lesson-15",
+  "number": 15,
+  "title": "A home for a website · Listening and Writing",
+  "subtitle": "Speakout · Unit 3 · Lesson 3A: Listening and Writing",
+  "status": "available",
+  "page": "lesson.html?id=lesson-15",
+  "vocabularyId": "vocab-lesson-15-home-writing",
+  "grammarIds": [],
+  "publishedAt": "2026-09-16",
+  "totalPoints": 24,
+  "notification": {
+    "enabled": true,
+    "version": 1
+  },
+  "blocks": [
+    {
+      "type": "section",
+      "eyebrow": "UNIT 3 · Lesson 3A",
+      "title": "LISTENING · a new house"
+    },
+    {
+      "type": "exercise",
+      "id": "l15-listening-4a",
+      "title": "4A. 3.02 Listen to Hayley showing her friend Fabien her new house. Number the rooms in the order you hear about them.",
+      "audio": "audio/Speakout_A2_WB_Unit 3_Audio/SO3_A2_WB_3A_Audio_3_02.mp3",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "bathroom",
+          "prompt": "bathroom",
+          "input": "select",
+          "options": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
+          "answer": 4
+        },
+        {
+          "id": "bedroom",
+          "prompt": "bedroom",
+          "input": "select",
+          "options": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
+          "answer": 5
+        },
+        {
+          "id": "dining-room",
+          "prompt": "dining room",
+          "input": "select",
+          "options": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
+          "answer": 2
+        },
+        {
+          "id": "hall",
+          "prompt": "hall",
+          "input": "select",
+          "options": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "kitchen",
+          "prompt": "kitchen",
+          "input": "select",
+          "options": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
+          "answer": 3
+        },
+        {
+          "id": "living-room",
+          "prompt": "living room",
+          "input": "select",
+          "options": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l15-listening-4b",
+      "title": "4B. 3.02 Listen again. Are the sentences True (T) or False (F)?",
+      "audio": "audio/Speakout_A2_WB_Unit 3_Audio/SO3_A2_WB_3A_Audio_3_02.mp3",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "1",
+          "prompt": "Fabien never loses his keys.",
+          "input": "single",
+          "options": [
+            "T",
+            "F"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "2",
+          "prompt": "Hayley has a new sofa and armchairs.",
+          "input": "single",
+          "options": [
+            "T",
+            "F"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "3",
+          "prompt": "Fabien doesn’t like what’s on the wall in the living room.",
+          "input": "single",
+          "options": [
+            "T",
+            "F"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "4",
+          "prompt": "Hayley wants to put a table and chairs in the dining room.",
+          "input": "single",
+          "options": [
+            "T",
+            "F"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "5",
+          "prompt": "Hayley’s kitchen is small.",
+          "input": "single",
+          "options": [
+            "T",
+            "F"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "6",
+          "prompt": "Hayley doesn’t like cooking.",
+          "input": "single",
+          "options": [
+            "T",
+            "F"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "7",
+          "prompt": "They both like the shower.",
+          "input": "single",
+          "options": [
+            "T",
+            "F"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "8",
+          "prompt": "Hayley’s bedroom is clean.",
+          "input": "single",
+          "options": [
+            "T",
+            "F"
+          ],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "eyebrow": "UNIT 3 · Lesson 3A",
+      "title": "WRITING · write a description of a home for a website; use commas"
+    },
+    {
+      "type": "reading",
+      "id": "l15-writing-model",
+      "title": "Message",
+      "text": "We hope you enjoy your stay in our apartment.\n\nIt’s in a great area, which has lots of shops and parks. There are museums and a market in the town centre, too.\n\nThe apartment has a large hall when you come in. The living room has a sofa, two armchairs, a small table and a big TV. It has good wi-fi, so it’s a great area to relax in.\n\nWe also have a dining room with a table and six chairs. The kitchen has a big fridge, an oven, a washing machine and a dishwasher. It’s perfect if you like cooking."
+    },
+    {
+      "type": "exercise",
+      "id": "l15-writing-5a",
+      "title": "5A. Read the message. How many rooms does the apartment have?",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "1",
+          "number": "",
+          "prompt": "How many rooms does the apartment have?",
+          "input": "text",
+          "answer": "four rooms",
+          "acceptedAnswers": [
+            "four rooms",
+            "4 rooms",
+            "four",
+            "4"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l15-writing-bank-1d",
+      "title": "Writing Bank 3A · 1D. When do we use commas in lists? Choose the correct word(s) to complete the rules.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "rules",
+          "number": "",
+          "prompt": "",
+          "input": "inline-single",
+          "segments": [
+            "1 In a list of two things we ",
+            " a comma.\n2 In a list of three or more things, we ",
+            " a comma between the things. We ",
+            " a comma before and."
+          ],
+          "choices": [
+            {
+              "number": "",
+              "options": [
+                "use",
+                "don’t use"
+              ],
+              "answer": 1
+            },
+            {
+              "number": "",
+              "options": [
+                "use",
+                "don’t use"
+              ],
+              "answer": 0
+            },
+            {
+              "number": "",
+              "options": [
+                "use",
+                "don’t use"
+              ],
+              "answer": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l15-writing-6b",
+      "title": "6B. Put the words in the correct order to make sentences.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "1",
+          "prompt": "stay / modern / Enjoy / house / this / in / your .",
+          "input": "text",
+          "answer": "Enjoy your stay in this modern house."
+        },
+        {
+          "id": "2",
+          "prompt": "a / city / the / It’s / short / perfect / break / for / in .",
+          "input": "text",
+          "answer": "It’s perfect for a short break in the city."
+        },
+        {
+          "id": "3",
+          "prompt": "view / park / There’s / a / beautiful / the / over .",
+          "input": "text",
+          "answer": "There’s a beautiful view over the park."
+        },
+        {
+          "id": "4",
+          "prompt": "well-equipped / and / The / large / kitchen / is .",
+          "input": "text",
+          "answer": "The kitchen is large and well-equipped."
+        },
+        {
+          "id": "5",
+          "prompt": "by / close / shops / are / The .",
+          "input": "text",
+          "answer": "The shops are close by."
+        },
+        {
+          "id": "6",
+          "prompt": "area / in / great / a / It’s / to / relax .",
+          "input": "text",
+          "answer": "It’s a great area to relax in."
+        }
+      ]
+    },
+    {
+      "type": "guided-writing",
+      "id": "l15-writing-6c",
+      "title": "6C. Write a description of a home for a travel review website.",
+      "instructions": "Choose one: your own home; a celebrity’s home you know; or another real or imaginary home. Use the phrases in Ex 6B to help you. Write 80–100 words.",
+      "placeholder": "Write 80–100 words here…",
+      "minWords": 80,
+      "maxWords": 100,
+      "required": true
+    }
+  ]
+}

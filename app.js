@@ -1430,11 +1430,18 @@
 
   function renderGuidedWritingBlock(block, id, title) {
     const starters = Array.isArray(block.starters) ? block.starters : [];
-    return `<article class="card lesson-block guided-writing-card" data-task="${escapeHtml(id)}" data-type="guided-writing" data-min-sentences="${Number(block.minSentences || 0)}" data-max-sentences="${Number(block.maxSentences || 0)}">
+    const minWords = Number(block.minWords || 0);
+    const maxWords = Number(block.maxWords || 0);
+    const usesWords = minWords > 0 || maxWords > 0;
+    const rangeLabel = usesWords
+      ? `${minWords || 0}–${maxWords || '∞'} слов`
+      : `${Number(block.minSentences || 6)}–${Number(block.maxSentences || 8)} предложений`;
+    const counterLabel = usesWords ? '0 слов' : '0 предложений';
+    return `<article class="card lesson-block guided-writing-card" data-task="${escapeHtml(id)}" data-type="guided-writing" data-min-sentences="${Number(block.minSentences || 0)}" data-max-sentences="${Number(block.maxSentences || 0)}" data-min-words="${minWords}" data-max-words="${maxWords}" data-writing-required="${block.required === true ? 'true' : 'false'}">
       <div class="manual-task-heading"><span class="eyebrow">Writing</span><h3>${title}</h3>${block.instructions ? `<p class="muted">${escapeHtml(block.instructions)}</p>` : ''}</div>
       ${starters.length ? `<div class="sentence-starters" aria-label="Начала предложений"><span>Нажми, чтобы добавить:</span>${starters.map((starter) => `<button type="button" data-writing-starter="${escapeHtml(starter)}">${escapeHtml(starter)}</button>`).join('')}</div>` : ''}
       <textarea data-guided-writing placeholder="${escapeHtml(block.placeholder || '')}"></textarea>
-      <div class="writing-counter"><span data-sentence-counter>0 предложений</span><span>Рекомендуемый объём: ${Number(block.minSentences || 6)}–${Number(block.maxSentences || 8)}</span></div>
+      <div class="writing-counter"><span data-sentence-counter>${counterLabel}</span><span>Рекомендуемый объём: ${rangeLabel}</span></div>
       <div class="feedback" aria-live="polite"></div>
     </article>`;
   }
@@ -1522,6 +1529,14 @@
     const counter = node.querySelector('[data-sentence-counter]');
     if (!textarea || !counter) return;
     const text = textarea.value.trim();
+    const minWords = Number(node.dataset.minWords || 0);
+    const maxWords = Number(node.dataset.maxWords || 0);
+    if (minWords > 0 || maxWords > 0) {
+      const count = text ? text.split(/\s+/).filter(Boolean).length : 0;
+      counter.textContent = `${count} слов`;
+      counter.classList.toggle('is-ready', count >= minWords && (!maxWords || count <= maxWords));
+      return;
+    }
     const count = text ? text.split(/[.!?]+|\n+/).map((part) => part.trim()).filter(Boolean).length : 0;
     const min = Number(node.dataset.minSentences || 0);
     const max = Number(node.dataset.maxSentences || 0);
@@ -2105,7 +2120,14 @@
     if (block.type === 'reading-quiz') return checkReadingQuizBlock(block, node);
     if (block.type === 'exercise') return checkExerciseBlock(block, node);
     if (block.type === 'family-tree') return { actual: collectFamilyTree(node), correctCount: 0, total: 0, manual: true };
-    if (block.type === 'guided-writing') return { actual: node.querySelector('[data-guided-writing]')?.value || '', correctCount: 0, total: 0, manual: true };
+    if (block.type === 'guided-writing') {
+      const actual = node.querySelector('[data-guided-writing]')?.value || '';
+      const minWords = Number(block.minWords || 0);
+      const maxWords = Number(block.maxWords || 0);
+      const wordCount = safeText(actual).trim() ? safeText(actual).trim().split(/\s+/).filter(Boolean).length : 0;
+      const requiredComplete = block.required !== true || (wordCount >= minWords && (!maxWords || wordCount <= maxWords));
+      return { actual, correctCount: 0, total: 0, manual: true, requiredComplete, wordCount };
+    }
     if (block.type === 'word-groups') return { actual: collectWordGroups(node), correctCount: 0, total: 0, manual: true };
     if (block.type === 'mini-interview') return { actual: collectMiniInterview(node), correctCount: 0, total: 0, manual: true };
     let actual;
@@ -2233,8 +2255,15 @@
       node.classList.add('is-saved');
       const feedback = node.querySelector('.feedback');
       if (feedback) {
-        feedback.className = 'feedback show neutral';
-        feedback.textContent = 'Ответ сохранён для проверки преподавателем.';
+        if (result.requiredComplete === false) {
+          feedback.className = 'feedback show bad';
+          const minWords = Number(block.minWords || 0);
+          const maxWords = Number(block.maxWords || 0);
+          feedback.textContent = minWords > 0 ? `Напиши ${minWords}${maxWords ? `–${maxWords}` : '+'} слов перед отправкой.` : 'Заполни это задание перед отправкой.';
+        } else {
+          feedback.className = 'feedback show neutral';
+          feedback.textContent = 'Ответ сохранён для проверки преподавателем.';
+        }
       }
       return;
     }
@@ -2307,6 +2336,13 @@
     const progress = window.ProgressService.loadHomeworkProgress();
     const savedResult = progress.results[lesson.id];
     const savedRequiredComplete = blocks.every((block) => {
+      if (block.type === 'guided-writing' && block.required === true) {
+        const value = safeText(savedResult?.answers?.[safeText(block.id)]).trim();
+        const wordCount = value ? value.split(/\s+/).filter(Boolean).length : 0;
+        const minWords = Number(block.minWords || 0);
+        const maxWords = Number(block.maxWords || 0);
+        return wordCount >= minWords && (!maxWords || wordCount <= maxWords);
+      }
       if (block.type !== 'reading-quiz' || block.manualResponses !== true) return true;
       const personal = savedResult?.answers?.[safeText(block.id)]?.personal;
       const required = Array.isArray(block?.quiz?.questions) ? block.quiz.questions.length : 0;
