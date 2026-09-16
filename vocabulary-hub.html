@@ -1,68 +1,56 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="Shared English learning space with personal progress">
+  <meta name="description" content="Персональное пространство ученика английского языка">
   <title>Vocabulary Hub</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=15">
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="config.js" defer></script>
-  <script src="data/vocabulary-data.js" defer></script>
-  <script src="data/grammar-data.js" defer></script>
-  <script src="app.js" defer></script>
+  <script src="data/vocabulary-data.js?v=14" defer></script>
+  <script src="data/grammar-data.js?v=11" defer></script>
+  <script src="app.js?v=17" defer></script>
 </head>
 <body class="has-bottom-nav" data-page="vocabulary" data-view="vocabulary-hub">
-  <a class="skip-link" href="#main">Skip to content</a>
+  <a class="skip-link" href="#main">Перейти к содержанию</a>
 
   <header class="hero hero-compact">
     <span class="star one">✦</span><span class="star two">✦</span>
     <div class="container hero-content reveal">
-      <span class="hero-badge">✦ <span data-config="level"></span> Level · Pair Course</span>
+      <span class="hero-badge">✦ <span data-config="level"></span> Level · Individual Course</span>
       <h1>Vocabulary Hub</h1>
-      <p>Flashcards, tests and review of difficult words.</p>
+      <p>Карточки, тесты и повторение сложных слов.</p>
     </div>
     <svg class="hero-wave" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true"><path fill="#f8fafc" d="M0,66 C220,102 410,10 696,52 C963,91 1115,99 1440,35 L1440,100 L0,100 Z"></path></svg>
   </header>
 
   <main id="main" class="main-content container">
 
-    <section class="section reveal" aria-label="Vocabulary statistics">
+    <section class="section reveal" aria-label="Статистика словаря">
       <div class="stats-grid">
-        <div class="card stat-card"><strong id="vocab-known">0</strong><span>Learned</span></div>
-        <div class="card stat-card"><strong id="vocab-total">0</strong><span>Total</span></div>
-        <div class="card stat-card"><strong id="vocab-topics">0</strong><span>Topics</span></div>
-        <div class="card stat-card"><strong id="vocab-percent">0%</strong><span>Progress</span></div>
+        <div class="card stat-card"><strong id="vocab-known">0</strong><span>Выучено</span></div>
+        <div class="card stat-card"><strong id="vocab-total">0</strong><span>Всего</span></div>
+        <div class="card stat-card"><strong id="vocab-topics">0</strong><span>Тем</span></div>
+        <div class="card stat-card"><strong id="vocab-percent">0%</strong><span>Прогресс</span></div>
       </div>
       <div class="card section"><div id="vocab-overall-progress"></div></div>
     </section>
-    <section class="section reveal" aria-labelledby="irregular-verbs-title">
-      <div class="section-heading"><div><span class="eyebrow">Practice + reference</span><h2 id="irregular-verbs-title">Irregular verbs</h2></div></div>
-      <a class="card item-card interactive" href="irregular-verbs.html">
-        <div class="item-icon">🔁</div>
-        <div class="item-main">
-          <h3>Irregular verbs table</h3>
-          <p>English File Pre-Intermediate · Table, personal progress and form test</p>
-        </div>
-        <span class="status-badge status-available">Practice</span>
-      </a>
-    </section>
-
     <section class="section reveal" aria-labelledby="vocab-list-title">
-      <div class="section-heading"><div><span class="eyebrow">Practice</span><h2 id="vocab-list-title">Vocabulary for <span data-config="nameEn"></span></h2></div></div>
-      <div class="filters" id="vocab-filters" aria-label="Vocabulary topic filters">
-        <button class="filter-btn active" type="button" data-filter="all">All</button>
-        <button class="filter-btn" type="button" data-filter="lesson">By lesson</button>
-        <button class="filter-btn" type="button" data-filter="extra">Extra</button>
-        <button class="filter-btn" type="button" data-filter="completed">Completed</button>
+      <div class="section-heading"><div><span class="eyebrow">Тренажёры</span><h2 id="vocab-list-title">Vocabulary Hub</h2></div></div>
+      <div class="filters" id="vocab-filters" aria-label="Фильтры словарных тем">
+        <button class="filter-btn active" type="button" data-filter="all">Все</button>
+        <button class="filter-btn" type="button" data-filter="lesson">По урокам</button>
+        <button class="filter-btn" type="button" data-filter="extra">Дополнительные</button>
+        <button class="filter-btn" type="button" data-filter="completed">Завершённые</button>
       </div>
       <div id="vocabulary-list" class="list section"></div>
     </section>
 
   </main>
 
-  <nav class="bottom-nav" aria-label="Main navigation">
+  <nav class="bottom-nav" aria-label="Основная навигация">
     <a class="nav-link" data-nav="home" href="index.html"><span class="nav-icon">🏠</span><span>Home</span></a>
     <a class="nav-link" data-nav="homework" href="homework.html"><span class="nav-icon">📝</span><span>HW</span></a>
     <a class="nav-link" data-nav="grammar" href="grammar.html"><span class="nav-icon">📐</span><span>Grammar</span></a>
