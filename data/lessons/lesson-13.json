@@ -1,0 +1,434 @@
+{
+  "id": "lesson-13",
+  "number": 13,
+  "title": "Review 1–2",
+  "subtitle": "Speakout · Review 1–2: Grammar and Vocabulary",
+  "status": "available",
+  "page": "lesson.html?id=lesson-13",
+  "vocabularyId": "vocab-lesson-13-review-1-2",
+  "grammarIds": [
+    "grammar-lesson-1-present-simple",
+    "grammar-lesson-6-countable-uncountable",
+    "grammar-lesson-8-frequency",
+    "grammar-lesson-12-like-hate-love-ing"
+  ],
+  "publishedAt": "2026-09-16",
+  "totalPoints": 51,
+  "notification": {
+    "enabled": true,
+    "version": 1
+  },
+  "blocks": [
+    {
+      "type": "section",
+      "eyebrow": "REVIEW 1–2",
+      "title": "GRAMMAR"
+    },
+    {
+      "type": "grammar-link",
+      "grammarId": "grammar-lesson-1-present-simple",
+      "title": "Present Simple: I, you, we, they",
+      "buttonLabel": "Открыть тему"
+    },
+    {
+      "type": "exercise",
+      "id": "l13-grammar-1b",
+      "title": "1B. Choose the correct words to complete the sentences.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "sentences",
+          "number": "",
+          "prompt": "",
+          "input": "inline-single",
+          "segments": [
+            "1 I ",
+            " from home.\n2 ",
+            " your parents live near you?\n3 Nikki doesn’t ",
+            " fish.\n4 When ",
+            " your homework?\n5 Jack and Lisa ",
+            " have a lot of money.\n6 What ",
+            " ‘politician’ mean?\n7 We ",
+            " tennis on Saturdays.\n8 Where ",
+            " you from?"
+          ],
+          "choices": [
+            {
+              "number": 1,
+              "options": [
+                "work",
+                "works"
+              ],
+              "answer": 0
+            },
+            {
+              "number": 2,
+              "options": [
+                "Do",
+                "Does"
+              ],
+              "answer": 0
+            },
+            {
+              "number": 3,
+              "options": [
+                "like",
+                "likes"
+              ],
+              "answer": 0
+            },
+            {
+              "number": 4,
+              "options": [
+                "do you",
+                "you do"
+              ],
+              "answer": 0
+            },
+            {
+              "number": 5,
+              "options": [
+                "don’t",
+                "doesn’t"
+              ],
+              "answer": 0
+            },
+            {
+              "number": 6,
+              "options": [
+                "do",
+                "does"
+              ],
+              "answer": 1
+            },
+            {
+              "number": 7,
+              "options": [
+                "play",
+                "plays"
+              ],
+              "answer": 0
+            },
+            {
+              "number": 8,
+              "options": [
+                "are",
+                "do"
+              ],
+              "answer": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grammar-link",
+      "grammarId": "grammar-lesson-6-countable-uncountable",
+      "title": "Countable and uncountable nouns: a, an, some, any",
+      "buttonLabel": "Открыть тему"
+    },
+    {
+      "type": "exercise",
+      "id": "l13-grammar-3b",
+      "title": "3B. Complete the text with one word in each gap.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "text",
+          "number": "",
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "There’s a lot of food and drink in my fridge at the moment. I’ve got 1 ",
+            " lot of eggs – twenty, I think! I also like fruit, so I’ve got 2 ",
+            " apple, 3 ",
+            " melon and 4 ",
+            " strawberries.\n\nI’ve also got 5 ",
+            " lemonade. I haven’t got 6 ",
+            " meat because I don’t eat it, but we’ve got 7 ",
+            " cheese. I live with my friend and he loves it. We don’t like yoghurt, so we haven’t got 8 ",
+            " of that."
+          ],
+          "answers": [
+            "a",
+            "an",
+            "a",
+            "some",
+            "some",
+            "any",
+            "some",
+            "any"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grammar-link",
+      "grammarId": "grammar-lesson-8-frequency",
+      "title": "Adverbs and phrases of frequency",
+      "buttonLabel": "Открыть тему"
+    },
+    {
+      "type": "exercise",
+      "id": "l13-grammar-4",
+      "title": "4. Put the words in brackets in the correct place in the sentences.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "1",
+          "prompt": "I get up late at the weekend. (always)",
+          "input": "text",
+          "answer": "I always get up late at the weekend."
+        },
+        {
+          "id": "2",
+          "prompt": "Susan works at the weekend. (never)",
+          "input": "text",
+          "answer": "Susan never works at the weekend."
+        },
+        {
+          "id": "3",
+          "prompt": "I meet my mum for lunch Sunday. (every)",
+          "input": "text",
+          "answer": "I meet my mum for lunch every Sunday."
+        },
+        {
+          "id": "4",
+          "prompt": "Mark is late for school. (hardly ever)",
+          "input": "text",
+          "answer": "Mark is hardly ever late for school."
+        },
+        {
+          "id": "5",
+          "prompt": "I play tennis with my friend Tuesdays. (on)",
+          "input": "text",
+          "answer": "I play tennis with my friend on Tuesdays."
+        },
+        {
+          "id": "6",
+          "prompt": "How do you listen to the news? (often)",
+          "input": "text",
+          "answer": "How often do you listen to the news?"
+        },
+        {
+          "id": "7",
+          "prompt": "My parents go on holiday twice year. (a)",
+          "input": "text",
+          "answer": "My parents go on holiday twice a year."
+        },
+        {
+          "id": "8",
+          "prompt": "I’m very tired in the evening. (always)",
+          "input": "text",
+          "answer": "I’m always very tired in the evening."
+        }
+      ]
+    },
+    {
+      "type": "grammar-link",
+      "grammarId": "grammar-lesson-12-like-hate-love-ing",
+      "title": "Like, hate, love + -ing",
+      "buttonLabel": "Открыть тему"
+    },
+    {
+      "type": "exercise",
+      "id": "l13-grammar-5a",
+      "title": "5A. Complete the sentences with the -ing forms of the verbs in the box.",
+      "wordBank": [
+        "do",
+        "get",
+        "play",
+        "run",
+        "take",
+        "write"
+      ],
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "sentences",
+          "number": "",
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "1 I love ",
+            " a break from work.\n2 My sister loves ",
+            " in the park. She goes every day.\n3 Do you like ",
+            " tennis?\n4 I enjoy ",
+            " short stories on my blog.\n5 What do you like ",
+            " at the weekend?\n6 I don’t like ",
+            " up early in the morning!"
+          ],
+          "answers": [
+            "taking",
+            "running",
+            "playing",
+            "writing",
+            "doing",
+            [
+              "getting",
+              "getting up"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "eyebrow": "REVIEW 1–2",
+      "title": "VOCABULARY"
+    },
+    {
+      "type": "exercise",
+      "id": "l13-vocab-7",
+      "title": "7. Complete the text with the verbs in the box.",
+      "wordBank": [
+        "check",
+        "get up",
+        "go (x2)",
+        "have",
+        "play",
+        "spend",
+        "work"
+      ],
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "text",
+          "number": "",
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "I’m a nurse and I 1 ",
+            " in a hospital at night. I 2 ",
+            " late in the afternoon, then I go to work. First, I 3 ",
+            " my emails, then I start work. After work I 4 ",
+            " shopping. I like shopping at night because it’s very quiet. When I get home, I’m tired. I 5 ",
+            " to bed very late. At the weekend, I 6 ",
+            " time with my family or 7 ",
+            " in a band. I don’t 8 ",
+            " a lot of money, but I love my job."
+          ],
+          "answers": [
+            "work",
+            "get up",
+            "check",
+            "go",
+            "go",
+            "spend",
+            "play",
+            "have"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l13-vocab-8",
+      "title": "8. Choose the correct word to complete the sentences.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "1",
+          "prompt": "I’m ______. Do you want to have dinner?",
+          "input": "single",
+          "options": [
+            "a  hungry",
+            "b  tired",
+            "c  angry"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "2",
+          "prompt": "I’m ______. I feel OK today.",
+          "input": "single",
+          "options": [
+            "a  bored",
+            "b  ill",
+            "c  all right"
+          ],
+          "answer": 2
+        },
+        {
+          "id": "3",
+          "prompt": "I’m sorry about yesterday. Are you ______ with me?",
+          "input": "single",
+          "options": [
+            "a  thirsty",
+            "b  angry",
+            "c  relaxed"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "4",
+          "prompt": "We haven’t got any water and I’m ______.",
+          "input": "single",
+          "options": [
+            "a  thirsty",
+            "b  relaxed",
+            "c  hungry"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "5",
+          "prompt": "I’m ______. Do you want to go to the cinema?",
+          "input": "single",
+          "options": [
+            "a  hungry",
+            "b  bored",
+            "c  ill"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "6",
+          "prompt": "I’m ______ and I need to sleep now. Goodnight.",
+          "input": "single",
+          "options": [
+            "a  tired",
+            "b  all right",
+            "c  hungry"
+          ],
+          "answer": 2
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l13-vocab-9a",
+      "title": "9A. Complete the conversation with one word in each gap.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "conversation",
+          "number": "",
+          "prompt": "",
+          "input": "gaps",
+          "layout": "dialogue",
+          "wideGaps": true,
+          "segments": [
+            "Waiter: Here is the menu.\nSam: Thank you very much!\nBea: OK. Let’s see what food they have ...\nSam: Mmm, this looks good. Do you want a 1 ",
+            "?\nBea: Yes please, I’d like the deep-fried mushrooms.\nSam: Sounds good. Me, too.\nBea: What do you want for a 2 ",
+            " course?\nSam: A burger, with a green salad as a 3 ",
+            " dish. And you?\nBea: The chicken. Do you want a 4 ",
+            "? Maybe an ice cream?\nSam: I’m not sure. Can we decide after the main course?\nBea: OK, good idea. Let’s order then. Now, where’s the 5 ",
+            "?\n\n(One hour later ...)\n\nSam: What a nice meal.\nBea: Yes, lovely. Excuse me, can we have the 6 ",
+            ", please?\nWaiter: Yes, of course.\nSam: What’s that?\nWaiter: It’s a chocolate 7 ",
+            ". Happy birthday, sir!\nBea: Surprise! Happy Birthday!\nSam: Oh, wow, thanks!"
+          ],
+          "answers": [
+            "starter",
+            "main",
+            "side",
+            "dessert",
+            "waiter",
+            "bill",
+            "cake"
+          ]
+        }
+      ]
+    }
+  ]
+}

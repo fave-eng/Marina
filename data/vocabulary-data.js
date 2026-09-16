@@ -2320,4 +2320,39 @@ window.VOCABULARY_DATA = [
       {"id":"time","title":"Time and repetition","subtitle":"Время и повторение","icon":"🔁"}
     ]
   }
+,
+  {
+    "id": "vocab-lesson-13-review-1-2",
+    "title": "Review 1–2",
+    "label": "Lesson 13 · Review 1–2 · 16 new words and phrases",
+    "icon": "🔁",
+    "type": "lesson",
+    "linkedLessonId": "lesson-13",
+    "page": "vocabulary.html?id=vocab-lesson-13-review-1-2",
+    "description": "New vocabulary from the selected Review 1–2 exercises that is not already in the previous lesson dictionaries.",
+    "words": [
+      {"id":"l13-01","uniqueKey":"work from home","en":"work from home","ru":"работать из дома","transcription":"/wɜːk frəm həʊm/","exampleEn":"I work from home.","exampleRu":"Я работаю из дома.","group":"work-routines"},
+      {"id":"l13-02","uniqueKey":"a lot of money","en":"a lot of money","ru":"много денег","transcription":"/ə ˌlɒt əv ˈmʌni/","exampleEn":"They don’t have a lot of money.","exampleRu":"У них нет много денег.","group":"work-routines"},
+      {"id":"l13-03","uniqueKey":"fridge","en":"fridge","ru":"холодильник","transcription":"/frɪdʒ/","exampleEn":"There’s a lot of food in my fridge.","exampleRu":"В моём холодильнике много еды.","group":"home-food"},
+      {"id":"l13-04","uniqueKey":"at the moment","en":"at the moment","ru":"в данный момент; сейчас","transcription":"/ət ðə ˈməʊmənt/","exampleEn":"There’s a lot of food in my fridge at the moment.","exampleRu":"Сейчас в моём холодильнике много еды.","group":"work-routines"},
+      {"id":"l13-05","uniqueKey":"take a break","en":"take a break","ru":"сделать перерыв","transcription":"/ˌteɪk ə ˈbreɪk/","exampleEn":"I love taking a break from work.","exampleRu":"Я люблю делать перерыв в работе.","group":"work-routines"},
+      {"id":"l13-06","uniqueKey":"short story","en":"short story","ru":"короткий рассказ","transcription":"/ˌʃɔːt ˈstɔːri/","exampleEn":"I enjoy writing short stories.","exampleRu":"Мне нравится писать короткие рассказы.","group":"activities"},
+      {"id":"l13-07","uniqueKey":"blog","en":"blog","ru":"блог","transcription":"/blɒɡ/","exampleEn":"I write short stories on my blog.","exampleRu":"Я пишу короткие рассказы в своём блоге.","group":"activities"},
+      {"id":"l13-08","uniqueKey":"hospital","en":"hospital","ru":"больница","transcription":"/ˈhɒspɪtəl/","exampleEn":"I work in a hospital at night.","exampleRu":"Я работаю в больнице ночью.","group":"work-routines"},
+      {"id":"l13-09","uniqueKey":"at night","en":"at night","ru":"ночью","transcription":"/ət ˈnaɪt/","exampleEn":"I like shopping at night because it’s quiet.","exampleRu":"Мне нравится ходить за покупками ночью, потому что тихо.","group":"work-routines"},
+      {"id":"l13-10","uniqueKey":"get home","en":"get home","ru":"добраться домой; прийти домой","transcription":"/ɡet həʊm/","exampleEn":"When I get home, I’m tired.","exampleRu":"Когда я прихожу домой, я устаю.","group":"work-routines"},
+      {"id":"l13-11","uniqueKey":"play in a band","en":"play in a band","ru":"играть в музыкальной группе","transcription":"/ˌpleɪ ɪn ə ˈbænd/","exampleEn":"At the weekend, I play in a band.","exampleRu":"По выходным я играю в музыкальной группе.","group":"activities"},
+      {"id":"l13-12","uniqueKey":"deep-fried","en":"deep-fried","ru":"жареный во фритюре","transcription":"/ˌdiːp ˈfraɪd/","exampleEn":"I’d like the deep-fried mushrooms.","exampleRu":"Я бы хотел жареные во фритюре грибы.","group":"restaurant-food"},
+      {"id":"l13-13","uniqueKey":"mushroom","en":"mushroom","ru":"гриб","transcription":"/ˈmʌʃruːm/","exampleEn":"I’d like the deep-fried mushrooms.","exampleRu":"Я бы хотел жареные во фритюре грибы.","group":"restaurant-food"},
+      {"id":"l13-14","uniqueKey":"green salad","en":"green salad","ru":"зелёный салат","transcription":"/ˌɡriːn ˈsæləd/","exampleEn":"I’d like a burger with a green salad.","exampleRu":"Я бы хотел бургер с зелёным салатом.","group":"restaurant-food"},
+      {"id":"l13-15","uniqueKey":"chocolate cake","en":"chocolate cake","ru":"шоколадный торт","transcription":"/ˌtʃɒklət ˈkeɪk/","exampleEn":"It’s a chocolate cake.","exampleRu":"Это шоколадный торт.","group":"restaurant-food"},
+      {"id":"l13-16","uniqueKey":"surprise","en":"surprise","ru":"сюрприз","transcription":"/səˈpraɪz/","exampleEn":"Surprise! Happy Birthday!","exampleRu":"Сюрприз! С днём рождения!","group":"restaurant-food"}
+    ],
+    "groups": [
+      {"id":"work-routines","title":"Work and routines","subtitle":"Работа и повседневные действия","icon":"🗓️"},
+      {"id":"home-food","title":"Home and food","subtitle":"Дом и еда","icon":"🏠"},
+      {"id":"activities","title":"Activities","subtitle":"Занятия и интересы","icon":"🎸"},
+      {"id":"restaurant-food","title":"Restaurant food","subtitle":"Еда и ресторан","icon":"🍽️"}
+    ]
+  }
 ];
