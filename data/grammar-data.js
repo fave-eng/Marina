@@ -2376,5 +2376,641 @@ window.GRAMMAR_DATA = [
         ]
       }
     ]
+  },
+  {
+    "id": "grammar-lesson-17-have-got",
+    "order": 6,
+    "title": "Have got",
+    "level": "A2.2",
+    "status": "available",
+    "linkedLessonId": "lesson-17",
+    "page": "grammar-topic.html?id=grammar-lesson-17-have-got",
+    "passScore": 100,
+    "showCorrectAnswerOnError": false,
+    "intro": {
+      "lead": "Have got — очень частый способ сказать, что у человека или предмета что-то есть, а также описать отношения, признаки и некоторые состояния. По смыслу в настоящем времени have got обычно равно have, но вопрос и отрицание строятся по другой модели.",
+      "anchor": "Сначала определи смысл: речь о наличии / принадлежности / состоянии сейчас? Тогда have got возможно. Затем выбери have или has по подлежащему.",
+      "example": {
+        "en": "I’ve got a new laptop.",
+        "ru": "У меня есть новый ноутбук.",
+        "highlights": [
+          "’ve got"
+        ]
+      }
+    },
+    "chapters": [
+      {
+        "kicker": "Значение",
+        "title": "Have got говорит о том, что есть у человека или предмета сейчас",
+        "intro": "В этой конструкции got не делает предложение прошедшим. Всё сочетание have got / has got относится к настоящему времени.",
+        "blocks": [
+          {
+            "type": "examples",
+            "items": [
+              {
+                "en": "We’ve got a small garden.",
+                "ru": "У нас есть небольшой сад.",
+                "highlights": [
+                  "’ve got"
+                ]
+              },
+              {
+                "en": "She’s got two brothers.",
+                "ru": "У неё есть два брата.",
+                "highlights": [
+                  "’s got"
+                ]
+              },
+              {
+                "en": "The house has got three bedrooms.",
+                "ru": "В доме три спальни.",
+                "highlights": [
+                  "has got"
+                ]
+              },
+              {
+                "en": "I’ve got a headache.",
+                "ru": "У меня болит голова.",
+                "highlights": [
+                  "’ve got"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "note",
+            "variant": "contrast",
+            "title": "Это настоящее время",
+            "text": "I’ve got a car = У меня есть машина сейчас. Не переводи got отдельно как «получил». В have got слова работают как одна грамматическая конструкция."
+          }
+        ]
+      },
+      {
+        "kicker": "Утверждение",
+        "title": "Have got или has got: форма зависит только от подлежащего",
+        "blocks": [
+          {
+            "type": "table",
+            "headers": [
+              "Подлежащее",
+              "Полная форма",
+              "Обычное сокращение",
+              "Перевод"
+            ],
+            "rows": [
+              [
+                "I",
+                "I have got",
+                "I’ve got",
+                "у меня есть"
+              ],
+              [
+                "you",
+                "you have got",
+                "you’ve got",
+                "у тебя / вас есть"
+              ],
+              [
+                "we",
+                "we have got",
+                "we’ve got",
+                "у нас есть"
+              ],
+              [
+                "they",
+                "they have got",
+                "they’ve got",
+                "у них есть"
+              ],
+              [
+                "he",
+                "he has got",
+                "he’s got",
+                "у него есть"
+              ],
+              [
+                "she",
+                "she has got",
+                "she’s got",
+                "у неё есть"
+              ],
+              [
+                "it",
+                "it has got",
+                "it’s got",
+                "у него / неё (о предмете, животном) есть"
+              ]
+            ],
+            "highlights": [
+              "have got",
+              "has got",
+              "’ve got",
+              "’s got"
+            ]
+          },
+          {
+            "type": "note",
+            "variant": "warning",
+            "title": "Не забывай has с he / she / it",
+            "text": "Нельзя: She have got. Правильно: She has got / She’s got."
+          }
+        ]
+      },
+      {
+        "kicker": "Отрицание и вопрос",
+        "title": "Do/does здесь не нужны: меняется сама форма have / has",
+        "blocks": [
+          {
+            "type": "table",
+            "headers": [
+              "Функция",
+              "I / you / we / they",
+              "he / she / it"
+            ],
+            "rows": [
+              [
+                "Утверждение",
+                "have got",
+                "has got"
+              ],
+              [
+                "Отрицание",
+                "haven’t got",
+                "hasn’t got"
+              ],
+              [
+                "Вопрос",
+                "Have ... got?",
+                "Has ... got?"
+              ],
+              [
+                "Короткий ответ +",
+                "Yes, ... have.",
+                "Yes, ... has."
+              ],
+              [
+                "Короткий ответ −",
+                "No, ... haven’t.",
+                "No, ... hasn’t."
+              ]
+            ],
+            "highlights": [
+              "haven’t got",
+              "hasn’t got",
+              "Have",
+              "Has",
+              "have",
+              "has"
+            ]
+          },
+          {
+            "type": "examples",
+            "items": [
+              {
+                "en": "Have you got a laptop? — Yes, I have.",
+                "ru": "У тебя есть ноутбук? — Да.",
+                "highlights": [
+                  "Have",
+                  "got",
+                  "have"
+                ]
+              },
+              {
+                "en": "Has Kenji got any children? — No, he hasn’t.",
+                "ru": "У Кэндзи есть дети? — Нет.",
+                "highlights": [
+                  "Has",
+                  "got",
+                  "hasn’t"
+                ]
+              },
+              {
+                "en": "We haven’t got any coffee.",
+                "ru": "У нас нет кофе.",
+                "highlights": [
+                  "haven’t got"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "note",
+            "variant": "warning",
+            "title": "Короткий ответ не заканчивается на got",
+            "text": "Правильно: Yes, I have. / No, she hasn’t. Не нужно: Yes, I have got."
+          }
+        ]
+      },
+      {
+        "kicker": "Have got vs have",
+        "title": "По значению «иметь» они часто равны, но грамматика вопросов разная",
+        "intro": "В британском английском have got особенно типично для наличия и принадлежности. Обычное have также правильно. В американском английском have часто встречается чаще.",
+        "blocks": [
+          {
+            "type": "compare",
+            "columns": [
+              {
+                "title": "have got",
+                "lead": "наличие / принадлежность сейчас",
+                "lines": [
+                  "I’ve got a car.",
+                  "Have you got a car?",
+                  "I haven’t got a car."
+                ],
+                "example": {
+                  "en": "She’s got a new phone.",
+                  "ru": "У неё есть новый телефон.",
+                  "highlights": [
+                    "’s got"
+                  ]
+                }
+              },
+              {
+                "title": "have",
+                "lead": "то же значение, но Present Simple",
+                "lines": [
+                  "I have a car.",
+                  "Do you have a car?",
+                  "I don’t have a car."
+                ],
+                "example": {
+                  "en": "She has a new phone.",
+                  "ru": "У неё есть новый телефон.",
+                  "highlights": [
+                    "has"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "type": "note",
+            "variant": "contrast",
+            "title": "С действиями обычно нужен обычный have",
+            "text": "Have breakfast, have a shower, have a class, have a good time — это действия / события. Здесь строим Present Simple: I have breakfast at 8. Do you have breakfast at home? Фраза I’ve got breakfast означает скорее «у меня есть завтрак / завтрак имеется», а не «я завтракаю»."
+          }
+        ]
+      },
+      {
+        "kicker": "Сокращения",
+        "title": "I’ve got и she’s got нужно читать как единый грамматический блок",
+        "blocks": [
+          {
+            "type": "table",
+            "headers": [
+              "Форма",
+              "Что означает",
+              "Пример"
+            ],
+            "rows": [
+              [
+                "I’ve got",
+                "I have got",
+                "I’ve got time."
+              ],
+              [
+                "she’s got",
+                "she has got",
+                "She’s got a car."
+              ],
+              [
+                "haven’t got",
+                "have not got",
+                "We haven’t got milk."
+              ],
+              [
+                "hasn’t got",
+                "has not got",
+                "He hasn’t got a laptop."
+              ]
+            ],
+            "highlights": [
+              "I’ve got",
+              "she’s got",
+              "haven’t got",
+              "hasn’t got"
+            ]
+          },
+          {
+            "type": "note",
+            "variant": "contrast",
+            "title": "’s может быть is или has",
+            "text": "She’s tired = She is tired. She’s got a car = She has got a car. Слово got сразу показывает, что ’s здесь означает has."
+          }
+        ]
+      },
+      {
+        "kicker": "Алгоритм",
+        "title": "Как быстро построить предложение",
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              {
+                "title": "1. Определи подлежащее",
+                "text": "I/you/we/they → have; he/she/it → has."
+              },
+              {
+                "title": "2. Выбери тип предложения",
+                "text": "Утверждение: have/has got. Отрицание: haven’t/hasn’t got. Вопрос: Have/Has + subject + got?"
+              },
+              {
+                "title": "3. Для короткого ответа убери got",
+                "text": "Have you got ...? — Yes, I have. / No, I haven’t."
+              },
+              {
+                "title": "4. Проверь смысл have",
+                "text": "Если have означает действие (have breakfast, have a shower), используй обычный Present Simple с do/does."
+              }
+            ]
+          },
+          {
+            "type": "mistakes",
+            "items": [
+              {
+                "wrong": "Does she have got a car?",
+                "right": "Has she got a car? / Does she have a car?",
+                "reason": "Нельзя смешивать две модели вопроса."
+              },
+              {
+                "wrong": "He haven’t got a laptop.",
+                "right": "He hasn’t got a laptop.",
+                "reason": "С he/she/it используется has / hasn’t."
+              },
+              {
+                "wrong": "Have got you any money?",
+                "right": "Have you got any money?",
+                "reason": "В вопросе подлежащее стоит между Have и got."
+              },
+              {
+                "wrong": "Yes, I’ve.",
+                "right": "Yes, I have.",
+                "reason": "В коротком ответе have/has не сокращаются таким способом."
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "quizExercises": [
+      {
+        "id": "have-got-basic",
+        "title": "1. Выбери правильную форму",
+        "instructions": "Choose the correct answer.",
+        "items": [
+          {
+            "type": "single",
+            "skill": "form",
+            "prompt": "I ___ a new laptop.",
+            "options": [
+              "have got",
+              "has got",
+              "haven’t got"
+            ],
+            "answer": 0,
+            "explanation": "Проверь форму с I."
+          },
+          {
+            "type": "single",
+            "skill": "form",
+            "prompt": "She ___ two brothers.",
+            "options": [
+              "have got",
+              "has got",
+              "haven’t got"
+            ],
+            "answer": 1,
+            "explanation": "Проверь форму с she."
+          },
+          {
+            "type": "single",
+            "skill": "negative",
+            "prompt": "We ___ any coffee.",
+            "options": [
+              "haven’t got",
+              "hasn’t got",
+              "don’t got"
+            ],
+            "answer": 0,
+            "explanation": "Проверь отрицание с we."
+          },
+          {
+            "type": "single",
+            "skill": "question",
+            "prompt": "___ he got a car?",
+            "options": [
+              "Have",
+              "Has",
+              "Does"
+            ],
+            "answer": 1,
+            "explanation": "Вопрос have got не требует does."
+          }
+        ]
+      },
+      {
+        "id": "have-got-complete",
+        "title": "2. Впиши правильную форму",
+        "instructions": "Complete each sentence with a form of have got.",
+        "items": [
+          {
+            "type": "text",
+            "skill": "affirmative",
+            "prompt": "They ___ a new flat.",
+            "answer": "have got",
+            "acceptedAnswers": [
+              "have got",
+              "'ve got",
+              "’ve got"
+            ],
+            "placeholder": "have got / ...",
+            "explanation": "Есть ошибка. Проверь подлежащее they."
+          },
+          {
+            "type": "text",
+            "skill": "affirmative",
+            "prompt": "My sister ___ a bike.",
+            "answer": "has got",
+            "acceptedAnswers": [
+              "has got",
+              "'s got",
+              "’s got"
+            ],
+            "placeholder": "has got / ...",
+            "explanation": "Есть ошибка. Проверь форму с my sister."
+          },
+          {
+            "type": "text",
+            "skill": "negative",
+            "prompt": "I ___ much time today.",
+            "answer": "haven’t got",
+            "acceptedAnswers": [
+              "haven't got",
+              "haven’t got",
+              "have not got"
+            ],
+            "placeholder": "negative form",
+            "explanation": "Есть ошибка. Нужна отрицательная форма с I."
+          },
+          {
+            "type": "text",
+            "skill": "question",
+            "prompt": "___ a lot of homework?",
+            "answer": "Have you got",
+            "acceptedAnswers": [
+              "Have you got",
+              "have you got"
+            ],
+            "placeholder": "question form",
+            "explanation": "Есть ошибка. Вспомни порядок Have + subject + got."
+          }
+        ]
+      },
+      {
+        "id": "have-got-correction",
+        "title": "3. Исправь одну ошибку",
+        "instructions": "Write the complete corrected sentence.",
+        "items": [
+          {
+            "type": "text",
+            "skill": "correction",
+            "prompt": "Do you have got a laptop?",
+            "answer": "Have you got a laptop?",
+            "acceptedAnswers": [
+              "Have you got a laptop?",
+              "Have you got a laptop"
+            ],
+            "placeholder": "Correct the sentence",
+            "explanation": "Есть ошибка. Не смешивай Do you have...? и Have you got...?"
+          },
+          {
+            "type": "text",
+            "skill": "correction",
+            "prompt": "She haven’t got a car.",
+            "answer": "She hasn’t got a car.",
+            "acceptedAnswers": [
+              "She hasn't got a car.",
+              "She hasn't got a car",
+              "She hasn’t got a car.",
+              "She hasn’t got a car"
+            ],
+            "placeholder": "Correct the sentence",
+            "explanation": "Есть ошибка. Проверь форму с she."
+          },
+          {
+            "type": "text",
+            "skill": "correction",
+            "prompt": "Has they got any children?",
+            "answer": "Have they got any children?",
+            "acceptedAnswers": [
+              "Have they got any children?",
+              "Have they got any children"
+            ],
+            "placeholder": "Correct the sentence",
+            "explanation": "Есть ошибка. Проверь форму с they."
+          },
+          {
+            "type": "text",
+            "skill": "short answer",
+            "prompt": "Have you got a car? — Yes, I’ve.",
+            "answer": "Have you got a car? — Yes, I have.",
+            "acceptedAnswers": [
+              "Have you got a car? — Yes, I have.",
+              "Have you got a car? - Yes, I have.",
+              "Yes, I have.",
+              "Yes, I have"
+            ],
+            "placeholder": "Correct the short answer",
+            "explanation": "Есть ошибка. В коротком ответе нужна форма have без got."
+          }
+        ]
+      },
+      {
+        "id": "have-got-build",
+        "title": "4. Собери предложение или вопрос",
+        "instructions": "Put the words in the correct order and write the complete sentence or question.",
+        "items": [
+          {
+            "type": "reorder",
+            "skill": "word order",
+            "prompt": "you / Have / got / a / new / phone ?",
+            "tokens": [
+              "Have",
+              "you",
+              "got",
+              "a",
+              "new",
+              "phone"
+            ],
+            "answer": "Have you got a new phone?",
+            "acceptedAnswers": [
+              "Have you got a new phone?",
+              "Have you got a new phone"
+            ],
+            "placeholder": "Write the question",
+            "explanation": "Есть ошибка. Проверь порядок Have + you + got."
+          },
+          {
+            "type": "reorder",
+            "skill": "word order",
+            "prompt": "got / hasn’t / He / any / money .",
+            "tokens": [
+              "He",
+              "hasn’t",
+              "got",
+              "any",
+              "money"
+            ],
+            "answer": "He hasn’t got any money.",
+            "acceptedAnswers": [
+              "He hasn't got any money.",
+              "He hasn't got any money",
+              "He hasn’t got any money.",
+              "He hasn’t got any money"
+            ],
+            "placeholder": "Write the sentence",
+            "explanation": "Есть ошибка. Проверь порядок слов в отрицании."
+          },
+          {
+            "type": "reorder",
+            "skill": "word order",
+            "prompt": "many / children / they / Have / got ?",
+            "tokens": [
+              "Have",
+              "they",
+              "got",
+              "many",
+              "children"
+            ],
+            "answer": "Have they got many children?",
+            "acceptedAnswers": [
+              "Have they got many children?",
+              "Have they got many children"
+            ],
+            "placeholder": "Write the question",
+            "explanation": "Есть ошибка. Проверь порядок слов в вопросе."
+          },
+          {
+            "type": "reorder",
+            "skill": "short answer",
+            "prompt": "yes / has / she .",
+            "tokens": [
+              "Yes",
+              "she",
+              "has"
+            ],
+            "answer": "Yes, she has.",
+            "acceptedAnswers": [
+              "Yes, she has.",
+              "Yes, she has",
+              "Yes she has.",
+              "Yes she has"
+            ],
+            "placeholder": "Write the short answer",
+            "explanation": "Есть ошибка. Короткий ответ заканчивается на has, без got."
+          }
+        ]
+      }
+    ]
   }
 ];

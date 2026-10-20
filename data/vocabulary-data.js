@@ -3631,5 +3631,197 @@ window.VOCABULARY_DATA = [
         "group": "travel"
       }
     ]
+  },
+  {
+    "id": "vocab-lesson-17-common-adjectives",
+    "title": "Common adjectives (1)",
+    "label": "Lesson 17 · 18 new words and phrases",
+    "icon": "↔️",
+    "type": "lesson",
+    "linkedLessonId": "lesson-17",
+    "page": "vocabulary.html?id=vocab-lesson-17-common-adjectives",
+    "description": "Новая лексика Lesson 3B: распространённые прилагательные, описания пространства и полезные слова из reading.",
+    "words": [
+      {
+        "id": "l17-01",
+        "uniqueKey": "loud",
+        "en": "loud",
+        "ru": "громкий",
+        "transcription": "/laʊd/",
+        "exampleEn": "The noise from the street is very loud.",
+        "exampleRu": "Шум с улицы очень громкий.",
+        "group": "adjectives"
+      },
+      {
+        "id": "l17-02",
+        "uniqueKey": "large",
+        "en": "large",
+        "ru": "большой; крупный",
+        "transcription": "/lɑːdʒ/",
+        "exampleEn": "This book is very large.",
+        "exampleRu": "Эта книга очень большая.",
+        "group": "adjectives"
+      },
+      {
+        "id": "l17-03",
+        "uniqueKey": "small",
+        "en": "small",
+        "ru": "маленький",
+        "transcription": "/smɔːl/",
+        "exampleEn": "Dark colours can make a room feel small.",
+        "exampleRu": "Тёмные цвета могут зрительно уменьшать комнату.",
+        "group": "adjectives"
+      },
+      {
+        "id": "l17-04",
+        "uniqueKey": "easy",
+        "en": "easy",
+        "ru": "лёгкий; простой",
+        "transcription": "/ˈiːzi/",
+        "exampleEn": "It’s easy to cook pasta.",
+        "exampleRu": "Пасту легко приготовить.",
+        "group": "adjectives"
+      },
+      {
+        "id": "l17-05",
+        "uniqueKey": "difficult",
+        "en": "difficult",
+        "ru": "трудный; сложный",
+        "transcription": "/ˈdɪfɪkəlt/",
+        "exampleEn": "This exercise is difficult.",
+        "exampleRu": "Это упражнение сложное.",
+        "group": "adjectives"
+      },
+      {
+        "id": "l17-06",
+        "uniqueKey": "hard",
+        "en": "hard",
+        "ru": "твёрдый; трудный",
+        "transcription": "/hɑːd/",
+        "exampleEn": "The chair is hard.",
+        "exampleRu": "Стул твёрдый.",
+        "group": "adjectives"
+      },
+      {
+        "id": "l17-07",
+        "uniqueKey": "soft",
+        "en": "soft",
+        "ru": "мягкий",
+        "transcription": "/sɒft/",
+        "exampleEn": "I love this soft armchair.",
+        "exampleRu": "Мне нравится это мягкое кресло.",
+        "group": "adjectives"
+      },
+      {
+        "id": "l17-08",
+        "uniqueKey": "short",
+        "en": "short",
+        "ru": "короткий",
+        "transcription": "/ʃɔːt/",
+        "exampleEn": "The table is short.",
+        "exampleRu": "Стол короткий / невысокий.",
+        "group": "adjectives"
+      },
+      {
+        "id": "l17-09",
+        "uniqueKey": "long",
+        "en": "long",
+        "ru": "длинный; долгий",
+        "transcription": "/lɒŋ/",
+        "exampleEn": "It takes a long time to clean the house.",
+        "exampleRu": "Уборка дома занимает много времени.",
+        "group": "adjectives"
+      },
+      {
+        "id": "l17-10",
+        "uniqueKey": "the same",
+        "en": "the same",
+        "ru": "одинаковый; тот же самый",
+        "transcription": "/ðə ˈseɪm/",
+        "exampleEn": "The two rooms look the same.",
+        "exampleRu": "Эти две комнаты выглядят одинаково.",
+        "group": "adjectives"
+      },
+      {
+        "id": "l17-11",
+        "uniqueKey": "quiet",
+        "en": "quiet",
+        "ru": "тихий",
+        "transcription": "/ˈkwaɪət/",
+        "exampleEn": "Be quiet! I can’t hear the radio.",
+        "exampleRu": "Тише! Я не слышу радио.",
+        "group": "adjectives"
+      },
+      {
+        "id": "l17-12",
+        "uniqueKey": "living space",
+        "en": "living space",
+        "ru": "жилое пространство",
+        "transcription": "/ˈlɪvɪŋ speɪs/",
+        "exampleEn": "The article gives advice about creating a perfect living space.",
+        "exampleRu": "В статье даются советы по созданию идеального жилого пространства.",
+        "group": "home-reading"
+      },
+      {
+        "id": "l17-13",
+        "uniqueKey": "furniture",
+        "en": "furniture",
+        "ru": "мебель",
+        "transcription": "/ˈfɜːnɪtʃə/",
+        "exampleEn": "Keep furniture away from the walls.",
+        "exampleRu": "Не ставьте мебель вплотную к стенам.",
+        "group": "home-reading"
+      },
+      {
+        "id": "l17-14",
+        "uniqueKey": "wall",
+        "en": "wall",
+        "ru": "стена",
+        "transcription": "/wɔːl/",
+        "exampleEn": "Leave a little space between the sofa and the wall.",
+        "exampleRu": "Оставьте немного места между диваном и стеной.",
+        "group": "home-reading"
+      },
+      {
+        "id": "l17-15",
+        "uniqueKey": "position",
+        "en": "position",
+        "ru": "положение; место расположения",
+        "transcription": "/pəˈzɪʃən/",
+        "exampleEn": "Find the perfect position for the furniture.",
+        "exampleRu": "Найдите идеальное место для мебели.",
+        "group": "home-reading"
+      },
+      {
+        "id": "l17-16",
+        "uniqueKey": "make a big difference",
+        "en": "make a big difference",
+        "ru": "сильно влиять; иметь большое значение",
+        "transcription": "/ˌmeɪk ə bɪɡ ˈdɪfrəns/",
+        "exampleEn": "Where you put your furniture makes a big difference.",
+        "exampleRu": "То, где вы ставите мебель, сильно влияет на результат.",
+        "group": "home-reading"
+      },
+      {
+        "id": "l17-17",
+        "uniqueKey": "social media account",
+        "en": "social media account",
+        "ru": "аккаунт в социальной сети",
+        "transcription": "/ˌsəʊʃəl ˈmiːdiə əˌkaʊnt/",
+        "exampleEn": "My sister hasn’t got any social media accounts.",
+        "exampleRu": "У моей сестры нет аккаунтов в социальных сетях.",
+        "group": "grammar-context"
+      },
+      {
+        "id": "l17-18",
+        "uniqueKey": "party lights",
+        "en": "party lights",
+        "ru": "гирлянды / праздничные огни",
+        "transcription": "/ˈpɑːti laɪts/",
+        "exampleEn": "Have you got those party lights from last year?",
+        "exampleRu": "У тебя остались те праздничные огни с прошлого года?",
+        "group": "grammar-context"
+      }
+    ]
   }
 ];

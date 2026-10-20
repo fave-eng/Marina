@@ -1,0 +1,656 @@
+{
+  "id": "lesson-17",
+  "number": 17,
+  "title": "Common adjectives · have got · Reading",
+  "subtitle": "Speakout · Unit 3 · Lesson 3B: Vocabulary, Grammar and Reading",
+  "status": "available",
+  "page": "lesson.html?id=lesson-17",
+  "vocabularyId": "vocab-lesson-17-common-adjectives",
+  "grammarIds": [
+    "grammar-lesson-17-have-got"
+  ],
+  "publishedAt": "2026-10-21",
+  "totalPoints": 45,
+  "notification": {
+    "enabled": true,
+    "version": 1
+  },
+  "blocks": [
+    {
+      "type": "section",
+      "eyebrow": "Lesson 3B · Vocabulary",
+      "title": "COMMON ADJECTIVES (1)",
+      "text": "Adjectives and opposites from Lesson 3B."
+    },
+    {
+      "type": "exercise",
+      "id": "l17-vocab-1a",
+      "title": "1A. Write a word to fill the gaps.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "table",
+          "number": "",
+          "prompt": "",
+          "input": "gaps",
+          "wideGaps": true,
+          "segments": [
+            "adjective | opposite\nquiet | loud\n1 ",
+            " | the same\nsmall | 2 ",
+            "\neasy | 3 ",
+            "\n4 ",
+            " | short\n5 ",
+            " | soft"
+          ],
+          "answers": [
+            "different",
+            [
+              "large",
+              "big"
+            ],
+            [
+              "difficult",
+              "hard"
+            ],
+            "long",
+            "hard"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l17-vocab-1c",
+      "title": "1C. Complete the sentences with adjectives from Ex 1A.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "1",
+          "number": 1,
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "I love this ",
+            " armchair. It’s really comfortable."
+          ],
+          "answers": [
+            "soft"
+          ]
+        },
+        {
+          "id": "2",
+          "number": 2,
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "This exercise is ",
+            ", I don’t think I can do it."
+          ],
+          "answers": [
+            [
+              "difficult",
+              "hard"
+            ]
+          ]
+        },
+        {
+          "id": "3",
+          "number": 3,
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "Shh, be ",
+            "! I can’t hear the radio."
+          ],
+          "answers": [
+            "quiet"
+          ]
+        },
+        {
+          "id": "4",
+          "number": 4,
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "This book is very ",
+            ". There’s no space for it in my bag."
+          ],
+          "answers": [
+            [
+              "large",
+              "big"
+            ]
+          ]
+        },
+        {
+          "id": "5",
+          "number": 5,
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "Those cars look the ",
+            ", but they’re actually ",
+            "."
+          ],
+          "answers": [
+            "same",
+            "different"
+          ]
+        },
+        {
+          "id": "6",
+          "number": 6,
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "It’s a big house and it takes a ",
+            " time to clean all the rooms."
+          ],
+          "answers": [
+            "long"
+          ]
+        },
+        {
+          "id": "7",
+          "number": 7,
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "I like our house, but the noise from the street is very ",
+            "."
+          ],
+          "answers": [
+            "loud"
+          ]
+        },
+        {
+          "id": "8",
+          "number": 8,
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "It’s ",
+            " to cook pasta. All you need is hot water and salt."
+          ],
+          "answers": [
+            "easy"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "eyebrow": "Lesson 3B · Grammar",
+      "title": "HAVE GOT",
+      "text": "Possession and present states with have got."
+    },
+    {
+      "type": "grammar-link",
+      "grammarId": "grammar-lesson-17-have-got",
+      "title": "Have got",
+      "text": "Сначала открой новую тему: формы have got / has got, отрицания, вопросы, короткие ответы и отличие have got от have.",
+      "buttonLabel": "Открыть грамматику"
+    },
+    {
+      "type": "exercise",
+      "id": "l17-grammar-2a",
+      "title": "2A. The sentences below have a mistake. Choose the best option to correct the mistake.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "1",
+          "prompt": "My sister haven’t got any social media accounts.",
+          "input": "single",
+          "options": [
+            "a  have",
+            "b  ’ve",
+            "c  hasn’t"
+          ],
+          "answer": 2
+        },
+        {
+          "id": "2",
+          "prompt": "You have got a large house?",
+          "input": "single",
+          "options": [
+            "a  Have got",
+            "b  Have you got",
+            "c  Got you have"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "3",
+          "prompt": "Yes, we got.",
+          "input": "single",
+          "options": [
+            "a  we do",
+            "b  we have",
+            "c  we’ve"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "4",
+          "prompt": "They has got a new coffee machine.",
+          "input": "single",
+          "options": [
+            "a  have",
+            "b  hasn’t",
+            "c  having"
+          ],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l17-grammar-2b",
+      "title": "2B. Complete the sentences with the correct form of have got. Use contractions where possible.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "1",
+          "number": 1,
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "They ",
+            " a new car. It looks really nice."
+          ],
+          "answers": [
+            [
+              "’ve got",
+              "'ve got",
+              "have got"
+            ]
+          ]
+        },
+        {
+          "id": "2",
+          "number": 2,
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "Octavio ",
+            ", but he’d like one."
+          ],
+          "answers": [
+            [
+              "hasn’t got",
+              "hasn't got",
+              "has not got"
+            ]
+          ]
+        },
+        {
+          "id": "3",
+          "number": 3,
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "My brother ",
+            " my keys and I need them!"
+          ],
+          "answers": [
+            [
+              "’s got",
+              "'s got",
+              "has got"
+            ]
+          ]
+        },
+        {
+          "id": "4",
+          "number": 4,
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "Why ",
+            " a plant in your bag?"
+          ],
+          "answers": [
+            [
+              "have you got"
+            ]
+          ]
+        },
+        {
+          "id": "5",
+          "number": 5,
+          "prompt": "",
+          "input": "gaps",
+          "layout": "dialogue",
+          "segments": [
+            "A: ",
+            " Kenji got any children?\nB: No, he ",
+            "."
+          ],
+          "answers": [
+            [
+              "Has",
+              "has"
+            ],
+            [
+              "hasn’t",
+              "hasn't",
+              "has not"
+            ]
+          ]
+        },
+        {
+          "id": "6",
+          "number": 6,
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "Tanya ",
+            " a large house with five bedrooms."
+          ],
+          "answers": [
+            [
+              "’s got",
+              "'s got",
+              "has got"
+            ]
+          ]
+        },
+        {
+          "id": "7",
+          "number": 7,
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "We ",
+            " any coffee. Can you buy some?"
+          ],
+          "answers": [
+            [
+              "haven’t got",
+              "haven't got",
+              "have not got"
+            ]
+          ]
+        },
+        {
+          "id": "8",
+          "number": 8,
+          "prompt": "",
+          "input": "gaps",
+          "layout": "dialogue",
+          "segments": [
+            "A: ",
+            " you got a new laptop?\nB: Yes, I ",
+            ". Do you like it?"
+          ],
+          "answers": [
+            [
+              "Have",
+              "have"
+            ],
+            [
+              "have"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l17-grammar-2c",
+      "title": "2C. Put the words in brackets in the correct order.",
+      "autosaveDraft": true,
+      "dialogue": [
+        "Jo: What can we get Ben for his birthday?",
+        "1 ______ (everything / got / he / has) he needs!",
+        "Martin: I know, but 2 ______ (got / haven’t / I / lot / money / of / a) at the moment ...",
+        "Jo: So let’s think of a cheap present. 3 ______ (a / has / lamp / got / he) for his home office?",
+        "Martin: 4 ______ (has / yes, / he).",
+        "Jo: I know! Let’s have a party for him!",
+        "Martin: Great idea! 5 ______ (party / have / those / you / got / lights) from last year?",
+        "Jo: 6 ______ (have / yes, / I)!",
+        "Martin: Brilliant! We can put them in my garden."
+      ],
+      "items": [
+        {
+          "id": "1",
+          "prompt": "everything / got / he / has",
+          "input": "text",
+          "answer": "He has got everything",
+          "acceptedAnswers": [
+            "He has got everything",
+            "He’s got everything",
+            "He's got everything"
+          ]
+        },
+        {
+          "id": "2",
+          "prompt": "got / haven’t / I / lot / money / of / a",
+          "input": "text",
+          "answer": "I haven’t got a lot of money",
+          "acceptedAnswers": [
+            "I haven’t got a lot of money",
+            "I haven't got a lot of money"
+          ]
+        },
+        {
+          "id": "3",
+          "prompt": "a / has / lamp / got / he",
+          "input": "text",
+          "answer": "Has he got a lamp",
+          "acceptedAnswers": [
+            "Has he got a lamp",
+            "Has he got a lamp?"
+          ]
+        },
+        {
+          "id": "4",
+          "prompt": "has / yes, / he",
+          "input": "text",
+          "answer": "Yes, he has",
+          "acceptedAnswers": [
+            "Yes, he has",
+            "Yes he has"
+          ]
+        },
+        {
+          "id": "5",
+          "prompt": "party / have / those / you / got / lights",
+          "input": "text",
+          "answer": "Have you got those party lights",
+          "acceptedAnswers": [
+            "Have you got those party lights",
+            "Have you got those party lights?"
+          ]
+        },
+        {
+          "id": "6",
+          "prompt": "have / yes, / I",
+          "input": "text",
+          "answer": "Yes, I have",
+          "acceptedAnswers": [
+            "Yes, I have",
+            "Yes I have"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "eyebrow": "Lesson 3B · Reading",
+      "title": "FIVE WAYS TO CREATE A PERFECT LIVING SPACE",
+      "text": "Read the article, then complete the two comprehension exercises."
+    },
+    {
+      "type": "reading",
+      "id": "l17-reading-article",
+      "title": "Five ways to create a perfect living space",
+      "text": "From small rooms to large rooms, where you put your furniture makes a big difference. Read our advice and learn how to make your home a great space to live in.\n\n1 ______\nBefore you choose where to put things, decide what you want to look at. For example, in the living room this could be the TV. In your home office, it’s nice to be near a window so you can look out when you don’t want to have a break from work.\n\n2 ______\nSpace is important. If you leave a little space between a sofa or a desk and the wall, the room will feel large and relaxed.\n\n3 ______\nIs it easy to move in the rooms? People usually need to walk through a living room to get to the kitchen, for example. In the bedroom, make space around the bed for you to get in and out in the morning or late at night.\n\n4 ______\nLight changes a room a lot. The colour white makes a room feel big, but can be a bit boring and make everything look the same. Dark colours can make a room feel small, so soft colours like blue and green are a good idea.\n\n5 ______\nChange things around sometimes. Move a plant, or put a table close to a window. Remember that no space is the same, so you can only find the perfect position for furniture if you try lots of different places."
+    },
+    {
+      "type": "exercise",
+      "id": "l17-reading-4b",
+      "title": "4B. Complete the article with the paragraph titles (a–e).",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "1",
+          "prompt": "1",
+          "input": "select",
+          "options": [
+            "a  How do you ‘travel’ around the house?",
+            "b  What do you want to see?",
+            "c  Keep furniture away from the walls.",
+            "d  Colour can change a room.",
+            "e  Try new things."
+          ],
+          "answer": 1
+        },
+        {
+          "id": "2",
+          "prompt": "2",
+          "input": "select",
+          "options": [
+            "a  How do you ‘travel’ around the house?",
+            "b  What do you want to see?",
+            "c  Keep furniture away from the walls.",
+            "d  Colour can change a room.",
+            "e  Try new things."
+          ],
+          "answer": 2
+        },
+        {
+          "id": "3",
+          "prompt": "3",
+          "input": "select",
+          "options": [
+            "a  How do you ‘travel’ around the house?",
+            "b  What do you want to see?",
+            "c  Keep furniture away from the walls.",
+            "d  Colour can change a room.",
+            "e  Try new things."
+          ],
+          "answer": 0
+        },
+        {
+          "id": "4",
+          "prompt": "4",
+          "input": "select",
+          "options": [
+            "a  How do you ‘travel’ around the house?",
+            "b  What do you want to see?",
+            "c  Keep furniture away from the walls.",
+            "d  Colour can change a room.",
+            "e  Try new things."
+          ],
+          "answer": 3
+        },
+        {
+          "id": "5",
+          "prompt": "5",
+          "input": "select",
+          "options": [
+            "a  How do you ‘travel’ around the house?",
+            "b  What do you want to see?",
+            "c  Keep furniture away from the walls.",
+            "d  Colour can change a room.",
+            "e  Try new things."
+          ],
+          "answer": 4
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l17-reading-4c",
+      "title": "4C. Read the article again. Match the questions (1–6) with the answers (a–f).",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "1",
+          "prompt": "What’s the first thing to think about in a room?",
+          "input": "select",
+          "options": [
+            "a  It can help you get up in the morning.",
+            "b  To get to the kitchen.",
+            "c  White, because it makes the room feel big.",
+            "d  What you can see.",
+            "e  To find the right places for your furniture and other objects.",
+            "f  It helps you take a break and relax."
+          ],
+          "answer": 3
+        },
+        {
+          "id": "2",
+          "prompt": "Why is it good to be near a window when you work at home?",
+          "input": "select",
+          "options": [
+            "a  It can help you get up in the morning.",
+            "b  To get to the kitchen.",
+            "c  White, because it makes the room feel big.",
+            "d  What you can see.",
+            "e  To find the right places for your furniture and other objects.",
+            "f  It helps you take a break and relax."
+          ],
+          "answer": 5
+        },
+        {
+          "id": "3",
+          "prompt": "Why do people often need to walk through a living room?",
+          "input": "select",
+          "options": [
+            "a  It can help you get up in the morning.",
+            "b  To get to the kitchen.",
+            "c  White, because it makes the room feel big.",
+            "d  What you can see.",
+            "e  To find the right places for your furniture and other objects.",
+            "f  It helps you take a break and relax."
+          ],
+          "answer": 1
+        },
+        {
+          "id": "4",
+          "prompt": "Why is space important in a bedroom?",
+          "input": "select",
+          "options": [
+            "a  It can help you get up in the morning.",
+            "b  To get to the kitchen.",
+            "c  White, because it makes the room feel big.",
+            "d  What you can see.",
+            "e  To find the right places for your furniture and other objects.",
+            "f  It helps you take a break and relax."
+          ],
+          "answer": 0
+        },
+        {
+          "id": "5",
+          "prompt": "What colour should you paint a small room?",
+          "input": "select",
+          "options": [
+            "a  It can help you get up in the morning.",
+            "b  To get to the kitchen.",
+            "c  White, because it makes the room feel big.",
+            "d  What you can see.",
+            "e  To find the right places for your furniture and other objects.",
+            "f  It helps you take a break and relax."
+          ],
+          "answer": 2
+        },
+        {
+          "id": "6",
+          "prompt": "Why should you sometimes change things in a room?",
+          "input": "select",
+          "options": [
+            "a  It can help you get up in the morning.",
+            "b  To get to the kitchen.",
+            "c  White, because it makes the room feel big.",
+            "d  What you can see.",
+            "e  To find the right places for your furniture and other objects.",
+            "f  It helps you take a break and relax."
+          ],
+          "answer": 4
+        }
+      ]
+    }
+  ]
+}
