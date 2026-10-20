@@ -33,14 +33,33 @@
           "number": "",
           "prompt": "",
           "input": "gaps",
-          "wideGaps": true,
-          "segments": [
-            "adjective | opposite\nquiet | loud\n1 ",
-            " | the same\nsmall | 2 ",
-            "\neasy | 3 ",
-            "\n4 ",
-            " | short\n5 ",
-            " | soft"
+          "wideGaps": false,
+          "tableRows": [
+            {
+              "left": "quiet",
+              "right": "loud",
+              "example": true
+            },
+            {
+              "leftGap": 0,
+              "right": "the same"
+            },
+            {
+              "left": "small",
+              "rightGap": 1
+            },
+            {
+              "left": "easy",
+              "rightGap": 2
+            },
+            {
+              "leftGap": 3,
+              "right": "short"
+            },
+            {
+              "leftGap": 4,
+              "right": "soft"
+            }
           ],
           "answers": [
             "different",
@@ -400,78 +419,155 @@
       "id": "l17-grammar-2c",
       "title": "2C. Put the words in brackets in the correct order.",
       "autosaveDraft": true,
-      "dialogue": [
-        "Jo: What can we get Ben for his birthday?",
-        "1 ______ (everything / got / he / has) he needs!",
-        "Martin: I know, but 2 ______ (got / haven’t / I / lot / money / of / a) at the moment ...",
-        "Jo: So let’s think of a cheap present. 3 ______ (a / has / lamp / got / he) for his home office?",
-        "Martin: 4 ______ (has / yes, / he).",
-        "Jo: I know! Let’s have a party for him!",
-        "Martin: Great idea! 5 ______ (party / have / those / you / got / lights) from last year?",
-        "Jo: 6 ______ (have / yes, / I)!",
-        "Martin: Brilliant! We can put them in my garden."
-      ],
       "items": [
         {
           "id": "1",
           "prompt": "everything / got / he / has",
-          "input": "text",
+          "input": "word-order",
           "answer": "He has got everything",
           "acceptedAnswers": [
             "He has got everything",
             "He’s got everything",
             "He's got everything"
+          ],
+          "words": [
+            "everything",
+            "got",
+            "he",
+            "has"
           ]
         },
         {
           "id": "2",
           "prompt": "got / haven’t / I / lot / money / of / a",
-          "input": "text",
+          "input": "word-order",
           "answer": "I haven’t got a lot of money",
           "acceptedAnswers": [
             "I haven’t got a lot of money",
             "I haven't got a lot of money"
+          ],
+          "words": [
+            "got",
+            "haven’t",
+            "I",
+            "lot",
+            "money",
+            "of",
+            "a"
           ]
         },
         {
           "id": "3",
           "prompt": "a / has / lamp / got / he",
-          "input": "text",
+          "input": "word-order",
           "answer": "Has he got a lamp",
           "acceptedAnswers": [
             "Has he got a lamp",
             "Has he got a lamp?"
+          ],
+          "words": [
+            "a",
+            "has",
+            "lamp",
+            "got",
+            "he"
           ]
         },
         {
           "id": "4",
           "prompt": "has / yes, / he",
-          "input": "text",
+          "input": "word-order",
           "answer": "Yes, he has",
           "acceptedAnswers": [
             "Yes, he has",
             "Yes he has"
+          ],
+          "words": [
+            "has",
+            "yes,",
+            "he"
           ]
         },
         {
           "id": "5",
           "prompt": "party / have / those / you / got / lights",
-          "input": "text",
+          "input": "word-order",
           "answer": "Have you got those party lights",
           "acceptedAnswers": [
             "Have you got those party lights",
             "Have you got those party lights?"
+          ],
+          "words": [
+            "party",
+            "have",
+            "those",
+            "you",
+            "got",
+            "lights"
           ]
         },
         {
           "id": "6",
           "prompt": "have / yes, / I",
-          "input": "text",
+          "input": "word-order",
           "answer": "Yes, I have",
           "acceptedAnswers": [
             "Yes, I have",
             "Yes I have"
+          ],
+          "words": [
+            "have",
+            "yes,",
+            "I"
           ]
+        }
+      ],
+      "layout": "dialogue-word-order",
+      "dialogueLines": [
+        {
+          "speaker": "Jo",
+          "text": "What can we get Ben for his birthday?"
+        },
+        {
+          "speaker": "Jo",
+          "itemId": "1",
+          "after": "he needs!"
+        },
+        {
+          "speaker": "Martin",
+          "before": "I know, but",
+          "itemId": "2",
+          "after": "at the moment ..."
+        },
+        {
+          "speaker": "Jo",
+          "before": "So let’s think of a cheap present.",
+          "itemId": "3",
+          "after": "for his home office?"
+        },
+        {
+          "speaker": "Martin",
+          "itemId": "4",
+          "after": "."
+        },
+        {
+          "speaker": "Jo",
+          "text": "I know! Let’s have a party for him!"
+        },
+        {
+          "speaker": "Martin",
+          "before": "Great idea!",
+          "itemId": "5",
+          "after": "from last year?"
+        },
+        {
+          "speaker": "Jo",
+          "itemId": "6",
+          "after": "!"
+        },
+        {
+          "speaker": "Martin",
+          "text": "Brilliant! We can put them in my garden."
         }
       ]
     },
@@ -480,12 +576,6 @@
       "eyebrow": "Lesson 3B · Reading",
       "title": "FIVE WAYS TO CREATE A PERFECT LIVING SPACE",
       "text": "Read the article, then complete the two comprehension exercises."
-    },
-    {
-      "type": "reading",
-      "id": "l17-reading-article",
-      "title": "Five ways to create a perfect living space",
-      "text": "From small rooms to large rooms, where you put your furniture makes a big difference. Read our advice and learn how to make your home a great space to live in.\n\n1 ______\nBefore you choose where to put things, decide what you want to look at. For example, in the living room this could be the TV. In your home office, it’s nice to be near a window so you can look out when you don’t want to have a break from work.\n\n2 ______\nSpace is important. If you leave a little space between a sofa or a desk and the wall, the room will feel large and relaxed.\n\n3 ______\nIs it easy to move in the rooms? People usually need to walk through a living room to get to the kitchen, for example. In the bedroom, make space around the bed for you to get in and out in the morning or late at night.\n\n4 ______\nLight changes a room a lot. The colour white makes a room feel big, but can be a bit boring and make everything look the same. Dark colours can make a room feel small, so soft colours like blue and green are a good idea.\n\n5 ______\nChange things around sometimes. Move a plant, or put a table close to a window. Remember that no space is the same, so you can only find the perfect position for furniture if you try lots of different places."
     },
     {
       "type": "exercise",
@@ -558,7 +648,34 @@
           ],
           "answer": 4
         }
-      ]
+      ],
+      "layout": "reading-headings",
+      "article": {
+        "title": "Five ways to create a perfect living space",
+        "intro": "From small rooms to large rooms, where you put your furniture makes a big difference. Read our advice and learn how to make your home a great space to live in.",
+        "sections": [
+          {
+            "number": "1",
+            "text": "Before you choose where to put things, decide what you want to look at. For example, in the living room this could be the TV. In your home office, it’s nice to be near a window so you can look out when you don’t want to have a break from work."
+          },
+          {
+            "number": "2",
+            "text": "Space is important. If you leave a little space between a sofa or a desk and the wall, the room will feel large and relaxed."
+          },
+          {
+            "number": "3",
+            "text": "Is it easy to move in the rooms? People usually need to walk through a living room to get to the kitchen, for example. In the bedroom, make space around the bed for you to get in and out in the morning or late at night."
+          },
+          {
+            "number": "4",
+            "text": "Light changes a room a lot. The colour white makes a room feel big, but can be a bit boring and make everything look the same. Dark colours can make a room feel small, so soft colours like blue and green are a good idea."
+          },
+          {
+            "number": "5",
+            "text": "Change things around sometimes. Move a plant, or put a table close to a window. Remember that no space is the same, so you can only find the perfect position for furniture if you try lots of different places."
+          }
+        ]
+      }
     },
     {
       "type": "exercise",
@@ -650,7 +767,34 @@
           ],
           "answer": 4
         }
-      ]
+      ],
+      "layout": "reading-reference",
+      "referenceArticle": {
+        "title": "Five ways to create a perfect living space",
+        "intro": "From small rooms to large rooms, where you put your furniture makes a big difference. Read our advice and learn how to make your home a great space to live in.",
+        "sections": [
+          {
+            "number": "1",
+            "text": "Before you choose where to put things, decide what you want to look at. For example, in the living room this could be the TV. In your home office, it’s nice to be near a window so you can look out when you don’t want to have a break from work."
+          },
+          {
+            "number": "2",
+            "text": "Space is important. If you leave a little space between a sofa or a desk and the wall, the room will feel large and relaxed."
+          },
+          {
+            "number": "3",
+            "text": "Is it easy to move in the rooms? People usually need to walk through a living room to get to the kitchen, for example. In the bedroom, make space around the bed for you to get in and out in the morning or late at night."
+          },
+          {
+            "number": "4",
+            "text": "Light changes a room a lot. The colour white makes a room feel big, but can be a bit boring and make everything look the same. Dark colours can make a room feel small, so soft colours like blue and green are a good idea."
+          },
+          {
+            "number": "5",
+            "text": "Change things around sometimes. Move a plant, or put a table close to a window. Remember that no space is the same, so you can only find the perfect position for furniture if you try lots of different places."
+          }
+        ]
+      }
     }
   ]
 }

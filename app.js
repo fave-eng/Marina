@@ -1350,10 +1350,14 @@
       control = `<div class="inline-choice-text">${choices.map((choice, choiceIndex) => `${choiceIndex < segments.length ? `<span>${segmentMarkup(segments[choiceIndex])}</span>` : ''}<span class="inline-choice-group" role="group" aria-label="Choice ${choice.number || choiceIndex + 1}">${choice.number ? `<sup>${escapeHtml(choice.number)}</sup>` : ''}${(choice.options || []).map((option, optionIndex) => `${optionIndex ? '<span class="inline-choice-slash">/</span>' : ''}<label><input type="radio" data-inline-choice="${choiceIndex}" name="${escapeHtml(inputId)}-choice-${choiceIndex}" value="${optionIndex}"><span>${escapeHtml(option)}</span></label>`).join('')}</span>`).join('')}${segments.length > choices.length ? `<span>${segmentMarkup(segments[segments.length - 1])}</span>` : ''}</div>`;
     } else if (item.input === 'gaps') {
       const answers = Array.isArray(item.answers) ? item.answers : [];
-      const segments = Array.isArray(item.segments) ? item.segments : [];
-      const gapClass = `${item.layout === 'dialogue' ? 'sentence-gaps is-dialogue' : 'sentence-gaps'}${item.wideGaps ? ' has-wide-gaps' : ''}`;
-      const segmentMarkup = (segment) => escapeHtml(segment).replaceAll('\n', '<br>');
-      control = `<div class="${gapClass}" aria-label="${prompt}">${answers.map((answer, gapIndex) => `${gapIndex < segments.length ? `<span>${segmentMarkup(segments[gapIndex])}</span>` : ''}<input class="gap-input" data-gap-index="${gapIndex}" aria-label="Gap ${gapIndex + 1}" autocomplete="off">`).join('')}${segments.length > answers.length ? `<span>${segmentMarkup(segments[segments.length - 1])}</span>` : ''}</div>`;
+      if (Array.isArray(item.tableRows) && item.tableRows.length) {
+        control = renderOppositesTable(item, prompt);
+      } else {
+        const segments = Array.isArray(item.segments) ? item.segments : [];
+        const gapClass = `${item.layout === 'dialogue' ? 'sentence-gaps is-dialogue' : 'sentence-gaps'}${item.wideGaps ? ' has-wide-gaps' : ''}`;
+        const segmentMarkup = (segment) => escapeHtml(segment).replaceAll('\n', '<br>');
+        control = `<div class="${gapClass}" aria-label="${prompt}">${answers.map((answer, gapIndex) => `${gapIndex < segments.length ? `<span>${segmentMarkup(segments[gapIndex])}</span>` : ''}<input class="gap-input" data-gap-index="${gapIndex}" aria-label="Gap ${gapIndex + 1}" autocomplete="off">`).join('')}${segments.length > answers.length ? `<span>${segmentMarkup(segments[segments.length - 1])}</span>` : ''}</div>`;
+      }
     } else if (item.input === 'select-gaps') {
       const answers = Array.isArray(item.answers) ? item.answers : [];
       const segments = Array.isArray(item.segments) ? item.segments : [];
@@ -1363,6 +1367,8 @@
       const optionMarkup = options.map((option, optionIndex) => `<option value="${optionIndex}">${escapeHtml(option)}</option>`).join('');
       const placeholder = escapeHtml(item.placeholder || 'Выберите полный ответ');
       control = `<div class="${gapClass}" aria-label="${prompt}">${answers.map((answer, gapIndex) => `${gapIndex < segments.length ? `<span>${segmentMarkup(segments[gapIndex])}</span>` : ''}<select class="dialogue-answer-select" data-gap-index="${gapIndex}" aria-label="Response ${gapIndex + 1}"><option value="">${placeholder}</option>${optionMarkup}</select>`).join('')}${segments.length > answers.length ? `<span>${segmentMarkup(segments[segments.length - 1])}</span>` : ''}</div>`;
+    } else if (item.input === 'word-order') {
+      control = renderWordOrderWidget(item);
     } else if (item.input === 'insert-word') {
       const words = Array.isArray(item.words) ? item.words : [];
       const phrase = safeText(item.insert, '');
@@ -1918,6 +1924,97 @@
     });
   }
 
+
+  function renderOppositesTable(item, prompt) {
+    const rows = Array.isArray(item.tableRows) ? item.tableRows : [];
+    const cell = (row, side, gapIndex) => {
+      const key = side === 'left' ? 'left' : 'right';
+      const gapKey = side === 'left' ? 'leftGap' : 'rightGap';
+      if (row[gapKey] !== undefined) {
+        return `<input class="gap-input adjective-table-input" data-gap-index="${escapeHtml(row[gapKey])}" aria-label="Gap ${Number(row[gapKey]) + 1}" autocomplete="off">`;
+      }
+      return `<span class="adjective-table-word">${escapeHtml(row[key] || '')}</span>`;
+    };
+    return `<div class="adjective-opposites-wrap">
+      <div class="adjective-opposites-table" role="table" aria-label="Adjective and opposite">
+        <div class="adjective-table-head" role="row"><span role="columnheader">adjective</span><span role="columnheader">opposite</span></div>
+        ${rows.map((row) => `<div class="adjective-table-row${row.example ? ' is-example' : ''}" role="row">
+          <div role="cell">${cell(row, 'left')}</div><div role="cell">${cell(row, 'right')}</div>
+        </div>`).join('')}
+      </div>
+      <p class="adjective-table-note">Заполни только пустые клетки. Первая строка — пример.</p>
+    </div>`;
+  }
+
+  function renderWordOrderWidget(item) {
+    const words = Array.isArray(item.words) ? item.words : [];
+    return `<div class="word-order-widget" data-word-order>
+      <div class="word-order-answer" data-word-order-answer aria-live="polite"><span class="word-order-placeholder">Нажимай на слова в правильном порядке</span></div>
+      <div class="word-order-bank" aria-label="Words to order">${words.map((word, index) => `<button type="button" class="word-order-chip" data-word-order-source="${index}" data-word="${escapeHtml(word)}">${escapeHtml(word)}</button>`).join('')}</div>
+      <button type="button" class="word-order-reset" data-word-order-reset>Сбросить</button>
+      <input type="hidden" class="word-order-output" value="">
+    </div>`;
+  }
+
+  function renderReadingArticleReference(article, { inlineHeadings = false, items = [] } = {}) {
+    const sections = Array.isArray(article?.sections) ? article.sections : [];
+    const itemMap = new Map(items.map((item, index) => [safeText(item.id, `${index + 1}`), item]));
+    return `<article class="lesson-reading-reference${inlineHeadings ? ' has-inline-headings' : ''}">
+      <div class="lesson-reading-reference-title"><span class="eyebrow">Reading</span><h4>${escapeHtml(article?.title || '')}</h4></div>
+      ${article?.intro ? `<p class="lesson-reading-intro">${escapeHtml(article.intro)}</p>` : ''}
+      <div class="lesson-reading-article">${sections.map((section) => {
+        const item = itemMap.get(safeText(section.number));
+        let heading = `<span class="reading-blank-heading">${escapeHtml(section.number)} ______</span>`;
+        if (inlineHeadings && item) {
+          const inputId = `reading-heading-${safeText(item.id)}`;
+          heading = `<span class="exercise-item reading-inline-item" data-exercise-item="${escapeHtml(item.id)}" data-input-type="select">
+            <span class="reading-heading-number">${escapeHtml(section.number)}</span>
+            <select id="${escapeHtml(inputId)}" class="reading-heading-select" aria-label="Paragraph ${escapeHtml(section.number)} title"><option value="">Choose a title</option>${(item.options || []).map((option, optionIndex) => `<option value="${optionIndex}">${escapeHtml(option)}</option>`).join('')}</select>
+            <span class="feedback" aria-live="polite"></span>
+          </span>`;
+        }
+        return `<section class="lesson-reading-paragraph"><div class="lesson-reading-paragraph-heading">${heading}</div><p>${escapeHtml(section.text || '')}</p></section>`;
+      }).join('')}</div>
+    </article>`;
+  }
+
+  function renderDialogueWordOrderExercise(block, id, title) {
+    const items = Array.isArray(block.items) ? block.items : [];
+    const byId = new Map(items.map((item, index) => [safeText(item.id, `${index + 1}`), item]));
+    const lines = Array.isArray(block.dialogueLines) ? block.dialogueLines : [];
+    return `<article class="card lesson-block exercise-card word-order-dialogue-card" data-task="${escapeHtml(id)}" data-type="exercise">
+      <div class="exercise-heading"><span class="eyebrow">Exercise</span><h3>${title}</h3></div>
+      <div class="word-order-dialogue">${lines.map((line) => {
+        const item = line.itemId ? byId.get(safeText(line.itemId)) : null;
+        if (!item) return `<p class="dialogue-line"><strong>${escapeHtml(line.speaker || '')}:</strong> ${escapeHtml(line.text || '')}</p>`;
+        return `<div class="dialogue-line dialogue-order-line exercise-item" data-exercise-item="${escapeHtml(item.id)}" data-input-type="word-order">
+          <div class="dialogue-order-sentence"><strong>${escapeHtml(line.speaker || '')}:</strong> ${line.before ? `${escapeHtml(line.before)} ` : ''}<span class="dialogue-order-number">${escapeHtml(item.id)}</span><span class="dialogue-order-blank" data-order-preview>______</span>${line.after ? ` ${escapeHtml(line.after)}` : ''}</div>
+          <div class="dialogue-order-brackets">(${(item.words || []).map((word) => escapeHtml(word)).join(' / ')})</div>
+          <div class="exercise-control">${renderWordOrderWidget(item)}</div>
+          <div class="feedback" aria-live="polite"></div>
+        </div>`;
+      }).join('')}</div>
+    </article>`;
+  }
+
+  function renderReadingHeadingsExercise(block, id, title) {
+    return `<article class="card lesson-block exercise-card reading-workspace-card" data-task="${escapeHtml(id)}" data-type="exercise">
+      <div class="exercise-heading"><span class="eyebrow">Exercise</span><h3>${title}</h3><p class="muted exercise-instructions">Выбери заголовок прямо в начале каждого абзаца.</p></div>
+      ${renderReadingArticleReference(block.article || {}, { inlineHeadings: true, items: block.items || [] })}
+    </article>`;
+  }
+
+  function renderReadingReferenceExercise(block, id, title) {
+    const items = Array.isArray(block.items) ? block.items : [];
+    return `<article class="card lesson-block exercise-card reading-workspace-card" data-task="${escapeHtml(id)}" data-type="exercise">
+      <div class="exercise-heading"><span class="eyebrow">Exercise</span><h3>${title}</h3></div>
+      <div class="reading-reference-grid">
+        <div class="reading-reference-sticky">${renderReadingArticleReference(block.referenceArticle || {})}</div>
+        <div class="reading-reference-questions"><div class="exercise-items compact-reading-questions">${items.map((item, itemIndex) => renderExerciseItem(item, id, itemIndex)).join('')}</div></div>
+      </div>
+    </article>`;
+  }
+
   function renderLessonBlock(block, index) {
     const id = safeText(block.id, `task-${index}`);
     const title = escapeHtml(block.title || block.prompt || `Задание ${index + 1}`);
@@ -1939,6 +2036,9 @@
     }
     if (block.type === 'reading-quiz') return renderReadingQuizBlock(block, id, title);
     if (block.type === 'exercise') {
+      if (block.layout === 'dialogue-word-order') return renderDialogueWordOrderExercise(block, id, title);
+      if (block.layout === 'reading-headings') return renderReadingHeadingsExercise(block, id, title);
+      if (block.layout === 'reading-reference') return renderReadingReferenceExercise(block, id, title);
       const items = Array.isArray(block.items) ? block.items : [];
       const wordBank = Array.isArray(block.wordBank) && block.wordBank.length
         ? `<div class="word-bank" aria-label="Word bank"><strong class="word-bank-label">Word bank</strong>${block.wordBank.map((word) => `<span>${escapeHtml(word)}</span>`).join('')}</div>`
@@ -2046,6 +2146,9 @@
       const gapResults = expected.map((answer, index) => actual[index] !== '' && Number(actual[index]) === Number(answer));
       correct = expected.length > 0 && gapResults.every(Boolean);
       return { actual, correct, scoreCorrect: gapResults.filter(Boolean).length, scoreTotal: expected.length };
+    } else if (inputType === 'word-order') {
+      actual = itemNode.querySelector('.word-order-output')?.value || '';
+      correct = textAnswerMatches(item, actual);
     } else if (inputType === 'insert-word') {
       const selected = itemNode.querySelector('.insert-word-widget')?.dataset.selectedPosition ?? '';
       actual = selected;
@@ -2214,6 +2317,84 @@
     });
   }
 
+
+  function wordOrderTokens(widget) {
+    return [...widget.querySelectorAll('[data-word-order-source]')].map((button) => ({
+      index: Number(button.dataset.wordOrderSource),
+      word: safeText(button.dataset.word),
+      button
+    }));
+  }
+
+  function updateWordOrderWidget(widget) {
+    if (!widget) return;
+    const answer = widget.querySelector('[data-word-order-answer]');
+    const output = widget.querySelector('.word-order-output');
+    const selected = safeText(widget.dataset.wordOrderSelected).split(',').filter((v) => v !== '').map(Number);
+    const tokens = wordOrderTokens(widget);
+    const words = selected.map((index) => tokens.find((token) => token.index === index)?.word).filter(Boolean);
+    if (output) output.value = words.join(' ');
+    if (answer) {
+      answer.innerHTML = words.length
+        ? selected.map((index) => {
+            const token = tokens.find((entry) => entry.index === index);
+            return token ? `<button type="button" class="word-order-chip is-selected" data-word-order-selected="${index}">${escapeHtml(token.word)}</button>` : '';
+          }).join('')
+        : '<span class="word-order-placeholder">Нажимай на слова в правильном порядке</span>';
+    }
+    tokens.forEach((token) => {
+      const used = selected.includes(token.index);
+      token.button.disabled = used;
+      token.button.classList.toggle('is-used', used);
+    });
+    const itemNode = widget.closest('[data-exercise-item]');
+    const preview = itemNode?.querySelector('[data-order-preview]');
+    if (preview) preview.textContent = words.length ? words.join(' ') : '______';
+  }
+
+  function restoreWordOrderValue(widget, value) {
+    const wanted = safeText(value).trim();
+    if (!wanted) {
+      widget.dataset.wordOrderSelected = '';
+      updateWordOrderWidget(widget);
+      return;
+    }
+    const rawWords = wanted.split(/\s+/);
+    const tokens = wordOrderTokens(widget);
+    const available = [...tokens];
+    const selected = [];
+    for (const raw of rawWords) {
+      const normalized = normalizeAnswer(raw);
+      const foundIndex = available.findIndex((token) => normalizeAnswer(token.word) === normalized);
+      if (foundIndex < 0) continue;
+      selected.push(available[foundIndex].index);
+      available.splice(foundIndex, 1);
+    }
+    widget.dataset.wordOrderSelected = selected.join(',');
+    updateWordOrderWidget(widget);
+  }
+
+  function setupWordOrderItems(root) {
+    root.querySelectorAll('[data-word-order]').forEach((widget) => {
+      if (widget.dataset.wordOrderReady === '1') return;
+      widget.dataset.wordOrderReady = '1';
+      widget.dataset.wordOrderSelected = widget.dataset.wordOrderSelected || '';
+      widget.addEventListener('click', (event) => {
+        const source = event.target.closest('[data-word-order-source]');
+        const selectedChip = event.target.closest('[data-word-order-selected]');
+        const reset = event.target.closest('[data-word-order-reset]');
+        let selected = safeText(widget.dataset.wordOrderSelected).split(',').filter((v) => v !== '').map(Number);
+        if (source && !source.disabled) selected.push(Number(source.dataset.wordOrderSource));
+        if (selectedChip) selected = selected.filter((value) => value !== Number(selectedChip.dataset.wordOrderSelected));
+        if (reset) selected = [];
+        widget.dataset.wordOrderSelected = selected.join(',');
+        updateWordOrderWidget(widget);
+        widget.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+      updateWordOrderWidget(widget);
+    });
+  }
+
   function setupInsertWordItems(root) {
     root.querySelectorAll('.insert-word-widget').forEach((widget) => {
       widget.querySelectorAll('[data-insert-slot]').forEach((slot) => {
@@ -2254,6 +2435,9 @@
       } else if (inputType === 'gaps' || inputType === 'select-gaps') {
         const values = Array.isArray(value) ? value : [];
         itemNode.querySelectorAll('[data-gap-index]').forEach((input, gapIndex) => { input.value = safeText(values[gapIndex]); });
+      } else if (inputType === 'word-order') {
+        const widget = itemNode.querySelector('[data-word-order]');
+        if (widget) restoreWordOrderValue(widget, safeText(value));
       } else if (inputType === 'insert-word') {
         const widget = itemNode.querySelector('.insert-word-widget');
         if (widget && value !== '' && value !== null && value !== undefined) {
@@ -2459,6 +2643,7 @@
       savedResult?.answers
     );
     restoreLessonAnswers(root, blocks, restoredAnswers);
+    setupWordOrderItems(root);
     setupInsertWordItems(root);
     setupReadingQuizBlocks(root, blocks);
     setupManualLessonWidgets(root);
