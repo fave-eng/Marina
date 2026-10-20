@@ -380,6 +380,33 @@
     }
   };
 
+  async function resetLesson16BuggyProgressOnce() {
+    const marker = key('lesson16_interaction_reset_v1');
+    if (window.localStorage.getItem(marker)) return false;
+
+    const lessonId = 'lesson-16';
+    const homework = storage.read(key('homework'), { completedIds: [], results: {}, submissions: {} });
+    homework.completedIds = unique(homework.completedIds).filter((id) => id !== lessonId);
+    homework.results = homework.results && typeof homework.results === 'object' ? homework.results : {};
+    homework.submissions = homework.submissions && typeof homework.submissions === 'object' ? homework.submissions : {};
+    delete homework.results[lessonId];
+    delete homework.submissions[lessonId];
+    storage.write(key('homework'), homework);
+
+    if (CloudService.isConfigured()) {
+      if (!CloudService.client) await CloudService.init();
+      const { error } = await CloudService.client
+        .from(tables.homework)
+        .delete()
+        .eq('student_id', studentId)
+        .eq('lesson_id', lessonId);
+      if (error) throw error;
+    }
+
+    window.localStorage.setItem(marker, new Date().toISOString());
+    return true;
+  }
+
   function migrateLegacyMarinaProgress() {
     const marker = key('legacy_migration_v2');
     if (window.localStorage.getItem(marker)) return;
@@ -2039,6 +2066,18 @@
     return { actual, correct };
   }
 
+  function collectExerciseBlockAnswers(block, node) {
+    const actual = {};
+    (Array.isArray(block.items) ? block.items : []).forEach((item, index) => {
+      if (item.example) return;
+      const itemId = safeText(item.id, `${index + 1}`);
+      const itemNode = node.querySelector(`[data-exercise-item="${CSS.escape(itemId)}"]`);
+      if (!itemNode) return;
+      actual[itemId] = checkExerciseItem(item, itemNode).actual;
+    });
+    return actual;
+  }
+
   function checkExerciseBlock(block, node) {
     const actual = {};
     let correctCount = 0;
@@ -2465,7 +2504,9 @@
         if (!node) return;
         answers[taskId] = block.type === 'reading-quiz'
           ? collectReadingQuizAnswers(node)
-          : checkLessonTask(block, node).actual;
+          : block.type === 'exercise'
+            ? collectExerciseBlockAnswers(block, node)
+            : checkLessonTask(block, node).actual;
       });
       return answers;
     };
@@ -3478,6 +3519,14 @@
     archiveLegacyLesson8LocalProgress();
     fillConfig();
     markNavigation();
+    let lesson16ResetOk = true;
+    try {
+      await resetLesson16BuggyProgressOnce();
+    } catch (error) {
+      lesson16ResetOk = false;
+      console.error('Не удалось автоматически сбросить повреждённый прогресс Homework 16:', error);
+      showToast('Не удалось сбросить старый прогресс Homework 16 в Supabase. Обнови страницу позже — остальные данные не затронуты.');
+    }
     try {
       await loadHomeworkData();
     } catch (error) {
@@ -3487,7 +3536,7 @@
     }
     await refreshCurrentView();
     startHomeworkAutoRefresh();
-    if (!CloudService.isConfigured()) return;
+    if (!CloudService.isConfigured() || !lesson16ResetOk) return;
     try {
       await CloudService.init();
       await window.ProgressService.syncFromCloud();
