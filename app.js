@@ -2015,7 +2015,30 @@
     </article>`;
   }
 
-  function renderLessonBlock(block, index) {
+  function renderCombinedReadingExercise(block, id, title, allBlocks = []) {
+    const headingBlockId = safeText(block.headingBlockId);
+    const headingBlock = allBlocks.find((candidate) => safeText(candidate?.id) === headingBlockId) || null;
+    const headingItems = Array.isArray(headingBlock?.items) ? headingBlock.items : [];
+    const article = headingBlock?.article || block.referenceArticle || {};
+    const items = Array.isArray(block.items) ? block.items : [];
+    const headingTitle = escapeHtml(headingBlock?.title || '4B. Complete the article with the paragraph titles (a–e).');
+
+    return `<article class="card lesson-block exercise-card reading-workspace-card reading-combined-card">
+      <div class="exercise-heading reading-combined-heading"><span class="eyebrow">Reading</span><h3>Five ways to create a perfect living space</h3><p class="muted exercise-instructions">Сначала выбери заголовки прямо в статье, затем ответь на вопросы рядом.</p></div>
+      <div class="reading-reference-grid reading-combined-grid">
+        <div class="reading-reference-sticky reading-combined-article" data-task="${escapeHtml(headingBlockId)}" data-type="exercise">
+          <div class="reading-subexercise-heading"><span class="reading-subexercise-label">4B</span><h4>${headingTitle.replace(/^4B\.\s*/, '')}</h4></div>
+          ${renderReadingArticleReference(article, { inlineHeadings: true, items: headingItems })}
+        </div>
+        <div class="reading-reference-questions reading-combined-questions" data-task="${escapeHtml(id)}" data-type="exercise">
+          <div class="reading-subexercise-heading"><span class="reading-subexercise-label">4C</span><h4>${title.replace(/^4C\.\s*/, '')}</h4></div>
+          <div class="exercise-items compact-reading-questions">${items.map((item, itemIndex) => renderExerciseItem(item, id, itemIndex)).join('')}</div>
+        </div>
+      </div>
+    </article>`;
+  }
+
+  function renderLessonBlock(block, index, allBlocks = []) {
     const id = safeText(block.id, `task-${index}`);
     const title = escapeHtml(block.title || block.prompt || `Задание ${index + 1}`);
     const text = escapeHtml(block.text || '').replaceAll('\n', '<br>');
@@ -2038,7 +2061,9 @@
     if (block.type === 'exercise') {
       if (block.layout === 'dialogue-word-order') return renderDialogueWordOrderExercise(block, id, title);
       if (block.layout === 'reading-headings') return renderReadingHeadingsExercise(block, id, title);
+      if (block.layout === 'reading-headings-embedded') return '';
       if (block.layout === 'reading-reference') return renderReadingReferenceExercise(block, id, title);
+      if (block.layout === 'reading-combined') return renderCombinedReadingExercise(block, id, title, allBlocks);
       const items = Array.isArray(block.items) ? block.items : [];
       const wordBank = Array.isArray(block.wordBank) && block.wordBank.length
         ? `<div class="word-bank" aria-label="Word bank"><strong class="word-bank-label">Word bank</strong>${block.wordBank.map((word) => `<span>${escapeHtml(word)}</span>`).join('')}</div>`
@@ -2266,6 +2291,20 @@
         : 'Заполни все личные ответы в части B. Они не входят в балл.';
     }
     return { actual, correctCount, total, requiredComplete };
+  }
+
+  function collectLessonTaskAnswer(block, node) {
+    if (block.type === 'reading-quiz') return collectReadingQuizAnswers(node);
+    if (block.type === 'exercise') return collectExerciseBlockAnswers(block, node);
+    if (block.type === 'family-tree') return collectFamilyTree(node);
+    if (block.type === 'guided-writing') return node.querySelector('[data-guided-writing]')?.value || '';
+    if (block.type === 'word-groups') return collectWordGroups(node);
+    if (block.type === 'mini-interview') return collectMiniInterview(node);
+    if (block.type === 'single') return node.querySelector('input:checked')?.value ?? '';
+    if (block.type === 'multiple') return [...node.querySelectorAll('input:checked')].map((input) => Number(input.value)).sort((a, b) => a - b);
+    if (block.type === 'select') return node.querySelector('select')?.value ?? '';
+    if (block.type === 'match') return [...node.querySelectorAll('[data-match-index]')].map((select) => Number(select.value));
+    return node.querySelector('input, textarea')?.value || '';
   }
 
   function checkLessonTask(block, node) {
@@ -2626,7 +2665,7 @@
     let sectionNumber = 0;
     const renderedBlocks = blocks.map((block, blockIndex) => {
       if (block.type === 'section') sectionNumber += 1;
-      return renderLessonBlock(block.type === 'section' ? { ...block, __sectionNumber: sectionNumber } : block, blockIndex);
+      return renderLessonBlock(block.type === 'section' ? { ...block, __sectionNumber: sectionNumber } : block, blockIndex, blocks);
     }).join('');
     const actionsMarkup = isCompleted
       ? `<div class="card section lesson-actions lesson-completed-panel"><div id="lesson-result" aria-live="polite"></div><div class="completed-lock-message"><span class="completed-lock-icon" aria-hidden="true">🔒</span><div><h3>Работа отправлена</h3><p class="muted">Ответы сохранены и переданы преподавателю. Изменить их после отправки нельзя.</p></div></div></div>`
@@ -2687,16 +2726,14 @@
         const taskId = safeText(block.id, `task-${index}`);
         const node = root.querySelector(`[data-task="${CSS.escape(taskId)}"]`);
         if (!node) return;
-        answers[taskId] = block.type === 'reading-quiz'
-          ? collectReadingQuizAnswers(node)
-          : block.type === 'exercise'
-            ? collectExerciseBlockAnswers(block, node)
-            : checkLessonTask(block, node).actual;
+        answers[taskId] = collectLessonTaskAnswer(block, node);
       });
       return answers;
     };
 
-    const hasInteractiveAutosave = !isManualOnly && blocks.some((block) => block.autosaveDraft === true);
+    // All interactive homework drafts autosave without invoking validation.
+    // Checking is reserved exclusively for the explicit “Проверить ответы” button.
+    const hasInteractiveAutosave = !isManualOnly;
     const saveInteractiveDraft = () => {
       const updatedProgress = window.ProgressService.loadHomeworkProgress();
       const previous = updatedProgress.results[lesson.id] || {};
@@ -2716,7 +2753,30 @@
 
     let interactiveDraftTimer = 0;
     if (hasInteractiveAutosave && !isCompleted) {
-      const queueInteractiveDraftSave = () => {
+      const clearChangedValidationState = (event) => {
+        const target = event?.target;
+        if (!(target instanceof Element)) return;
+
+        const item = target.closest('[data-exercise-item]');
+        const task = target.closest('[data-task]');
+        const readingRow = target.closest('[data-reading-gap-wrap], [data-reading-person]');
+        const stateNode = item || readingRow || task;
+        if (stateNode) stateNode.classList.remove('is-correct', 'is-wrong', 'is-saved');
+
+        const localFeedback = stateNode?.querySelector('.feedback');
+        if (localFeedback) {
+          localFeedback.className = 'feedback';
+          localFeedback.textContent = '';
+        }
+
+        // A changed answer invalidates the previous check until the learner
+        // explicitly presses the check button again.
+        const submit = byId('submit-lesson');
+        if (submit) submit.disabled = true;
+      };
+
+      const queueInteractiveDraftSave = (event) => {
+        clearChangedValidationState(event);
         window.clearTimeout(interactiveDraftTimer);
         interactiveDraftTimer = window.setTimeout(saveInteractiveDraft, 500);
       };

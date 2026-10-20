@@ -4277,3 +4277,51 @@ body[data-view="lesson"] #lesson-root {
     width: 100%;
   }
 }
+
+
+/* Lesson 17: one shared reading workspace for 4B + 4C */
+.reading-combined-card .reading-reference-grid {
+  grid-template-columns: minmax(0, 1.08fr) minmax(360px, .92fr);
+}
+.reading-combined-heading h3 {
+  margin-bottom: 4px;
+}
+.reading-subexercise-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0 0 12px;
+  padding: 0 2px;
+}
+.reading-subexercise-heading h4 {
+  margin: 1px 0 0;
+  font-size: 1rem;
+  line-height: 1.35;
+  color: #162033;
+}
+.reading-subexercise-label {
+  display: inline-flex;
+  min-width: 38px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  background: #eef2ff;
+  color: #4f46e5;
+  font-size: .82rem;
+  font-weight: 900;
+}
+.reading-combined-article {
+  padding: 2px;
+}
+.reading-combined-questions {
+  min-width: 0;
+}
+.reading-combined-questions .exercise-items {
+  margin-top: 0;
+}
+@media (max-width: 860px) {
+  .reading-combined-card .reading-reference-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -649,7 +649,7 @@
           "answer": 4
         }
       ],
-      "layout": "reading-headings",
+      "layout": "reading-headings-embedded",
       "article": {
         "title": "Five ways to create a perfect living space",
         "intro": "From small rooms to large rooms, where you put your furniture makes a big difference. Read our advice and learn how to make your home a great space to live in.",
@@ -768,33 +768,8 @@
           "answer": 4
         }
       ],
-      "layout": "reading-reference",
-      "referenceArticle": {
-        "title": "Five ways to create a perfect living space",
-        "intro": "From small rooms to large rooms, where you put your furniture makes a big difference. Read our advice and learn how to make your home a great space to live in.",
-        "sections": [
-          {
-            "number": "1",
-            "text": "Before you choose where to put things, decide what you want to look at. For example, in the living room this could be the TV. In your home office, it’s nice to be near a window so you can look out when you don’t want to have a break from work."
-          },
-          {
-            "number": "2",
-            "text": "Space is important. If you leave a little space between a sofa or a desk and the wall, the room will feel large and relaxed."
-          },
-          {
-            "number": "3",
-            "text": "Is it easy to move in the rooms? People usually need to walk through a living room to get to the kitchen, for example. In the bedroom, make space around the bed for you to get in and out in the morning or late at night."
-          },
-          {
-            "number": "4",
-            "text": "Light changes a room a lot. The colour white makes a room feel big, but can be a bit boring and make everything look the same. Dark colours can make a room feel small, so soft colours like blue and green are a good idea."
-          },
-          {
-            "number": "5",
-            "text": "Change things around sometimes. Move a plant, or put a table close to a window. Remember that no space is the same, so you can only find the perfect position for furniture if you try lots of different places."
-          }
-        ]
-      }
+      "layout": "reading-combined",
+      "headingBlockId": "l17-reading-4b"
     }
   ]
 }
