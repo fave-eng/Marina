@@ -3750,3 +3750,183 @@ body[data-view="lesson"] #lesson-root {
     text-align: center;
   }
 }
+
+
+/* Homework 16 review: clearer sentence rows and interactive word placement. */
+[data-task="l16-present-simple"] .exercise-items,
+[data-task="l16-like-ing"] .exercise-items,
+[data-task="l16-mixed-vocabulary"] .exercise-items,
+[data-task="l16-frequency"] .exercise-items {
+  gap: 9px;
+}
+
+[data-task="l16-present-simple"] .exercise-item,
+[data-task="l16-like-ing"] .exercise-item,
+[data-task="l16-mixed-vocabulary"] .exercise-item,
+[data-task="l16-frequency"] .exercise-item {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  align-items: center;
+  column-gap: 12px;
+  padding: 14px 16px;
+}
+
+[data-task="l16-present-simple"] .exercise-item-header,
+[data-task="l16-like-ing"] .exercise-item-header,
+[data-task="l16-mixed-vocabulary"] .exercise-item-header,
+[data-task="l16-frequency"] .exercise-item-header {
+  grid-column: 1;
+  margin: 0;
+  align-self: center;
+}
+
+[data-task="l16-present-simple"] .exercise-item-header .exercise-prompt:empty,
+[data-task="l16-like-ing"] .exercise-item-header .exercise-prompt:empty,
+[data-task="l16-mixed-vocabulary"] .exercise-item-header .exercise-prompt:empty,
+[data-task="l16-frequency"] .exercise-item-header .exercise-prompt:empty {
+  display: none;
+}
+
+[data-task="l16-present-simple"] .exercise-control,
+[data-task="l16-like-ing"] .exercise-control,
+[data-task="l16-mixed-vocabulary"] .exercise-control,
+[data-task="l16-frequency"] .exercise-control {
+  grid-column: 2;
+  padding-left: 0;
+  min-width: 0;
+}
+
+[data-task="l16-present-simple"] .feedback,
+[data-task="l16-like-ing"] .feedback,
+[data-task="l16-mixed-vocabulary"] .feedback,
+[data-task="l16-frequency"] .feedback {
+  grid-column: 2;
+}
+
+[data-task="l16-present-simple"] .inline-choice-text {
+  line-height: 1.8;
+  font-size: 1rem;
+}
+
+[data-task="l16-present-simple"] .inline-choice-group {
+  margin-inline: 6px;
+}
+
+[data-task="l16-like-ing"] .sentence-gaps,
+[data-task="l16-mixed-vocabulary"] .sentence-gaps {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  line-height: 1.75;
+}
+
+[data-task="l16-like-ing"] .gap-input {
+  width: clamp(145px, 22vw, 210px);
+  min-height: 40px;
+}
+
+[data-task="l16-mixed-vocabulary"] .dialogue-answer-select {
+  width: clamp(155px, 24vw, 220px);
+  min-height: 42px;
+  padding: 7px 34px 7px 10px;
+}
+
+.insert-word-widget {
+  display: grid;
+  gap: 11px;
+}
+
+.insert-word-source {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border: 1px solid #c7d2fe;
+  border-radius: 999px;
+  background: #f8f7ff;
+}
+
+.insert-word-source span {
+  color: #64748b;
+  font-size: .72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+.insert-word-source strong {
+  color: #3730a3;
+  font-size: .92rem;
+}
+
+.insert-word-sentence {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  color: #1e293b;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.insert-word-token {
+  white-space: nowrap;
+}
+
+.insert-word-slot {
+  min-width: 24px;
+  min-height: 34px;
+  padding: 3px 6px;
+  border: 0;
+  border-bottom: 2px dashed #cbd5e1;
+  border-radius: 7px 7px 2px 2px;
+  background: transparent;
+  color: #94a3b8;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all .15s ease;
+}
+
+.insert-word-slot:hover,
+.insert-word-slot:focus-visible {
+  border-bottom-color: #6366f1;
+  background: #eef2ff;
+  color: #4f46e5;
+  outline: none;
+}
+
+.insert-word-slot.is-selected {
+  min-width: auto;
+  padding-inline: 10px;
+  border: 1px solid #a5b4fc;
+  background: #eef2ff;
+  color: #3730a3;
+  white-space: nowrap;
+}
+
+.lesson-is-locked .insert-word-slot {
+  cursor: default;
+}
+
+@media (max-width: 680px) {
+  [data-task="l16-present-simple"] .exercise-item,
+  [data-task="l16-like-ing"] .exercise-item,
+  [data-task="l16-mixed-vocabulary"] .exercise-item,
+  [data-task="l16-frequency"] .exercise-item {
+    grid-template-columns: 30px minmax(0, 1fr);
+    column-gap: 9px;
+    padding: 13px 12px;
+  }
+
+  [data-task="l16-like-ing"] .gap-input,
+  [data-task="l16-mixed-vocabulary"] .dialogue-answer-select {
+    width: min(100%, 190px);
+  }
+
+  .insert-word-source span {
+    display: none;
+  }
+}

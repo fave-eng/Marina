@@ -25,62 +25,111 @@
       "autosaveDraft": true,
       "items": [
         {
-          "id": "sentences",
-          "number": "",
+          "id": "1",
+          "number": 1,
           "prompt": "",
           "input": "inline-single",
           "segments": [
-            "1 My father ",
-            " at a hospital.\n2 ",
-            " you live near the city centre?\n3 Anna ",
-            " like coffee.\n4 Where ",
-            " your sister work?\n5 We ",
-            " tired after class.\n6 ",
-            " your friend a teacher?"
+            "My father ",
+            " at a hospital."
           ],
           "choices": [
             {
-              "number": 1,
               "options": [
                 "work",
                 "works"
               ],
               "answer": 1
-            },
+            }
+          ]
+        },
+        {
+          "id": "2",
+          "number": 2,
+          "prompt": "",
+          "input": "inline-single",
+          "segments": [
+            "",
+            " you live near the city centre?"
+          ],
+          "choices": [
             {
-              "number": 2,
               "options": [
                 "Do",
                 "Does"
               ],
               "answer": 0
-            },
+            }
+          ]
+        },
+        {
+          "id": "3",
+          "number": 3,
+          "prompt": "",
+          "input": "inline-single",
+          "segments": [
+            "Anna ",
+            " like coffee."
+          ],
+          "choices": [
             {
-              "number": 3,
               "options": [
                 "don’t",
                 "doesn’t"
               ],
               "answer": 1
-            },
+            }
+          ]
+        },
+        {
+          "id": "4",
+          "number": 4,
+          "prompt": "",
+          "input": "inline-single",
+          "segments": [
+            "Where ",
+            " your sister work?"
+          ],
+          "choices": [
             {
-              "number": 4,
               "options": [
                 "do",
                 "does"
               ],
               "answer": 1
-            },
+            }
+          ]
+        },
+        {
+          "id": "5",
+          "number": 5,
+          "prompt": "",
+          "input": "inline-single",
+          "segments": [
+            "We ",
+            " tired after class."
+          ],
+          "choices": [
             {
-              "number": 5,
               "options": [
                 "are",
                 "do"
               ],
               "answer": 0
-            },
+            }
+          ]
+        },
+        {
+          "id": "6",
+          "number": 6,
+          "prompt": "",
+          "input": "inline-single",
+          "segments": [
+            "",
+            " your friend a teacher?"
+          ],
+          "choices": [
             {
-              "number": 6,
               "options": [
                 "Is",
                 "Does"
@@ -205,39 +254,98 @@
       "items": [
         {
           "id": "1",
-          "prompt": "I get up at 7 a.m. (usually)",
-          "input": "text",
-          "answer": "I usually get up at 7 a.m."
+          "number": 1,
+          "prompt": "",
+          "input": "insert-word",
+          "words": [
+            "I",
+            "get",
+            "up",
+            "at",
+            "7",
+            "a.m."
+          ],
+          "insert": "usually",
+          "answerPosition": 1
         },
         {
           "id": "2",
-          "prompt": "My sister is tired after work. (often)",
-          "input": "text",
-          "answer": "My sister is often tired after work."
+          "number": 2,
+          "prompt": "",
+          "input": "insert-word",
+          "words": [
+            "My",
+            "sister",
+            "is",
+            "tired",
+            "after",
+            "work."
+          ],
+          "insert": "often",
+          "answerPosition": 3
         },
         {
           "id": "3",
-          "prompt": "We go shopping Saturdays. (on)",
-          "input": "text",
-          "answer": "We go shopping on Saturdays."
+          "number": 3,
+          "prompt": "",
+          "input": "insert-word",
+          "words": [
+            "We",
+            "go",
+            "shopping",
+            "Saturdays."
+          ],
+          "insert": "on",
+          "answerPosition": 3
         },
         {
           "id": "4",
-          "prompt": "I meet my friends for coffee a week. (twice)",
-          "input": "text",
-          "answer": "I meet my friends for coffee twice a week."
+          "number": 4,
+          "prompt": "",
+          "input": "insert-word",
+          "words": [
+            "I",
+            "meet",
+            "my",
+            "friends",
+            "for",
+            "coffee",
+            "a",
+            "week."
+          ],
+          "insert": "twice",
+          "answerPosition": 6
         },
         {
           "id": "5",
-          "prompt": "He watches TV in the evening. (hardly ever)",
-          "input": "text",
-          "answer": "He hardly ever watches TV in the evening."
+          "number": 5,
+          "prompt": "",
+          "input": "insert-word",
+          "words": [
+            "He",
+            "watches",
+            "TV",
+            "in",
+            "the",
+            "evening."
+          ],
+          "insert": "hardly ever",
+          "answerPosition": 1
         },
         {
           "id": "6",
-          "prompt": "Are you late for work? (often)",
-          "input": "text",
-          "answer": "Are you often late for work?"
+          "number": 6,
+          "prompt": "",
+          "input": "insert-word",
+          "words": [
+            "Are",
+            "you",
+            "late",
+            "for",
+            "work?"
+          ],
+          "insert": "often",
+          "answerPosition": 2
         }
       ]
     },
@@ -256,25 +364,80 @@
       "autosaveDraft": true,
       "items": [
         {
-          "id": "sentences",
-          "number": "",
+          "id": "1",
+          "number": 1,
           "prompt": "",
           "input": "gaps",
           "segments": [
-            "1 I love ",
-            " dinner for friends.\n2 My brother hates ",
-            " early.\n3 Do you like ",
-            " to restaurants?\n4 We enjoy ",
-            " friends after work.\n5 She loves ",
-            " tennis.\n6 I don’t like ",
+            "I love ",
+            " dinner for friends."
+          ],
+          "answers": [
+            "cooking"
+          ]
+        },
+        {
+          "id": "2",
+          "number": 2,
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "My brother hates ",
+            " early."
+          ],
+          "answers": [
+            "getting up"
+          ]
+        },
+        {
+          "id": "3",
+          "number": 3,
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "Do you like ",
+            " to restaurants?"
+          ],
+          "answers": [
+            "going"
+          ]
+        },
+        {
+          "id": "4",
+          "number": 4,
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "We enjoy ",
+            " friends after work."
+          ],
+          "answers": [
+            "meeting"
+          ]
+        },
+        {
+          "id": "5",
+          "number": 5,
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "She loves ",
+            " tennis."
+          ],
+          "answers": [
+            "playing"
+          ]
+        },
+        {
+          "id": "6",
+          "number": 6,
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "I don’t like ",
             " for clothes at the weekend."
           ],
           "answers": [
-            "cooking",
-            "getting up",
-            "going",
-            "meeting",
-            "playing",
             "shopping"
           ]
         }
@@ -300,28 +463,136 @@
       "autosaveDraft": true,
       "items": [
         {
-          "id": "sentences",
-          "number": "",
+          "id": "1",
+          "number": 1,
           "prompt": "",
-          "input": "gaps",
-          "wideGaps": true,
+          "input": "select-gaps",
           "segments": [
-            "1 My aunt works in a hospital. She’s a ",
-            ".\n2 I haven’t eaten since breakfast. I’m ",
-            ".\n3 Put the glasses in the ",
-            " next to the sink.\n4 The ",
-            " is ready to take our order.\n5 The restaurant adds a 10% ",
-            " to the bill.\n6 I have a work ",
-            " at 11 a.m."
+            "My aunt works in a hospital. She’s a ",
+            ""
+          ],
+          "options": [
+            "cupboard",
+            "hungry",
+            "meeting",
+            "nurse",
+            "service charge",
+            "waiter"
           ],
           "answers": [
-            "nurse",
-            "hungry",
+            3
+          ],
+          "placeholder": "Choose a word"
+        },
+        {
+          "id": "2",
+          "number": 2,
+          "prompt": "",
+          "input": "select-gaps",
+          "segments": [
+            "I haven’t eaten since breakfast. I’m ",
+            ""
+          ],
+          "options": [
             "cupboard",
-            "waiter",
+            "hungry",
+            "meeting",
+            "nurse",
             "service charge",
-            "meeting"
-          ]
+            "waiter"
+          ],
+          "answers": [
+            1
+          ],
+          "placeholder": "Choose a word"
+        },
+        {
+          "id": "3",
+          "number": 3,
+          "prompt": "",
+          "input": "select-gaps",
+          "segments": [
+            "Put the glasses in the ",
+            " next to the sink."
+          ],
+          "options": [
+            "cupboard",
+            "hungry",
+            "meeting",
+            "nurse",
+            "service charge",
+            "waiter"
+          ],
+          "answers": [
+            0
+          ],
+          "placeholder": "Choose a word"
+        },
+        {
+          "id": "4",
+          "number": 4,
+          "prompt": "",
+          "input": "select-gaps",
+          "segments": [
+            "The ",
+            " is ready to take our order."
+          ],
+          "options": [
+            "cupboard",
+            "hungry",
+            "meeting",
+            "nurse",
+            "service charge",
+            "waiter"
+          ],
+          "answers": [
+            5
+          ],
+          "placeholder": "Choose a word"
+        },
+        {
+          "id": "5",
+          "number": 5,
+          "prompt": "",
+          "input": "select-gaps",
+          "segments": [
+            "The restaurant adds a 10% ",
+            " to the bill."
+          ],
+          "options": [
+            "cupboard",
+            "hungry",
+            "meeting",
+            "nurse",
+            "service charge",
+            "waiter"
+          ],
+          "answers": [
+            4
+          ],
+          "placeholder": "Choose a word"
+        },
+        {
+          "id": "6",
+          "number": 6,
+          "prompt": "",
+          "input": "select-gaps",
+          "segments": [
+            "I have a work ",
+            " at 11 a.m."
+          ],
+          "options": [
+            "cupboard",
+            "hungry",
+            "meeting",
+            "nurse",
+            "service charge",
+            "waiter"
+          ],
+          "answers": [
+            2
+          ],
+          "placeholder": "Choose a word"
         }
       ]
     },

@@ -1334,7 +1334,13 @@
       const gapClass = item.layout === 'dialogue' ? 'sentence-gaps is-dialogue has-select-gaps' : 'sentence-gaps has-select-gaps';
       const segmentMarkup = (segment) => escapeHtml(segment).replaceAll('\n', '<br>');
       const optionMarkup = options.map((option, optionIndex) => `<option value="${optionIndex}">${escapeHtml(option)}</option>`).join('');
-      control = `<div class="${gapClass}" aria-label="${prompt}">${answers.map((answer, gapIndex) => `${gapIndex < segments.length ? `<span>${segmentMarkup(segments[gapIndex])}</span>` : ''}<select class="dialogue-answer-select" data-gap-index="${gapIndex}" aria-label="Response ${gapIndex + 1}"><option value="">Выберите полный ответ</option>${optionMarkup}</select>`).join('')}${segments.length > answers.length ? `<span>${segmentMarkup(segments[segments.length - 1])}</span>` : ''}</div>`;
+      const placeholder = escapeHtml(item.placeholder || 'Выберите полный ответ');
+      control = `<div class="${gapClass}" aria-label="${prompt}">${answers.map((answer, gapIndex) => `${gapIndex < segments.length ? `<span>${segmentMarkup(segments[gapIndex])}</span>` : ''}<select class="dialogue-answer-select" data-gap-index="${gapIndex}" aria-label="Response ${gapIndex + 1}"><option value="">${placeholder}</option>${optionMarkup}</select>`).join('')}${segments.length > answers.length ? `<span>${segmentMarkup(segments[segments.length - 1])}</span>` : ''}</div>`;
+    } else if (item.input === 'insert-word') {
+      const words = Array.isArray(item.words) ? item.words : [];
+      const phrase = safeText(item.insert, '');
+      const slots = words.map((word, wordIndex) => `<button type="button" class="insert-word-slot" data-insert-slot="${wordIndex}" aria-label="Insert ${escapeHtml(phrase)} before ${escapeHtml(word)}">+</button><span class="insert-word-token">${escapeHtml(word)}</span>`).join('') + `<button type="button" class="insert-word-slot" data-insert-slot="${words.length}" aria-label="Insert ${escapeHtml(phrase)} at the end">+</button>`;
+      control = `<div class="insert-word-widget" data-insert-phrase="${escapeHtml(phrase)}"><div class="insert-word-source"><span>Word / phrase</span><strong>${escapeHtml(phrase)}</strong></div><div class="insert-word-sentence">${slots}</div></div>`;
     } else if (item.input === 'mark') {
       let markIndex = 0;
       const paragraphs = Array.isArray(item.paragraphs) ? item.paragraphs : [];
@@ -2013,6 +2019,10 @@
       const gapResults = expected.map((answer, index) => actual[index] !== '' && Number(actual[index]) === Number(answer));
       correct = expected.length > 0 && gapResults.every(Boolean);
       return { actual, correct, scoreCorrect: gapResults.filter(Boolean).length, scoreTotal: expected.length };
+    } else if (inputType === 'insert-word') {
+      const selected = itemNode.querySelector('.insert-word-widget')?.dataset.selectedPosition ?? '';
+      actual = selected;
+      correct = selected !== '' && Number(selected) === Number(item.answerPosition);
     } else if (inputType === 'mark') {
       actual = [...itemNode.querySelectorAll('[data-mark-index].is-selected')].map((button) => Number(button.dataset.markIndex)).sort((a, b) => a - b);
       const expected = [...(item.answer || [])].map(Number).sort((a, b) => a - b);
@@ -2153,6 +2163,30 @@
     return { correctCount: correct ? 1 : 0, total: 1, actual };
   }
 
+  function applyInsertWordSelection(widget, position) {
+    if (!widget) return;
+    const phrase = safeText(widget.dataset.insertPhrase, '');
+    widget.dataset.selectedPosition = Number.isFinite(Number(position)) ? String(Number(position)) : '';
+    widget.querySelectorAll('[data-insert-slot]').forEach((slot) => {
+      const selected = widget.dataset.selectedPosition !== '' && Number(slot.dataset.insertSlot) === Number(widget.dataset.selectedPosition);
+      slot.classList.toggle('is-selected', selected);
+      slot.setAttribute('aria-pressed', selected ? 'true' : 'false');
+      slot.textContent = selected ? phrase : '+';
+    });
+  }
+
+  function setupInsertWordItems(root) {
+    root.querySelectorAll('.insert-word-widget').forEach((widget) => {
+      widget.querySelectorAll('[data-insert-slot]').forEach((slot) => {
+        slot.addEventListener('click', () => {
+          if (slot.disabled) return;
+          applyInsertWordSelection(widget, Number(slot.dataset.insertSlot));
+          widget.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+      });
+    });
+  }
+
   function restoreExerciseAnswers(block, node, saved) {
     if (!saved || typeof saved !== 'object') return;
     (Array.isArray(block.items) ? block.items : []).forEach((item, index) => {
@@ -2181,6 +2215,11 @@
       } else if (inputType === 'gaps' || inputType === 'select-gaps') {
         const values = Array.isArray(value) ? value : [];
         itemNode.querySelectorAll('[data-gap-index]').forEach((input, gapIndex) => { input.value = safeText(values[gapIndex]); });
+      } else if (inputType === 'insert-word') {
+        const widget = itemNode.querySelector('.insert-word-widget');
+        if (widget && value !== '' && value !== null && value !== undefined) {
+          applyInsertWordSelection(widget, Number(value));
+        }
       } else if (inputType === 'mark') {
         const selected = new Set(Array.isArray(value) ? value.map(Number) : []);
         itemNode.querySelectorAll('[data-mark-index]').forEach((button) => {
@@ -2381,6 +2420,7 @@
       savedResult?.answers
     );
     restoreLessonAnswers(root, blocks, restoredAnswers);
+    setupInsertWordItems(root);
     setupReadingQuizBlocks(root, blocks);
     setupManualLessonWidgets(root);
     setupSpeechPlayers(root);
