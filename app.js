@@ -1430,11 +1430,18 @@
 
   function renderGuidedWritingBlock(block, id, title) {
     const starters = Array.isArray(block.starters) ? block.starters : [];
-    return `<article class="card lesson-block guided-writing-card" data-task="${escapeHtml(id)}" data-type="guided-writing" data-min-sentences="${Number(block.minSentences || 0)}" data-max-sentences="${Number(block.maxSentences || 0)}">
+    const minWords = Number(block.minWords || 0);
+    const maxWords = Number(block.maxWords || 0);
+    const usesWords = minWords > 0 || maxWords > 0;
+    const rangeLabel = usesWords
+      ? `${minWords || 0}–${maxWords || '∞'} слов`
+      : `${Number(block.minSentences || 6)}–${Number(block.maxSentences || 8)} предложений`;
+    const counterLabel = usesWords ? '0 слов' : '0 предложений';
+    return `<article class="card lesson-block guided-writing-card" data-task="${escapeHtml(id)}" data-type="guided-writing" data-min-sentences="${Number(block.minSentences || 0)}" data-max-sentences="${Number(block.maxSentences || 0)}" data-min-words="${minWords}" data-max-words="${maxWords}" data-writing-required="${block.required === true ? 'true' : 'false'}">
       <div class="manual-task-heading"><span class="eyebrow">Writing</span><h3>${title}</h3>${block.instructions ? `<p class="muted">${escapeHtml(block.instructions)}</p>` : ''}</div>
       ${starters.length ? `<div class="sentence-starters" aria-label="Начала предложений"><span>Нажми, чтобы добавить:</span>${starters.map((starter) => `<button type="button" data-writing-starter="${escapeHtml(starter)}">${escapeHtml(starter)}</button>`).join('')}</div>` : ''}
       <textarea data-guided-writing placeholder="${escapeHtml(block.placeholder || '')}"></textarea>
-      <div class="writing-counter"><span data-sentence-counter>0 предложений</span><span>Рекомендуемый объём: ${Number(block.minSentences || 6)}–${Number(block.maxSentences || 8)}</span></div>
+      <div class="writing-counter"><span data-sentence-counter>${counterLabel}</span><span>Рекомендуемый объём: ${rangeLabel}</span></div>
       <div class="feedback" aria-live="polite"></div>
     </article>`;
   }
@@ -1522,6 +1529,14 @@
     const counter = node.querySelector('[data-sentence-counter]');
     if (!textarea || !counter) return;
     const text = textarea.value.trim();
+    const minWords = Number(node.dataset.minWords || 0);
+    const maxWords = Number(node.dataset.maxWords || 0);
+    if (minWords > 0 || maxWords > 0) {
+      const count = text ? text.split(/\s+/).filter(Boolean).length : 0;
+      counter.textContent = `${count} слов`;
+      counter.classList.toggle('is-ready', count >= minWords && (!maxWords || count <= maxWords));
+      return;
+    }
     const count = text ? text.split(/[.!?]+|\n+/).map((part) => part.trim()).filter(Boolean).length : 0;
     const min = Number(node.dataset.minSentences || 0);
     const max = Number(node.dataset.maxSentences || 0);
@@ -2105,7 +2120,14 @@
     if (block.type === 'reading-quiz') return checkReadingQuizBlock(block, node);
     if (block.type === 'exercise') return checkExerciseBlock(block, node);
     if (block.type === 'family-tree') return { actual: collectFamilyTree(node), correctCount: 0, total: 0, manual: true };
-    if (block.type === 'guided-writing') return { actual: node.querySelector('[data-guided-writing]')?.value || '', correctCount: 0, total: 0, manual: true };
+    if (block.type === 'guided-writing') {
+      const actual = node.querySelector('[data-guided-writing]')?.value || '';
+      const minWords = Number(block.minWords || 0);
+      const maxWords = Number(block.maxWords || 0);
+      const wordCount = safeText(actual).trim() ? safeText(actual).trim().split(/\s+/).filter(Boolean).length : 0;
+      const requiredComplete = block.required !== true || (wordCount >= minWords && (!maxWords || wordCount <= maxWords));
+      return { actual, correctCount: 0, total: 0, manual: true, requiredComplete, wordCount };
+    }
     if (block.type === 'word-groups') return { actual: collectWordGroups(node), correctCount: 0, total: 0, manual: true };
     if (block.type === 'mini-interview') return { actual: collectMiniInterview(node), correctCount: 0, total: 0, manual: true };
     let actual;
@@ -2233,8 +2255,15 @@
       node.classList.add('is-saved');
       const feedback = node.querySelector('.feedback');
       if (feedback) {
-        feedback.className = 'feedback show neutral';
-        feedback.textContent = 'Ответ сохранён для проверки преподавателем.';
+        if (result.requiredComplete === false) {
+          feedback.className = 'feedback show bad';
+          const minWords = Number(block.minWords || 0);
+          const maxWords = Number(block.maxWords || 0);
+          feedback.textContent = minWords > 0 ? `Напиши ${minWords}${maxWords ? `–${maxWords}` : '+'} слов перед отправкой.` : 'Заполни это задание перед отправкой.';
+        } else {
+          feedback.className = 'feedback show neutral';
+          feedback.textContent = 'Ответ сохранён для проверки преподавателем.';
+        }
       }
       return;
     }
@@ -2307,6 +2336,13 @@
     const progress = window.ProgressService.loadHomeworkProgress();
     const savedResult = progress.results[lesson.id];
     const savedRequiredComplete = blocks.every((block) => {
+      if (block.type === 'guided-writing' && block.required === true) {
+        const value = safeText(savedResult?.answers?.[safeText(block.id)]).trim();
+        const wordCount = value ? value.split(/\s+/).filter(Boolean).length : 0;
+        const minWords = Number(block.minWords || 0);
+        const maxWords = Number(block.maxWords || 0);
+        return wordCount >= minWords && (!maxWords || wordCount <= maxWords);
+      }
       if (block.type !== 'reading-quiz' || block.manualResponses !== true) return true;
       const personal = savedResult?.answers?.[safeText(block.id)]?.personal;
       const required = Array.isArray(block?.quiz?.questions) ? block.quiz.questions.length : 0;
@@ -2561,6 +2597,187 @@
     </div>`;
   }
 
+
+  function grammarHighlight(text, highlights = []) {
+    const raw = safeText(text);
+    const marks = [...new Set((Array.isArray(highlights) ? highlights : []).map((item) => safeText(item)).filter(Boolean))]
+      .sort((a, b) => b.length - a.length);
+    if (!marks.length) return escapeHtml(raw);
+
+    const ranges = [];
+    marks.forEach((mark) => {
+      let from = 0;
+      while (from < raw.length) {
+        const index = raw.indexOf(mark, from);
+        if (index < 0) break;
+        const end = index + mark.length;
+        const wordChar = (char) => /[A-Za-z0-9]/.test(char || '');
+        const startOk = !wordChar(mark[0]) || !wordChar(raw[index - 1]);
+        const endOk = !wordChar(mark[mark.length - 1]) || !wordChar(raw[end]);
+        if (startOk && endOk && !ranges.some((range) => index < range.end && end > range.start)) ranges.push({ start: index, end });
+        from = end;
+      }
+    });
+    ranges.sort((a, b) => a.start - b.start);
+    if (!ranges.length) return escapeHtml(raw);
+
+    let cursor = 0;
+    return ranges.map((range) => {
+      const before = escapeHtml(raw.slice(cursor, range.start));
+      const focus = `<mark class="grammar-focus">${escapeHtml(raw.slice(range.start, range.end))}</mark>`;
+      cursor = range.end;
+      return before + focus;
+    }).join('') + escapeHtml(raw.slice(cursor));
+  }
+
+  function grammarRichExample(example) {
+    if (!example || !example.en) return '';
+    return `<div class="grammar-rich-example">
+      <strong>${grammarHighlight(example.en, example.highlights)}</strong>
+      <span>${escapeHtml(example.ru || '')}</span>
+      ${example.note ? `<small>${escapeHtml(example.note)}</small>` : ''}
+    </div>`;
+  }
+
+  function grammarRichTable(block) {
+    const headers = Array.isArray(block.headers) ? block.headers : [];
+    const rows = Array.isArray(block.rows) ? block.rows : [];
+    const highlights = Array.isArray(block.highlights) ? block.highlights : [];
+    if (!headers.length || !rows.length) return '';
+    return `<div class="grammar-rich-table-wrap"><table class="grammar-rich-table">
+      <thead><tr>${headers.map((header) => `<th>${escapeHtml(header)}</th>`).join('')}</tr></thead>
+      <tbody>${rows.map((row) => `<tr>${row.map((cell) => `<td>${grammarHighlight(cell, highlights)}</td>`).join('')}</tr>`).join('')}</tbody>
+    </table></div>`;
+  }
+
+  function grammarRichBlock(block) {
+    const type = safeText(block?.type);
+    if (!type) return '';
+
+    if (type === 'paragraphs') {
+      const paragraphs = Array.isArray(block.paragraphs) ? block.paragraphs : [];
+      return `<div class="grammar-rich-prose">${paragraphs.map((text) => `<p>${escapeHtml(text)}</p>`).join('')}</div>`;
+    }
+
+    if (type === 'table') return grammarRichTable(block);
+
+    if (type === 'timeline') {
+      const points = Array.isArray(block.points) ? block.points : [];
+      return `<article class="grammar-visual-card grammar-timeline-card">
+        ${block.title ? `<h3>${escapeHtml(block.title)}</h3>` : ''}
+        <div class="grammar-timeline" aria-label="${escapeHtml(block.title || 'Схема времени')}">
+          <span class="grammar-timeline-line" aria-hidden="true"></span>
+          ${points.map((point, index) => `<span class="grammar-timeline-point ${safeText(point).toUpperCase() === 'NOW' ? 'is-now' : ''}" style="left:${points.length > 1 ? (4 + (92 * index / (points.length - 1))).toFixed(2) : '50'}%"><b></b><em>${escapeHtml(point)}</em></span>`).join('')}
+        </div>
+        ${block.caption ? `<p>${escapeHtml(block.caption)}</p>` : ''}
+      </article>`;
+    }
+
+    if (type === 'scale') {
+      const items = Array.isArray(block.items) ? block.items : [];
+      return `<article class="grammar-visual-card grammar-scale-card">
+        ${block.title ? `<h3>${escapeHtml(block.title)}</h3>` : ''}
+        <div class="grammar-frequency-scale">${items.map((item, index) => `<div class="grammar-scale-stop"><span style="opacity:${(0.28 + ((items.length - index - 1) * 0.12)).toFixed(2)}"></span><strong>${escapeHtml(item)}</strong></div>`).join('')}</div>
+        ${block.caption ? `<p>${escapeHtml(block.caption)}</p>` : ''}
+      </article>`;
+    }
+
+    if (type === 'cards') {
+      const items = Array.isArray(block.items) ? block.items : [];
+      return `<div class="grammar-rich-card-grid">${items.map((item) => `<article class="grammar-rich-mini-card">
+        <h3>${escapeHtml(item.title || '')}</h3>
+        ${item.text ? `<p>${escapeHtml(item.text)}</p>` : ''}
+        ${grammarRichExample(item.example)}
+      </article>`).join('')}</div>`;
+    }
+
+    if (type === 'examples') {
+      const items = Array.isArray(block.items) ? block.items : [];
+      return `<div class="grammar-example-stack">${items.map((item) => grammarRichExample(item)).join('')}</div>`;
+    }
+
+    if (type === 'rule') {
+      return `<article class="grammar-rule-panel">
+        ${block.title ? `<h3>${escapeHtml(block.title)}</h3>` : ''}
+        ${block.formula ? `<div class="grammar-rule-formula">${grammarHighlight(block.formula, block.highlights)}</div>` : ''}
+        ${block.text ? `<p>${escapeHtml(block.text)}</p>` : ''}
+        ${grammarRichExample(block.example)}
+      </article>`;
+    }
+
+    if (type === 'compare') {
+      const columns = Array.isArray(block.columns) ? block.columns : [];
+      return `<div class="grammar-rich-compare ${columns.length > 2 ? 'is-many' : ''}">${columns.map((column) => `<article class="grammar-compare-panel">
+        <h3>${escapeHtml(column.title || '')}</h3>
+        ${column.lead ? `<p>${escapeHtml(column.lead)}</p>` : ''}
+        ${Array.isArray(column.lines) && column.lines.length ? `<div class="grammar-compare-lines">${column.lines.map((line) => `<code>${escapeHtml(line)}</code>`).join('')}</div>` : ''}
+        ${grammarRichExample(column.example)}
+      </article>`).join('')}</div>`;
+    }
+
+    if (type === 'steps') {
+      const steps = Array.isArray(block.steps) ? block.steps : [];
+      return `<ol class="grammar-step-list">${steps.map((step, index) => `<li><span>${index + 1}</span><div><strong>${escapeHtml(step.title || '')}</strong><p>${escapeHtml(step.text || '')}</p></div></li>`).join('')}</ol>`;
+    }
+
+    if (type === 'bullets') {
+      const items = Array.isArray(block.items) ? block.items : [];
+      return `<ul class="grammar-rich-bullets">${items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
+    }
+
+    if (type === 'wordorder') {
+      const tokens = Array.isArray(block.tokens) ? block.tokens : [];
+      return `<article class="grammar-wordorder-panel">
+        <div class="grammar-token-row">${tokens.map((token, index) => `<span class="grammar-token grammar-token-${(index % 5) + 1}">${escapeHtml(token)}</span>${index < tokens.length - 1 ? '<span class="grammar-token-arrow" aria-hidden="true">→</span>' : ''}`).join('')}</div>
+        ${grammarRichExample(block.example)}
+      </article>`;
+    }
+
+    if (type === 'note') {
+      const variant = ['warning', 'contrast', 'info'].includes(block.variant) ? block.variant : 'info';
+      return `<aside class="grammar-rich-note grammar-rich-note-${variant}">
+        <strong>${escapeHtml(block.title || 'Обрати внимание')}</strong>
+        <p>${escapeHtml(block.text || '')}</p>
+      </aside>`;
+    }
+
+    if (type === 'mistakes') {
+      const items = Array.isArray(block.items) ? block.items : [];
+      return `<div class="grammar-rich-mistakes">${items.map((item) => `<article class="grammar-rich-mistake">
+        <div class="grammar-rich-mistake-pair"><span class="is-wrong">✕ ${escapeHtml(item.wrong || '')}</span><span class="is-right">✓ ${escapeHtml(item.right || '')}</span></div>
+        <p>${escapeHtml(item.reason || '')}</p>
+      </article>`).join('')}</div>`;
+    }
+
+    return '';
+  }
+
+  function renderGrammarRichTheory(topic) {
+    const intro = topic.intro || {};
+    const chapters = Array.isArray(topic.chapters) ? topic.chapters : [];
+    const introExample = grammarRichExample(intro.example);
+    return `<article class="card grammar-book-intro">
+      <div class="grammar-book-intro-head">
+        <div><span class="eyebrow">Глава</span><h2>${escapeHtml(topic.title || '')}</h2></div>
+        <span class="grammar-level-badge">${escapeHtml(topic.level || student.level)}</span>
+      </div>
+      <p class="grammar-book-lead">${escapeHtml(intro.lead || '')}</p>
+      ${intro.anchor ? `<div class="grammar-book-anchor"><strong>Главная мысль</strong><span>${escapeHtml(intro.anchor)}</span></div>` : ''}
+      ${introExample}
+    </article>
+    ${chapters.map((chapter, index) => `<section class="grammar-chapter" aria-labelledby="grammar-chapter-${index + 1}">
+      <header class="grammar-chapter-head">
+        <div class="grammar-chapter-number">${String(index + 1).padStart(2, '0')}</div>
+        <div>
+          ${chapter.kicker ? `<span class="eyebrow">${escapeHtml(chapter.kicker)}</span>` : ''}
+          <h2 id="grammar-chapter-${index + 1}">${escapeHtml(chapter.title || '')}</h2>
+          ${chapter.intro ? `<p>${escapeHtml(chapter.intro)}</p>` : ''}
+        </div>
+      </header>
+      <div class="grammar-chapter-body">${(Array.isArray(chapter.blocks) ? chapter.blocks : []).map((block) => grammarRichBlock(block)).join('')}</div>
+    </section>`).join('')}`;
+  }
+
   function renderGrammarTopic() {
     const id = queryParam('id');
     const topic = GRAMMAR_DATA.find((item) => item.id === id && item.status !== 'draft');
@@ -2572,7 +2789,7 @@
     }
 
     byId('grammar-hero-title').textContent = safeText(topic.title, 'Грамматика');
-    byId('grammar-hero-subtitle').textContent = `${safeText(topic.level, student.level)} Level · понятная схема и мини-тест`;
+    byId('grammar-hero-subtitle').textContent = `${safeText(topic.level, student.level)} Level · подробное объяснение и практика`;
 
     const overview = topic.overview || {};
     const uses = Array.isArray(topic.uses) ? topic.uses : [];
@@ -2601,130 +2818,14 @@
 
     root.innerHTML = `<div class="grammar-topic-shell">
       ${grammarStatusMarkup(topic, state)}
-
-      <article class="card grammar-lead-card">
-        <div class="grammar-lead-head">
-          <div>
-            <span class="eyebrow">Главная идея</span>
-            <h2>${escapeHtml(topic.title)}</h2>
-          </div>
-          <span class="grammar-level-badge">${escapeHtml(topic.level || student.level)}</span>
-        </div>
-        <p class="grammar-lead-text">${escapeHtml(overview.lead || '')}</p>
-        <div class="grammar-core-rule">
-          <div class="grammar-core-rule-icon" aria-hidden="true">!</div>
-          <div>
-            <strong>${escapeHtml(overview.keyRule || '')}</strong>
-            ${overview.example ? `<span>${escapeHtml(overview.example)}</span>` : ''}
-          </div>
-        </div>
-        ${subjects.length ? `<div class="grammar-subject-row" aria-label="Подлежащие">${subjects.map((subject) => `<span>${escapeHtml(subject)}</span>`).join('')}</div>` : ''}
-      </article>
-
-      ${uses.length ? `<section class="grammar-content-section" aria-labelledby="grammar-use-title">
-        <div class="grammar-section-heading">
-          <span class="grammar-section-number">1</span>
-          <div><h2 id="grammar-use-title">Когда используем</h2><p>Основные случаи для уровня A2.2</p></div>
-        </div>
-        <div class="grammar-use-grid">${uses.map((item) => `<article class="grammar-use-card">
-          <span class="grammar-use-icon" aria-hidden="true">${escapeHtml(item.icon || '•')}</span>
-          <h3>${escapeHtml(item.title || '')}</h3>
-          <p>${escapeHtml(item.text || '')}</p>
-          <code>${escapeHtml(item.example || '')}</code>
-        </article>`).join('')}</div>
-      </section>` : ''}
-
-      ${forms.length ? `<section class="grammar-content-section" aria-labelledby="grammar-forms-title">
-        <div class="grammar-section-heading">
-          <span class="grammar-section-number">2</span>
-          <div><h2 id="grammar-forms-title">Четыре формы</h2><p>Сначала запомни структуру, затем смотри на пример</p></div>
-        </div>
-        <div class="grammar-form-grid">${forms.map((form) => `<article class="grammar-form-card grammar-form-${escapeHtml(form.id || 'default')}">
-          <div class="grammar-form-head">
-            <span class="grammar-form-icon" aria-hidden="true">${escapeHtml(form.icon || '•')}</span>
-            <h3>${escapeHtml(form.title || '')}</h3>
-          </div>
-          <div class="grammar-formula">${escapeHtml(form.formula || '')}</div>
-          <div class="grammar-example">
-            <strong>${escapeHtml(form.example || '')}</strong>
-            <span>${escapeHtml(form.translation || '')}</span>
-          </div>
-          <p>${escapeHtml(form.note || '')}</p>
-        </article>`).join('')}</div>
-      </section>` : ''}
-
-      ${contrast.ordinary && contrast.be ? `<section class="grammar-content-section" aria-labelledby="grammar-contrast-title">
-        <div class="grammar-section-heading">
-          <span class="grammar-section-number">3</span>
-          <div><h2 id="grammar-contrast-title">${escapeHtml(contrast.title || 'Обычный глагол или be?')}</h2><p>${escapeHtml(contrast.intro || '')}</p></div>
-        </div>
-        <div class="grammar-contrast-grid">
-          <article class="grammar-contrast-card ordinary">
-            <span class="grammar-contrast-label">A</span>
-            <h3>${escapeHtml(contrast.ordinary.label || '')}</h3>
-            <p class="grammar-verb-list">${escapeHtml(contrast.ordinary.verbs || '')}</p>
-            <div class="grammar-pattern-list">
-              <span><b>+</b> ${escapeHtml(contrast.ordinary.affirmative || '')}</span>
-              <span><b>−</b> ${escapeHtml(contrast.ordinary.negative || '')}</span>
-              <span><b>?</b> ${escapeHtml(contrast.ordinary.question || '')}</span>
-            </div>
-            <p class="grammar-contrast-rule">${escapeHtml(contrast.ordinary.rule || '')}</p>
-          </article>
-          <article class="grammar-contrast-card be">
-            <span class="grammar-contrast-label">B</span>
-            <h3>${escapeHtml(contrast.be.label || '')}</h3>
-            <p class="grammar-verb-list">${escapeHtml(contrast.be.verbs || '')}</p>
-            <div class="grammar-pattern-list">
-              <span><b>+</b> ${escapeHtml(contrast.be.affirmative || '')}</span>
-              <span><b>−</b> ${escapeHtml(contrast.be.negative || '')}</span>
-              <span><b>?</b> ${escapeHtml(contrast.be.question || '')}</span>
-            </div>
-            <p class="grammar-contrast-rule">${escapeHtml(contrast.be.rule || '')}</p>
-          </article>
-        </div>
-      </section>` : ''}
-
-      ${pattern.length ? `<section class="grammar-content-section" aria-labelledby="grammar-question-title">
-        <div class="grammar-section-heading">
-          <span class="grammar-section-number">4</span>
-          <div><h2 id="grammar-question-title">${escapeHtml(builder.title || 'Порядок слов')}</h2><p>${escapeHtml(builder.note || '')}</p></div>
-        </div>
-        <article class="card grammar-builder-card">
-          <div class="grammar-token-row">${pattern.map((token, index) => `<span class="grammar-token grammar-token-${index + 1}">${escapeHtml(token)}</span>${index < pattern.length - 1 ? '<span class="grammar-token-arrow" aria-hidden="true">→</span>' : ''}`).join('')}</div>
-          <div class="grammar-builder-example">
-            <strong>${escapeHtml(builder.example || '')}</strong>
-            <span>${escapeHtml(builder.translation || '')}</span>
-          </div>
-        </article>
-      </section>` : ''}
-
-      ${memorySteps.length ? `<article class="card grammar-memory-card">
-        <div class="grammar-memory-icon" aria-hidden="true">⚡</div>
-        <div>
-          <span class="eyebrow">Алгоритм</span>
-          <h2>${escapeHtml(memoryRule.title || 'Быстрая проверка')}</h2>
-          <ol>${memorySteps.map((step) => `<li>${escapeHtml(step)}</li>`).join('')}</ol>
-        </div>
-      </article>` : ''}
-
-      ${mistakes.length ? `<section class="grammar-content-section" aria-labelledby="grammar-mistakes-title">
-        <div class="grammar-section-heading">
-          <span class="grammar-section-number">5</span>
-          <div><h2 id="grammar-mistakes-title">Частые ошибки</h2><p>Сравни неправильный и правильный вариант</p></div>
-        </div>
-        <div class="grammar-mistake-list">${mistakes.map((mistake) => `<article class="grammar-mistake-row">
-          <div class="grammar-mistake-wrong"><span>✕</span><s>${escapeHtml(mistake.wrong || '')}</s></div>
-          <div class="grammar-mistake-right"><span>✓</span><strong>${escapeHtml(mistake.right || '')}</strong></div>
-          <p>${escapeHtml(mistake.reason || '')}</p>
-        </article>`).join('')}</div>
-      </section>` : ''}
+      ${renderGrammarRichTheory(topic)}
 
       <section class="grammar-content-section grammar-test-section" aria-labelledby="mini-test-title">
         <div class="grammar-test-intro">
           <div>
-            <span class="eyebrow">Мини-тест</span>
-            <h2 id="mini-test-title">${quizExercises.length ? '4 упражнения × 4 задания' : `${quiz.length} задания: от лёгкого к сложному`}</h2>
-            <p>Ответь на все вопросы. Для зачёта нужно ${quiz.length} из ${quiz.length}. После успешной проверки ответы блокируются.</p>
+            <span class="eyebrow">Практика</span>
+            <h2 id="mini-test-title">${quizExercises.length ? '4 упражнения × 4 задания' : `${quiz.length} задания: от базового к проверочному`}</h2>
+            <p>Существующие упражнения и ответы сохранены. Для зачёта нужно ${quiz.length} из ${quiz.length}. После успешной проверки ответы блокируются.</p>
           </div>
           <span class="grammar-test-goal">${quiz.length} / ${quiz.length}</span>
         </div>

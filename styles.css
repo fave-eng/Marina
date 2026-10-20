@@ -3170,3 +3170,583 @@ body[data-view="lesson"] #lesson-root {
   .reading-quiz-reference { position: static; }
   .reading-quiz-layout { grid-template-columns: 1fr; }
 }
+
+/* Grammar chapters · textbook-style theory (v16) */
+.grammar-book-intro {
+  padding: clamp(20px, 4vw, 30px);
+  border-color: #c7d2fe;
+  background: linear-gradient(150deg, #fff 0%, #f8faff 58%, #f5f3ff 100%);
+}
+
+.grammar-book-intro-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.grammar-book-intro h2 {
+  margin-top: 5px;
+  max-width: 760px;
+  font-size: clamp(1.55rem, 4.5vw, 2.25rem);
+  line-height: 1.12;
+}
+
+.grammar-book-lead {
+  max-width: 820px;
+  margin-top: 17px;
+  color: #334155;
+  font-size: clamp(.98rem, 2.5vw, 1.06rem);
+  line-height: 1.75;
+}
+
+.grammar-book-anchor {
+  display: grid;
+  gap: 4px;
+  margin-top: 18px;
+  border-left: 4px solid #6366f1;
+  border-radius: 0 14px 14px 0;
+  padding: 13px 15px;
+  background: #eef2ff;
+}
+
+.grammar-book-anchor strong {
+  color: #3730a3;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: .82rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.grammar-book-anchor span {
+  color: #312e81;
+  line-height: 1.6;
+}
+
+.grammar-chapter {
+  display: grid;
+  gap: 15px;
+  scroll-margin-top: 90px;
+}
+
+.grammar-chapter-head {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 13px;
+  align-items: start;
+}
+
+.grammar-chapter-number {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border: 1px solid #c7d2fe;
+  border-radius: 15px;
+  color: #4338ca;
+  background: #eef2ff;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: .78rem;
+  font-weight: 900;
+  letter-spacing: .04em;
+}
+
+.grammar-chapter-head h2 {
+  margin-top: 4px;
+  font-size: clamp(1.22rem, 3.8vw, 1.62rem);
+  line-height: 1.25;
+}
+
+.grammar-chapter-head p {
+  max-width: 820px;
+  margin-top: 6px;
+  color: #64748b;
+  font-size: .9rem;
+  line-height: 1.65;
+}
+
+.grammar-chapter-body {
+  display: grid;
+  gap: 13px;
+  margin-left: 61px;
+}
+
+.grammar-rich-prose,
+.grammar-visual-card,
+.grammar-rule-panel,
+.grammar-wordorder-panel,
+.grammar-rich-note {
+  border: 1px solid #dbe3ef;
+  border-radius: 18px;
+  background: #fff;
+}
+
+.grammar-rich-prose {
+  padding: 17px 18px;
+}
+
+.grammar-rich-prose p {
+  color: #334155;
+  line-height: 1.72;
+}
+
+.grammar-rich-prose p + p {
+  margin-top: 10px;
+}
+
+.grammar-rich-example {
+  display: grid;
+  gap: 3px;
+  margin-top: 12px;
+  border-radius: 13px;
+  padding: 11px 12px;
+  background: #f8fafc;
+}
+
+.grammar-rich-example strong {
+  color: #172554;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: .92rem;
+  line-height: 1.5;
+}
+
+.grammar-rich-example span {
+  color: #64748b;
+  font-size: .82rem;
+  line-height: 1.5;
+}
+
+.grammar-rich-example small {
+  color: #7c3aed;
+  font-size: .76rem;
+  line-height: 1.45;
+}
+
+.grammar-focus {
+  border-radius: 5px;
+  padding: 0 .18em;
+  color: #312e81;
+  background: #e0e7ff;
+  font-weight: 900;
+}
+
+.grammar-rich-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 11px;
+}
+
+.grammar-rich-mini-card {
+  min-width: 0;
+  border: 1px solid #dbe3ef;
+  border-radius: 17px;
+  padding: 16px;
+  background: #fff;
+}
+
+.grammar-rich-mini-card h3,
+.grammar-visual-card h3,
+.grammar-rule-panel h3,
+.grammar-compare-panel h3 {
+  color: #1e293b;
+  font-size: .98rem;
+  line-height: 1.35;
+}
+
+.grammar-rich-mini-card > p,
+.grammar-visual-card > p,
+.grammar-rule-panel > p,
+.grammar-compare-panel > p {
+  margin-top: 6px;
+  color: #64748b;
+  font-size: .83rem;
+  line-height: 1.6;
+}
+
+.grammar-rich-table-wrap {
+  overflow-x: auto;
+  border: 1px solid #dbe3ef;
+  border-radius: 17px;
+  background: #fff;
+  -webkit-overflow-scrolling: touch;
+}
+
+.grammar-rich-table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.grammar-rich-table th,
+.grammar-rich-table td {
+  border-bottom: 1px solid #e2e8f0;
+  padding: 12px 14px;
+  vertical-align: top;
+  font-size: .84rem;
+  line-height: 1.5;
+}
+
+.grammar-rich-table th {
+  color: #334155;
+  background: #f8fafc;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: .76rem;
+  text-transform: uppercase;
+  letter-spacing: .035em;
+}
+
+.grammar-rich-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.grammar-rich-table td:first-child {
+  color: #3730a3;
+  font-weight: 800;
+}
+
+.grammar-rule-panel,
+.grammar-wordorder-panel,
+.grammar-visual-card {
+  padding: 17px 18px;
+}
+
+.grammar-rule-formula {
+  margin-top: 10px;
+  border-radius: 12px;
+  padding: 11px 13px;
+  color: #312e81;
+  background: #eef2ff;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: .93rem;
+  font-weight: 850;
+  line-height: 1.5;
+}
+
+.grammar-rich-compare {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.grammar-rich-compare.is-many {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grammar-compare-panel {
+  min-width: 0;
+  border: 1px solid #cbd5e1;
+  border-top: 4px solid #6366f1;
+  border-radius: 17px;
+  padding: 16px;
+  background: #fff;
+}
+
+.grammar-compare-panel:nth-child(even) {
+  border-top-color: #8b5cf6;
+}
+
+.grammar-compare-lines {
+  display: grid;
+  gap: 6px;
+  margin-top: 11px;
+}
+
+.grammar-compare-lines code {
+  border-radius: 9px;
+  padding: 8px 9px;
+  color: #334155;
+  background: #f8fafc;
+  font-family: "Inter", sans-serif;
+  font-size: .8rem;
+  white-space: normal;
+}
+
+.grammar-step-list {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.grammar-step-list li {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 11px;
+  align-items: start;
+  border: 1px solid #dbe3ef;
+  border-radius: 15px;
+  padding: 13px 14px;
+  background: #fff;
+}
+
+.grammar-step-list li > span {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 11px;
+  color: #fff;
+  background: #4f46e5;
+  font-weight: 900;
+}
+
+.grammar-step-list strong {
+  color: #1e293b;
+  font-size: .88rem;
+}
+
+.grammar-step-list p {
+  margin-top: 3px;
+  color: #64748b;
+  font-size: .82rem;
+  line-height: 1.55;
+}
+
+.grammar-rich-bullets {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.grammar-rich-bullets li {
+  position: relative;
+  border: 1px solid #dbe3ef;
+  border-radius: 13px;
+  padding: 11px 13px 11px 34px;
+  color: #334155;
+  background: #fff;
+  line-height: 1.55;
+}
+
+.grammar-rich-bullets li::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 18px;
+  width: 8px;
+  height: 8px;
+  border-radius: 99px;
+  background: #6366f1;
+}
+
+.grammar-rich-note {
+  padding: 14px 16px;
+  border-left-width: 5px;
+}
+
+.grammar-rich-note strong {
+  display: block;
+  color: #1e293b;
+  font-size: .88rem;
+}
+
+.grammar-rich-note p {
+  margin-top: 4px;
+  color: #475569;
+  font-size: .83rem;
+  line-height: 1.6;
+}
+
+.grammar-rich-note-info {
+  border-left-color: #2563eb;
+  background: #eff6ff;
+}
+
+.grammar-rich-note-warning {
+  border-left-color: #ea580c;
+  background: #fff7ed;
+}
+
+.grammar-rich-note-contrast {
+  border-left-color: #7c3aed;
+  background: #f5f3ff;
+}
+
+.grammar-rich-mistakes {
+  display: grid;
+  gap: 9px;
+}
+
+.grammar-rich-mistake {
+  border: 1px solid #dbe3ef;
+  border-radius: 15px;
+  padding: 13px 14px;
+  background: #fff;
+}
+
+.grammar-rich-mistake-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.grammar-rich-mistake-pair span {
+  border-radius: 10px;
+  padding: 9px 10px;
+  font-size: .81rem;
+  line-height: 1.45;
+}
+
+.grammar-rich-mistake-pair .is-wrong {
+  color: #991b1b;
+  background: #fef2f2;
+}
+
+.grammar-rich-mistake-pair .is-right {
+  color: #166534;
+  background: #f0fdf4;
+  font-weight: 700;
+}
+
+.grammar-rich-mistake p {
+  margin-top: 8px;
+  color: #64748b;
+  font-size: .8rem;
+  line-height: 1.55;
+}
+
+.grammar-timeline-card {
+  overflow: hidden;
+}
+
+.grammar-timeline {
+  position: relative;
+  height: 92px;
+  margin-top: 12px;
+}
+
+.grammar-timeline-line {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 34px;
+  height: 3px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #c7d2fe, #818cf8, #c7d2fe);
+}
+
+.grammar-timeline-point {
+  position: absolute;
+  top: 24px;
+  display: grid;
+  gap: 9px;
+  justify-items: center;
+  transform: translateX(-50%);
+}
+
+.grammar-timeline-point b {
+  width: 22px;
+  height: 22px;
+  border: 5px solid #fff;
+  border-radius: 50%;
+  background: #6366f1;
+  box-shadow: 0 0 0 2px #c7d2fe;
+}
+
+.grammar-timeline-point.is-now b {
+  background: #7c3aed;
+  box-shadow: 0 0 0 3px #ddd6fe;
+}
+
+.grammar-timeline-point em {
+  color: #64748b;
+  font-size: .73rem;
+  font-style: normal;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.grammar-timeline-point.is-now em {
+  color: #6d28d9;
+  font-weight: 900;
+}
+
+.grammar-frequency-scale {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 13px;
+}
+
+.grammar-scale-stop {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+
+.grammar-scale-stop span {
+  display: block;
+  height: 7px;
+  border-radius: 99px;
+  background: #6366f1;
+}
+
+.grammar-scale-stop strong {
+  overflow-wrap: anywhere;
+  color: #334155;
+  font-size: .74rem;
+  text-align: center;
+}
+
+.grammar-wordorder-panel .grammar-token-row {
+  margin-bottom: 3px;
+}
+
+@media (max-width: 780px) {
+  .grammar-rich-card-grid,
+  .grammar-rich-compare,
+  .grammar-rich-compare.is-many {
+    grid-template-columns: 1fr;
+  }
+
+  .grammar-chapter-body {
+    margin-left: 0;
+  }
+
+  .grammar-frequency-scale {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .grammar-book-intro-head {
+    display: block;
+  }
+
+  .grammar-book-intro-head .grammar-level-badge {
+    display: none;
+  }
+
+  .grammar-chapter-head {
+    grid-template-columns: 39px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .grammar-chapter-number {
+    width: 39px;
+    height: 39px;
+    border-radius: 12px;
+  }
+
+  .grammar-rich-mistake-pair {
+    grid-template-columns: 1fr;
+  }
+
+  .grammar-rich-table {
+    min-width: 560px;
+  }
+
+  .grammar-timeline {
+    height: 104px;
+  }
+
+  .grammar-timeline-point em {
+    max-width: 54px;
+    white-space: normal;
+    text-align: center;
+  }
+}

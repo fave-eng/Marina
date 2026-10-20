@@ -1,0 +1,421 @@
+{
+  "id": "lesson-16",
+  "number": 16,
+  "title": "Review · Lessons 1–15",
+  "subtitle": "Speakout A2 · Grammar and vocabulary review",
+  "status": "available",
+  "page": "lesson.html?id=lesson-16",
+  "grammarIds": [],
+  "publishedAt": "2026-10-20",
+  "totalPoints": 42,
+  "notification": {
+    "enabled": true,
+    "version": 1
+  },
+  "blocks": [
+    {
+      "type": "section",
+      "eyebrow": "REVIEW · Lessons 1–15",
+      "title": "GRAMMAR AND STRUCTURES"
+    },
+    {
+      "type": "exercise",
+      "id": "l16-present-simple",
+      "title": "1. Choose the correct words to complete the sentences.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "sentences",
+          "number": "",
+          "prompt": "",
+          "input": "inline-single",
+          "segments": [
+            "1 My father ",
+            " at a hospital.\n2 ",
+            " you live near the city centre?\n3 Anna ",
+            " like coffee.\n4 Where ",
+            " your sister work?\n5 We ",
+            " tired after class.\n6 ",
+            " your friend a teacher?"
+          ],
+          "choices": [
+            {
+              "number": 1,
+              "options": [
+                "work",
+                "works"
+              ],
+              "answer": 1
+            },
+            {
+              "number": 2,
+              "options": [
+                "Do",
+                "Does"
+              ],
+              "answer": 0
+            },
+            {
+              "number": 3,
+              "options": [
+                "don’t",
+                "doesn’t"
+              ],
+              "answer": 1
+            },
+            {
+              "number": 4,
+              "options": [
+                "do",
+                "does"
+              ],
+              "answer": 1
+            },
+            {
+              "number": 5,
+              "options": [
+                "are",
+                "do"
+              ],
+              "answer": 0
+            },
+            {
+              "number": 6,
+              "options": [
+                "Is",
+                "Does"
+              ],
+              "answer": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l16-possessives",
+      "title": "2. Choose the correct possessive form.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "1",
+          "prompt": "This is my ______ room.",
+          "input": "single",
+          "options": [
+            "sister",
+            "sister’s",
+            "sisters’"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "2",
+          "prompt": "My ______ car is outside.",
+          "input": "single",
+          "options": [
+            "parents",
+            "parent’s",
+            "parents’"
+          ],
+          "answer": 2
+        },
+        {
+          "id": "3",
+          "prompt": "The ______ bedroom is upstairs.",
+          "input": "single",
+          "options": [
+            "childrens",
+            "children’s",
+            "childrens’"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "4",
+          "prompt": "That is ______ desk.",
+          "input": "single",
+          "options": [
+            "Simon",
+            "Simon’s",
+            "Simons’"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "5",
+          "prompt": "The ______ books are on the table.",
+          "input": "single",
+          "options": [
+            "students",
+            "student’s",
+            "students’"
+          ],
+          "answer": 2
+        },
+        {
+          "id": "6",
+          "prompt": "______ phone is on the sofa.",
+          "input": "single",
+          "options": [
+            "Georgia",
+            "Georgia’s",
+            "Georgias’"
+          ],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l16-food-determiners",
+      "title": "3. Complete the conversation with a, an, some or any.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "conversation",
+          "number": "",
+          "prompt": "",
+          "input": "gaps",
+          "layout": "dialogue",
+          "segments": [
+            "A: Have we got 1 ",
+            " bread?\nB: Yes, and we’ve got 2 ",
+            " apples.\nA: Great. Is there 3 ",
+            " orange juice?\nB: No, but there’s 4 ",
+            " bottle of sparkling water.\nA: I’d like 5 ",
+            " egg, too.\nB: Sorry, we haven’t got 6 ",
+            " eggs."
+          ],
+          "answers": [
+            "any",
+            "some",
+            "any",
+            "a",
+            "an",
+            "any"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l16-frequency",
+      "title": "4. Put the word or phrase in brackets in the correct place in the sentence.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "1",
+          "prompt": "I get up at 7 a.m. (usually)",
+          "input": "text",
+          "answer": "I usually get up at 7 a.m."
+        },
+        {
+          "id": "2",
+          "prompt": "My sister is tired after work. (often)",
+          "input": "text",
+          "answer": "My sister is often tired after work."
+        },
+        {
+          "id": "3",
+          "prompt": "We go shopping Saturdays. (on)",
+          "input": "text",
+          "answer": "We go shopping on Saturdays."
+        },
+        {
+          "id": "4",
+          "prompt": "I meet my friends for coffee a week. (twice)",
+          "input": "text",
+          "answer": "I meet my friends for coffee twice a week."
+        },
+        {
+          "id": "5",
+          "prompt": "He watches TV in the evening. (hardly ever)",
+          "input": "text",
+          "answer": "He hardly ever watches TV in the evening."
+        },
+        {
+          "id": "6",
+          "prompt": "Are you late for work? (often)",
+          "input": "text",
+          "answer": "Are you often late for work?"
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l16-like-ing",
+      "title": "5. Complete the sentences with the -ing form of the verbs in the box.",
+      "wordBank": [
+        "cook",
+        "get up",
+        "go",
+        "meet",
+        "play",
+        "shop"
+      ],
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "sentences",
+          "number": "",
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "1 I love ",
+            " dinner for friends.\n2 My brother hates ",
+            " early.\n3 Do you like ",
+            " to restaurants?\n4 We enjoy ",
+            " friends after work.\n5 She loves ",
+            " tennis.\n6 I don’t like ",
+            " for clothes at the weekend."
+          ],
+          "answers": [
+            "cooking",
+            "getting up",
+            "going",
+            "meeting",
+            "playing",
+            "shopping"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "eyebrow": "REVIEW · Lessons 1–15",
+      "title": "VOCABULARY IN CONTEXT"
+    },
+    {
+      "type": "exercise",
+      "id": "l16-mixed-vocabulary",
+      "title": "6. Complete the sentences with the words and phrases in the box.",
+      "wordBank": [
+        "cupboard",
+        "hungry",
+        "meeting",
+        "nurse",
+        "service charge",
+        "waiter"
+      ],
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "sentences",
+          "number": "",
+          "prompt": "",
+          "input": "gaps",
+          "wideGaps": true,
+          "segments": [
+            "1 My aunt works in a hospital. She’s a ",
+            ".\n2 I haven’t eaten since breakfast. I’m ",
+            ".\n3 Put the glasses in the ",
+            " next to the sink.\n4 The ",
+            " is ready to take our order.\n5 The restaurant adds a 10% ",
+            " to the bill.\n6 I have a work ",
+            " at 11 a.m."
+          ],
+          "answers": [
+            "nurse",
+            "hungry",
+            "cupboard",
+            "waiter",
+            "service charge",
+            "meeting"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l16-demonstratives-home",
+      "title": "7. Complete the sentences with this, that, these, those, here or there.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "1",
+          "prompt": "Come and sit ______, next to me.",
+          "input": "select",
+          "options": [
+            "this",
+            "that",
+            "these",
+            "those",
+            "here",
+            "there"
+          ],
+          "answer": 4
+        },
+        {
+          "id": "2",
+          "prompt": "______ sofa here is very comfortable.",
+          "input": "select",
+          "options": [
+            "this",
+            "that",
+            "these",
+            "those",
+            "here",
+            "there"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "3",
+          "prompt": "Can you pass me ______ cups over there?",
+          "input": "select",
+          "options": [
+            "this",
+            "that",
+            "these",
+            "those",
+            "here",
+            "there"
+          ],
+          "answer": 3
+        },
+        {
+          "id": "4",
+          "prompt": "______ keys here are mine.",
+          "input": "select",
+          "options": [
+            "this",
+            "that",
+            "these",
+            "those",
+            "here",
+            "there"
+          ],
+          "answer": 2
+        },
+        {
+          "id": "5",
+          "prompt": "The bathroom is over ______, next to the bedroom.",
+          "input": "select",
+          "options": [
+            "this",
+            "that",
+            "these",
+            "those",
+            "here",
+            "there"
+          ],
+          "answer": 5
+        },
+        {
+          "id": "6",
+          "prompt": "Do you like ______ picture on the wall over there?",
+          "input": "select",
+          "options": [
+            "this",
+            "that",
+            "these",
+            "those",
+            "here",
+            "there"
+          ],
+          "answer": 1
+        }
+      ]
+    }
+  ]
+}
