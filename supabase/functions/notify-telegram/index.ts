@@ -138,6 +138,25 @@ function stableChoice(seed: string, size: number): number {
   return size > 0 ? hash % size : 0
 }
 
+function notificationSequence(seed: string): number {
+  const match = /^lesson-(\d+):(\d+)$/.exec(seed)
+  if (match) return Math.max(0, Number(match[1]) + Number(match[2]) - 2)
+  return stableChoice(seed, 10000)
+}
+
+function buildGreeting(seed: string): string {
+  const variants = [
+    'Hi there! 👋',
+    'Hello again! 🌟',
+    'Ready for some English? 📚',
+    'A new English challenge is here! 💬',
+    "It's English time! ✨",
+    "Here's something new to practise! 🚀",
+    'Another little step forward! 🌱',
+  ]
+  return variants[notificationSequence(seed) % variants.length]
+}
+
 function buildMotivation(seed: string): string {
   const variants = [
     'Good luck! ⭐',
@@ -145,8 +164,10 @@ function buildMotivation(seed: string): string {
     "You've got this! 🌟",
     'Take your time and do your best! ✨',
     'Enjoy the lesson! 📚',
+    "Keep practising — you're making progress! 🚀",
+    'A little practice goes a long way! 🌱',
   ]
-  return variants[stableChoice(seed, variants.length)]
+  return variants[(notificationSequence(seed) + 2) % variants.length]
 }
 
 function buildMessage(
@@ -165,7 +186,7 @@ function buildMessage(
   else steps.push('Open the homework and complete the tasks.')
 
   return [
-    'Hi there! 👋',
+    buildGreeting(seed),
     '',
     'Your new English homework is ready.',
     '',
