@@ -1,0 +1,484 @@
+{
+  "id": "lesson-19",
+  "number": 19,
+  "title": "There is / there are · local area",
+  "subtitle": "Speakout · Unit 3 · Lesson 3D: Grammar and Listening",
+  "status": "available",
+  "page": "lesson.html?id=lesson-19",
+  "vocabularyId": "",
+  "grammarIds": [
+    "grammar-lesson-19-there-is-there-are"
+  ],
+  "publishedAt": "2026-10-25",
+  "totalPoints": 30,
+  "notification": {
+    "enabled": true,
+    "version": 1
+  },
+  "blocks": [
+    {
+      "type": "section",
+      "eyebrow": "Lesson 3D · Grammar",
+      "title": "THERE IS, THERE ARE",
+      "text": "Describe what exists in a place and ask about things nearby."
+    },
+    {
+      "type": "grammar-link",
+      "grammarId": "grammar-lesson-19-there-is-there-are",
+      "title": "There is / there are",
+      "text": "Сначала повтори правило: единственное и множественное число, отрицания, вопросы, some/any, much/many и a lot of/lots of.",
+      "buttonLabel": "Открыть грамматику"
+    },
+    {
+      "type": "exercise",
+      "id": "l19-grammar-1a",
+      "title": "1A. Choose the correct words to complete the tourist advert.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "advert",
+          "number": "",
+          "prompt": "",
+          "input": "inline-single",
+          "segments": [
+            "Welcome to the village of Little Harding, the perfect place to visit with your family or a quiet day out with friends. There aren’t ",
+            " cinemas or theatres here, but there are ",
+            " of other things to do. There are a ",
+            " of open spaces for you to enjoy nature, and ",
+            " a big forest to walk in. There isn’t ",
+            " traffic, even in the summer, and there ",
+            " hardly any noise, so you can relax. And don’t worry if you forget to bring food, because there’s ",
+            " small café which sells meals and ",
+            " of our famous ice cream!"
+          ],
+          "choices": [
+            {
+              "number": "1",
+              "options": [
+                "some",
+                "any"
+              ],
+              "answer": 1
+            },
+            {
+              "number": "2",
+              "options": [
+                "a",
+                "lots"
+              ],
+              "answer": 1
+            },
+            {
+              "number": "3",
+              "options": [
+                "lot",
+                "lots"
+              ],
+              "answer": 0
+            },
+            {
+              "number": "4",
+              "options": [
+                "there are",
+                "there’s"
+              ],
+              "answer": 1
+            },
+            {
+              "number": "5",
+              "options": [
+                "much",
+                "many"
+              ],
+              "answer": 0
+            },
+            {
+              "number": "6",
+              "options": [
+                "is",
+                "isn’t"
+              ],
+              "answer": 0
+            },
+            {
+              "number": "7",
+              "options": [
+                "some",
+                "a"
+              ],
+              "answer": 1
+            },
+            {
+              "number": "8",
+              "options": [
+                "lots",
+                "lot"
+              ],
+              "answer": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "audio",
+      "id": "l19-grammar-1b-audio",
+      "title": "1B. 3.10 Listen and check.",
+      "audio": "audio/Speakout_A2_WB_Unit 3_Audio/SO3_A2_WB_3D_Audio_3_10.mp3",
+      "response": false
+    },
+    {
+      "type": "exercise",
+      "id": "l19-grammar-1c",
+      "title": "1C. Match (1–8) to (a–h) to make sentences.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "1",
+          "prompt": "There’s a",
+          "input": "select",
+          "options": [
+            "a  many eggs in the fridge.",
+            "b  lot of traffic in this area in the morning.",
+            "c  people here.",
+            "d  apples in the kitchen?",
+            "e  any good cafés near here?",
+            "f  a cinema in our town.",
+            "g  a bus station in the city centre?",
+            "h  noise round here at night?"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "2",
+          "prompt": "Are there",
+          "input": "select",
+          "options": [
+            "a  many eggs in the fridge.",
+            "b  lot of traffic in this area in the morning.",
+            "c  people here.",
+            "d  apples in the kitchen?",
+            "e  any good cafés near here?",
+            "f  a cinema in our town.",
+            "g  a bus station in the city centre?",
+            "h  noise round here at night?"
+          ],
+          "answer": 4
+        },
+        {
+          "id": "3",
+          "prompt": "There aren’t",
+          "input": "select",
+          "options": [
+            "a  many eggs in the fridge.",
+            "b  lot of traffic in this area in the morning.",
+            "c  people here.",
+            "d  apples in the kitchen?",
+            "e  any good cafés near here?",
+            "f  a cinema in our town.",
+            "g  a bus station in the city centre?",
+            "h  noise round here at night?"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "4",
+          "prompt": "Is there",
+          "input": "select",
+          "options": [
+            "a  many eggs in the fridge.",
+            "b  lot of traffic in this area in the morning.",
+            "c  people here.",
+            "d  apples in the kitchen?",
+            "e  any good cafés near here?",
+            "f  a cinema in our town.",
+            "g  a bus station in the city centre?",
+            "h  noise round here at night?"
+          ],
+          "answer": 6
+        },
+        {
+          "id": "5",
+          "prompt": "There isn’t",
+          "input": "select",
+          "options": [
+            "a  many eggs in the fridge.",
+            "b  lot of traffic in this area in the morning.",
+            "c  people here.",
+            "d  apples in the kitchen?",
+            "e  any good cafés near here?",
+            "f  a cinema in our town.",
+            "g  a bus station in the city centre?",
+            "h  noise round here at night?"
+          ],
+          "answer": 5
+        },
+        {
+          "id": "6",
+          "prompt": "Is there much",
+          "input": "select",
+          "options": [
+            "a  many eggs in the fridge.",
+            "b  lot of traffic in this area in the morning.",
+            "c  people here.",
+            "d  apples in the kitchen?",
+            "e  any good cafés near here?",
+            "f  a cinema in our town.",
+            "g  a bus station in the city centre?",
+            "h  noise round here at night?"
+          ],
+          "answer": 7
+        },
+        {
+          "id": "7",
+          "prompt": "There aren’t many",
+          "input": "select",
+          "options": [
+            "a  many eggs in the fridge.",
+            "b  lot of traffic in this area in the morning.",
+            "c  people here.",
+            "d  apples in the kitchen?",
+            "e  any good cafés near here?",
+            "f  a cinema in our town.",
+            "g  a bus station in the city centre?",
+            "h  noise round here at night?"
+          ],
+          "answer": 2
+        },
+        {
+          "id": "8",
+          "prompt": "Are there any",
+          "input": "select",
+          "options": [
+            "a  many eggs in the fridge.",
+            "b  lot of traffic in this area in the morning.",
+            "c  people here.",
+            "d  apples in the kitchen?",
+            "e  any good cafés near here?",
+            "f  a cinema in our town.",
+            "g  a bus station in the city centre?",
+            "h  noise round here at night?"
+          ],
+          "answer": 3
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l19-grammar-1d",
+      "title": "1D. The sentences below have a mistake. Choose the best option to correct the mistake.",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "1",
+          "prompt": "There are a lot of traffic in the town centre.",
+          "input": "single",
+          "options": [
+            "a  is",
+            "b  aren’t",
+            "c  not"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "2",
+          "prompt": "There are any shops near here?",
+          "input": "single",
+          "options": [
+            "a  Is there any",
+            "b  There is any",
+            "c  Are there any"
+          ],
+          "answer": 2
+        },
+        {
+          "id": "3",
+          "prompt": "There are no noise in this area.",
+          "input": "single",
+          "options": [
+            "a  ’s no",
+            "b  are not",
+            "c  ’s any"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "4",
+          "prompt": "A: Is there a supermarket near here?\nB: No, there aren’t.",
+          "input": "single",
+          "options": [
+            "a  not",
+            "b  isn’t",
+            "c  is"
+          ],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "eyebrow": "Lesson 3D · Listening",
+      "title": "A NEW FLAT",
+      "text": "Listen to two people looking around a new flat and notice what they say about the local area."
+    },
+    {
+      "type": "exercise",
+      "id": "l19-listening-2a",
+      "title": "2A. 3.11 Listen to two people looking around a new flat. Are the sentences True (T) or False (F)?",
+      "audio": "audio/Speakout_A2_WB_Unit 3_Audio/SO3_A2_WB_3D_Audio_3_11.mp3",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "1",
+          "prompt": "The flat has three bedrooms.",
+          "input": "single",
+          "options": [
+            "T",
+            "F"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "2",
+          "prompt": "The oven and fridge are new.",
+          "input": "single",
+          "options": [
+            "T",
+            "F"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "3",
+          "prompt": "There aren’t any shops near the flat.",
+          "input": "single",
+          "options": [
+            "T",
+            "F"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "4",
+          "prompt": "You can walk to a big supermarket.",
+          "input": "single",
+          "options": [
+            "T",
+            "F"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "5",
+          "prompt": "James hasn’t got a car.",
+          "input": "single",
+          "options": [
+            "T",
+            "F"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "6",
+          "prompt": "There’s a school in King Street.",
+          "input": "single",
+          "options": [
+            "T",
+            "F"
+          ],
+          "answer": 1
+        },
+        {
+          "id": "7",
+          "prompt": "The street is quiet at weekends.",
+          "input": "single",
+          "options": [
+            "T",
+            "F"
+          ],
+          "answer": 0
+        },
+        {
+          "id": "8",
+          "prompt": "There’s a small restaurant nearby.",
+          "input": "single",
+          "options": [
+            "T",
+            "F"
+          ],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l19-listening-2b",
+      "title": "2B. 3.11 Listen again. Choose the things in the box they talk about.",
+      "audio": "audio/Speakout_A2_WB_Unit 3_Audio/SO3_A2_WB_3D_Audio_3_11.mp3",
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id": "topics",
+          "number": "",
+          "prompt": "",
+          "input": "multiple",
+          "options": [
+            "cafés",
+            "cinemas",
+            "forest",
+            "neighbours",
+            "noise",
+            "park",
+            "restaurants",
+            "shops",
+            "station",
+            "supermarket",
+            "traffic"
+          ],
+          "answer": [
+            0,
+            1,
+            4,
+            6,
+            7,
+            8,
+            9,
+            10
+          ]
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l19-listening-2c",
+      "title": "2C. 3.11 Listen again. Which flat are the people looking at? Choose the correct photo.",
+      "audio": "audio/Speakout_A2_WB_Unit 3_Audio/SO3_A2_WB_3D_Audio_3_11.mp3",
+      "autosaveDraft": true,
+      "images": [
+        {
+          "src": "images/lesson-19-flat-a.png",
+          "alt": "Picture A: a modern apartment building on a city street",
+          "caption": "Picture A"
+        },
+        {
+          "src": "images/lesson-19-flat-b.png",
+          "alt": "Picture B: a low-rise apartment building in a quiet residential area",
+          "caption": "Picture B"
+        }
+      ],
+      "items": [
+        {
+          "id": "photo",
+          "number": "",
+          "prompt": "",
+          "input": "single",
+          "options": [
+            "Picture A",
+            "Picture B"
+          ],
+          "answer": 1
+        }
+      ]
+    }
+  ]
+}

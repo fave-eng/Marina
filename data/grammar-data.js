@@ -3012,5 +3012,636 @@ window.GRAMMAR_DATA = [
         ]
       }
     ]
+  },
+  {
+    "id": "grammar-lesson-19-there-is-there-are",
+    "order": 7,
+    "title": "There is / there are",
+    "level": "A2.2",
+    "status": "available",
+    "linkedLessonId": "lesson-19",
+    "page": "grammar-topic.html?id=grammar-lesson-19-there-is-there-are",
+    "passScore": 100,
+    "showCorrectAnswerOnError": false,
+    "intro": {
+      "lead": "There is / there are нужны, когда мы сообщаем, что что-то существует или находится в определённом месте. По-русски мы часто начинаем с места: «В городе есть парк». По-английски естественная модель — There is a park in the town.",
+      "example": {
+        "en": "There are some shops near the flat.",
+        "ru": "Рядом с квартирой есть несколько магазинов.",
+        "highlights": [
+          "There are"
+        ]
+      }
+    },
+    "chapters": [
+      {
+        "kicker": "Смысл конструкции",
+        "title": "There is / there are вводят новый объект: «есть / находится / имеются»",
+        "intro": "Слово there здесь не переводится как самостоятельное «там». Оно является частью конструкции. Место обычно называется позже: in the kitchen, near here, on King Street.",
+        "blocks": [
+          {
+            "type": "examples",
+            "items": [
+              {
+                "en": "There is a café near the station.",
+                "ru": "Рядом со станцией есть кафе.",
+                "highlights": [
+                  "There is"
+                ]
+              },
+              {
+                "en": "There are two bedrooms in the flat.",
+                "ru": "В квартире две спальни.",
+                "highlights": [
+                  "There are"
+                ]
+              },
+              {
+                "en": "There is a lot of traffic in the morning.",
+                "ru": "Утром здесь много машин / интенсивное движение.",
+                "highlights": [
+                  "There is"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "note",
+            "variant": "contrast",
+            "title": "Не путай с there = «там»",
+            "text": "There is a park there. Первая часть there is — грамматическая конструкция «есть», последнее there — обычное наречие «там»."
+          }
+        ]
+      },
+      {
+        "kicker": "Единственное и множественное",
+        "title": "Выбирай is или are по существительному после конструкции",
+        "blocks": [
+          {
+            "type": "table",
+            "headers": [
+              "Что идёт после there",
+              "Утверждение",
+              "Пример",
+              "Перевод"
+            ],
+            "rows": [
+              [
+                "одно исчисляемое существительное",
+                "There is / There’s",
+                "There’s a supermarket nearby.",
+                "Рядом есть супермаркет."
+              ],
+              [
+                "неисчисляемое существительное",
+                "There is / There’s",
+                "There’s some noise outside.",
+                "На улице слышен шум."
+              ],
+              [
+                "множественное число",
+                "There are",
+                "There are some cafés here.",
+                "Здесь есть несколько кафе."
+              ]
+            ],
+            "highlights": [
+              "There is",
+              "There’s",
+              "There are"
+            ]
+          },
+          {
+            "type": "note",
+            "variant": "warning",
+            "title": "There’s не употребляй как норму перед множественным числом в учебных заданиях",
+            "text": "Для A2 ориентируйся на стандарт: There’s a shop, но There are two shops. В быстрой разговорной речи можно услышать There’s + plural, однако в письменной и учебной речи выбирай there are."
+          }
+        ]
+      },
+      {
+        "kicker": "Отрицание и вопрос",
+        "title": "В отрицании добавляем not, а в вопросе переносим is / are перед there",
+        "blocks": [
+          {
+            "type": "table",
+            "headers": [
+              "Функция",
+              "Singular / uncountable",
+              "Plural"
+            ],
+            "rows": [
+              [
+                "Утверждение",
+                "There is a café.",
+                "There are some cafés."
+              ],
+              [
+                "Отрицание",
+                "There isn’t a café.",
+                "There aren’t any cafés."
+              ],
+              [
+                "Вопрос",
+                "Is there a café?",
+                "Are there any cafés?"
+              ],
+              [
+                "Короткий ответ +",
+                "Yes, there is.",
+                "Yes, there are."
+              ],
+              [
+                "Короткий ответ −",
+                "No, there isn’t.",
+                "No, there aren’t."
+              ]
+            ],
+            "highlights": [
+              "There isn’t",
+              "There aren’t",
+              "Is there",
+              "Are there",
+              "Yes, there is",
+              "No, there aren’t"
+            ]
+          },
+          {
+            "type": "examples",
+            "items": [
+              {
+                "en": "Is there a supermarket near here? — Yes, there is.",
+                "ru": "Рядом есть супермаркет? — Да.",
+                "highlights": [
+                  "Is there",
+                  "there is"
+                ]
+              },
+              {
+                "en": "Are there any restaurants? — No, there aren’t.",
+                "ru": "Есть какие-нибудь рестораны? — Нет.",
+                "highlights": [
+                  "Are there",
+                  "there aren’t"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "note",
+            "variant": "warning",
+            "title": "Короткий ответ должен совпадать по числу",
+            "text": "Is there ...? → Yes, there is / No, there isn’t. Are there ...? → Yes, there are / No, there aren’t."
+          }
+        ]
+      },
+      {
+        "kicker": "Количество",
+        "title": "Some / any, much / many и a lot of зависят от типа существительного и вида предложения",
+        "blocks": [
+          {
+            "type": "table",
+            "headers": [
+              "Форма",
+              "С чем употребляется",
+              "Где типично",
+              "Пример"
+            ],
+            "rows": [
+              [
+                "some",
+                "множественное / неисчисляемое",
+                "утверждение",
+                "There are some shops. / There is some noise."
+              ],
+              [
+                "any",
+                "множественное / неисчисляемое",
+                "вопрос и отрицание",
+                "Are there any shops? / There isn’t any noise."
+              ],
+              [
+                "many",
+                "исчисляемое множественное",
+                "особенно вопрос/отрицание",
+                "Are there many cafés?"
+              ],
+              [
+                "much",
+                "неисчисляемое",
+                "особенно вопрос/отрицание",
+                "Is there much traffic?"
+              ],
+              [
+                "a lot of / lots of",
+                "оба типа",
+                "очень естественно в утверждении",
+                "There are lots of parks. / There is a lot of traffic."
+              ]
+            ],
+            "highlights": [
+              "some",
+              "any",
+              "many",
+              "much",
+              "a lot of",
+              "lots of"
+            ]
+          },
+          {
+            "type": "compare",
+            "columns": [
+              {
+                "title": "Countable plural",
+                "lead": "можно посчитать",
+                "lines": [
+                  "shops, cafés, people, eggs"
+                ],
+                "example": {
+                  "en": "There aren’t many shops.",
+                  "ru": "Магазинов немного.",
+                  "highlights": [
+                    "many"
+                  ]
+                }
+              },
+              {
+                "title": "Uncountable",
+                "lead": "не считаем отдельными единицами",
+                "lines": [
+                  "traffic, noise, water, money"
+                ],
+                "example": {
+                  "en": "There isn’t much traffic.",
+                  "ru": "Машин / движения немного.",
+                  "highlights": [
+                    "much"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "type": "note",
+            "variant": "warning",
+            "title": "После a lot нужен of",
+            "text": "Правильно: a lot of traffic, a lot of shops. Lots of тоже всегда содержит of. Нельзя: a lot traffic."
+          }
+        ]
+      },
+      {
+        "kicker": "There is vs it is",
+        "title": "There is вводит объект, it is говорит об уже известном объекте",
+        "blocks": [
+          {
+            "type": "compare",
+            "columns": [
+              {
+                "title": "There is / are",
+                "lead": "сообщаем, что объект существует",
+                "lines": [
+                  "There is a café near my house.",
+                  "There are two parks in this area."
+                ],
+                "example": {
+                  "en": "There’s a new oven in the kitchen.",
+                  "ru": "На кухне есть новая духовка.",
+                  "highlights": [
+                    "There’s"
+                  ]
+                }
+              },
+              {
+                "title": "It is / they are",
+                "lead": "описываем уже названный объект",
+                "lines": [
+                  "The café is small. It is very quiet.",
+                  "The parks are beautiful. They are close to home."
+                ],
+                "example": {
+                  "en": "The oven is new. It is very good.",
+                  "ru": "Духовка новая. Она очень хорошая.",
+                  "highlights": [
+                    "It is"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "type": "note",
+            "variant": "contrast",
+            "title": "Типичная последовательность",
+            "text": "There is a restaurant near my house. It is small but very good. Сначала вводим restaurant через there is, затем заменяем уже известный объект местоимением it."
+          }
+        ]
+      },
+      {
+        "kicker": "Алгоритм и ошибки",
+        "title": "Проверяй число, тип существительного и порядок слов",
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              {
+                "title": "1. Определи число",
+                "text": "Один объект или неисчисляемое → is. Несколько объектов → are."
+              },
+              {
+                "title": "2. Определи тип предложения",
+                "text": "Утверждение: There is/are. Отрицание: There isn’t/aren’t. Вопрос: Is/Are there...?"
+              },
+              {
+                "title": "3. Проверь определитель количества",
+                "text": "some обычно в утверждении; any — в вопросах/отрицаниях; many — с plural countable; much — с uncountable."
+              },
+              {
+                "title": "4. Если это вопрос, не добавляй do/does",
+                "text": "Правильно: Is there...? / Are there...? Конструкция сама образует вопрос перестановкой is/are."
+              }
+            ]
+          },
+          {
+            "type": "mistakes",
+            "items": [
+              {
+                "wrong": "There are a lot of traffic.",
+                "right": "There is a lot of traffic.",
+                "reason": "Traffic — неисчисляемое, поэтому there is."
+              },
+              {
+                "wrong": "There are any shops near here?",
+                "right": "Are there any shops near here?",
+                "reason": "В вопросе are ставится перед there."
+              },
+              {
+                "wrong": "Is there many people?",
+                "right": "Are there many people?",
+                "reason": "People — множественное число."
+              },
+              {
+                "wrong": "No, there aren’t. (после Is there...?)",
+                "right": "No, there isn’t.",
+                "reason": "Короткий ответ должен совпадать с формой вопроса."
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "quizExercises": [
+      {
+        "id": "there-basic",
+        "title": "1. Выбери there is или there are",
+        "instructions": "Choose the correct form.",
+        "items": [
+          {
+            "type": "single",
+            "skill": "number",
+            "prompt": "___ a supermarket near my house.",
+            "options": [
+              "There is",
+              "There are"
+            ],
+            "answer": 0,
+            "explanation": "Проверь число существительного."
+          },
+          {
+            "type": "single",
+            "skill": "number",
+            "prompt": "___ two cafés in this street.",
+            "options": [
+              "There is",
+              "There are"
+            ],
+            "answer": 1,
+            "explanation": "Проверь число существительного."
+          },
+          {
+            "type": "single",
+            "skill": "uncountable",
+            "prompt": "___ a lot of traffic in the morning.",
+            "options": [
+              "There is",
+              "There are"
+            ],
+            "answer": 0,
+            "explanation": "Traffic — неисчисляемое существительное."
+          },
+          {
+            "type": "single",
+            "skill": "plural",
+            "prompt": "___ some shops near the station.",
+            "options": [
+              "There is",
+              "There are"
+            ],
+            "answer": 1,
+            "explanation": "Shops — множественное число."
+          }
+        ]
+      },
+      {
+        "id": "there-forms",
+        "title": "2. Построй отрицание или вопрос",
+        "instructions": "Complete the sentence with the correct form.",
+        "items": [
+          {
+            "type": "text",
+            "skill": "negative",
+            "prompt": "There ___ a school near here. (negative)",
+            "answer": "isn’t",
+            "acceptedAnswers": [
+              "isn't",
+              "isn’t",
+              "is not"
+            ],
+            "placeholder": "negative form",
+            "explanation": "Проверь отрицание с singular."
+          },
+          {
+            "type": "text",
+            "skill": "negative",
+            "prompt": "There ___ any restaurants in this street. (negative)",
+            "answer": "aren’t",
+            "acceptedAnswers": [
+              "aren't",
+              "aren’t",
+              "are not"
+            ],
+            "placeholder": "negative form",
+            "explanation": "Проверь отрицание с plural."
+          },
+          {
+            "type": "text",
+            "skill": "question",
+            "prompt": "___ there a park near your home?",
+            "answer": "Is",
+            "acceptedAnswers": [
+              "Is",
+              "is"
+            ],
+            "placeholder": "one word",
+            "explanation": "Проверь вопрос с singular."
+          },
+          {
+            "type": "text",
+            "skill": "question",
+            "prompt": "___ there any shops nearby?",
+            "answer": "Are",
+            "acceptedAnswers": [
+              "Are",
+              "are"
+            ],
+            "placeholder": "one word",
+            "explanation": "Проверь вопрос с plural."
+          }
+        ]
+      },
+      {
+        "id": "there-quantity",
+        "title": "3. Выбери слово количества по контексту",
+        "instructions": "Choose the best option.",
+        "items": [
+          {
+            "type": "single",
+            "skill": "some-any",
+            "prompt": "There are ___ small shops near the flat.",
+            "options": [
+              "some",
+              "any",
+              "much"
+            ],
+            "answer": 0,
+            "explanation": "Это утвердительное предложение с plural noun."
+          },
+          {
+            "type": "single",
+            "skill": "some-any",
+            "prompt": "Are there ___ cafés near here?",
+            "options": [
+              "some",
+              "any",
+              "much"
+            ],
+            "answer": 1,
+            "explanation": "Это вопрос с plural noun."
+          },
+          {
+            "type": "single",
+            "skill": "much-many",
+            "prompt": "There isn’t ___ traffic at night.",
+            "options": [
+              "many",
+              "much",
+              "a"
+            ],
+            "answer": 1,
+            "explanation": "Traffic — неисчисляемое."
+          },
+          {
+            "type": "single",
+            "skill": "much-many",
+            "prompt": "There aren’t ___ people here today.",
+            "options": [
+              "many",
+              "much",
+              "a lot"
+            ],
+            "answer": 0,
+            "explanation": "People — множественное исчисляемое."
+          }
+        ]
+      },
+      {
+        "id": "there-build",
+        "title": "4. Собери правильное предложение или вопрос",
+        "instructions": "Put the words in the correct order and write the complete sentence or question.",
+        "items": [
+          {
+            "type": "reorder",
+            "skill": "word order",
+            "prompt": "there / Is / a / supermarket / near / here ?",
+            "tokens": [
+              "Is",
+              "there",
+              "a",
+              "supermarket",
+              "near",
+              "here"
+            ],
+            "answer": "Is there a supermarket near here?",
+            "acceptedAnswers": [
+              "Is there a supermarket near here?",
+              "Is there a supermarket near here"
+            ],
+            "placeholder": "Write the question",
+            "explanation": "Проверь порядок Is + there + noun."
+          },
+          {
+            "type": "reorder",
+            "skill": "word order",
+            "prompt": "aren’t / There / any / shops / nearby .",
+            "tokens": [
+              "There",
+              "aren’t",
+              "any",
+              "shops",
+              "nearby"
+            ],
+            "answer": "There aren’t any shops nearby.",
+            "acceptedAnswers": [
+              "There aren't any shops nearby.",
+              "There aren't any shops nearby",
+              "There aren’t any shops nearby.",
+              "There aren’t any shops nearby"
+            ],
+            "placeholder": "Write the sentence",
+            "explanation": "Проверь отрицательную форму plural."
+          },
+          {
+            "type": "reorder",
+            "skill": "quantity",
+            "prompt": "a / There / lot / is / of / traffic .",
+            "tokens": [
+              "There",
+              "is",
+              "a",
+              "lot",
+              "of",
+              "traffic"
+            ],
+            "answer": "There is a lot of traffic.",
+            "acceptedAnswers": [
+              "There is a lot of traffic.",
+              "There is a lot of traffic"
+            ],
+            "placeholder": "Write the sentence",
+            "explanation": "Не забудь of после a lot."
+          },
+          {
+            "type": "reorder",
+            "skill": "short answer",
+            "prompt": "there / No / isn’t .",
+            "tokens": [
+              "No",
+              "there",
+              "isn’t"
+            ],
+            "answer": "No, there isn’t.",
+            "acceptedAnswers": [
+              "No, there isn't.",
+              "No, there isn't",
+              "No, there isn’t.",
+              "No, there isn’t",
+              "No there isn't",
+              "No there isn’t"
+            ],
+            "placeholder": "Write the short answer",
+            "explanation": "К Is there...? нужен short answer с is/isn’t."
+          }
+        ]
+      }
+    ]
   }
 ];
