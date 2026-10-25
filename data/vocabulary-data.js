@@ -3823,8 +3823,7 @@ window.VOCABULARY_DATA = [
         "group": "grammar-context"
       }
     ]
-  }
-  ,
+  },
   {
     "id": "vocab-lesson-18-social-phrases",
     "title": "Social phrases",
@@ -3835,25 +3834,328 @@ window.VOCABULARY_DATA = [
     "page": "vocabulary.html?id=vocab-lesson-18-social-phrases",
     "description": "Useful phrases from Lesson 3C for arriving, thanking people, making offers and accepting invitations.",
     "words": [
-      {"id":"l18-01","uniqueKey":"sorry","en":"sorry","ru":"извините; мне жаль","transcription":"/ˈsɒri/","exampleEn":"Sorry I’m late.","exampleRu":"Извините, я опоздал(а).","group":"social-words"},
-      {"id":"l18-02","uniqueKey":"safe","en":"safe","ru":"безопасный; благополучный","transcription":"/seɪf/","exampleEn":"Have a safe journey home.","exampleRu":"Счастливо добраться домой.","group":"social-words"},
-      {"id":"l18-03","uniqueKey":"full","en":"full","ru":"сытый","transcription":"/fʊl/","exampleEn":"I’m full. That was delicious!","exampleRu":"Я сыт(а). Было очень вкусно!","group":"social-words"},
-      {"id":"l18-04","uniqueKey":"lovely","en":"lovely","ru":"чудесный; приятный","transcription":"/ˈlʌvli/","exampleEn":"Thank you for the lovely evening!","exampleRu":"Спасибо за чудесный вечер!","group":"social-words"},
-      {"id":"l18-05","uniqueKey":"delicious","en":"delicious","ru":"вкусный","transcription":"/dɪˈlɪʃəs/","exampleEn":"That was delicious!","exampleRu":"Это было очень вкусно!","group":"social-words"},
-      {"id":"l18-06","uniqueKey":"glad","en":"glad","ru":"рад; рада","transcription":"/ɡlæd/","exampleEn":"Glad you liked it!","exampleRu":"Рад(а), что тебе понравилось!","group":"social-words"},
-      {"id":"l18-07","uniqueKey":"how kind of you","en":"How kind of you!","ru":"Как мило с вашей / твоей стороны!","transcription":"/haʊ ˈkaɪnd əv juː/","exampleEn":"These flowers are for you. — How kind of you!","exampleRu":"Эти цветы для тебя. — Как мило с твоей стороны!","group":"social-phrases"},
-      {"id":"l18-08","uniqueKey":"sorry i’m late","en":"Sorry I’m late.","ru":"Извините, я опоздал(а).","transcription":"/ˈsɒri aɪm ˈleɪt/","exampleEn":"Sorry I’m late. — No problem.","exampleRu":"Извините, я опоздал(а). — Ничего страшного.","group":"social-phrases"},
-      {"id":"l18-09","uniqueKey":"great to see you","en":"Great to see you.","ru":"Рад(а) тебя видеть.","transcription":"/ɡreɪt tə ˈsiː juː/","exampleEn":"Great to see you. — You, too.","exampleRu":"Рад(а) тебя видеть. — Я тоже.","group":"social-phrases"},
-      {"id":"l18-10","uniqueKey":"glad you liked it","en":"Glad you liked it!","ru":"Рад(а), что тебе понравилось!","transcription":"/ɡlæd ju ˈlaɪkt ɪt/","exampleEn":"I’m full. That was delicious! — Glad you liked it!","exampleRu":"Я сыт(а). Было очень вкусно! — Рад(а), что тебе понравилось!","group":"social-phrases"},
-      {"id":"l18-11","uniqueKey":"thank you for the lovely evening","en":"Thank you for the lovely evening!","ru":"Спасибо за чудесный вечер!","transcription":"/ˈθæŋk juː fə ðə ˈlʌvli ˈiːvnɪŋ/","exampleEn":"Thank you for the lovely evening!","exampleRu":"Спасибо за чудесный вечер!","group":"social-phrases"},
-      {"id":"l18-12","uniqueKey":"have a safe journey home","en":"Have a safe journey home.","ru":"Счастливо добраться домой.","transcription":"/hæv ə seɪf ˈdʒɜːni həʊm/","exampleEn":"Have a safe journey home. — Thank you!","exampleRu":"Счастливо добраться домой. — Спасибо!","group":"social-phrases"},
-      {"id":"l18-13","uniqueKey":"these are for you","en":"These are for you.","ru":"Это для тебя / вас.","transcription":"/ðiːz ə fə juː/","exampleEn":"These flowers are for you.","exampleRu":"Эти цветы для тебя.","group":"social-phrases"},
-      {"id":"l18-14","uniqueKey":"no problem","en":"No problem.","ru":"Ничего страшного; без проблем.","transcription":"/nəʊ ˈprɒbləm/","exampleEn":"Sorry I’m late. — No problem.","exampleRu":"Извините, я опоздал(а). — Ничего страшного.","group":"social-phrases"},
-      {"id":"l18-15","uniqueKey":"can i get you something to drink","en":"Can I get you something to drink?","ru":"Принести тебе / вам что-нибудь выпить?","transcription":"/kən aɪ ˈɡet juː ˈsʌmθɪŋ tə ˈdrɪŋk/","exampleEn":"Can I get you something to drink? — Yes, please.","exampleRu":"Принести тебе что-нибудь выпить? — Да, пожалуйста.","group":"offers"},
-      {"id":"l18-16","uniqueKey":"let me take your coat","en":"Let me take your coat.","ru":"Давай(те) я возьму твоё / ваше пальто.","transcription":"/let mi ˈteɪk jɔː kəʊt/","exampleEn":"Let me take your coat. — Thank you.","exampleRu":"Давайте я возьму ваше пальто. — Спасибо.","group":"offers"},
-      {"id":"l18-17","uniqueKey":"i’d love to come","en":"I’d love to come.","ru":"Я с удовольствием приду.","transcription":"/aɪd ˈlʌv tə kʌm/","exampleEn":"I’d love to come.","exampleRu":"Я с удовольствием приду.","group":"invitations"},
-      {"id":"l18-18","uniqueKey":"invitation","en":"invitation","ru":"приглашение","transcription":"/ˌɪnvɪˈteɪʃən/","exampleEn":"Bella makes an invitation.","exampleRu":"Белла делает приглашение.","group":"invitations"},
-      {"id":"l18-19","uniqueKey":"offer","en":"offer","ru":"предложение; предлагать","transcription":"/ˈɒfə/","exampleEn":"Can I get you something to drink? is an offer.","exampleRu":"Can I get you something to drink? — это предложение помощи / напитка.","group":"offers"}
+      {
+        "id": "l18-01",
+        "uniqueKey": "sorry",
+        "en": "sorry",
+        "ru": "извините; мне жаль",
+        "transcription": "/ˈsɒri/",
+        "exampleEn": "Sorry I’m late.",
+        "exampleRu": "Извините, я опоздал(а).",
+        "group": "social-words"
+      },
+      {
+        "id": "l18-02",
+        "uniqueKey": "safe",
+        "en": "safe",
+        "ru": "безопасный; благополучный",
+        "transcription": "/seɪf/",
+        "exampleEn": "Have a safe journey home.",
+        "exampleRu": "Счастливо добраться домой.",
+        "group": "social-words"
+      },
+      {
+        "id": "l18-03",
+        "uniqueKey": "full",
+        "en": "full",
+        "ru": "сытый",
+        "transcription": "/fʊl/",
+        "exampleEn": "I’m full. That was delicious!",
+        "exampleRu": "Я сыт(а). Было очень вкусно!",
+        "group": "social-words"
+      },
+      {
+        "id": "l18-04",
+        "uniqueKey": "lovely",
+        "en": "lovely",
+        "ru": "чудесный; приятный",
+        "transcription": "/ˈlʌvli/",
+        "exampleEn": "Thank you for the lovely evening!",
+        "exampleRu": "Спасибо за чудесный вечер!",
+        "group": "social-words"
+      },
+      {
+        "id": "l18-05",
+        "uniqueKey": "delicious",
+        "en": "delicious",
+        "ru": "вкусный",
+        "transcription": "/dɪˈlɪʃəs/",
+        "exampleEn": "That was delicious!",
+        "exampleRu": "Это было очень вкусно!",
+        "group": "social-words"
+      },
+      {
+        "id": "l18-06",
+        "uniqueKey": "glad",
+        "en": "glad",
+        "ru": "рад; рада",
+        "transcription": "/ɡlæd/",
+        "exampleEn": "Glad you liked it!",
+        "exampleRu": "Рад(а), что тебе понравилось!",
+        "group": "social-words"
+      },
+      {
+        "id": "l18-07",
+        "uniqueKey": "how kind of you",
+        "en": "How kind of you!",
+        "ru": "Как мило с вашей / твоей стороны!",
+        "transcription": "/haʊ ˈkaɪnd əv juː/",
+        "exampleEn": "These flowers are for you. — How kind of you!",
+        "exampleRu": "Эти цветы для тебя. — Как мило с твоей стороны!",
+        "group": "social-phrases"
+      },
+      {
+        "id": "l18-08",
+        "uniqueKey": "sorry i’m late",
+        "en": "Sorry I’m late.",
+        "ru": "Извините, я опоздал(а).",
+        "transcription": "/ˈsɒri aɪm ˈleɪt/",
+        "exampleEn": "Sorry I’m late. — No problem.",
+        "exampleRu": "Извините, я опоздал(а). — Ничего страшного.",
+        "group": "social-phrases"
+      },
+      {
+        "id": "l18-09",
+        "uniqueKey": "great to see you",
+        "en": "Great to see you.",
+        "ru": "Рад(а) тебя видеть.",
+        "transcription": "/ɡreɪt tə ˈsiː juː/",
+        "exampleEn": "Great to see you. — You, too.",
+        "exampleRu": "Рад(а) тебя видеть. — Я тоже.",
+        "group": "social-phrases"
+      },
+      {
+        "id": "l18-10",
+        "uniqueKey": "glad you liked it",
+        "en": "Glad you liked it!",
+        "ru": "Рад(а), что тебе понравилось!",
+        "transcription": "/ɡlæd ju ˈlaɪkt ɪt/",
+        "exampleEn": "I’m full. That was delicious! — Glad you liked it!",
+        "exampleRu": "Я сыт(а). Было очень вкусно! — Рад(а), что тебе понравилось!",
+        "group": "social-phrases"
+      },
+      {
+        "id": "l18-11",
+        "uniqueKey": "thank you for the lovely evening",
+        "en": "Thank you for the lovely evening!",
+        "ru": "Спасибо за чудесный вечер!",
+        "transcription": "/ˈθæŋk juː fə ðə ˈlʌvli ˈiːvnɪŋ/",
+        "exampleEn": "Thank you for the lovely evening!",
+        "exampleRu": "Спасибо за чудесный вечер!",
+        "group": "social-phrases"
+      },
+      {
+        "id": "l18-12",
+        "uniqueKey": "have a safe journey home",
+        "en": "Have a safe journey home.",
+        "ru": "Счастливо добраться домой.",
+        "transcription": "/hæv ə seɪf ˈdʒɜːni həʊm/",
+        "exampleEn": "Have a safe journey home. — Thank you!",
+        "exampleRu": "Счастливо добраться домой. — Спасибо!",
+        "group": "social-phrases"
+      },
+      {
+        "id": "l18-13",
+        "uniqueKey": "these are for you",
+        "en": "These are for you.",
+        "ru": "Это для тебя / вас.",
+        "transcription": "/ðiːz ə fə juː/",
+        "exampleEn": "These flowers are for you.",
+        "exampleRu": "Эти цветы для тебя.",
+        "group": "social-phrases"
+      },
+      {
+        "id": "l18-14",
+        "uniqueKey": "no problem",
+        "en": "No problem.",
+        "ru": "Ничего страшного; без проблем.",
+        "transcription": "/nəʊ ˈprɒbləm/",
+        "exampleEn": "Sorry I’m late. — No problem.",
+        "exampleRu": "Извините, я опоздал(а). — Ничего страшного.",
+        "group": "social-phrases"
+      },
+      {
+        "id": "l18-15",
+        "uniqueKey": "can i get you something to drink",
+        "en": "Can I get you something to drink?",
+        "ru": "Принести тебе / вам что-нибудь выпить?",
+        "transcription": "/kən aɪ ˈɡet juː ˈsʌmθɪŋ tə ˈdrɪŋk/",
+        "exampleEn": "Can I get you something to drink? — Yes, please.",
+        "exampleRu": "Принести тебе что-нибудь выпить? — Да, пожалуйста.",
+        "group": "offers"
+      },
+      {
+        "id": "l18-16",
+        "uniqueKey": "let me take your coat",
+        "en": "Let me take your coat.",
+        "ru": "Давай(те) я возьму твоё / ваше пальто.",
+        "transcription": "/let mi ˈteɪk jɔː kəʊt/",
+        "exampleEn": "Let me take your coat. — Thank you.",
+        "exampleRu": "Давайте я возьму ваше пальто. — Спасибо.",
+        "group": "offers"
+      },
+      {
+        "id": "l18-17",
+        "uniqueKey": "i’d love to come",
+        "en": "I’d love to come.",
+        "ru": "Я с удовольствием приду.",
+        "transcription": "/aɪd ˈlʌv tə kʌm/",
+        "exampleEn": "I’d love to come.",
+        "exampleRu": "Я с удовольствием приду.",
+        "group": "invitations"
+      },
+      {
+        "id": "l18-18",
+        "uniqueKey": "invitation",
+        "en": "invitation",
+        "ru": "приглашение",
+        "transcription": "/ˌɪnvɪˈteɪʃən/",
+        "exampleEn": "Bella makes an invitation.",
+        "exampleRu": "Белла делает приглашение.",
+        "group": "invitations"
+      },
+      {
+        "id": "l18-19",
+        "uniqueKey": "offer",
+        "en": "offer",
+        "ru": "предложение; предлагать",
+        "transcription": "/ˈɒfə/",
+        "exampleEn": "Can I get you something to drink? is an offer.",
+        "exampleRu": "Can I get you something to drink? — это предложение помощи / напитка.",
+        "group": "offers"
+      }
+    ]
+  },
+  {
+    "id": "vocab-lesson-19-local-area",
+    "title": "Local area",
+    "label": "Lesson 3D · 10 useful words and phrases",
+    "icon": "🏙️",
+    "type": "lesson",
+    "linkedLessonId": "lesson-19",
+    "page": "vocabulary.html?id=vocab-lesson-19-local-area",
+    "description": "Полезная лексика из Lesson 3D для описания района, мест рядом с домом и окружающей обстановки.",
+    "words": [
+      {
+        "id": "l19-01",
+        "uniqueKey": "local area",
+        "en": "local area",
+        "ru": "район; окрестности",
+        "transcription": "/ˌləʊkəl ˈeəriə/",
+        "exampleEn": "There are several cafés in the local area.",
+        "exampleRu": "В этом районе есть несколько кафе.",
+        "group": "area"
+      },
+      {
+        "id": "l19-02",
+        "uniqueKey": "village",
+        "en": "village",
+        "ru": "деревня; небольшой посёлок",
+        "transcription": "/ˈvɪlɪdʒ/",
+        "exampleEn": "It is a quiet village near the city.",
+        "exampleRu": "Это тихая деревня недалеко от города.",
+        "group": "places"
+      },
+      {
+        "id": "l19-03",
+        "uniqueKey": "theatre",
+        "en": "theatre",
+        "ru": "театр",
+        "transcription": "/ˈθɪətə/",
+        "exampleEn": "There isn't a theatre in the village.",
+        "exampleRu": "В деревне нет театра.",
+        "group": "places"
+      },
+      {
+        "id": "l19-04",
+        "uniqueKey": "open space",
+        "en": "open space",
+        "ru": "открытое пространство",
+        "transcription": "/ˌəʊpən ˈspeɪs/",
+        "exampleEn": "There are lots of open spaces near the forest.",
+        "exampleRu": "Рядом с лесом много открытых пространств.",
+        "group": "area"
+      },
+      {
+        "id": "l19-05",
+        "uniqueKey": "forest",
+        "en": "forest",
+        "ru": "лес",
+        "transcription": "/ˈfɒrɪst/",
+        "exampleEn": "There is a big forest near the village.",
+        "exampleRu": "Рядом с деревней есть большой лес.",
+        "group": "places"
+      },
+      {
+        "id": "l19-06",
+        "uniqueKey": "traffic",
+        "en": "traffic",
+        "ru": "дорожное движение; транспортный поток",
+        "transcription": "/ˈtræfɪk/",
+        "exampleEn": "There isn't much traffic at the weekend.",
+        "exampleRu": "На выходных здесь не очень интенсивное движение.",
+        "group": "area"
+      },
+      {
+        "id": "l19-07",
+        "uniqueKey": "neighbour",
+        "en": "neighbour",
+        "ru": "сосед / соседка",
+        "transcription": "/ˈneɪbə/",
+        "exampleEn": "Our neighbours are very friendly.",
+        "exampleRu": "Наши соседи очень дружелюбные.",
+        "group": "people"
+      },
+      {
+        "id": "l19-08",
+        "uniqueKey": "noise",
+        "en": "noise",
+        "ru": "шум",
+        "transcription": "/nɔɪz/",
+        "exampleEn": "There isn't much noise here at night.",
+        "exampleRu": "Ночью здесь не очень шумно.",
+        "group": "area"
+      },
+      {
+        "id": "l19-09",
+        "uniqueKey": "station",
+        "en": "station",
+        "ru": "станция; вокзал",
+        "transcription": "/ˈsteɪʃən/",
+        "exampleEn": "There is a station in King Street.",
+        "exampleRu": "На Кинг-стрит есть станция.",
+        "group": "places"
+      },
+      {
+        "id": "l19-10",
+        "uniqueKey": "nearby",
+        "en": "nearby",
+        "ru": "поблизости; неподалёку",
+        "transcription": "/ˌnɪəˈbaɪ/",
+        "exampleEn": "There is a small restaurant nearby.",
+        "exampleRu": "Поблизости есть небольшой ресторан.",
+        "group": "area"
+      }
+    ],
+    "groups": [
+      {
+        "id": "places",
+        "title": "Places",
+        "subtitle": "Места",
+        "icon": "📍"
+      },
+      {
+        "id": "area",
+        "title": "Area & surroundings",
+        "subtitle": "Район и окружение",
+        "icon": "🏙️"
+      },
+      {
+        "id": "people",
+        "title": "People nearby",
+        "subtitle": "Люди рядом",
+        "icon": "👥"
+      }
     ]
   }
 ];
