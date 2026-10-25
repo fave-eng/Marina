@@ -1,4 +1,4 @@
-/** Grammar path for Marina. Detailed Russian explanations; existing topic IDs and quizzes preserved. */
+/** Marina grammar handbook. Russian explanations; topic IDs, quizzes and progress semantics preserved. */
 window.GRAMMAR_DATA = [
   {
     "id": "grammar-lesson-1-present-simple",
@@ -10,25 +10,26 @@ window.GRAMMAR_DATA = [
     "page": "grammar-topic.html?id=grammar-lesson-1-present-simple",
     "passScore": 100,
     "intro": {
-      "lead": "Present Simple показывает то, что является обычным, повторяющимся или устойчивым. С I, you, we, they обычный смысловой глагол стоит в базовой форме. Для отрицаний и вопросов нужен вспомогательный do.",
-      "anchor": "Главный вопрос не «это происходит сейчас?», а «это обычно так / это факт / это регулярное действие?»",
+      "lead": "Present Simple нужен, когда мы описываем не отдельный момент, а обычный порядок вещей: привычки, расписание, факты, постоянные ситуации и то, что человек обычно любит или делает.",
+      "anchor": "Сначала реши, говоришь ли ты о привычке/факте. Если да, Present Simple — базовый выбор. Затем определи: сказуемое — обычный глагол или be?",
       "example": {
-        "en": "We work from Monday to Friday.",
-        "ru": "Мы работаем с понедельника по пятницу.",
+        "en": "We usually start work at nine.",
+        "ru": "Мы обычно начинаем работу в девять.",
         "highlights": [
-          "work"
+          "usually",
+          "start"
         ]
       }
     },
     "chapters": [
       {
-        "kicker": "Смысл времени",
-        "title": "Present Simple — не «кадр сейчас», а обычная картина жизни",
-        "intro": "Это время удобно представлять как линию повторяющихся действий. Отдельный момент «сейчас» не является главным.",
+        "kicker": "1 · Смысл",
+        "title": "Когда Present Simple действительно нужен",
+        "intro": "Главная задача — узнать значение, а не механически искать every day.",
         "blocks": [
           {
             "type": "timeline",
-            "title": "Повторение во времени",
+            "title": "Не один момент, а повторяющаяся картина",
             "points": [
               "раньше",
               "обычно",
@@ -36,154 +37,41 @@ window.GRAMMAR_DATA = [
               "обычно",
               "дальше"
             ],
-            "caption": "Действие повторяется вокруг момента NOW; мы говорим о привычке или постоянной ситуации, а не о процессе в конкретную секунду."
+            "caption": "Present Simple показывает привычный или устойчивый факт вокруг настоящего момента."
           },
           {
             "type": "cards",
             "items": [
               {
-                "title": "Привычка / режим",
-                "text": "То, что человек делает регулярно.",
+                "title": "Привычка",
+                "text": "То, что повторяется регулярно.",
                 "example": {
-                  "en": "I get up at seven every day.",
-                  "ru": "Я встаю в семь каждый день.",
+                  "en": "I walk to work every day.",
+                  "ru": "Я каждый день хожу на работу пешком.",
                   "highlights": [
-                    "get up"
-                  ]
-                }
-              },
-              {
-                "title": "Факт",
-                "text": "То, что мы считаем фактом или общей правдой.",
-                "example": {
-                  "en": "They speak English.",
-                  "ru": "Они говорят по-английски.",
-                  "highlights": [
-                    "speak"
+                    "walk"
                   ]
                 }
               },
               {
                 "title": "Постоянная ситуация",
-                "text": "Место жизни, работа, учёба, предпочтения.",
+                "text": "Работа, место жительства, учёба, семейная ситуация.",
                 "example": {
-                  "en": "We live in Ufa.",
-                  "ru": "Мы живём в Уфе.",
+                  "en": "We live near the city centre.",
+                  "ru": "Мы живём недалеко от центра города.",
                   "highlights": [
-                    "live"
-                  ]
-                }
-              }
-            ]
-          },
-          {
-            "type": "note",
-            "variant": "contrast",
-            "title": "Сравни смысл",
-            "text": "I work at home. = это моя обычная ситуация. I’m working at home now. = процесс идёт именно сейчас. В этой теме мы строим только Present Simple, но важно не путать эти два смысла."
-          }
-        ]
-      },
-      {
-        "kicker": "Структура",
-        "title": "Обычный глагол: утверждение, отрицание, вопрос",
-        "intro": "С I, you, we, they глагол в утверждении не меняется. В отрицании и вопросе грамматическую работу берёт на себя do.",
-        "blocks": [
-          {
-            "type": "table",
-            "headers": [
-              "Форма",
-              "Схема",
-              "Пример",
-              "Перевод"
-            ],
-            "rows": [
-              [
-                "Утверждение",
-                "I / You / We / They + verb",
-                "They work together.",
-                "Они работают вместе."
-              ],
-              [
-                "Отрицание",
-                "I / You / We / They + do not (don’t) + verb",
-                "We don’t live in Poland.",
-                "Мы не живём в Польше."
-              ],
-              [
-                "Вопрос",
-                "Do + I / you / we / they + verb?",
-                "Do your parents like pizza?",
-                "Твоим родителям нравится пицца?"
-              ],
-              [
-                "Краткий ответ",
-                "Yes, ... do. / No, ... don’t.",
-                "Yes, they do. / No, they don’t.",
-                "Да. / Нет."
-              ]
-            ],
-            "highlights": [
-              "verb",
-              "do",
-              "don’t",
-              "Do"
-            ]
-          },
-          {
-            "type": "rule",
-            "title": "После do / don’t — только базовая форма",
-            "formula": "do / don’t + speak · live · work · like",
-            "text": "Вспомогательный do уже показывает грамматическую форму. Поэтому основной глагол не получает дополнительного окончания.",
-            "example": {
-              "en": "Do you speak English?",
-              "ru": "Ты говоришь по-английски?",
-              "highlights": [
-                "Do",
-                "speak"
-              ]
-            }
-          }
-        ]
-      },
-      {
-        "kicker": "Ключевое различие",
-        "title": "Do или be? Сначала найди главный глагол",
-        "intro": "Одна из самых частых ошибок — ставить do рядом с am / are. Эти две системы строят вопрос и отрицание по-разному.",
-        "blocks": [
-          {
-            "type": "compare",
-            "columns": [
-              {
-                "title": "Обычный смысловой глагол",
-                "lead": "work, live, speak, like, know",
-                "lines": [
-                  "+ They work. — Они работают.",
-                  "− They don’t work. — Они не работают.",
-                  "? Do they work? — Они работают?"
-                ],
-                "example": {
-                  "en": "Do they live here?",
-                  "ru": "Они живут здесь?",
-                  "highlights": [
-                    "Do",
                     "live"
                   ]
                 }
               },
               {
-                "title": "Глагол be",
-                "lead": "am / are",
-                "lines": [
-                  "+ They are students. — Они студенты.",
-                  "− They aren’t students. — Они не студенты.",
-                  "? Are they students? — Они студенты?"
-                ],
+                "title": "Факт / мнение",
+                "text": "То, что мы считаем устойчивым фактом или предпочтением.",
                 "example": {
-                  "en": "Are they from Spain?",
-                  "ru": "Они из Испании?",
+                  "en": "They like Italian food.",
+                  "ru": "Им нравится итальянская еда.",
                   "highlights": [
-                    "Are"
+                    "like"
                   ]
                 }
               }
@@ -191,29 +79,168 @@ window.GRAMMAR_DATA = [
           },
           {
             "type": "note",
-            "variant": "warning",
-            "title": "Не смешивай системы",
-            "text": "Нельзя: Do they are students? Нельзя: They don’t Spanish. Если сказуемое строится с be, do не нужен."
+            "title": "Present Simple ≠ «сейчас»",
+            "text": "I work at home = я обычно/постоянно работаю дома. I am working at home now = я работаю дома именно сейчас.",
+            "variant": "contrast"
           }
         ]
       },
       {
-        "kicker": "Порядок слов",
-        "title": "Специальные вопросы: question word + do + subject + verb",
-        "intro": "Where, What, When, How ставятся в начале. После них сохраняется обычный порядок общего вопроса с do.",
+        "kicker": "2 · Утверждение",
+        "title": "I / you / we / they: глагол остаётся в базовой форме",
+        "intro": "В этой теме основной фокус — I, you, we, they. Для этих лиц в утверждении не добавляем окончание к смысловому глаголу.",
+        "blocks": [
+          {
+            "type": "rule",
+            "title": "Схема",
+            "formula": "I / You / We / They + verb",
+            "text": "После подлежащего ставим смысловой глагол в базовой форме.",
+            "example": {
+              "en": "They work in a hospital.",
+              "ru": "Они работают в больнице.",
+              "highlights": [
+                "work"
+              ]
+            },
+            "highlights": [
+              "verb"
+            ]
+          },
+          {
+            "type": "table",
+            "headers": [
+              "Подлежащее",
+              "Пример",
+              "Перевод"
+            ],
+            "rows": [
+              [
+                "I",
+                "I speak English.",
+                "Я говорю по-английски."
+              ],
+              [
+                "you",
+                "You study online.",
+                "Ты учишься онлайн."
+              ],
+              [
+                "we",
+                "We play tennis.",
+                "Мы играем в теннис."
+              ],
+              [
+                "they",
+                "They live in Canada.",
+                "Они живут в Канаде."
+              ]
+            ],
+            "highlights": [
+              "speak",
+              "study",
+              "play",
+              "live"
+            ]
+          },
+          {
+            "type": "note",
+            "title": "А что с he / she / it?",
+            "text": "С he, she, it в утверждении обычно появляется -s: She works. Но после does / doesn’t снова используется базовая форма: Does she work? She doesn’t work.",
+            "variant": "info"
+          }
+        ]
+      },
+      {
+        "kicker": "3 · Отрицание",
+        "title": "don’t забирает грамматику на себя",
+        "intro": "В отрицании нужен вспомогательный do. С I/you/we/they используем do not / don’t.",
         "blocks": [
           {
             "type": "wordorder",
             "tokens": [
-              "Question word",
-              "do",
+              "I / You / We / They",
+              "don’t",
+              "verb",
+              "..."
+            ],
+            "example": {
+              "en": "We don’t speak German.",
+              "ru": "Мы не говорим по-немецки.",
+              "highlights": [
+                "don’t",
+                "speak"
+              ]
+            }
+          },
+          {
+            "type": "rule",
+            "title": "Почему после don’t нет окончания?",
+            "formula": "don’t + base verb",
+            "text": "Вспомогательный глагол уже показывает отрицательную конструкцию, поэтому смысловой глагол остаётся в исходной форме.",
+            "example": {
+              "en": "They don’t live here.",
+              "ru": "Они здесь не живут.",
+              "highlights": [
+                "don’t",
+                "live"
+              ]
+            },
+            "highlights": [
+              "don’t",
+              "base verb"
+            ]
+          },
+          {
+            "type": "mistakes",
+            "items": [
+              {
+                "wrong": "We don’t lives here.",
+                "right": "We don’t live here.",
+                "reason": "После don’t нужна базовая форма."
+              },
+              {
+                "wrong": "I not work on Sundays.",
+                "right": "I don’t work on Sundays.",
+                "reason": "С обычным смысловым глаголом отрицание строится через don’t."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kicker": "4 · Вопросы",
+        "title": "Do ставим перед подлежащим",
+        "intro": "В общем вопросе do выходит на первое место. В специальном вопросе перед do ставим вопросительное слово.",
+        "blocks": [
+          {
+            "type": "wordorder",
+            "tokens": [
+              "Do",
               "I / you / we / they",
               "verb",
               "...?"
             ],
             "example": {
-              "en": "Where do you live?",
-              "ru": "Где ты живёшь?",
+              "en": "Do you work on Saturdays?",
+              "ru": "Ты работаешь по субботам?",
+              "highlights": [
+                "Do",
+                "work"
+              ]
+            }
+          },
+          {
+            "type": "wordorder",
+            "tokens": [
+              "Question word",
+              "do",
+              "subject",
+              "verb",
+              "...?"
+            ],
+            "example": {
+              "en": "Where do they live?",
+              "ru": "Где они живут?",
               "highlights": [
                 "Where",
                 "do",
@@ -222,86 +249,140 @@ window.GRAMMAR_DATA = [
             }
           },
           {
-            "type": "examples",
+            "type": "table",
+            "headers": [
+              "Вопрос",
+              "Краткий ответ"
+            ],
+            "rows": [
+              [
+                "Do you like coffee?",
+                "Yes, I do. / No, I don’t."
+              ],
+              [
+                "Do they live here?",
+                "Yes, they do. / No, they don’t."
+              ]
+            ],
+            "highlights": [
+              "Do",
+              "do",
+              "don’t"
+            ]
+          },
+          {
+            "type": "note",
+            "title": "Не повторяй смысловой глагол в short answer",
+            "text": "На Do you work here? отвечаем Yes, I do, а не Yes, I work. Краткий ответ повторяет вспомогательный do.",
+            "variant": "info"
+          }
+        ]
+      },
+      {
+        "kicker": "5 · Do или be?",
+        "title": "Две разные системы вопросов и отрицаний",
+        "intro": "Сначала найди сказуемое. Если это am/is/are, do не нужен. Если это обычный глагол, нужен do/does.",
+        "blocks": [
+          {
+            "type": "compare",
+            "columns": [
+              {
+                "title": "Обычный глагол",
+                "lead": "work, live, like, speak",
+                "lines": [
+                  "They work here.",
+                  "They don’t work here.",
+                  "Do they work here?"
+                ],
+                "example": {
+                  "en": "Do you live near here?",
+                  "ru": "Ты живёшь неподалёку?",
+                  "highlights": [
+                    "Do",
+                    "live"
+                  ]
+                }
+              },
+              {
+                "title": "be",
+                "lead": "am / is / are",
+                "lines": [
+                  "They are tired.",
+                  "They aren’t tired.",
+                  "Are they tired?"
+                ],
+                "example": {
+                  "en": "Are you tired?",
+                  "ru": "Ты устал(а)?",
+                  "highlights": [
+                    "Are"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "type": "mistakes",
             "items": [
               {
-                "en": "What do they do?",
-                "ru": "Чем они занимаются?",
-                "highlights": [
-                  "What",
-                  "do",
-                  "do"
-                ]
+                "wrong": "Do you are tired?",
+                "right": "Are you tired?",
+                "reason": "Если главный глагол — be, do не используется."
               },
               {
-                "en": "How do you know Anna?",
-                "ru": "Откуда ты знаешь Анну?",
-                "highlights": [
-                  "How",
-                  "do",
-                  "know"
-                ]
-              },
-              {
-                "en": "Where do you come from?",
-                "ru": "Откуда ты родом?",
-                "highlights": [
-                  "Where",
-                  "do",
-                  "come"
-                ]
+                "wrong": "Where are you live?",
+                "right": "Where do you live?",
+                "reason": "Если главный глагол live, нужен do, а не are."
               }
             ]
           }
         ]
       },
       {
-        "kicker": "Подсказки в предложении",
-        "title": "Слова, которые часто ведут к Present Simple",
+        "kicker": "6 · Как выбрать форму",
+        "title": "Алгоритм для любого предложения",
+        "intro": "Не начинай с перевода слова за словом. Сначала определи тип предложения и главный глагол.",
         "blocks": [
           {
-            "type": "bullets",
-            "items": [
-              "every day / every week / every year — регулярный период",
-              "usually / often / sometimes / never — обычная частота",
-              "on Mondays / at weekends — повторяющийся день или период",
-              "always — действие или состояние рассматривается как постоянное"
+            "type": "steps",
+            "steps": [
+              {
+                "title": "Определи смысл",
+                "text": "Это привычка, факт или постоянная ситуация?"
+              },
+              {
+                "title": "Найди главный глагол",
+                "text": "Если это be, используй систему am/is/are. Если обычный глагол — систему do."
+              },
+              {
+                "title": "Определи тип",
+                "text": "Утверждение, отрицание или вопрос?"
+              },
+              {
+                "title": "Проверь форму",
+                "text": "После do/don’t/does/doesn’t всегда базовая форма смыслового глагола."
+              }
             ]
           },
           {
-            "type": "note",
-            "variant": "info",
-            "title": "Маркер помогает, но не выбирает время автоматически",
-            "text": "Сначала пойми смысл предложения. Слова частоты — подсказка, а не механическое правило."
-          }
-        ]
-      },
-      {
-        "kicker": "Контроль",
-        "title": "Типичные ошибки и как их исправлять",
-        "blocks": [
-          {
-            "type": "mistakes",
+            "type": "examples",
             "items": [
               {
-                "wrong": "They works together.",
-                "right": "They work together. — Они работают вместе.",
-                "reason": "После they в этой теме глагол стоит без -s."
+                "en": "We don’t have homework tonight.",
+                "ru": "У нас сегодня вечером нет домашнего задания.",
+                "highlights": [
+                  "don’t",
+                  "have"
+                ]
               },
               {
-                "wrong": "Do you speaks English?",
-                "right": "Do you speak English? — Ты говоришь по-английски?",
-                "reason": "После do нужен инфинитив без to: speak."
-              },
-              {
-                "wrong": "Where you do live?",
-                "right": "Where do you live? — Где ты живёшь?",
-                "reason": "После вопросительного слова сначала do, затем подлежащее."
-              },
-              {
-                "wrong": "They don’t Spanish.",
-                "right": "They aren’t Spanish. — Они не испанцы.",
-                "reason": "Здесь нужен be, а не обычный смысловой глагол."
+                "en": "How do you know Tim?",
+                "ru": "Откуда ты знаешь Тима?",
+                "highlights": [
+                  "How",
+                  "do",
+                  "know"
+                ]
               }
             ]
           }
@@ -370,54 +451,54 @@ window.GRAMMAR_DATA = [
     "passScore": 100,
     "showCorrectAnswerOnError": false,
     "intro": {
-      "lead": "Чтобы правильно выбрать a, an, some или any, сначала нужно определить тип существительного: можно ли посчитать предметы по одному и нужна ли форма единственного или множественного числа.",
-      "anchor": "Не начинай с артикля. Сначала спроси: countable или uncountable? singular или plural? утверждение, вопрос или отрицание?",
+      "lead": "Перед выбором a, an, some или any нужно сделать более важный шаг: понять, можно ли существительное посчитать как отдельные единицы и говорим ли мы об одной единице, нескольких или о веществе/массе.",
+      "anchor": "Сначала классифицируй существительное: countable singular, countable plural или uncountable. Только потом выбирай определитель.",
       "example": {
-        "en": "an apple · some rice · any water",
-        "ru": "одно яблоко · немного риса · какое-нибудь / сколько-нибудь воды",
+        "en": "We need an apple and some water.",
+        "ru": "Нам нужны яблоко и немного воды.",
         "highlights": [
-          "an",
-          "some",
-          "any"
+          "an apple",
+          "some water"
         ]
       }
     },
     "chapters": [
       {
-        "kicker": "Шаг 1",
-        "title": "Countable и uncountable: что именно мы считаем",
-        "intro": "В английском важно не физическое свойство предмета, а то, как существительное используется в данном значении.",
+        "kicker": "1 · Основа",
+        "title": "Countable и uncountable: разница в способе счёта",
+        "intro": "Категория определяется не «важностью» слова, а тем, можно ли в данном значении считать отдельные предметы.",
         "blocks": [
           {
             "type": "compare",
             "columns": [
               {
-                "title": "Countable — исчисляемые",
-                "lead": "Можно назвать one, two, three… Есть singular и plural.",
+                "title": "Countable",
+                "lead": "Можно считать: one, two, three...",
                 "lines": [
-                  "one apple → two apples — одно яблоко → два яблока",
-                  "a chair → three chairs — один стул → три стула"
+                  "one apple → two apples",
+                  "a chair → three chairs",
+                  "one idea → many ideas"
                 ],
                 "example": {
-                  "en": "I bought an apple.",
-                  "ru": "Я купил(а) яблоко.",
+                  "en": "There are three apples.",
+                  "ru": "Есть три яблока.",
                   "highlights": [
-                    "an apple"
+                    "three apples"
                   ]
                 }
               },
               {
-                "title": "Uncountable — неисчисляемые",
-                "lead": "Обычно воспринимаются как вещество, масса, материал или абстрактное понятие.",
+                "title": "Uncountable",
+                "lead": "Обычно воспринимаем как массу, вещество или общее понятие.",
                 "lines": [
-                  "rice — рис",
-                  "water — вода",
-                  "sugar — сахар",
-                  "cheese — сыр"
+                  "water",
+                  "rice",
+                  "money",
+                  "information"
                 ],
                 "example": {
                   "en": "We need some rice.",
-                  "ru": "Нам нужен рис.",
+                  "ru": "Нам нужно немного риса.",
                   "highlights": [
                     "some rice"
                   ]
@@ -427,49 +508,34 @@ window.GRAMMAR_DATA = [
           },
           {
             "type": "note",
-            "variant": "info",
-            "title": "Одно слово иногда бывает и countable, и uncountable",
-            "text": "Например, chicken = куриное мясо (uncountable), но a chicken = одна курица (countable). Значение определяет грамматику."
+            "title": "Не всё совпадает с русским",
+            "text": "Например, information и advice в английском обычно неисчисляемые. Нельзя сказать an information или two advices в обычном значении.",
+            "variant": "warning"
           }
         ]
       },
       {
-        "kicker": "Шаг 2",
-        "title": "A / an: только один исчисляемый предмет",
-        "intro": "A и an означают «один / какой-то» и употребляются только с countable noun в единственном числе.",
+        "kicker": "2 · a / an",
+        "title": "a/an = одна исчисляемая единица",
+        "intro": "a и an используются только с исчисляемым существительным в единственном числе.",
         "blocks": [
           {
             "type": "table",
             "headers": [
-              "Выбор",
+              "Форма",
               "Когда",
-              "Пример",
-              "Перевод"
+              "Пример"
             ],
             "rows": [
               [
                 "a",
                 "перед согласным звуком",
-                "a pear",
-                "одна груша"
+                "a car — машина"
               ],
               [
                 "an",
                 "перед гласным звуком",
-                "an apple",
-                "одно яблоко"
-              ],
-              [
-                "a",
-                "смотрим на звук, не на букву",
-                "a university",
-                "один университет"
-              ],
-              [
-                "an",
-                "смотрим на звук, не на букву",
-                "an hour",
-                "один час"
+                "an apple — яблоко"
               ]
             ],
             "highlights": [
@@ -478,166 +544,263 @@ window.GRAMMAR_DATA = [
             ]
           },
           {
-            "type": "rule",
-            "title": "Главное ограничение",
-            "formula": "a / an + singular countable noun",
-            "text": "Нельзя ставить a/an перед множественным числом или обычным неисчисляемым существительным.",
-            "example": {
-              "en": "a tomato · an egg",
-              "ru": "один помидор · одно яйцо",
-              "highlights": [
-                "a",
-                "an"
-              ]
-            }
+            "type": "note",
+            "title": "Смотрим на звук, а не только на букву",
+            "text": "an hour, потому что h не произносится; a university, потому что начало звучит /j/.",
+            "variant": "info"
+          },
+          {
+            "type": "mistakes",
+            "items": [
+              {
+                "wrong": "a water",
+                "right": "some water",
+                "reason": "Water в значении напитка/вещества обычно неисчисляемое."
+              },
+              {
+                "wrong": "an cars",
+                "right": "some cars",
+                "reason": "a/an не ставятся перед множественным числом."
+              }
+            ]
           }
         ]
       },
       {
-        "kicker": "Шаг 3",
-        "title": "Some и any: выбираем по типу предложения и намерению",
-        "intro": "Оба слова могут стоять перед plural countable nouns и uncountable nouns. Разница в типичном контексте.",
+        "kicker": "3 · some",
+        "title": "some: есть некоторое количество, точное число неважно",
+        "intro": "some удобно, когда мы утверждаем наличие неопределённого количества или нескольких предметов.",
+        "blocks": [
+          {
+            "type": "compare",
+            "columns": [
+              {
+                "title": "Plural countable",
+                "lead": "несколько предметов",
+                "lines": [
+                  "some apples",
+                  "some chairs",
+                  "some shops"
+                ],
+                "example": {
+                  "en": "We have some apples.",
+                  "ru": "У нас есть несколько яблок.",
+                  "highlights": [
+                    "some apples"
+                  ]
+                }
+              },
+              {
+                "title": "Uncountable",
+                "lead": "некоторое количество вещества/массы",
+                "lines": [
+                  "some water",
+                  "some rice",
+                  "some money"
+                ],
+                "example": {
+                  "en": "I need some water.",
+                  "ru": "Мне нужно немного воды.",
+                  "highlights": [
+                    "some water"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "type": "note",
+            "title": "Просьбы и предложения",
+            "text": "В вопросах с предложением или просьбой some часто сохраняется: Would you like some coffee? Can I have some water? Здесь говорящий ожидает нормальное положительное взаимодействие, а не просто проверяет наличие.",
+            "variant": "contrast"
+          }
+        ]
+      },
+      {
+        "kicker": "4 · any",
+        "title": "any чаще появляется в вопросах и отрицаниях",
+        "intro": "Когда мы не утверждаем наличие количества, any становится естественным выбором.",
         "blocks": [
           {
             "type": "table",
             "headers": [
               "Контекст",
-              "Обычно",
-              "Пример",
-              "Перевод"
+              "Схема",
+              "Пример"
             ],
             "rows": [
               [
-                "Утверждение",
-                "some",
-                "We have some tomatoes.",
-                "У нас есть несколько помидоров."
-              ],
-              [
                 "Отрицание",
-                "any",
-                "We don’t have any milk.",
-                "У нас нет молока."
+                "not + any",
+                "We haven’t got any milk."
               ],
               [
-                "Нейтральный вопрос",
-                "any",
-                "Do you have any cheese?",
-                "У тебя есть сыр?"
+                "Обычный вопрос",
+                "any ...?",
+                "Have we got any eggs?"
               ],
               [
-                "Предложение / просьба",
-                "some",
-                "Would you like some tea?",
-                "Хотите чаю?"
+                "Значение «любой»",
+                "any + singular/plural",
+                "Choose any seat."
               ]
             ],
             "highlights": [
-              "some",
               "any"
             ]
           },
           {
-            "type": "note",
-            "variant": "contrast",
-            "title": "Почему some возможно в вопросе",
-            "text": "В предложениях и просьбах говорящий не просто проверяет наличие. Он предлагает или просит конкретное количество: Would you like some tea? Can I have some water?"
+            "type": "examples",
+            "items": [
+              {
+                "en": "We don’t have any cheese.",
+                "ru": "У нас нет сыра.",
+                "highlights": [
+                  "any cheese"
+                ]
+              },
+              {
+                "en": "Are there any shops near here?",
+                "ru": "Здесь рядом есть магазины?",
+                "highlights": [
+                  "any shops"
+                ]
+              }
+            ]
           }
         ]
       },
       {
-        "kicker": "Алгоритм",
-        "title": "Как выбрать форму без угадывания",
+        "kicker": "5 · Нулевая форма",
+        "title": "Иногда перед существительным ничего не нужно",
+        "intro": "Если говорим о предметах или веществе вообще, без значения «некоторое количество», артикль может отсутствовать.",
+        "blocks": [
+          {
+            "type": "compare",
+            "columns": [
+              {
+                "title": "Общее значение",
+                "lead": "без a/an/some",
+                "lines": [
+                  "I like coffee.",
+                  "Books are expensive."
+                ],
+                "example": {
+                  "en": "I like coffee.",
+                  "ru": "Я люблю кофе.",
+                  "highlights": [
+                    "coffee"
+                  ]
+                }
+              },
+              {
+                "title": "Конкретное неопределённое количество",
+                "lead": "some",
+                "lines": [
+                  "I bought some coffee.",
+                  "There are some books on the table."
+                ],
+                "example": {
+                  "en": "I bought some coffee.",
+                  "ru": "Я купил(а) немного кофе.",
+                  "highlights": [
+                    "some coffee"
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kicker": "6 · Как считать неисчисляемое",
+        "title": "Нужна единица измерения или контейнер",
+        "intro": "Само слово water/rice/bread не получает число, но можно считать порции и контейнеры.",
+        "blocks": [
+          {
+            "type": "table",
+            "headers": [
+              "Неисчисляемое",
+              "Счётная единица",
+              "Пример"
+            ],
+            "rows": [
+              [
+                "water",
+                "a bottle / glass of",
+                "two bottles of water"
+              ],
+              [
+                "bread",
+                "a piece / loaf of",
+                "three pieces of bread"
+              ],
+              [
+                "rice",
+                "a bowl / bag of",
+                "a bag of rice"
+              ],
+              [
+                "information",
+                "a piece of",
+                "two pieces of information"
+              ]
+            ],
+            "highlights": [
+              "of"
+            ]
+          },
+          {
+            "type": "note",
+            "title": "Форма множественного числа меняется у контейнера",
+            "text": "two bottles of water, не two waters — если речь не о двух порциях в разговорном ресторанном контексте.",
+            "variant": "info"
+          }
+        ]
+      },
+      {
+        "kicker": "7 · Выбор за 4 шага",
+        "title": "Как быстро выбрать a/an/some/any",
+        "intro": "Полезнее идти от типа существительного, а не запоминать четыре слова отдельными правилами.",
         "blocks": [
           {
             "type": "steps",
             "steps": [
               {
-                "title": "1. Определи существительное",
-                "text": "Можно посчитать по одному? Если да — countable. Если нет в этом значении — uncountable."
+                "title": "Можно посчитать?",
+                "text": "Да → countable; нет → uncountable."
               },
               {
-                "title": "2. Если countable — проверь число",
-                "text": "Один предмет допускает a/an. Во множественном числе a/an невозможны."
+                "title": "Если countable, какое число?",
+                "text": "Одна единица → a/an; несколько → some/any/число."
               },
               {
-                "title": "3. Посмотри на тип предложения",
-                "text": "Утверждение обычно ведёт к some; вопрос или отрицание — к any."
+                "title": "Какой тип предложения?",
+                "text": "Утверждение обычно тянет к some; отрицание и нейтральный вопрос — к any."
               },
               {
-                "title": "4. Проверь особый вопрос",
-                "text": "В предложении или просьбе часто сохраняется some: Would you like some…? Can I have some…?"
+                "title": "Проверь особый вопрос",
+                "text": "Просьба/предложение часто использует some: Would you like some tea?"
               }
             ]
-          }
-        ]
-      },
-      {
-        "kicker": "Когда нужно посчитать",
-        "title": "Неисчисляемое существительное можно измерить через единицу",
-        "intro": "Мы не говорим two waters в нейтральном значении «вода». Добавляем ёмкость, порцию или единицу.",
-        "blocks": [
-          {
-            "type": "examples",
-            "items": [
-              {
-                "en": "a bottle of water",
-                "ru": "бутылка воды",
-                "highlights": [
-                  "a bottle of"
-                ]
-              },
-              {
-                "en": "two cups of coffee",
-                "ru": "две чашки кофе",
-                "highlights": [
-                  "two cups of"
-                ]
-              },
-              {
-                "en": "a piece of cheese",
-                "ru": "кусок сыра",
-                "highlights": [
-                  "a piece of"
-                ]
-              },
-              {
-                "en": "three bags of rice",
-                "ru": "три пакета риса",
-                "highlights": [
-                  "three bags of"
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "kicker": "Контроль",
-        "title": "Типичные ошибки",
-        "blocks": [
+          },
           {
             "type": "mistakes",
             "items": [
               {
-                "wrong": "a rice",
-                "right": "some rice — немного риса",
-                "reason": "Rice обычно uncountable, поэтому a не ставится."
+                "wrong": "We have a rice.",
+                "right": "We have some rice.",
+                "reason": "Rice обычно неисчисляемое."
               },
               {
-                "wrong": "an bananas",
-                "right": "some bananas — несколько бананов",
-                "reason": "An возможно только с singular countable noun."
+                "wrong": "Do you have some brothers?",
+                "right": "Do you have any brothers?",
+                "reason": "В нейтральном вопросе о наличии обычно any."
               },
               {
-                "wrong": "We don’t have some milk.",
-                "right": "We don’t have any milk. — У нас нет молока.",
-                "reason": "В обычном отрицании используем any."
-              },
-              {
-                "wrong": "Do you want any tea? (предложение гостю)",
-                "right": "Would you like some tea? — Хотите чаю?",
-                "reason": "В предложении чего-либо some звучит естественно."
+                "wrong": "I don’t have some money.",
+                "right": "I don’t have any money.",
+                "reason": "В отрицании обычно any."
               }
             ]
           }
@@ -713,143 +876,107 @@ window.GRAMMAR_DATA = [
     "passScore": 100,
     "showCorrectAnswerOnError": false,
     "intro": {
-      "lead": "Частоту можно выражать двумя системами: наречиями частоты (always, usually, often, sometimes, hardly ever, never) и фразами, которые называют период или количество повторений (every day, once a week, twice a month).",
-      "anchor": "Наречие частоты обычно стоит рядом с глаголом; фраза частоты чаще стоит в конце предложения.",
+      "lead": "Слова частотности показывают, как часто действие повторяется. Главная сложность здесь не значение, а позиция: наречия frequency стоят в одном месте с обычным глаголом и в другом — с be.",
+      "anchor": "Сначала реши, это наречие (always, often, never) или фраза частотности (every day, twice a week). Затем выбери позицию.",
       "example": {
-        "en": "I often walk to work. · I go swimming twice a week.",
-        "ru": "Я часто хожу на работу пешком. · Я хожу плавать два раза в неделю.",
+        "en": "I usually work at home, but I am sometimes tired.",
+        "ru": "Я обычно работаю дома, но иногда бываю уставшим(ей).",
         "highlights": [
-          "often",
-          "twice a week"
+          "usually",
+          "sometimes"
         ]
       }
     },
     "chapters": [
       {
-        "kicker": "Две системы",
-        "title": "Общая частота и точное количество повторений",
+        "kicker": "1 · Шкала",
+        "title": "От always до never: не перевод, а степень частоты",
+        "intro": "Эти слова удобно видеть как шкалу. Границы приблизительные: often не означает точный процент.",
         "blocks": [
           {
             "type": "scale",
-            "title": "От всегда к никогда",
+            "title": "Частота",
             "items": [
-              "always — всегда",
-              "usually — обычно",
-              "often — часто",
-              "sometimes — иногда",
-              "hardly ever — почти никогда",
-              "never — никогда"
+              "always",
+              "usually",
+              "often",
+              "sometimes",
+              "hardly ever",
+              "never"
             ],
-            "caption": "Это смысловая шкала, а не точные математические проценты."
+            "caption": "Слева — чаще, справа — реже. Hardly ever означает «почти никогда», а never — «никогда»."
           },
           {
-            "type": "compare",
-            "columns": [
+            "type": "examples",
+            "items": [
               {
-                "title": "Adverbs of frequency",
-                "lead": "Показывают, насколько часто что-то происходит в целом.",
-                "lines": [
-                  "always — всегда",
-                  "usually — обычно",
-                  "often — часто",
-                  "sometimes — иногда",
-                  "hardly ever — почти никогда",
-                  "never — никогда"
-                ],
-                "example": {
-                  "en": "We usually eat at home.",
-                  "ru": "Мы обычно едим дома.",
-                  "highlights": [
-                    "usually"
-                  ]
-                }
+                "en": "We often meet after work.",
+                "ru": "Мы часто встречаемся после работы.",
+                "highlights": [
+                  "often"
+                ]
               },
               {
-                "title": "Frequency phrases",
-                "lead": "Называют период или число повторений.",
-                "lines": [
-                  "every day — каждый день",
-                  "once a week — раз в неделю",
-                  "twice a month — два раза в месяц",
-                  "three times a year — три раза в год"
-                ],
-                "example": {
-                  "en": "I call my mother twice a week.",
-                  "ru": "Я звоню маме два раза в неделю.",
-                  "highlights": [
-                    "twice a week"
-                  ]
-                }
+                "en": "I hardly ever watch TV.",
+                "ru": "Я почти никогда не смотрю телевизор.",
+                "highlights": [
+                  "hardly ever"
+                ]
               }
             ]
           }
         ]
       },
       {
-        "kicker": "Позиция в предложении",
-        "title": "С обычным глаголом наречие ставим перед ним",
+        "kicker": "2 · Обычный глагол",
+        "title": "Наречие ставим перед смысловым глаголом",
+        "intro": "Если сказуемое — work, go, play, meet, watch и т. п., frequency adverb обычно стоит прямо перед ним.",
         "blocks": [
           {
-            "type": "rule",
-            "title": "Базовая позиция",
-            "formula": "subject + frequency adverb + main verb",
-            "text": "Это самая надёжная схема для A2.",
+            "type": "wordorder",
+            "tokens": [
+              "subject",
+              "always / usually / often / sometimes / never",
+              "main verb",
+              "..."
+            ],
             "example": {
-              "en": "She often checks her phone.",
-              "ru": "Она часто проверяет телефон.",
+              "en": "She often meets friends after work.",
+              "ru": "Она часто встречается с друзьями после работы.",
               "highlights": [
                 "often",
-                "checks"
+                "meets"
               ]
             }
           },
           {
-            "type": "table",
-            "headers": [
-              "Тип",
-              "Схема",
-              "Пример",
-              "Перевод"
-            ],
-            "rows": [
-              [
-                "Обычный глагол",
-                "subject + adverb + verb",
-                "I usually get up at seven.",
-                "Я обычно встаю в семь."
-              ],
-              [
-                "Отрицание",
-                "subject + don’t/doesn’t + adverb + verb",
-                "We don’t often eat out.",
-                "Мы нечасто едим вне дома."
-              ],
-              [
-                "Модальный глагол",
-                "subject + can + adverb + verb",
-                "I can usually come on Friday.",
-                "Обычно я могу прийти в пятницу."
-              ]
-            ],
-            "highlights": [
-              "usually",
-              "often"
+            "type": "mistakes",
+            "items": [
+              {
+                "wrong": "I go often to the gym.",
+                "right": "I often go to the gym.",
+                "reason": "В нейтральной фразе наречие частотности ставим перед смысловым глаголом."
+              }
             ]
           }
         ]
       },
       {
-        "kicker": "Особая позиция",
-        "title": "С глаголом be наречие идёт после am / is / are",
+        "kicker": "3 · be",
+        "title": "С be позиция меняется: наречие идёт после am/is/are",
+        "intro": "be уже сам является сказуемым, поэтому frequency adverb ставится после него.",
         "blocks": [
           {
-            "type": "rule",
-            "title": "Be стоит раньше наречия",
-            "formula": "subject + be + frequency adverb",
-            "text": "Не переносим правило обычного глагола на be.",
+            "type": "wordorder",
+            "tokens": [
+              "subject",
+              "am / is / are",
+              "frequency adverb",
+              "..."
+            ],
             "example": {
-              "en": "They are usually at home in the evening.",
-              "ru": "Обычно вечером они дома.",
+              "en": "They are usually busy on Mondays.",
+              "ru": "По понедельникам они обычно заняты.",
               "highlights": [
                 "are",
                 "usually"
@@ -861,31 +988,33 @@ window.GRAMMAR_DATA = [
             "columns": [
               {
                 "title": "Обычный глагол",
-                "lead": "наречие перед смысловым глаголом",
+                "lead": "before main verb",
                 "lines": [
-                  "I often work late. — Я часто работаю допоздна."
+                  "I often work late.",
+                  "She never drinks coffee."
                 ],
                 "example": {
-                  "en": "I often work late.",
-                  "ru": "Я часто работаю допоздна.",
+                  "en": "We sometimes go by bus.",
+                  "ru": "Иногда мы ездим на автобусе.",
                   "highlights": [
-                    "often",
-                    "work"
+                    "sometimes",
+                    "go"
                   ]
                 }
               },
               {
-                "title": "Be",
-                "lead": "наречие после be",
+                "title": "be",
+                "lead": "after am/is/are",
                 "lines": [
-                  "I am often tired. — Я часто бываю уставшим(ей)."
+                  "I am often tired.",
+                  "They are never late."
                 ],
                 "example": {
-                  "en": "I am often tired.",
-                  "ru": "Я часто устаю / бываю уставшим.",
+                  "en": "He is always friendly.",
+                  "ru": "Он всегда дружелюбен.",
                   "highlights": [
-                    "am",
-                    "often"
+                    "is",
+                    "always"
                   ]
                 }
               }
@@ -894,165 +1023,131 @@ window.GRAMMAR_DATA = [
         ]
       },
       {
-        "kicker": "Фразы частоты",
-        "title": "Every day, once, twice, three times — обычно в конце",
+        "kicker": "4 · Фразы частотности",
+        "title": "every day, once a week, twice a month — обычно в конце",
+        "intro": "Это не короткие наречия, а целые фразы, поэтому их естественная позиция чаще всего в конце предложения.",
         "blocks": [
           {
             "type": "table",
             "headers": [
-              "Форма",
+              "Фраза",
               "Значение",
-              "Пример",
-              "Перевод"
+              "Пример"
             ],
             "rows": [
               [
                 "every day",
                 "каждый день",
-                "I read every day.",
-                "Я читаю каждый день."
+                "I walk to work every day."
               ],
               [
                 "once a week",
-                "один раз в неделю",
-                "We meet once a week.",
-                "Мы встречаемся раз в неделю."
+                "раз в неделю",
+                "We meet once a week."
               ],
               [
                 "twice a month",
                 "два раза в месяц",
-                "She travels twice a month.",
-                "Она путешествует два раза в месяц."
+                "I go there twice a month."
               ],
               [
                 "three times a year",
                 "три раза в год",
-                "They visit us three times a year.",
-                "Они навещают нас три раза в год."
+                "They travel three times a year."
               ]
             ],
             "highlights": [
-              "every day",
-              "once a week",
-              "twice a month",
-              "three times a year"
+              "every",
+              "once",
+              "twice",
+              "times"
             ]
           },
           {
             "type": "note",
-            "variant": "info",
-            "title": "Once и twice — специальные формы",
-            "text": "Говорим once (не one time) и twice (не two times) в обычной речи. Начиная с трёх: three times, four times и т. д."
+            "title": "Не путай twice и two times",
+            "text": "twice — стандартное компактное слово для «два раза»: twice a week. Для трёх и больше: three times, four times...",
+            "variant": "info"
           }
         ]
       },
       {
-        "kicker": "Вопрос",
-        "title": "How often…? спрашивает именно о частоте",
+        "kicker": "5 · How often?",
+        "title": "Вопрос о частоте строится через обычный вопрос Present Simple",
+        "intro": "How often занимает место question word, после него сохраняется do/does + subject + base verb.",
         "blocks": [
           {
-            "type": "compare",
-            "columns": [
-              {
-                "title": "С обычным глаголом",
-                "lead": "How often + do/does + subject + verb?",
-                "lines": [
-                  "How often do you exercise? — Как часто ты тренируешься?"
-                ],
-                "example": {
-                  "en": "How often do you exercise?",
-                  "ru": "Как часто ты тренируешься?",
-                  "highlights": [
-                    "How often",
-                    "do",
-                    "exercise"
-                  ]
-                }
-              },
-              {
-                "title": "С be",
-                "lead": "How often + be + subject …?",
-                "lines": [
-                  "How often are you late? — Как часто ты опаздываешь?"
-                ],
-                "example": {
-                  "en": "How often are you late?",
-                  "ru": "Как часто ты опаздываешь?",
-                  "highlights": [
-                    "How often",
-                    "are"
-                  ]
-                }
-              }
-            ]
+            "type": "wordorder",
+            "tokens": [
+              "How often",
+              "do / does",
+              "subject",
+              "base verb",
+              "...?"
+            ],
+            "example": {
+              "en": "How often do you listen to the news?",
+              "ru": "Как часто ты слушаешь новости?",
+              "highlights": [
+                "How often",
+                "do",
+                "listen"
+              ]
+            }
           },
           {
             "type": "examples",
             "items": [
               {
-                "en": "I exercise three times a week.",
-                "ru": "Я тренируюсь три раза в неделю.",
+                "en": "How often does she go swimming?",
+                "ru": "Как часто она ходит плавать?",
                 "highlights": [
-                  "three times a week"
+                  "does",
+                  "go"
                 ]
               },
               {
-                "en": "I’m hardly ever late.",
-                "ru": "Я почти никогда не опаздываю.",
+                "en": "How often are you late?",
+                "ru": "Как часто ты опаздываешь?",
                 "highlights": [
-                  "hardly ever"
+                  "are"
                 ]
               }
             ]
-          }
-        ]
-      },
-      {
-        "kicker": "Тонкость",
-        "title": "Never уже содержит отрицательный смысл",
-        "blocks": [
-          {
-            "type": "note",
-            "variant": "warning",
-            "title": "Не ставь don’t вместе с never",
-            "text": "I never work on Sundays. = Я никогда не работаю по воскресеньям. Форма I don’t never… создаёт двойное отрицание и не подходит для стандартного английского."
           },
           {
             "type": "note",
-            "variant": "contrast",
-            "title": "Sometimes более подвижно",
-            "text": "Sometimes часто стоит перед смысловым глаголом, но может стоять и в начале или конце: Sometimes I walk to work. / I walk to work sometimes. Для остальных наречий на этом уровне лучше использовать базовую позицию."
+            "title": "С be снова без do",
+            "text": "How often are you late? — потому что are уже является глаголом.",
+            "variant": "contrast"
           }
         ]
       },
       {
-        "kicker": "Контроль",
-        "title": "Типичные ошибки",
+        "kicker": "6 · Значение и отрицание",
+        "title": "never и hardly ever уже несут отрицательный смысл",
+        "intro": "С never не нужен don’t/doesn’t. Hardly ever тоже означает очень редкую частоту, а не обычное утверждение «часто».",
         "blocks": [
           {
             "type": "mistakes",
             "items": [
               {
-                "wrong": "I go often to the gym.",
-                "right": "I often go to the gym. — Я часто хожу в спортзал.",
-                "reason": "С обычным глаголом наречие обычно стоит перед ним."
+                "wrong": "I don’t never go there.",
+                "right": "I never go there.",
+                "reason": "В стандартном английском не используем двойное отрицание don’t + never."
               },
               {
-                "wrong": "She usually is tired.",
-                "right": "She is usually tired. — Она обычно уставшая.",
-                "reason": "С be наречие ставится после is/am/are."
-              },
-              {
-                "wrong": "I don’t never drink coffee.",
-                "right": "I never drink coffee. — Я никогда не пью кофе.",
-                "reason": "Never уже выражает отрицание."
-              },
-              {
-                "wrong": "I see him two times a week.",
-                "right": "I see him twice a week. — Я вижу его два раза в неделю.",
-                "reason": "Для двух раз употребляется twice."
+                "wrong": "She doesn’t hardly ever cook.",
+                "right": "She hardly ever cooks.",
+                "reason": "Hardly ever уже выражает почти нулевую частоту."
               }
             ]
+          },
+          {
+            "type": "note",
+            "title": "Sometimes более свободно",
+            "text": "Sometimes может стоять в начале или в конце: Sometimes I walk to work. / I walk to work sometimes. В учебных заданиях чаще выбирай позицию, которую требует модель предложения.",
+            "variant": "info"
           }
         ]
       }
@@ -1315,11 +1410,11 @@ window.GRAMMAR_DATA = [
     "passScore": 100,
     "showCorrectAnswerOnError": false,
     "intro": {
-      "lead": "После like, love, hate, enjoy мы часто называем действие как занятие или вид деятельности. Для этого используется форма verb + -ing: reading, cooking, running.",
-      "anchor": "Если смысл — «мне нравится / не нравится само занятие», думай о конструкции verb of attitude + -ing.",
+      "lead": "После like, love, hate и enjoy можно говорить о занятии как о деятельности: cooking, running, meeting friends. В этой теме действие превращается в форму -ing и работает как название занятия.",
+      "anchor": "Если после like/love/hate/enjoy идёт другое действие и речь о том, нравится ли сама деятельность, используй verb + -ing.",
       "example": {
-        "en": "I love cooking.",
-        "ru": "Я люблю готовить.",
+        "en": "I love cooking for friends.",
+        "ru": "Я люблю готовить для друзей.",
         "highlights": [
           "love",
           "cooking"
@@ -1328,171 +1423,224 @@ window.GRAMMAR_DATA = [
     },
     "chapters": [
       {
-        "kicker": "Смысл конструкции",
-        "title": "-ing превращает действие в занятие, о котором мы говорим в целом",
-        "intro": "Здесь -ing не показывает время. Оно помогает назвать деятельность: reading = чтение / процесс чтения, travelling = путешествия.",
+        "kicker": "1 · Смысл",
+        "title": "-ing после глагола предпочтения = занятие как идея",
+        "intro": "Сравни: cook — действие «готовить», cooking после love — деятельность «готовка / готовить вообще».",
         "blocks": [
           {
-            "type": "examples",
+            "type": "cards",
             "items": [
               {
-                "en": "I like reading.",
-                "ru": "Мне нравится читать.",
-                "highlights": [
-                  "like",
-                  "reading"
-                ]
+                "title": "like",
+                "text": "нравится, люблю в нейтральном смысле",
+                "example": {
+                  "en": "I like walking.",
+                  "ru": "Мне нравится гулять.",
+                  "highlights": [
+                    "like",
+                    "walking"
+                  ]
+                }
               },
               {
-                "en": "She loves travelling.",
-                "ru": "Она обожает путешествовать.",
-                "highlights": [
-                  "loves",
-                  "travelling"
-                ]
+                "title": "love",
+                "text": "очень нравится",
+                "example": {
+                  "en": "She loves dancing.",
+                  "ru": "Она обожает танцевать.",
+                  "highlights": [
+                    "loves",
+                    "dancing"
+                  ]
+                }
               },
               {
-                "en": "We hate waiting.",
-                "ru": "Мы ненавидим ждать.",
-                "highlights": [
-                  "hate",
-                  "waiting"
-                ]
+                "title": "hate",
+                "text": "сильно не нравится",
+                "example": {
+                  "en": "They hate waiting.",
+                  "ru": "Они ненавидят ждать.",
+                  "highlights": [
+                    "hate",
+                    "waiting"
+                  ]
+                }
               },
               {
-                "en": "They enjoy cooking together.",
-                "ru": "Им нравится готовить вместе.",
-                "highlights": [
-                  "enjoy",
-                  "cooking"
-                ]
+                "title": "enjoy",
+                "text": "получать удовольствие от занятия",
+                "example": {
+                  "en": "We enjoy playing tennis.",
+                  "ru": "Нам нравится играть в теннис.",
+                  "highlights": [
+                    "enjoy",
+                    "playing"
+                  ]
+                }
               }
             ]
-          },
-          {
-            "type": "note",
-            "variant": "info",
-            "title": "Важно",
-            "text": "Форма -ing здесь относится к глаголу после like/love/hate/enjoy. Это не Present Continuous: вспомогательного be нет."
           }
         ]
       },
       {
-        "kicker": "Структура",
-        "title": "Утверждение, отрицание и вопрос строятся по Present Simple",
+        "kicker": "2 · Структура",
+        "title": "Первый глагол меняется по грамматике, второй остаётся в -ing",
+        "intro": "Время, лицо и отрицание относятся к like/love/hate/enjoy. Глагол занятия остаётся формой -ing.",
         "blocks": [
           {
             "type": "table",
             "headers": [
-              "Форма",
+              "Тип",
               "Схема",
-              "Пример",
-              "Перевод"
+              "Пример"
             ],
             "rows": [
               [
                 "Утверждение",
-                "subject + like/love/hate/enjoy + verb-ing",
-                "I enjoy cooking.",
-                "Мне нравится готовить."
-              ],
-              [
-                "3-е лицо",
-                "he/she + likes/loves/hates/enjoys + verb-ing",
-                "She loves running.",
-                "Она любит бегать."
+                "subject + like(s) + V-ing",
+                "She likes reading."
               ],
               [
                 "Отрицание",
-                "subject + don’t/doesn’t + like + verb-ing",
-                "I don’t like driving.",
-                "Мне не нравится водить."
+                "subject + don’t/doesn’t + like + V-ing",
+                "I don’t like shopping."
               ],
               [
                 "Вопрос",
-                "Do/Does + subject + like + verb-ing?",
-                "Do you like dancing?",
-                "Тебе нравится танцевать?"
+                "Do/Does + subject + like + V-ing?",
+                "Do you like cooking?"
               ]
             ],
             "highlights": [
               "like",
-              "love",
-              "hate",
-              "enjoy",
               "likes",
-              "loves",
-              "hates",
-              "enjoys",
-              "don’t",
-              "doesn’t",
-              "Do",
-              "Does"
-            ]
-          }
-        ]
-      },
-      {
-        "kicker": "Правописание",
-        "title": "Как образовать -ing форму",
-        "blocks": [
-          {
-            "type": "table",
-            "headers": [
-              "Тип глагола",
-              "Правило",
-              "Пример",
-              "Перевод"
-            ],
-            "rows": [
-              [
-                "Обычно",
-                "+ ing",
-                "work → working",
-                "работать → работа / занятие"
-              ],
-              [
-                "Конечная -e",
-                "убираем e + ing",
-                "make → making",
-                "делать → процесс делания"
-              ],
-              [
-                "Короткий ударный CVC",
-                "удваиваем последнюю согласную",
-                "run → running",
-                "бегать → бег"
-              ],
-              [
-                "-ie",
-                "ie → y + ing",
-                "lie → lying",
-                "лежать → лежание"
-              ]
+              "V-ing"
             ]
           },
           {
             "type": "note",
-            "variant": "warning",
-            "title": "Не удваивай автоматически",
-            "text": "Удвоение зависит от структуры и ударения. Например: visit → visiting, open → opening. На уровне A2 лучше запоминать форму вместе с новым глаголом, если она вызывает сомнение."
+            "title": "После does/doesn’t — like, не likes",
+            "text": "Does she like swimming? Правило Present Simple сохраняется: после does основной глагол базовый.",
+            "variant": "warning"
           }
         ]
       },
       {
-        "kicker": "Сравнение",
-        "title": "Like doing и would like to do — разные намерения",
-        "intro": "Это различие важно: общая симпатия к занятию и конкретное желание сделать что-то — не одно и то же.",
+        "kicker": "3 · Как образовать -ing",
+        "title": "Не просто «добавь ing»: есть несколько моделей написания",
+        "intro": "Большинство глаголов действительно получают -ing напрямую, но несколько частых форм меняются.",
+        "blocks": [
+          {
+            "type": "table",
+            "headers": [
+              "Модель",
+              "Пример",
+              "Форма"
+            ],
+            "rows": [
+              [
+                "обычно + ing",
+                "work",
+                "working"
+              ],
+              [
+                "немая -e исчезает",
+                "write",
+                "writing"
+              ],
+              [
+                "короткий гласный + согласная",
+                "run",
+                "running"
+              ],
+              [
+                "-ie → -ying",
+                "lie",
+                "lying"
+              ]
+            ],
+            "highlights": [
+              "ing",
+              "writing",
+              "running",
+              "lying"
+            ]
+          },
+          {
+            "type": "examples",
+            "items": [
+              {
+                "en": "She loves running in the park.",
+                "ru": "Она любит бегать в парке.",
+                "highlights": [
+                  "running"
+                ]
+              },
+              {
+                "en": "I enjoy writing short stories.",
+                "ru": "Мне нравится писать короткие рассказы.",
+                "highlights": [
+                  "writing"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kicker": "4 · enjoy",
+        "title": "После enjoy в этой модели нужен -ing",
+        "intro": "Enjoy особенно полезно запомнить отдельно: enjoy + activity, а не enjoy + to-infinitive.",
+        "blocks": [
+          {
+            "type": "rule",
+            "title": "Рабочая модель",
+            "formula": "enjoy + V-ing",
+            "text": "После enjoy говорим о деятельности через -ing.",
+            "example": {
+              "en": "I enjoy meeting new people.",
+              "ru": "Мне нравится знакомиться с новыми людьми.",
+              "highlights": [
+                "enjoy",
+                "meeting"
+              ]
+            },
+            "highlights": [
+              "enjoy",
+              "V-ing"
+            ]
+          },
+          {
+            "type": "mistakes",
+            "items": [
+              {
+                "wrong": "I enjoy to cook.",
+                "right": "I enjoy cooking.",
+                "reason": "После enjoy используем -ing."
+              },
+              {
+                "wrong": "We enjoy play tennis.",
+                "right": "We enjoy playing tennis.",
+                "reason": "Второй глагол должен быть в форме -ing."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kicker": "5 · Важное сравнение",
+        "title": "like doing ≠ would like to do",
+        "intro": "Эти конструкции похожи по русскому переводу, но отвечают на разные вопросы.",
         "blocks": [
           {
             "type": "compare",
             "columns": [
               {
-                "title": "like + -ing",
-                "lead": "нравится деятельность вообще",
+                "title": "like/love doing",
+                "lead": "общее предпочтение, что нравится вообще",
                 "lines": [
-                  "общее предпочтение",
-                  "занятие / привычная деятельность"
+                  "I like cooking.",
+                  "She loves travelling."
                 ],
                 "example": {
                   "en": "I like cooking.",
@@ -1504,18 +1652,18 @@ window.GRAMMAR_DATA = [
                 }
               },
               {
-                "title": "would like + to + verb",
-                "lead": "хочу сделать что-то сейчас или в конкретной ситуации",
+                "title": "would like to do",
+                "lead": "желание сейчас или в конкретной ситуации",
                 "lines": [
-                  "конкретное желание",
-                  "вежливая формулировка желания"
+                  "I’d like to order.",
+                  "Would you like to come?"
                 ],
                 "example": {
-                  "en": "I’d like to cook tonight.",
-                  "ru": "Я хотел(а) бы приготовить сегодня вечером.",
+                  "en": "I’d like to order now.",
+                  "ru": "Я хотел(а) бы сейчас сделать заказ.",
                   "highlights": [
                     "would like",
-                    "to cook"
+                    "to order"
                   ]
                 }
               }
@@ -1523,58 +1671,50 @@ window.GRAMMAR_DATA = [
           },
           {
             "type": "note",
-            "variant": "contrast",
-            "title": "Like + to-infinitive тоже возможно",
-            "text": "I like to get up early может означать «я предпочитаю / считаю хорошей привычкой вставать рано». I like getting up early сильнее фокусируется на удовольствии от самого действия. В разговорной речи разница не всегда строгая, но для этой темы основной шаблон — like + -ing."
+            "title": "Не своди всё к одному русскому «люблю»",
+            "text": "I like swimming — мне нравится плавать. I’d like to swim — я хотел(а) бы поплавать.",
+            "variant": "contrast"
           }
         ]
       },
       {
-        "kicker": "Особый глагол",
-        "title": "Enjoy требует -ing, а не to-infinitive",
+        "kicker": "6 · Выбор формы",
+        "title": "Как строить предложение без угадывания",
+        "intro": "Сначала выбери смысл, потом грамматическую форму.",
         "blocks": [
           {
-            "type": "rule",
-            "title": "После enjoy",
-            "formula": "enjoy + verb-ing",
-            "text": "В стандартном английском нельзя сказать enjoy to do.",
-            "example": {
-              "en": "We enjoy spending time together.",
-              "ru": "Нам нравится проводить время вместе.",
-              "highlights": [
-                "enjoy",
-                "spending"
-              ]
-            }
-          }
-        ]
-      },
-      {
-        "kicker": "Контроль",
-        "title": "Типичные ошибки",
-        "blocks": [
+            "type": "steps",
+            "steps": [
+              {
+                "title": "Есть предпочтение?",
+                "text": "Выбери like/love/hate/enjoy."
+              },
+              {
+                "title": "После него идёт действие?",
+                "text": "Поставь действие в -ing."
+              },
+              {
+                "title": "Нужно отрицание/вопрос?",
+                "text": "Строй Present Simple вокруг первого глагола: don’t like / Does she like...?"
+              },
+              {
+                "title": "Проверь написание -ing",
+                "text": "write → writing, run → running."
+              }
+            ]
+          },
           {
             "type": "mistakes",
             "items": [
               {
-                "wrong": "I enjoy to cook.",
-                "right": "I enjoy cooking. — Мне нравится готовить.",
-                "reason": "После enjoy используется -ing."
+                "wrong": "Do you like play tennis?",
+                "right": "Do you like playing tennis?",
+                "reason": "После like действие оформляем через -ing."
               },
               {
-                "wrong": "She love running.",
-                "right": "She loves running. — Она любит бегать.",
-                "reason": "В Present Simple после she глагол love получает -s."
-              },
-              {
-                "wrong": "Do you like cook?",
-                "right": "Do you like cooking? — Тебе нравится готовить?",
-                "reason": "После like в этой модели нужен verb-ing."
-              },
-              {
-                "wrong": "I would like cooking tonight.",
-                "right": "I would like to cook tonight. — Я хотел(а) бы приготовить сегодня вечером.",
-                "reason": "Для конкретного желания: would like + to-infinitive."
+                "wrong": "She doesn’t likes shopping.",
+                "right": "She doesn’t like shopping.",
+                "reason": "После doesn’t первый глагол возвращается в базовую форму."
               }
             ]
           }
@@ -1834,39 +1974,38 @@ window.GRAMMAR_DATA = [
     "passScore": 100,
     "showCorrectAnswerOnError": false,
     "intro": {
-      "lead": "This, that, these, those одновременно показывают два признака: расстояние от говорящего и число предметов. Here и there показывают только место.",
-      "anchor": "Сначала реши: один предмет или несколько. Затем: близко или дальше. После этого выбор становится механическим.",
+      "lead": "this, that, these, those показывают, на какой предмет или группу мы указываем. Выбор зависит сразу от двух параметров: один предмет или несколько, близко или дальше от говорящего.",
+      "anchor": "Сначала выбери число: singular/plural. Потом расстояние: near/far. Here/there обозначают уже не предмет, а место.",
       "example": {
-        "en": "this chair · those windows · here · there",
-        "ru": "этот стул · те окна · здесь · там",
+        "en": "This chair is comfortable, but those chairs are expensive.",
+        "ru": "Этот стул удобный, а те стулья дорогие.",
         "highlights": [
-          "this",
-          "those",
-          "here",
-          "there"
+          "This chair",
+          "those chairs"
         ]
       }
     },
     "chapters": [
       {
-        "kicker": "Главная схема",
-        "title": "Две оси выбора: число × расстояние",
+        "kicker": "1 · Матрица выбора",
+        "title": "Два вопроса дают четыре формы",
+        "intro": "Эту тему удобнее не зубрить списком, а пользоваться таблицей 2×2.",
         "blocks": [
           {
             "type": "table",
             "headers": [
               "",
-              "Близко к говорящему",
-              "Дальше от говорящего"
+              "Близко",
+              "Дальше"
             ],
             "rows": [
               [
-                "Один предмет",
+                "Один",
                 "this",
                 "that"
               ],
               [
-                "Несколько предметов",
+                "Несколько",
                 "these",
                 "those"
               ]
@@ -1882,29 +2021,15 @@ window.GRAMMAR_DATA = [
             "type": "examples",
             "items": [
               {
-                "en": "This chair is comfortable.",
-                "ru": "Этот стул удобный.",
+                "en": "This is my key.",
+                "ru": "Это мой ключ (здесь, рядом).",
                 "highlights": [
                   "This"
                 ]
               },
               {
-                "en": "That building is old.",
-                "ru": "То здание старое.",
-                "highlights": [
-                  "That"
-                ]
-              },
-              {
-                "en": "These keys are mine.",
-                "ru": "Эти ключи мои.",
-                "highlights": [
-                  "These"
-                ]
-              },
-              {
-                "en": "Those windows are open.",
-                "ru": "Те окна открыты.",
+                "en": "Those are our bags.",
+                "ru": "Вон те сумки — наши.",
                 "highlights": [
                   "Those"
                 ]
@@ -1914,106 +2039,57 @@ window.GRAMMAR_DATA = [
         ]
       },
       {
-        "kicker": "Два способа употребления",
-        "title": "Перед существительным или вместо существительного",
-        "intro": "Demonstratives могут определять существительное или сами заменять его, если предмет понятен из ситуации.",
+        "kicker": "2 · С существительным и без него",
+        "title": "Demonstrative может стоять перед существительным или заменять его",
+        "intro": "В обоих случаях форма выбирается одинаково по числу и расстоянию.",
         "blocks": [
           {
             "type": "compare",
             "columns": [
               {
                 "title": "Перед существительным",
-                "lead": "this/that/these/those + noun",
+                "lead": "this chair / those books",
                 "lines": [
-                  "this room — эта комната",
-                  "those chairs — те стулья"
+                  "This sofa is new.",
+                  "Those pictures are nice."
                 ],
                 "example": {
-                  "en": "This room is small.",
-                  "ru": "Эта комната маленькая.",
+                  "en": "That plant is beautiful.",
+                  "ru": "То растение красивое.",
                   "highlights": [
-                    "This room"
+                    "That plant"
                   ]
                 }
               },
               {
                 "title": "Самостоятельно",
-                "lead": "слово заменяет уже понятный предмет",
+                "lead": "this / those",
                 "lines": [
-                  "This is mine. — Это моё.",
-                  "Those are new. — Те / вон те новые."
+                  "This is new.",
+                  "Those are mine."
                 ],
                 "example": {
-                  "en": "Those are my shoes.",
-                  "ru": "Вон те — мои туфли.",
+                  "en": "These are my keys.",
+                  "ru": "Это мои ключи.",
                   "highlights": [
-                    "Those"
+                    "These"
                   ]
                 }
               }
             ]
-          }
-        ]
-      },
-      {
-        "kicker": "Согласование",
-        "title": "This/that — singular; these/those — plural",
-        "blocks": [
-          {
-            "type": "table",
-            "headers": [
-              "Указательное",
-              "Глагол be",
-              "Вопрос",
-              "Перевод"
-            ],
-            "rows": [
-              [
-                "this",
-                "is",
-                "What is this?",
-                "Что это? (близко, один предмет)"
-              ],
-              [
-                "that",
-                "is",
-                "What is that?",
-                "Что это / то? (дальше, один предмет)"
-              ],
-              [
-                "these",
-                "are",
-                "What are these?",
-                "Что это? (близко, несколько)"
-              ],
-              [
-                "those",
-                "are",
-                "What are those?",
-                "Что это / те? (дальше, несколько)"
-              ]
-            ],
-            "highlights": [
-              "this",
-              "that",
-              "these",
-              "those",
-              "is",
-              "are"
-            ]
           },
           {
             "type": "note",
-            "variant": "warning",
-            "title": "Число должно совпадать",
-            "text": "Нельзя: these chair или that books. Сначала посмотри на существительное: singular → this/that; plural → these/those."
+            "title": "Согласуй число",
+            "text": "this/that + singular; these/those + plural. Нельзя this chairs или these chair.",
+            "variant": "warning"
           }
         ]
       },
       {
-        "kicker": "Место",
-        "title": "Here и there не меняются по числу",
-        "intro": "Here = здесь, рядом с говорящим. There = там, в другом месте / дальше. Они относятся к месту, а не к singular/plural.",
+        "kicker": "3 · here / there",
+        "title": "here и there отвечают на «где?», а не «какой предмет?»",
+        "intro": "Here = здесь, в месте говорящего. There = там, в другом месте.",
         "blocks": [
           {
             "type": "compare",
@@ -2022,12 +2098,12 @@ window.GRAMMAR_DATA = [
                 "title": "here",
                 "lead": "место рядом",
                 "lines": [
-                  "Come here. — Иди сюда.",
-                  "Put it here. — Положи это здесь."
+                  "Sit here.",
+                  "Your keys are here."
                 ],
                 "example": {
-                  "en": "Your bag is here.",
-                  "ru": "Твоя сумка здесь.",
+                  "en": "Come and sit here.",
+                  "ru": "Иди и садись здесь.",
                   "highlights": [
                     "here"
                   ]
@@ -2037,86 +2113,142 @@ window.GRAMMAR_DATA = [
                 "title": "there",
                 "lead": "место дальше",
                 "lines": [
-                  "Go there. — Иди туда.",
-                  "Put it there. — Положи это там."
+                  "Put it there.",
+                  "The shop is over there."
                 ],
                 "example": {
-                  "en": "The bus stop is over there.",
-                  "ru": "Автобусная остановка вон там.",
+                  "en": "Who are those people over there?",
+                  "ru": "Кто те люди вон там?",
                   "highlights": [
+                    "those",
                     "there"
                   ]
                 }
               }
             ]
-          },
-          {
-            "type": "note",
-            "variant": "contrast",
-            "title": "Не путай there = «там» и there is / there are",
-            "text": "My bag is there. = Моя сумка там (место). There is a bag on the chair. = На стуле есть сумка (мы сообщаем о наличии предмета). Это разные функции слова there."
           }
         ]
       },
       {
-        "kicker": "Речь и ситуация",
-        "title": "Расстояние определяется ситуацией, а не метрами",
+        "kicker": "4 · Связка предмет + место",
+        "title": "this/that/these/those и here/there могут работать вместе",
+        "intro": "Указательное слово определяет предмет, а here/there уточняет место.",
         "blocks": [
-          {
-            "type": "paragraphs",
-            "paragraphs": [
-              "This/these обычно относятся к тому, что говорящий воспринимает как «здесь, со мной, в моей текущей ситуации». That/those — к тому, что он отделяет как «там / дальше / не здесь».",
-              "Поэтому выбор зависит не только от физического расстояния, но и от того, на что указывает говорящий и как он организует ситуацию в разговоре."
-            ]
-          },
           {
             "type": "examples",
             "items": [
               {
-                "en": "Look at this photo.",
-                "ru": "Посмотри на эту фотографию (она у меня / перед нами).",
+                "en": "These chairs here are free.",
+                "ru": "Эти стулья здесь свободны.",
                 "highlights": [
-                  "this"
+                  "These",
+                  "here"
                 ]
               },
               {
-                "en": "Who is that man over there?",
-                "ru": "Кто тот мужчина вон там?",
+                "en": "That shelf over there is new.",
+                "ru": "Та полка вон там новая.",
                 "highlights": [
-                  "that",
-                  "over there"
+                  "That",
+                  "there"
                 ]
+              }
+            ]
+          },
+          {
+            "type": "note",
+            "title": "over there",
+            "text": "Over there — естественный способ сказать «вон там», особенно когда указываем на более удалённое место.",
+            "variant": "info"
+          }
+        ]
+      },
+      {
+        "kicker": "5 · Не путай два there",
+        "title": "there как «там» и there is/are — разные конструкции",
+        "intro": "Одинаковое слово выполняет две разные функции. Это особенно важно перед темой there is/there are.",
+        "blocks": [
+          {
+            "type": "compare",
+            "columns": [
+              {
+                "title": "there = место",
+                "lead": "наречие «там»",
+                "lines": [
+                  "The café is there.",
+                  "Put the bag there."
+                ],
+                "example": {
+                  "en": "Your phone is there.",
+                  "ru": "Твой телефон там.",
+                  "highlights": [
+                    "there"
+                  ]
+                }
+              },
+              {
+                "title": "there is / are",
+                "lead": "сообщаем о существовании",
+                "lines": [
+                  "There is a café nearby.",
+                  "There are two shops here."
+                ],
+                "example": {
+                  "en": "There is a café near here.",
+                  "ru": "Здесь рядом есть кафе.",
+                  "highlights": [
+                    "There is"
+                  ]
+                }
               }
             ]
           }
         ]
       },
       {
-        "kicker": "Контроль",
-        "title": "Типичные ошибки",
+        "kicker": "6 · Типичные ошибки",
+        "title": "Проверь число и точку отсчёта",
+        "intro": "Большинство ошибок здесь возникают не из-за словаря, а из-за несогласованного числа.",
         "blocks": [
           {
             "type": "mistakes",
             "items": [
               {
-                "wrong": "these chair",
-                "right": "this chair — этот стул",
-                "reason": "Chair — singular, поэтому this."
+                "wrong": "this chairs",
+                "right": "these chairs",
+                "reason": "Несколько предметов → these/those."
               },
               {
-                "wrong": "that books",
-                "right": "those books — те книги",
-                "reason": "Books — plural, поэтому those."
+                "wrong": "those sofa",
+                "right": "that sofa",
+                "reason": "Один предмет → this/that."
               },
               {
-                "wrong": "What is these?",
-                "right": "What are these? — Что это?",
-                "reason": "These — plural, поэтому нужен are."
+                "wrong": "these is my keys",
+                "right": "these are my keys",
+                "reason": "These — множественное число, нужен are."
               },
               {
-                "wrong": "These are my bag.",
-                "right": "This is my bag. — Это моя сумка.",
-                "reason": "Один предмет требует this + is."
+                "wrong": "Who are this people?",
+                "right": "Who are these people?",
+                "reason": "People — множественное число."
+              }
+            ]
+          },
+          {
+            "type": "steps",
+            "steps": [
+              {
+                "title": "Один или несколько?",
+                "text": "singular → this/that; plural → these/those."
+              },
+              {
+                "title": "Близко или далеко?",
+                "text": "near → this/these; far → that/those."
+              },
+              {
+                "title": "Нужно назвать место?",
+                "text": "Добавь here/there отдельно, если это помогает смыслу."
               }
             ]
           }
@@ -2388,117 +2520,89 @@ window.GRAMMAR_DATA = [
     "passScore": 100,
     "showCorrectAnswerOnError": false,
     "intro": {
-      "lead": "Have got — очень частый способ сказать, что у человека или предмета что-то есть, а также описать отношения, признаки и некоторые состояния. По смыслу в настоящем времени have got обычно равно have, но вопрос и отрицание строятся по другой модели.",
-      "anchor": "Сначала определи смысл: речь о наличии / принадлежности / состоянии сейчас? Тогда have got возможно. Затем выбери have или has по подлежащему.",
+      "lead": "have got — очень частый разговорный способ говорить о том, что у человека или предмета что-то есть: вещи, особенности, отношения, части дома. Особенно типичен для британского английского.",
+      "anchor": "В have got слово have/has меняется по лицу, а got остаётся неизменным. В вопросе have/has выходит перед подлежащим — do не нужен.",
       "example": {
-        "en": "I’ve got a new laptop.",
-        "ru": "У меня есть новый ноутбук.",
+        "en": "She has got a new laptop.",
+        "ru": "У неё есть новый ноутбук.",
         "highlights": [
-          "’ve got"
+          "has got"
         ]
       }
     },
     "chapters": [
       {
-        "kicker": "Значение",
-        "title": "Have got говорит о том, что есть у человека или предмета сейчас",
-        "intro": "В этой конструкции got не делает предложение прошедшим. Всё сочетание have got / has got относится к настоящему времени.",
+        "kicker": "1 · Значение",
+        "title": "Что именно выражает have got",
+        "intro": "Это прежде всего possession и устойчивые характеристики, а не любое действие со словом have.",
         "blocks": [
           {
-            "type": "examples",
+            "type": "cards",
             "items": [
               {
-                "en": "We’ve got a small garden.",
-                "ru": "У нас есть небольшой сад.",
-                "highlights": [
-                  "’ve got"
-                ]
+                "title": "Вещи",
+                "text": "то, чем человек владеет",
+                "example": {
+                  "en": "I’ve got two phones.",
+                  "ru": "У меня два телефона.",
+                  "highlights": [
+                    "’ve got"
+                  ]
+                }
               },
               {
-                "en": "She’s got two brothers.",
-                "ru": "У неё есть два брата.",
-                "highlights": [
-                  "’s got"
-                ]
+                "title": "Люди / отношения",
+                "text": "семья, друзья, дети",
+                "example": {
+                  "en": "They’ve got three children.",
+                  "ru": "У них трое детей.",
+                  "highlights": [
+                    "’ve got"
+                  ]
+                }
               },
               {
-                "en": "The house has got three bedrooms.",
-                "ru": "В доме три спальни.",
-                "highlights": [
-                  "has got"
-                ]
-              },
-              {
-                "en": "I’ve got a headache.",
-                "ru": "У меня болит голова.",
-                "highlights": [
-                  "’ve got"
-                ]
+                "title": "Характеристика",
+                "text": "части дома, внешность, особенности",
+                "example": {
+                  "en": "The flat has got a balcony.",
+                  "ru": "В квартире есть балкон.",
+                  "highlights": [
+                    "has got"
+                  ]
+                }
               }
             ]
-          },
-          {
-            "type": "note",
-            "variant": "contrast",
-            "title": "Это настоящее время",
-            "text": "I’ve got a car = У меня есть машина сейчас. Не переводи got отдельно как «получил». В have got слова работают как одна грамматическая конструкция."
           }
         ]
       },
       {
-        "kicker": "Утверждение",
-        "title": "Have got или has got: форма зависит только от подлежащего",
+        "kicker": "2 · Утверждение",
+        "title": "have got и has got",
+        "intro": "Выбор have/has зависит от подлежащего. Got не меняется.",
         "blocks": [
           {
             "type": "table",
             "headers": [
               "Подлежащее",
               "Полная форма",
-              "Обычное сокращение",
-              "Перевод"
+              "Сокращение"
             ],
             "rows": [
               [
                 "I",
                 "I have got",
-                "I’ve got",
-                "у меня есть"
+                "I’ve got"
               ],
               [
-                "you",
-                "you have got",
-                "you’ve got",
-                "у тебя / вас есть"
+                "you/we/they",
+                "have got",
+                "you’ve/we’ve/they’ve got"
               ],
               [
-                "we",
-                "we have got",
-                "we’ve got",
-                "у нас есть"
-              ],
-              [
-                "they",
-                "they have got",
-                "they’ve got",
-                "у них есть"
-              ],
-              [
-                "he",
-                "he has got",
-                "he’s got",
-                "у него есть"
-              ],
-              [
-                "she",
-                "she has got",
-                "she’s got",
-                "у неё есть"
-              ],
-              [
-                "it",
-                "it has got",
-                "it’s got",
-                "у него / неё (о предмете, животном) есть"
+                "he/she/it",
+                "has got",
+                "he’s/she’s/it’s got"
               ]
             ],
             "highlights": [
@@ -2510,134 +2614,145 @@ window.GRAMMAR_DATA = [
           },
           {
             "type": "note",
-            "variant": "warning",
-            "title": "Не забывай has с he / she / it",
-            "text": "Нельзя: She have got. Правильно: She has got / She’s got."
+            "title": "’s got = has got",
+            "text": "В She’s got a car сокращение ’s означает has, потому что дальше стоит got.",
+            "variant": "info"
           }
         ]
       },
       {
-        "kicker": "Отрицание и вопрос",
-        "title": "Do/does здесь не нужны: меняется сама форма have / has",
+        "kicker": "3 · Отрицание",
+        "title": "haven’t got / hasn’t got",
+        "intro": "В этой конструкции do/does не используется. Отрицание присоединяется прямо к have/has.",
         "blocks": [
+          {
+            "type": "wordorder",
+            "tokens": [
+              "subject",
+              "haven’t / hasn’t",
+              "got",
+              "object"
+            ],
+            "example": {
+              "en": "We haven’t got any coffee.",
+              "ru": "У нас нет кофе.",
+              "highlights": [
+                "haven’t",
+                "got"
+              ]
+            }
+          },
+          {
+            "type": "mistakes",
+            "items": [
+              {
+                "wrong": "She doesn’t have got a car.",
+                "right": "She hasn’t got a car.",
+                "reason": "В модели have got отрицание строится через haven’t/hasn’t."
+              },
+              {
+                "wrong": "He hasn’t a laptop.",
+                "right": "He hasn’t got a laptop.",
+                "reason": "В этой модели got сохраняется."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kicker": "4 · Вопросы",
+        "title": "Have/Has выходит перед подлежащим",
+        "intro": "Вопрос строится перестановкой have/has и подлежащего.",
+        "blocks": [
+          {
+            "type": "wordorder",
+            "tokens": [
+              "Have / Has",
+              "subject",
+              "got",
+              "...?"
+            ],
+            "example": {
+              "en": "Have you got a laptop?",
+              "ru": "У тебя есть ноутбук?",
+              "highlights": [
+                "Have",
+                "got"
+              ]
+            }
+          },
           {
             "type": "table",
             "headers": [
-              "Функция",
-              "I / you / we / they",
-              "he / she / it"
+              "Вопрос",
+              "Краткий ответ"
             ],
             "rows": [
               [
-                "Утверждение",
-                "have got",
-                "has got"
+                "Have you got any plants?",
+                "Yes, I have. / No, I haven’t."
               ],
               [
-                "Отрицание",
-                "haven’t got",
-                "hasn’t got"
-              ],
-              [
-                "Вопрос",
-                "Have ... got?",
-                "Has ... got?"
-              ],
-              [
-                "Короткий ответ +",
-                "Yes, ... have.",
-                "Yes, ... has."
-              ],
-              [
-                "Короткий ответ −",
-                "No, ... haven’t.",
-                "No, ... hasn’t."
+                "Has she got a car?",
+                "Yes, she has. / No, she hasn’t."
               ]
             ],
             "highlights": [
-              "haven’t got",
-              "hasn’t got",
               "Have",
               "Has",
               "have",
-              "has"
-            ]
-          },
-          {
-            "type": "examples",
-            "items": [
-              {
-                "en": "Have you got a laptop? — Yes, I have.",
-                "ru": "У тебя есть ноутбук? — Да.",
-                "highlights": [
-                  "Have",
-                  "got",
-                  "have"
-                ]
-              },
-              {
-                "en": "Has Kenji got any children? — No, he hasn’t.",
-                "ru": "У Кэндзи есть дети? — Нет.",
-                "highlights": [
-                  "Has",
-                  "got",
-                  "hasn’t"
-                ]
-              },
-              {
-                "en": "We haven’t got any coffee.",
-                "ru": "У нас нет кофе.",
-                "highlights": [
-                  "haven’t got"
-                ]
-              }
+              "haven’t",
+              "has",
+              "hasn’t"
             ]
           },
           {
             "type": "note",
-            "variant": "warning",
-            "title": "Короткий ответ не заканчивается на got",
-            "text": "Правильно: Yes, I have. / No, she hasn’t. Не нужно: Yes, I have got."
+            "title": "В short answer нет got",
+            "text": "Yes, I have. / No, I haven’t. Не нужно: Yes, I have got.",
+            "variant": "info"
           }
         ]
       },
       {
-        "kicker": "Have got vs have",
-        "title": "По значению «иметь» они часто равны, но грамматика вопросов разная",
-        "intro": "В британском английском have got особенно типично для наличия и принадлежности. Обычное have также правильно. В американском английском have часто встречается чаще.",
+        "kicker": "5 · have got или have?",
+        "title": "Два нормальных способа говорить о possession",
+        "intro": "В современном английском оба варианта возможны, но грамматика вопроса и отрицания отличается.",
         "blocks": [
           {
             "type": "compare",
             "columns": [
               {
                 "title": "have got",
-                "lead": "наличие / принадлежность сейчас",
+                "lead": "особенно часто в BrE и разговорной речи",
                 "lines": [
                   "I’ve got a car.",
                   "Have you got a car?",
                   "I haven’t got a car."
                 ],
                 "example": {
-                  "en": "She’s got a new phone.",
-                  "ru": "У неё есть новый телефон.",
+                  "en": "Have you got any brothers?",
+                  "ru": "У тебя есть братья?",
                   "highlights": [
-                    "’s got"
+                    "Have",
+                    "got"
                   ]
                 }
               },
               {
                 "title": "have",
-                "lead": "то же значение, но Present Simple",
+                "lead": "очень обычно, особенно в AmE",
                 "lines": [
                   "I have a car.",
                   "Do you have a car?",
                   "I don’t have a car."
                 ],
                 "example": {
-                  "en": "She has a new phone.",
-                  "ru": "У неё есть новый телефон.",
+                  "en": "Do you have any brothers?",
+                  "ru": "У тебя есть братья?",
                   "highlights": [
-                    "has"
+                    "Do",
+                    "have"
                   ]
                 }
               }
@@ -2645,82 +2760,76 @@ window.GRAMMAR_DATA = [
           },
           {
             "type": "note",
-            "variant": "contrast",
-            "title": "С действиями обычно нужен обычный have",
-            "text": "Have breakfast, have a shower, have a class, have a good time — это действия / события. Здесь строим Present Simple: I have breakfast at 8. Do you have breakfast at home? Фраза I’ve got breakfast означает скорее «у меня есть завтрак / завтрак имеется», а не «я завтракаю»."
+            "title": "Не смешивай модели",
+            "text": "Нельзя строить гибрид: Do you have got...? Выбери либо Have you got...?, либо Do you have...?",
+            "variant": "warning"
           }
         ]
       },
       {
-        "kicker": "Сокращения",
-        "title": "I’ve got и she’s got нужно читать как единый грамматический блок",
+        "kicker": "6 · Когда have got не заменяет have",
+        "title": "have как действие — отдельная история",
+        "intro": "Have got хорошо работает с possession, но не заменяет устойчивые действия с have.",
         "blocks": [
           {
             "type": "table",
             "headers": [
-              "Форма",
-              "Что означает",
-              "Пример"
+              "Действие с have",
+              "Правильно",
+              "Не используем"
             ],
             "rows": [
               [
-                "I’ve got",
-                "I have got",
-                "I’ve got time."
+                "завтракать",
+                "I have breakfast at 8.",
+                "I have got breakfast at 8."
               ],
               [
-                "she’s got",
-                "she has got",
-                "She’s got a car."
+                "принимать душ",
+                "She has a shower.",
+                "She has got a shower. (если речь не о наличии душа)"
               ],
               [
-                "haven’t got",
-                "have not got",
-                "We haven’t got milk."
-              ],
-              [
-                "hasn’t got",
-                "has not got",
-                "He hasn’t got a laptop."
+                "хорошо проводить время",
+                "We have a good time.",
+                "We have got a good time."
               ]
             ],
             "highlights": [
-              "I’ve got",
-              "she’s got",
-              "haven’t got",
-              "hasn’t got"
+              "have"
             ]
           },
           {
             "type": "note",
-            "variant": "contrast",
-            "title": "’s может быть is или has",
-            "text": "She’s tired = She is tired. She’s got a car = She has got a car. Слово got сразу показывает, что ’s здесь означает has."
+            "title": "Один и тот же набор слов может менять смысл",
+            "text": "She has got a shower = у неё/в её доме есть душ. She has a shower every morning = она принимает душ каждое утро.",
+            "variant": "contrast"
           }
         ]
       },
       {
-        "kicker": "Алгоритм",
-        "title": "Как быстро построить предложение",
+        "kicker": "7 · Контроль",
+        "title": "Четыре проверки перед ответом",
+        "intro": "Эта схема помогает не смешивать have got с Present Simple.",
         "blocks": [
           {
             "type": "steps",
-            "items": [
+            "steps": [
               {
-                "title": "1. Определи подлежащее",
-                "text": "I/you/we/they → have; he/she/it → has."
+                "title": "Это наличие/обладание?",
+                "text": "Да → have got подходит."
               },
               {
-                "title": "2. Выбери тип предложения",
-                "text": "Утверждение: have/has got. Отрицание: haven’t/hasn’t got. Вопрос: Have/Has + subject + got?"
+                "title": "Кто подлежащее?",
+                "text": "he/she/it → has got; остальные → have got."
               },
               {
-                "title": "3. Для короткого ответа убери got",
-                "text": "Have you got ...? — Yes, I have. / No, I haven’t."
+                "title": "Какой тип?",
+                "text": "отрицание → haven’t/hasn’t got; вопрос → Have/Has + subject + got?"
               },
               {
-                "title": "4. Проверь смысл have",
-                "text": "Если have означает действие (have breakfast, have a shower), используй обычный Present Simple с do/does."
+                "title": "Не смешал(а) с do?",
+                "text": "Если выбрана модель have got, do/does не нужен."
               }
             ]
           },
@@ -2728,24 +2837,14 @@ window.GRAMMAR_DATA = [
             "type": "mistakes",
             "items": [
               {
-                "wrong": "Does she have got a car?",
-                "right": "Has she got a car? / Does she have a car?",
-                "reason": "Нельзя смешивать две модели вопроса."
+                "wrong": "Has she a car got?",
+                "right": "Has she got a car?",
+                "reason": "Порядок: Has + subject + got."
               },
               {
-                "wrong": "He haven’t got a laptop.",
-                "right": "He hasn’t got a laptop.",
-                "reason": "С he/she/it используется has / hasn’t."
-              },
-              {
-                "wrong": "Have got you any money?",
-                "right": "Have you got any money?",
-                "reason": "В вопросе подлежащее стоит между Have и got."
-              },
-              {
-                "wrong": "Yes, I’ve.",
-                "right": "Yes, I have.",
-                "reason": "В коротком ответе have/has не сокращаются таким способом."
+                "wrong": "Yes, she has got.",
+                "right": "Yes, she has.",
+                "reason": "В кратком ответе got не повторяется."
               }
             ]
           }
@@ -3024,224 +3123,280 @@ window.GRAMMAR_DATA = [
     "passScore": 100,
     "showCorrectAnswerOnError": false,
     "intro": {
-      "lead": "There is / there are нужны, когда мы сообщаем, что что-то существует или находится в определённом месте. По-русски мы часто начинаем с места: «В городе есть парк». По-английски естественная модель — There is a park in the town.",
+      "lead": "there is / there are вводит новую информацию: мы сообщаем, что в каком-то месте что-то существует или находится. По-русски это часто переводится словом «есть», а иногда вообще без отдельного глагола.",
+      "anchor": "Смотри на существительное сразу после конструкции: singular/uncountable → there is; plural → there are. Затем выбирай some/any и слово количества.",
       "example": {
-        "en": "There are some shops near the flat.",
-        "ru": "Рядом с квартирой есть несколько магазинов.",
+        "en": "There is a café near here, and there are two shops opposite it.",
+        "ru": "Здесь рядом есть кафе, а напротив него два магазина.",
         "highlights": [
-          "There are"
+          "There is",
+          "there are"
         ]
       }
     },
     "chapters": [
       {
-        "kicker": "Смысл конструкции",
-        "title": "There is / there are вводят новый объект: «есть / находится / имеются»",
-        "intro": "Слово there здесь не переводится как самостоятельное «там». Оно является частью конструкции. Место обычно называется позже: in the kitchen, near here, on King Street.",
+        "kicker": "1 · Смысл",
+        "title": "Мы не описываем предмет — мы вводим его в ситуацию",
+        "intro": "There is/are отвечает на вопрос «что здесь есть?». После этого предмет можно описывать обычными местоимениями.",
         "blocks": [
           {
-            "type": "examples",
-            "items": [
+            "type": "compare",
+            "columns": [
               {
-                "en": "There is a café near the station.",
-                "ru": "Рядом со станцией есть кафе.",
-                "highlights": [
-                  "There is"
-                ]
+                "title": "Вводим объект",
+                "lead": "there is / are",
+                "lines": [
+                  "There is a sofa in the room.",
+                  "There are two chairs by the window."
+                ],
+                "example": {
+                  "en": "There is a supermarket nearby.",
+                  "ru": "Поблизости есть супермаркет.",
+                  "highlights": [
+                    "There is"
+                  ]
+                }
               },
               {
-                "en": "There are two bedrooms in the flat.",
-                "ru": "В квартире две спальни.",
-                "highlights": [
-                  "There are"
-                ]
-              },
-              {
-                "en": "There is a lot of traffic in the morning.",
-                "ru": "Утром здесь много машин / интенсивное движение.",
-                "highlights": [
-                  "There is"
-                ]
+                "title": "Говорим о уже известном объекте",
+                "lead": "it is / they are",
+                "lines": [
+                  "It is very big.",
+                  "They are new."
+                ],
+                "example": {
+                  "en": "It is open until ten.",
+                  "ru": "Он открыт до десяти.",
+                  "highlights": [
+                    "It is"
+                  ]
+                }
               }
             ]
-          },
-          {
-            "type": "note",
-            "variant": "contrast",
-            "title": "Не путай с there = «там»",
-            "text": "There is a park there. Первая часть there is — грамматическая конструкция «есть», последнее there — обычное наречие «там»."
           }
         ]
       },
       {
-        "kicker": "Единственное и множественное",
-        "title": "Выбирай is или are по существительному после конструкции",
+        "kicker": "2 · Единственное и множественное",
+        "title": "is или are выбираем по следующему существительному",
+        "intro": "Форма согласуется не с местом, а с тем, что существует.",
         "blocks": [
           {
             "type": "table",
             "headers": [
-              "Что идёт после there",
-              "Утверждение",
-              "Пример",
-              "Перевод"
-            ],
-            "rows": [
-              [
-                "одно исчисляемое существительное",
-                "There is / There’s",
-                "There’s a supermarket nearby.",
-                "Рядом есть супермаркет."
-              ],
-              [
-                "неисчисляемое существительное",
-                "There is / There’s",
-                "There’s some noise outside.",
-                "На улице слышен шум."
-              ],
-              [
-                "множественное число",
-                "There are",
-                "There are some cafés here.",
-                "Здесь есть несколько кафе."
-              ]
-            ],
-            "highlights": [
-              "There is",
-              "There’s",
-              "There are"
-            ]
-          },
-          {
-            "type": "note",
-            "variant": "warning",
-            "title": "There’s не употребляй как норму перед множественным числом в учебных заданиях",
-            "text": "Для A2 ориентируйся на стандарт: There’s a shop, но There are two shops. В быстрой разговорной речи можно услышать There’s + plural, однако в письменной и учебной речи выбирай there are."
-          }
-        ]
-      },
-      {
-        "kicker": "Отрицание и вопрос",
-        "title": "В отрицании добавляем not, а в вопросе переносим is / are перед there",
-        "blocks": [
-          {
-            "type": "table",
-            "headers": [
-              "Функция",
-              "Singular / uncountable",
-              "Plural"
-            ],
-            "rows": [
-              [
-                "Утверждение",
-                "There is a café.",
-                "There are some cafés."
-              ],
-              [
-                "Отрицание",
-                "There isn’t a café.",
-                "There aren’t any cafés."
-              ],
-              [
-                "Вопрос",
-                "Is there a café?",
-                "Are there any cafés?"
-              ],
-              [
-                "Короткий ответ +",
-                "Yes, there is.",
-                "Yes, there are."
-              ],
-              [
-                "Короткий ответ −",
-                "No, there isn’t.",
-                "No, there aren’t."
-              ]
-            ],
-            "highlights": [
-              "There isn’t",
-              "There aren’t",
-              "Is there",
-              "Are there",
-              "Yes, there is",
-              "No, there aren’t"
-            ]
-          },
-          {
-            "type": "examples",
-            "items": [
-              {
-                "en": "Is there a supermarket near here? — Yes, there is.",
-                "ru": "Рядом есть супермаркет? — Да.",
-                "highlights": [
-                  "Is there",
-                  "there is"
-                ]
-              },
-              {
-                "en": "Are there any restaurants? — No, there aren’t.",
-                "ru": "Есть какие-нибудь рестораны? — Нет.",
-                "highlights": [
-                  "Are there",
-                  "there aren’t"
-                ]
-              }
-            ]
-          },
-          {
-            "type": "note",
-            "variant": "warning",
-            "title": "Короткий ответ должен совпадать по числу",
-            "text": "Is there ...? → Yes, there is / No, there isn’t. Are there ...? → Yes, there are / No, there aren’t."
-          }
-        ]
-      },
-      {
-        "kicker": "Количество",
-        "title": "Some / any, much / many и a lot of зависят от типа существительного и вида предложения",
-        "blocks": [
-          {
-            "type": "table",
-            "headers": [
+              "После конструкции",
               "Форма",
-              "С чем употребляется",
-              "Где типично",
               "Пример"
             ],
             "rows": [
               [
-                "some",
-                "множественное / неисчисляемое",
-                "утверждение",
-                "There are some shops. / There is some noise."
+                "один countable",
+                "There is",
+                "There is a café."
               ],
               [
-                "any",
-                "множественное / неисчисляемое",
-                "вопрос и отрицание",
-                "Are there any shops? / There isn’t any noise."
+                "uncountable",
+                "There is",
+                "There is some traffic."
               ],
+              [
+                "plural countable",
+                "There are",
+                "There are two cafés."
+              ]
+            ],
+            "highlights": [
+              "There is",
+              "There are"
+            ]
+          },
+          {
+            "type": "rule",
+            "title": "Сокращение",
+            "formula": "there is → there’s",
+            "text": "There’s очень частотно в речи. Для there are стандартного аналогичного сокращения в учебной письменной норме обычно не используют.",
+            "example": {
+              "en": "There’s a park near my house.",
+              "ru": "Рядом с моим домом есть парк.",
+              "highlights": [
+                "There’s"
+              ]
+            },
+            "highlights": [
+              "there’s"
+            ]
+          }
+        ]
+      },
+      {
+        "kicker": "3 · Отрицание",
+        "title": "there isn’t / there aren’t",
+        "intro": "Отрицание строится прямо с be. Do/does не нужен.",
+        "blocks": [
+          {
+            "type": "table",
+            "headers": [
+              "Тип",
+              "Схема",
+              "Пример"
+            ],
+            "rows": [
+              [
+                "singular/uncountable",
+                "There isn’t + ...",
+                "There isn’t a station near here."
+              ],
+              [
+                "plural",
+                "There aren’t + ...",
+                "There aren’t any shops."
+              ]
+            ],
+            "highlights": [
+              "isn’t",
+              "aren’t"
+            ]
+          },
+          {
+            "type": "note",
+            "title": "any естественно в отрицании",
+            "text": "There aren’t any restaurants. There isn’t any noise. При отрицании any обычно звучит естественнее some.",
+            "variant": "info"
+          }
+        ]
+      },
+      {
+        "kicker": "4 · Вопросы",
+        "title": "Is there...? / Are there...?",
+        "intro": "Вопрос строится переносом is/are перед there.",
+        "blocks": [
+          {
+            "type": "wordorder",
+            "tokens": [
+              "Is / Are",
+              "there",
+              "noun",
+              "place",
+              "?"
+            ],
+            "example": {
+              "en": "Are there any good cafés near here?",
+              "ru": "Здесь рядом есть хорошие кафе?",
+              "highlights": [
+                "Are",
+                "there",
+                "any"
+              ]
+            }
+          },
+          {
+            "type": "table",
+            "headers": [
+              "Вопрос",
+              "Краткий ответ"
+            ],
+            "rows": [
+              [
+                "Is there a supermarket?",
+                "Yes, there is. / No, there isn’t."
+              ],
+              [
+                "Are there any shops?",
+                "Yes, there are. / No, there aren’t."
+              ]
+            ],
+            "highlights": [
+              "there is",
+              "there isn’t",
+              "there are",
+              "there aren’t"
+            ]
+          },
+          {
+            "type": "mistakes",
+            "items": [
+              {
+                "wrong": "Do there are shops?",
+                "right": "Are there shops?",
+                "reason": "С there is/are вопрос строит сам be, do не нужен."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kicker": "5 · some и any",
+        "title": "Выбор определителя работает так же, как в теме количества",
+        "intro": "There is/are часто сочетается с неопределённым количеством.",
+        "blocks": [
+          {
+            "type": "compare",
+            "columns": [
+              {
+                "title": "some",
+                "lead": "обычно утверждение",
+                "lines": [
+                  "There are some shops.",
+                  "There is some milk."
+                ],
+                "example": {
+                  "en": "There are some small shops nearby.",
+                  "ru": "Поблизости есть несколько маленьких магазинов.",
+                  "highlights": [
+                    "some"
+                  ]
+                }
+              },
+              {
+                "title": "any",
+                "lead": "обычно вопрос/отрицание",
+                "lines": [
+                  "Are there any shops?",
+                  "There aren’t any shops."
+                ],
+                "example": {
+                  "en": "Is there any noise at night?",
+                  "ru": "Ночью есть какой-нибудь шум?",
+                  "highlights": [
+                    "any"
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kicker": "6 · much, many, a lot of / lots of",
+        "title": "Количество зависит от countable/uncountable и типа предложения",
+        "intro": "В повседневных утвердительных фразах a lot of/lots of звучит естественно и с countable plural, и с uncountable. Much/many особенно типичны в вопросах и отрицаниях.",
+        "blocks": [
+          {
+            "type": "table",
+            "headers": [
+              "Слово",
+              "С чем",
+              "Пример"
+            ],
+            "rows": [
               [
                 "many",
-                "исчисляемое множественное",
-                "особенно вопрос/отрицание",
-                "Are there many cafés?"
+                "plural countable",
+                "There aren’t many shops."
               ],
               [
                 "much",
-                "неисчисляемое",
-                "особенно вопрос/отрицание",
-                "Is there much traffic?"
+                "uncountable",
+                "There isn’t much traffic."
               ],
               [
                 "a lot of / lots of",
                 "оба типа",
-                "очень естественно в утверждении",
                 "There are lots of parks. / There is a lot of traffic."
               ]
             ],
             "highlights": [
-              "some",
-              "any",
               "many",
               "much",
               "a lot of",
@@ -3249,140 +3404,88 @@ window.GRAMMAR_DATA = [
             ]
           },
           {
-            "type": "compare",
-            "columns": [
-              {
-                "title": "Countable plural",
-                "lead": "можно посчитать",
-                "lines": [
-                  "shops, cafés, people, eggs"
-                ],
-                "example": {
-                  "en": "There aren’t many shops.",
-                  "ru": "Магазинов немного.",
-                  "highlights": [
-                    "many"
-                  ]
-                }
-              },
-              {
-                "title": "Uncountable",
-                "lead": "не считаем отдельными единицами",
-                "lines": [
-                  "traffic, noise, water, money"
-                ],
-                "example": {
-                  "en": "There isn’t much traffic.",
-                  "ru": "Машин / движения немного.",
-                  "highlights": [
-                    "much"
-                  ]
-                }
-              }
-            ]
-          },
-          {
-            "type": "note",
-            "variant": "warning",
-            "title": "После a lot нужен of",
-            "text": "Правильно: a lot of traffic, a lot of shops. Lots of тоже всегда содержит of. Нельзя: a lot traffic."
-          }
-        ]
-      },
-      {
-        "kicker": "There is vs it is",
-        "title": "There is вводит объект, it is говорит об уже известном объекте",
-        "blocks": [
-          {
-            "type": "compare",
-            "columns": [
-              {
-                "title": "There is / are",
-                "lead": "сообщаем, что объект существует",
-                "lines": [
-                  "There is a café near my house.",
-                  "There are two parks in this area."
-                ],
-                "example": {
-                  "en": "There’s a new oven in the kitchen.",
-                  "ru": "На кухне есть новая духовка.",
-                  "highlights": [
-                    "There’s"
-                  ]
-                }
-              },
-              {
-                "title": "It is / they are",
-                "lead": "описываем уже названный объект",
-                "lines": [
-                  "The café is small. It is very quiet.",
-                  "The parks are beautiful. They are close to home."
-                ],
-                "example": {
-                  "en": "The oven is new. It is very good.",
-                  "ru": "Духовка новая. Она очень хорошая.",
-                  "highlights": [
-                    "It is"
-                  ]
-                }
-              }
-            ]
-          },
-          {
-            "type": "note",
-            "variant": "contrast",
-            "title": "Типичная последовательность",
-            "text": "There is a restaurant near my house. It is small but very good. Сначала вводим restaurant через there is, затем заменяем уже известный объект местоимением it."
-          }
-        ]
-      },
-      {
-        "kicker": "Алгоритм и ошибки",
-        "title": "Проверяй число, тип существительного и порядок слов",
-        "blocks": [
-          {
-            "type": "steps",
-            "items": [
-              {
-                "title": "1. Определи число",
-                "text": "Один объект или неисчисляемое → is. Несколько объектов → are."
-              },
-              {
-                "title": "2. Определи тип предложения",
-                "text": "Утверждение: There is/are. Отрицание: There isn’t/aren’t. Вопрос: Is/Are there...?"
-              },
-              {
-                "title": "3. Проверь определитель количества",
-                "text": "some обычно в утверждении; any — в вопросах/отрицаниях; many — с plural countable; much — с uncountable."
-              },
-              {
-                "title": "4. Если это вопрос, не добавляй do/does",
-                "text": "Правильно: Is there...? / Are there...? Конструкция сама образует вопрос перестановкой is/are."
-              }
-            ]
-          },
-          {
             "type": "mistakes",
             "items": [
               {
-                "wrong": "There are a lot of traffic.",
-                "right": "There is a lot of traffic.",
-                "reason": "Traffic — неисчисляемое, поэтому there is."
+                "wrong": "There isn’t many traffic.",
+                "right": "There isn’t much traffic.",
+                "reason": "Traffic — неисчисляемое."
               },
               {
-                "wrong": "There are any shops near here?",
-                "right": "Are there any shops near here?",
-                "reason": "В вопросе are ставится перед there."
+                "wrong": "There aren’t much shops.",
+                "right": "There aren’t many shops.",
+                "reason": "Shops — исчисляемое множественное."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kicker": "7 · Не путай конструкции",
+        "title": "there is, have got и there = «там» отвечают на разные вопросы",
+        "intro": "Три похожие формы часто встречаются в одном описании дома или района.",
+        "blocks": [
+          {
+            "type": "compare",
+            "columns": [
+              {
+                "title": "there is / are",
+                "lead": "что существует в месте?",
+                "lines": [
+                  "There is a balcony in the flat."
+                ],
+                "example": {
+                  "en": "There is a balcony in the flat.",
+                  "ru": "В квартире есть балкон.",
+                  "highlights": [
+                    "There is"
+                  ]
+                }
               },
               {
-                "wrong": "Is there many people?",
-                "right": "Are there many people?",
-                "reason": "People — множественное число."
+                "title": "have got",
+                "lead": "что имеет человек/предмет?",
+                "lines": [
+                  "The flat has got a balcony."
+                ],
+                "example": {
+                  "en": "The flat has got a balcony.",
+                  "ru": "У квартиры есть балкон.",
+                  "highlights": [
+                    "has got"
+                  ]
+                }
               },
               {
-                "wrong": "No, there aren’t. (после Is there...?)",
-                "right": "No, there isn’t.",
-                "reason": "Короткий ответ должен совпадать с формой вопроса."
+                "title": "there = место",
+                "lead": "где находится уже известный объект?",
+                "lines": [
+                  "The balcony is over there."
+                ],
+                "example": {
+                  "en": "The bus stop is over there.",
+                  "ru": "Автобусная остановка вон там.",
+                  "highlights": [
+                    "there"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "type": "steps",
+            "steps": [
+              {
+                "title": "Что хочешь сообщить?",
+                "text": "Наличие объекта в месте → there is/are."
+              },
+              {
+                "title": "Кто является владельцем?",
+                "text": "Если важен владелец → have/has got."
+              },
+              {
+                "title": "Просто указываешь место?",
+                "text": "Используй here/there как наречие места."
               }
             ]
           }
