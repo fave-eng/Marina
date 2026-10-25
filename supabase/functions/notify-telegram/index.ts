@@ -2,7 +2,7 @@ import { withSupabase } from 'npm:@supabase/server'
 
 const encoder = new TextEncoder()
 
-const FUNCTION_VERSION = 'homework-reports-v9-name-free-motivation'
+const FUNCTION_VERSION = 'homework-reports-v10-multi-bot-routing'
 const DIAGNOSTIC_VERSION = 'multi-student-diagnostics-v1'
 const DIAGNOSTIC_COOLDOWN_MS = 30_000
 const corsHeaders = {
@@ -59,6 +59,22 @@ function normalizeStudentId(value: unknown): string | null {
   if (typeof value !== 'string') return null
   const normalized = value.trim().toLowerCase()
   return /^[a-z0-9][a-z0-9_-]{0,63}$/.test(normalized) ? normalized : null
+}
+
+function telegramBotTokenForStudent(studentId: string): string {
+  const dedicatedToken = studentId === 'marina'
+    ? Deno.env.get('TELEGRAM_BOT_TOKEN_MARINA')
+    : Deno.env.get('TELEGRAM_BOT_TOKEN_COMMON')
+
+  return dedicatedToken || ''
+}
+
+function notifyWebhookSecretForStudent(studentId: string): string {
+  const dedicatedSecret = studentId === 'marina'
+    ? Deno.env.get('NOTIFY_WEBHOOK_SECRET_MARINA')
+    : Deno.env.get('NOTIFY_WEBHOOK_SECRET_COMMON')
+
+  return dedicatedSecret || ''
 }
 
 function escapeTelegramHtml(value: unknown): string {
@@ -122,6 +138,25 @@ function stableChoice(seed: string, size: number): number {
   return size > 0 ? hash % size : 0
 }
 
+function notificationSequence(seed: string): number {
+  const match = /^lesson-(\d+):(\d+)$/.exec(seed)
+  if (match) return Math.max(0, Number(match[1]) + Number(match[2]) - 2)
+  return stableChoice(seed, 10000)
+}
+
+function buildGreeting(seed: string): string {
+  const variants = [
+    'Hi there! 👋',
+    'Hello again! 🌟',
+    'Ready for some English? 📚',
+    'A new English challenge is here! 💬',
+    "It's English time! ✨",
+    "Here's something new to practise! 🚀",
+    'Another little step forward! 🌱',
+  ]
+  return variants[notificationSequence(seed) % variants.length]
+}
+
 function buildMotivation(seed: string): string {
   const variants = [
     'Good luck! ⭐',
@@ -129,8 +164,10 @@ function buildMotivation(seed: string): string {
     "You've got this! 🌟",
     'Take your time and do your best! ✨',
     'Enjoy the lesson! 📚',
+    "Keep practising — you're making progress! 🚀",
+    'A little practice goes a long way! 🌱',
   ]
-  return variants[stableChoice(seed, variants.length)]
+  return variants[(notificationSequence(seed) + 2) % variants.length]
 }
 
 function buildMessage(
@@ -149,7 +186,7 @@ function buildMessage(
   else steps.push('Open the homework and complete the tasks.')
 
   return [
-    'Hi there! 👋',
+    buildGreeting(seed),
     '',
     'Your new English homework is ready.',
     '',
@@ -284,8 +321,8 @@ async function handleHomeworkReport(req: Request, ctx: any, payload: any): Promi
     }, 409)
   }
 
-  const botToken = Deno.env.get('TELEGRAM_BOT_TOKEN') ?? ''
-  if (!botToken) return diagnosticJson({ ok: false, error: 'TELEGRAM_BOT_TOKEN is not configured' }, 500)
+  const botToken = telegramBotTokenForStudent(studentId)
+  if (!botToken) return diagnosticJson({ ok: false, error: 'Telegram bot token is not configured for this student' }, 500)
 
   const recipient = await resolveRecipient(ctx, studentId)
   if (!recipient.ok || !Number.isSafeInteger(recipient.chatId)) {
@@ -543,11 +580,11 @@ async function handleDiagnostics(req: Request, ctx: any, payload: any): Promise<
     }
   }
 
-  const botToken = Deno.env.get('TELEGRAM_BOT_TOKEN') ?? ''
+  const botToken = telegramBotTokenForStudent(studentId)
   const recipient = await resolveRecipient(ctx, studentId)
 
   if (kind === 'diagnostics_send_report') {
-    if (!botToken) return diagnosticJson({ ok: false, error: 'TELEGRAM_BOT_TOKEN is not configured' }, 500)
+    if (!botToken) return diagnosticJson({ ok: false, error: 'Telegram bot token is not configured for this student' }, 500)
     if (!recipient.ok || !Number.isSafeInteger(recipient.chatId)) {
       return diagnosticJson({ ok: false, error: recipient.error || 'Telegram recipient is not configured' }, 500)
     }
@@ -645,7 +682,7 @@ async function handleDiagnostics(req: Request, ctx: any, payload: any): Promise<
     .filter((row: any) => row.status === 'submitted_pending_report')
     .map((row: any) => ({ lessonId: row.lesson_id, reportStatus: row.report_status, submittedAt: row.submitted_at || null }))
 
-  let bot = { ok: false, error: botToken ? 'Not checked' : 'TELEGRAM_BOT_TOKEN is not configured' } as any
+  let bot = { ok: false, error: botToken ? 'Not checked' : 'Telegram bot token is not configured for this student' } as any
   let chat = { ok: false, error: recipient.ok ? 'Not checked' : recipient.error || 'Recipient is not configured' } as any
   if (botToken) {
     const botResult = await telegramApi(botToken, 'getMe')
@@ -707,18 +744,22 @@ export default {
       return handleHomeworkReport(req, ctx, payload)
     }
 
-    const expectedSecret = Deno.env.get('NOTIFY_WEBHOOK_SECRET') ?? ''
+    const studentId = normalizeStudentId(payload?.studentId)
+    if (!studentId) {
+      return Response.json({ ok: false, error: 'Missing or invalid student_id' }, { status: 400 })
+    }
+
+    const expectedSecret = notifyWebhookSecretForStudent(studentId)
     const actualSecret = req.headers.get('x-notify-secret') ?? ''
     if (!expectedSecret || !secureEqual(actualSecret, expectedSecret)) {
       return Response.json({ ok: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const botToken = Deno.env.get('TELEGRAM_BOT_TOKEN') ?? ''
+    const botToken = telegramBotTokenForStudent(studentId)
     if (!botToken) {
-      return Response.json({ ok: false, error: 'TELEGRAM_BOT_TOKEN is not configured' }, { status: 500 })
+      return Response.json({ ok: false, error: 'Telegram bot token is not configured for this student' }, { status: 500 })
     }
 
-    const studentId = typeof payload.studentId === 'string' ? payload.studentId.trim() : ''
     const materialType = typeof payload.materialType === 'string' ? payload.materialType.trim() : ''
     const materialId = typeof payload.materialId === 'string' ? payload.materialId.trim() : ''
     const notificationVersion = Number(payload.notificationVersion)
@@ -726,7 +767,7 @@ export default {
     const vocabulary = payload.vocabulary
     const grammar = Array.isArray(payload.grammar) ? payload.grammar : []
 
-    if (!studentId || !materialType || !materialId || !Number.isInteger(notificationVersion) || notificationVersion < 1) {
+    if (!materialType || !materialId || !Number.isInteger(notificationVersion) || notificationVersion < 1) {
       return Response.json({ ok: false, error: 'Missing or invalid notification identity' }, { status: 400 })
     }
 
