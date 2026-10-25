@@ -1369,6 +1369,8 @@
       control = `<div class="${gapClass}" aria-label="${prompt}">${answers.map((answer, gapIndex) => `${gapIndex < segments.length ? `<span>${segmentMarkup(segments[gapIndex])}</span>` : ''}<select class="dialogue-answer-select" data-gap-index="${gapIndex}" aria-label="Response ${gapIndex + 1}"><option value="">${placeholder}</option>${optionMarkup}</select>`).join('')}${segments.length > answers.length ? `<span>${segmentMarkup(segments[segments.length - 1])}</span>` : ''}</div>`;
     } else if (item.input === 'word-order') {
       control = renderWordOrderWidget(item);
+    } else if (item.input === 'sequence') {
+      control = renderSequenceWidget(item);
     } else if (item.input === 'insert-word') {
       const words = Array.isArray(item.words) ? item.words : [];
       const phrase = safeText(item.insert, '');
@@ -1956,6 +1958,22 @@
     </div>`;
   }
 
+  function renderSequenceWidget(item) {
+    const cards = Array.isArray(item.cards) ? item.cards : [];
+    return `<div class="sequence-widget" data-sequence-widget>
+      <p class="sequence-help">Перетащи плашки в правильном порядке. На телефоне можно использовать стрелки.</p>
+      <div class="sequence-list" data-sequence-list>${cards.map((card, index) => `<div class="sequence-card" draggable="true" data-sequence-key="${escapeHtml(card.key)}">
+        <span class="sequence-position" data-sequence-position>${index + 1}</span>
+        <span class="sequence-text">${escapeHtml(card.text || '')}</span>
+        <span class="sequence-controls">
+          <button type="button" class="sequence-move" data-sequence-move="up" aria-label="Move up">↑</button>
+          <button type="button" class="sequence-move" data-sequence-move="down" aria-label="Move down">↓</button>
+        </span>
+      </div>`).join('')}</div>
+      <input type="hidden" class="sequence-output" value="${escapeHtml(cards.map((card) => card.key).join(','))}">
+    </div>`;
+  }
+
   function renderReadingArticleReference(article, { inlineHeadings = false, items = [] } = {}) {
     const sections = Array.isArray(article?.sections) ? article.sections : [];
     const itemMap = new Map(items.map((item, index) => [safeText(item.id, `${index + 1}`), item]));
@@ -1993,6 +2011,31 @@
           <div class="exercise-control">${renderWordOrderWidget(item)}</div>
           <div class="feedback" aria-live="polite"></div>
         </div>`;
+      }).join('')}</div>
+    </article>`;
+  }
+
+  function renderDialogueSelectExercise(block, id, title) {
+    const items = Array.isArray(block.items) ? block.items : [];
+    const byId = new Map(items.map((item, index) => [safeText(item.id, `${index + 1}`), item]));
+    const lines = Array.isArray(block.dialogueLines) ? block.dialogueLines : [];
+    const wordBank = Array.isArray(block.wordBank) && block.wordBank.length
+      ? `<div class="word-bank dialogue-word-bank" aria-label="Word bank"><strong class="word-bank-label">Word bank</strong>${block.wordBank.map((word) => `<span>${escapeHtml(word)}</span>`).join('')}</div>`
+      : '';
+    const selectFor = (itemId) => {
+      const item = byId.get(safeText(itemId));
+      if (!item) return '';
+      return `<span class="exercise-item dialogue-select-item" data-exercise-item="${escapeHtml(item.id)}" data-input-type="select">
+        <span class="dialogue-gap-number">${escapeHtml(item.id)}</span>
+        <select class="dialogue-inline-select" aria-label="Gap ${escapeHtml(item.id)}"><option value="">…</option>${(item.options || []).map((option, optionIndex) => `<option value="${optionIndex}">${escapeHtml(option)}</option>`).join('')}</select>
+        <span class="feedback" aria-live="polite"></span>
+      </span>`;
+    };
+    return `<article class="card lesson-block exercise-card dialogue-select-card" data-task="${escapeHtml(id)}" data-type="exercise">
+      <div class="exercise-heading"><span class="eyebrow">Exercise</span><h3>${title}</h3>${renderLessonAudio(block)}${wordBank}</div>
+      <div class="exercise-dialogue compact-dialogue">${lines.map((line) => {
+        if (!line.itemId) return `<p class="dialogue-line"><strong>${escapeHtml(line.speaker || '')}:</strong> ${escapeHtml(line.text || '')}</p>`;
+        return `<p class="dialogue-line"><strong>${escapeHtml(line.speaker || '')}:</strong> ${line.before ? `${escapeHtml(line.before)} ` : ''}${selectFor(line.itemId)}${line.after ? ` ${escapeHtml(line.after)}` : ''}${line.itemId2 ? ` ${selectFor(line.itemId2)}` : ''}${line.after2 ? ` ${escapeHtml(line.after2)}` : ''}</p>`;
       }).join('')}</div>
     </article>`;
   }
@@ -2060,6 +2103,7 @@
     if (block.type === 'reading-quiz') return renderReadingQuizBlock(block, id, title);
     if (block.type === 'exercise') {
       if (block.layout === 'dialogue-word-order') return renderDialogueWordOrderExercise(block, id, title);
+      if (block.layout === 'dialogue-select') return renderDialogueSelectExercise(block, id, title);
       if (block.layout === 'reading-headings') return renderReadingHeadingsExercise(block, id, title);
       if (block.layout === 'reading-headings-embedded') return '';
       if (block.layout === 'reading-reference') return renderReadingReferenceExercise(block, id, title);
@@ -2174,6 +2218,13 @@
     } else if (inputType === 'word-order') {
       actual = itemNode.querySelector('.word-order-output')?.value || '';
       correct = textAnswerMatches(item, actual);
+    } else if (inputType === 'sequence') {
+      const raw = itemNode.querySelector('.sequence-output')?.value || '';
+      actual = raw ? raw.split(',').filter(Boolean) : [];
+      const expected = Array.isArray(item.answer) ? item.answer.map(String) : [];
+      const positionResults = expected.map((value, index) => actual[index] === value);
+      correct = expected.length > 0 && positionResults.every(Boolean);
+      return { actual, correct, scoreCorrect: positionResults.filter(Boolean).length, scoreTotal: expected.length };
     } else if (inputType === 'insert-word') {
       const selected = itemNode.querySelector('.insert-word-widget')?.dataset.selectedPosition ?? '';
       actual = selected;
@@ -2434,6 +2485,75 @@
     });
   }
 
+  function updateSequenceWidget(widget) {
+    const cards = [...widget.querySelectorAll('.sequence-card')];
+    cards.forEach((card, index) => {
+      const label = card.querySelector('[data-sequence-position]');
+      if (label) label.textContent = String(index + 1);
+      const up = card.querySelector('[data-sequence-move="up"]');
+      const down = card.querySelector('[data-sequence-move="down"]');
+      if (up) up.disabled = index === 0;
+      if (down) down.disabled = index === cards.length - 1;
+    });
+    const output = widget.querySelector('.sequence-output');
+    if (output) output.value = cards.map((card) => card.dataset.sequenceKey).join(',');
+  }
+
+  function restoreSequenceValue(widget, value) {
+    const wanted = Array.isArray(value) ? value.map(String) : safeText(value).split(',').filter(Boolean);
+    if (!wanted.length) { updateSequenceWidget(widget); return; }
+    const list = widget.querySelector('[data-sequence-list]');
+    if (!list) return;
+    const cards = new Map([...list.querySelectorAll('.sequence-card')].map((card) => [safeText(card.dataset.sequenceKey), card]));
+    wanted.forEach((key) => { const card = cards.get(key); if (card) list.appendChild(card); });
+    cards.forEach((card, key) => { if (!wanted.includes(key)) list.appendChild(card); });
+    updateSequenceWidget(widget);
+  }
+
+  function setupSequenceItems(root) {
+    root.querySelectorAll('[data-sequence-widget]').forEach((widget) => {
+      if (widget.dataset.sequenceReady === '1') return;
+      widget.dataset.sequenceReady = '1';
+      const list = widget.querySelector('[data-sequence-list]');
+      let dragged = null;
+      widget.addEventListener('click', (event) => {
+        const move = event.target.closest('[data-sequence-move]');
+        if (!move || move.disabled) return;
+        const card = move.closest('.sequence-card');
+        if (!card || !list) return;
+        if (move.dataset.sequenceMove === 'up' && card.previousElementSibling) list.insertBefore(card, card.previousElementSibling);
+        if (move.dataset.sequenceMove === 'down' && card.nextElementSibling) list.insertBefore(card.nextElementSibling, card);
+        updateSequenceWidget(widget);
+        widget.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+      list?.addEventListener('dragstart', (event) => {
+        const card = event.target.closest('.sequence-card');
+        if (!card) return;
+        dragged = card;
+        card.classList.add('is-dragging');
+        if (event.dataTransfer) { event.dataTransfer.effectAllowed = 'move'; event.dataTransfer.setData('text/plain', safeText(card.dataset.sequenceKey)); }
+      });
+      list?.addEventListener('dragover', (event) => {
+        if (!dragged) return;
+        event.preventDefault();
+        const over = event.target.closest('.sequence-card');
+        if (!over || over === dragged) return;
+        const rect = over.getBoundingClientRect();
+        const after = event.clientY > rect.top + rect.height / 2;
+        list.insertBefore(dragged, after ? over.nextSibling : over);
+      });
+      list?.addEventListener('drop', (event) => { if (dragged) event.preventDefault(); });
+      list?.addEventListener('dragend', () => {
+        if (!dragged) return;
+        dragged.classList.remove('is-dragging');
+        dragged = null;
+        updateSequenceWidget(widget);
+        widget.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+      updateSequenceWidget(widget);
+    });
+  }
+
   function setupInsertWordItems(root) {
     root.querySelectorAll('.insert-word-widget').forEach((widget) => {
       widget.querySelectorAll('[data-insert-slot]').forEach((slot) => {
@@ -2477,6 +2597,9 @@
       } else if (inputType === 'word-order') {
         const widget = itemNode.querySelector('[data-word-order]');
         if (widget) restoreWordOrderValue(widget, safeText(value));
+      } else if (inputType === 'sequence') {
+        const widget = itemNode.querySelector('[data-sequence-widget]');
+        if (widget) restoreSequenceValue(widget, value);
       } else if (inputType === 'insert-word') {
         const widget = itemNode.querySelector('.insert-word-widget');
         if (widget && value !== '' && value !== null && value !== undefined) {
@@ -2683,6 +2806,7 @@
     );
     restoreLessonAnswers(root, blocks, restoredAnswers);
     setupWordOrderItems(root);
+    setupSequenceItems(root);
     setupInsertWordItems(root);
     setupReadingQuizBlocks(root, blocks);
     setupManualLessonWidgets(root);

@@ -4325,3 +4325,183 @@ body[data-view="lesson"] #lesson-root {
     grid-template-columns: 1fr;
   }
 }
+
+/* Lesson 18 · 3C interaction refinements */
+.sequence-widget {
+  width: 100%;
+}
+.sequence-help {
+  margin: 0 0 12px;
+  color: #64748b;
+  font-size: .9rem;
+}
+.sequence-list {
+  display: grid;
+  gap: 10px;
+}
+.sequence-card {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  min-height: 58px;
+  padding: 12px 14px;
+  border: 1px solid #dbe4f0;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, .04);
+  cursor: grab;
+  user-select: none;
+}
+.sequence-card:active { cursor: grabbing; }
+.sequence-card.is-dragging {
+  opacity: .55;
+  border-color: #818cf8;
+  background: #eef2ff;
+}
+.sequence-position {
+  display: inline-flex;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: #eef2ff;
+  color: #4f46e5;
+  font-weight: 900;
+}
+.sequence-text {
+  color: #172033;
+  line-height: 1.45;
+  font-weight: 650;
+}
+.sequence-controls {
+  display: inline-flex;
+  gap: 5px;
+}
+.sequence-move {
+  width: 34px;
+  height: 34px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #f8fafc;
+  color: #475569;
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
+}
+.sequence-move:hover:not(:disabled),
+.sequence-move:focus-visible:not(:disabled) {
+  background: #eef2ff;
+  border-color: #818cf8;
+  color: #4338ca;
+  outline: none;
+}
+.sequence-move:disabled {
+  opacity: .28;
+  cursor: default;
+}
+
+[data-task="l18-howto-3c"] .exercise-item-header {
+  grid-template-columns: auto;
+  align-items: center;
+}
+[data-task="l18-howto-3c"] .exercise-prompt:empty {
+  display: none;
+}
+[data-task="l18-howto-3c"] .exercise-control .text-field {
+  max-width: 680px;
+}
+
+.dialogue-select-card .exercise-heading {
+  border-bottom: 1px solid #e5eaf3;
+}
+.dialogue-word-bank {
+  margin-top: 14px;
+}
+.compact-dialogue {
+  display: grid;
+  gap: 6px;
+  padding: 18px 20px 22px;
+}
+.compact-dialogue .dialogue-line {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 5px 0;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+.dialogue-select-item {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 4px;
+  margin: 0 3px;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  vertical-align: baseline;
+}
+.dialogue-gap-number {
+  color: #6366f1;
+  font-size: .72rem;
+  font-weight: 900;
+  vertical-align: super;
+}
+.dialogue-inline-select {
+  display: inline-block;
+  width: auto;
+  min-width: 82px;
+  max-width: 112px;
+  height: 38px;
+  padding: 5px 26px 5px 9px;
+  border: 1.5px solid #c7d2fe;
+  border-radius: 10px;
+  background-color: #fff;
+  color: #1e293b;
+  font: inherit;
+  font-weight: 750;
+}
+.dialogue-select-item .feedback {
+  display: none !important;
+}
+.dialogue-select-item.is-wrong .dialogue-inline-select {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+.dialogue-select-item.is-correct .dialogue-inline-select {
+  border-color: #22c55e;
+  background: #f0fdf4;
+}
+
+@media (max-width: 720px) {
+  .sequence-card {
+    grid-template-columns: 30px minmax(0, 1fr) auto;
+    gap: 9px;
+    padding: 11px;
+  }
+  .sequence-position {
+    width: 28px;
+    height: 28px;
+  }
+  .sequence-text {
+    font-size: .94rem;
+  }
+  .sequence-move {
+    width: 31px;
+    height: 31px;
+  }
+  .compact-dialogue {
+    padding: 14px;
+  }
+  .compact-dialogue .dialogue-line {
+    font-size: .96rem;
+  }
+  .dialogue-inline-select {
+    min-width: 74px;
+    max-width: 102px;
+    height: 36px;
+    padding-left: 8px;
+  }
+}
