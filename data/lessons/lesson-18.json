@@ -1,0 +1,165 @@
+{
+  "id": "lesson-18",
+  "number": 18,
+  "title": "Social phrases · invitations and offers",
+  "subtitle": "Speakout · Unit 3 · Lesson 3C: Vocabulary, Pronunciation, How to… and Speaking",
+  "status": "available",
+  "page": "lesson.html?id=lesson-18",
+  "vocabularyId": "vocab-lesson-18-social-phrases",
+  "grammarIds": [],
+  "publishedAt": "2026-10-25",
+  "totalPoints": 36,
+  "notification": {
+    "enabled": true,
+    "version": 1
+  },
+  "blocks": [
+    {
+      "type": "section",
+      "eyebrow": "Lesson 3C · Vocabulary",
+      "title": "SOCIAL PHRASES",
+      "text": "Useful phrases for arriving, thanking people and saying goodbye."
+    },
+    {
+      "type": "exercise",
+      "id": "l18-vocab-1a",
+      "title": "1A. Choose the correct word to complete the sentences.",
+      "autosaveDraft": true,
+      "items": [
+        {"id":"1","prompt":"_____ I’m late.","input":"single","options":["a  Great","b  Sorry","c  Thank"],"answer":1},
+        {"id":"2","prompt":"Have a _____ journey home.","input":"single","options":["a  full","b  near","c  safe"],"answer":2},
+        {"id":"3","prompt":"These are _____ you.","input":"single","options":["a  for","b  to","c  from"],"answer":0},
+        {"id":"4","prompt":"Thank you for the _____ evening!","input":"single","options":["a  lovely","b  safe","c  delicious"],"answer":0},
+        {"id":"5","prompt":"I’m _____. That was delicious!","input":"single","options":["a  safe","b  lovely","c  full"],"answer":2},
+        {"id":"6","prompt":"_____ you liked it!","input":"single","options":["a  Safe","b  Glad","c  Thank"],"answer":1}
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l18-vocab-1b",
+      "title": "1B. Put the words in brackets in the correct order to complete the conversations.",
+      "autosaveDraft": true,
+      "layout": "dialogue-word-order",
+      "items": [
+        {"id":"1","prompt":"kind / you / how / of","input":"word-order","answer":"How kind of you","acceptedAnswers":["How kind of you","How kind of you!"],"words":["kind","you","how","of"]},
+        {"id":"2","prompt":"I’m / late / sorry","input":"word-order","answer":"Sorry I’m late","acceptedAnswers":["Sorry I’m late","Sorry I'm late","Sorry I’m late.","Sorry I'm late."],"words":["I’m","late","sorry"]},
+        {"id":"3","prompt":"you / see / to / great","input":"word-order","answer":"Great to see you","acceptedAnswers":["Great to see you","Great to see you."],"words":["you","see","to","great"]},
+        {"id":"4","prompt":"you / it / glad / liked","input":"word-order","answer":"Glad you liked it","acceptedAnswers":["Glad you liked it","Glad you liked it!"],"words":["you","it","glad","liked"]},
+        {"id":"5","prompt":"you / thank / evening / the / for / lovely","input":"word-order","answer":"Thank you for the lovely evening","acceptedAnswers":["Thank you for the lovely evening","Thank you for the lovely evening!"],"words":["you","thank","evening","the","for","lovely"]}
+      ],
+      "dialogueLines": [
+        {"speaker":"A","text":"These flowers are for you."},
+        {"speaker":"B","before":"Thank you.","itemId":"1","after":"!"},
+        {"speaker":"A","itemId":"2","after":"."},
+        {"speaker":"B","text":"No problem."},
+        {"speaker":"A","itemId":"3","after":"."},
+        {"speaker":"B","text":"You, too."},
+        {"speaker":"A","text":"I’m full. That was delicious!"},
+        {"speaker":"B","itemId":"4","after":"!"},
+        {"speaker":"A","text":"Have a safe journey home."},
+        {"speaker":"B","itemId":"5","after":"!"}
+      ]
+    },
+    {
+      "type": "section",
+      "eyebrow": "Lesson 3C · Pronunciation",
+      "title": "RHYTHM IN PHRASES",
+      "text": "Listen for the rhythm and match each phrase to its stress pattern."
+    },
+    {
+      "type": "exercise",
+      "id": "l18-pron-2a",
+      "title": "2A. 3.05 Listen and match the phrases (1–6) with the stress patterns (a–f).",
+      "audio": "audio/Speakout_A2_WB_Unit 3_Audio/SO3_A2_WB_3C_Audio_3_05.mp3",
+      "autosaveDraft": true,
+      "items": [
+        {"id":"1","prompt":"Sorry I’m late.","input":"select","options":["a  •●•●●••","b  ●••●","c  ••●•●","d  •●••●•●","e  ●•●","f  ●●•"],"answer":1},
+        {"id":"2","prompt":"Great to see you.","input":"select","options":["a  •●•●●••","b  ●••●","c  ••●•●","d  •●••●•●","e  ●•●","f  ●●•"],"answer":4},
+        {"id":"3","prompt":"Oh, thank you. How nice of you!","input":"select","options":["a  •●•●●••","b  ●••●","c  ••●•●","d  •●••●•●","e  ●•●","f  ●●•"],"answer":0},
+        {"id":"4","prompt":"No problem.","input":"select","options":["a  •●•●●••","b  ●••●","c  ••●•●","d  •●••●•●","e  ●•●","f  ●●•"],"answer":5},
+        {"id":"5","prompt":"Have a safe journey home.","input":"select","options":["a  •●•●●••","b  ●••●","c  ••●•●","d  •●••●•●","e  ●•●","f  ●●•"],"answer":2},
+        {"id":"6","prompt":"Thank you for the lovely evening!","input":"select","options":["a  •●•●●••","b  ●••●","c  ••●•●","d  •●••●•●","e  ●•●","f  ●●•"],"answer":3}
+      ]
+    },
+    {
+      "type": "section",
+      "eyebrow": "Lesson 3C · How to…",
+      "title": "MAKE INVITATIONS AND OFFERS",
+      "text": "Listen to a dinner conversation and practise useful social language."
+    },
+    {
+      "type": "exercise",
+      "id": "l18-howto-3a",
+      "title": "3A. 3.06 Listen to the conversation and number the events (a–d) in the order they happen.",
+      "audio": "audio/Speakout_A2_WB_Unit 3_Audio/SO3_A2_WB_3C_Audio_3_06.mp3",
+      "autosaveDraft": true,
+      "items": [
+        {"id":"a","prompt":"a  Evan says it’s a nice evening.","input":"select","options":["1","2","3","4"],"answer":3},
+        {"id":"b","prompt":"b  They finish dinner.","input":"select","options":["1","2","3","4"],"answer":2},
+        {"id":"c","prompt":"c  Bella makes an invitation.","input":"select","options":["1","2","3","4"],"answer":0},
+        {"id":"d","prompt":"d  James talks about drinks.","input":"select","options":["1","2","3","4"],"answer":1}
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l18-howto-3b",
+      "title": "3B. 3.06 Listen again. Choose the correct options.",
+      "audio": "audio/Speakout_A2_WB_Unit 3_Audio/SO3_A2_WB_3C_Audio_3_06.mp3",
+      "autosaveDraft": true,
+      "items": [
+        {"id":"1","prompt":"Bella invites Evan for dinner at …","input":"single","options":["7 o’clock","7.30","8 o’clock"],"answer":2},
+        {"id":"2","prompt":"Evan doesn’t eat …","input":"single","options":["meat","fish","prawns"],"answer":0},
+        {"id":"3","prompt":"James is …","input":"single","options":["Bella’s husband","Bella’s friend","Evan’s friend"],"answer":0},
+        {"id":"4","prompt":"First, …","input":"single","options":["dinner is ready","Evan arrives","Evan meets James"],"answer":1},
+        {"id":"5","prompt":"Evan wants to drink …","input":"single","options":["still water","sparkling water","lemonade"],"answer":1},
+        {"id":"6","prompt":"Evan … home.","input":"single","options":["takes a bus","takes a taxi","walks"],"answer":2}
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "l18-howto-3c",
+      "title": "3C. 3.07 Listen to the recording. Write what you hear. You will hear the sentences only once.",
+      "audio": "audio/Speakout_A2_WB_Unit 3_Audio/SO3_A2_WB_3C_Audio_3_07.mp3",
+      "autosaveDraft": true,
+      "items": [
+        {"id":"1","prompt":"1","input":"text","answer":"Can I get you something to drink?","acceptedAnswers":["Can I get you something to drink?","Can I get you something to drink"]},
+        {"id":"2","prompt":"2","input":"text","answer":"I’d love to come.","acceptedAnswers":["I’d love to come.","I'd love to come.","I’d love to come","I'd love to come"]},
+        {"id":"3","prompt":"3","input":"text","answer":"Let me take your coat.","acceptedAnswers":["Let me take your coat.","Let me take your coat"]}
+      ]
+    },
+    {
+      "type": "section",
+      "eyebrow": "Lesson 3C · Speaking",
+      "title": "COMPLETE THE CONVERSATION",
+      "text": "Use the words in the box to complete the conversation."
+    },
+    {
+      "type": "exercise",
+      "id": "l18-speaking-4a",
+      "title": "4A. Complete the conversation with the words in the box.",
+      "wordBank": ["drink","get","let","nice","see","take"],
+      "autosaveDraft": true,
+      "items": [
+        {
+          "id":"conversation",
+          "number":"",
+          "prompt":"",
+          "input":"select-gaps",
+          "layout":"dialogue",
+          "placeholder":"Choose a word",
+          "options":["drink","get","let","nice","see","take"],
+          "segments":[
+            "A: Hi!\nB: Hi! Great to ",
+            " you.\nA: You too. These are for you.\nB: Thank you. How ",
+            " of you! Let me ",
+            " your coat.\nA: Thank you.\nB: Can I ",
+            " you something to ",
+            "?\nA: Yes please. Can I have some water?\nB: Of course. ",
+            " me get your drink."
+          ],
+          "answers":[4,3,5,1,0,2]
+        }
+      ]
+    }
+  ]
+}
